@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type {NavigationMenuItem} from '@nuxt/ui'
 
 const auth = useAuth()
 useDashboard()
@@ -78,11 +78,11 @@ const orgAdminLinks = computed<NavigationMenuItem[]>(() => {
   ]
 })
 
-const adminLinks = computed<NavigationMenuItem[]>(() => {
+const systemLinks = computed<NavigationMenuItem[]>(() => {
   if (!auth.isSysAdmin.value) return []
   return [
     {
-      label: 'Admin',
+      label: 'System',
       icon: 'i-lucide-shield-check',
       type: 'trigger',
       defaultOpen: false,
@@ -140,7 +140,13 @@ const adminLinks = computed<NavigationMenuItem[]>(() => {
   ]
 })
 
-const mainLinks = computed(() => [...baseLinks.value, ...orgAdminLinks.value, ...adminLinks.value])
+const mainLinks = computed(() => {
+  const links: NavigationMenuItem[] = [...baseLinks.value, ...orgAdminLinks.value]
+  if (systemLinks.value.length) {
+    links.push(...systemLinks.value)
+  }
+  return links
+})
 </script>
 
 <template>
@@ -153,12 +159,13 @@ const mainLinks = computed(() => [...baseLinks.value, ...orgAdminLinks.value, ..
       class="bg-elevated/25"
       :ui="{ footer: 'lg:border-t lg:border-default' }"
     >
+
       <template #header="{ collapsed }">
-        <OrgMenu :collapsed="collapsed" />
+        <OrgMenu :collapsed="collapsed"/>
       </template>
 
       <template #default="{ collapsed }">
-        <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-default" />
+        <USeparator type="dashed"/>
 
         <UNavigationMenu
           :collapsed="collapsed"
@@ -171,10 +178,10 @@ const mainLinks = computed(() => [...baseLinks.value, ...orgAdminLinks.value, ..
       </template>
 
       <template #footer="{ collapsed }">
-        <UserMenu :collapsed="collapsed" />
+        <UserMenu :collapsed="collapsed"/>
       </template>
     </UDashboardSidebar>
 
-    <slot />
+    <slot/>
   </UDashboardGroup>
 </template>

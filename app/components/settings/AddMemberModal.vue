@@ -6,26 +6,36 @@ import { getApiErrorMessage } from '~/utils'
 const props = defineProps<{ orgId: string }>()
 const emit = defineEmits<{ close: [] }>()
 const toast = useToast()
+const { findUser } = useUserSearch()
 const loading = ref(false)
 
 const schema = z.object({
-  user_id: z.string().min(1, 'User ID is required'),
+  identifier: z.string().min(1, 'Email, username or user ID is required'),
   is_admin: z.boolean()
 })
 
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
-  user_id: '',
+  identifier: '',
   is_admin: false
 })
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   try {
-    await $fetch(`/api/orgs/${props.orgId}/members`, {
+    const user = await findUser(event.data.identifier)
+    if (!user) {
+      toast.add({
+        title: 'User not found',
+        description: 'No user matched that email, username, or ID.',
+        color: 'warning'
+      })
+      return
+    }
+    await $fetch(`/api/orgs/${props.orgId}/users`, {
       method: 'POST',
-      body: event.data
+      body: { user_id: user.user_id, is_admin: event.data.is_admin }
     })
     toast.add({ title: 'Member added', icon: 'i-lucide-check', color: 'success' })
     emit('close')
@@ -45,8 +55,16 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     </template>
 
     <UForm :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
-      <UFormField label="User ID" name="user_id" description="The user's platform ID">
-        <UInput v-model="state.user_id" placeholder="user_id" class="w-full" />
+      <UFormField
+        label="User"
+        name="identifier"
+        description="Enter the user's email, username, or user ID"
+      >
+        <UInput
+          v-model="state.identifier"
+          placeholder="email, username, or user ID"
+          class="w-full"
+        />
       </UFormField>
 
       <UFormField name="is_admin">

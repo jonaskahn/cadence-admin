@@ -131,8 +131,10 @@ export interface UserMembershipResponse {
   user_id: string
   username: string
   email: string | null
-  org_id?: string
-  is_admin?: boolean
+  is_sys_admin: boolean
+  is_admin: boolean
+  is_deleted: boolean
+  deleted_at?: string
   created_at?: string
 }
 
