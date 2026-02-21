@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { LLMConfigResponse } from '~/types'
+import { formatDate } from '~/utils'
 
 const auth = useAuth()
 const toast = useToast()
@@ -31,21 +32,27 @@ async function deleteConfig(name: string) {
   }
 }
 
-const columns = [{
-  accessorKey: 'name',
-  header: 'Name'
-}, {
-  accessorKey: 'provider',
-  header: 'Provider'
-}, {
-  accessorKey: 'base_url',
-  header: 'Base URL'
-}, {
-  accessorKey: 'created_at',
-  header: 'Created'
-}, {
-  id: 'actions'
-}]
+const columns = [
+  {
+    accessorKey: 'name',
+    header: 'Name'
+  },
+  {
+    accessorKey: 'provider',
+    header: 'Provider'
+  },
+  {
+    accessorKey: 'base_url',
+    header: 'Base URL'
+  },
+  {
+    accessorKey: 'created_at',
+    header: 'Created'
+  },
+  {
+    id: 'actions'
+  }
+]
 </script>
 
 <template>
@@ -71,7 +78,7 @@ const columns = [{
         </template>
 
         <template #created_at-cell="{ row }">
-          <span class="text-sm text-dimmed">{{ new Date(row.original.created_at).toLocaleDateString() }}</span>
+          <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
         </template>
 
         <template #actions-cell="{ row }">
@@ -89,7 +96,13 @@ const columns = [{
 
   <UModal v-model:open="showAdd">
     <template #content>
-      <LLMConfigModal :org-id="orgId" @close="showAdd = false; refresh()" />
+      <LLMConfigModal
+        :org-id="orgId"
+        @close="
+          showAdd = false
+          refresh()
+        "
+      />
     </template>
   </UModal>
 </template>

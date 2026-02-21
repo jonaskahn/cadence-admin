@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { getApiErrorMessage } from '~/utils'
 
 const props = defineProps<{ orgId: string }>()
 const emit = defineEmits<{ close: [] }>()
@@ -29,7 +30,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     toast.add({ title: 'Member added', icon: 'i-lucide-check', color: 'success' })
     emit('close')
   } catch (err: unknown) {
-    const msg = (err as { statusMessage?: string })?.statusMessage || 'Failed to add member'
+    const msg = getApiErrorMessage(err, 'Failed to add member')
     toast.add({ title: 'Error', description: msg, color: 'error' })
   } finally {
     loading.value = false

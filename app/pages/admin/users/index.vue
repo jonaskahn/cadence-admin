@@ -2,6 +2,7 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import type { UserMembershipResponse } from '~/types'
+import { getApiErrorMessage } from '~/utils'
 
 const toast = useToast()
 const loading = ref(false)
@@ -38,7 +39,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     state.password = ''
     toast.add({ title: 'User created', icon: 'i-lucide-check', color: 'success' })
   } catch (err: unknown) {
-    const msg = (err as { statusMessage?: string })?.statusMessage || 'Failed to create user'
+    const msg = getApiErrorMessage(err, 'Failed to create user')
     toast.add({ title: 'Error', description: msg, color: 'error' })
   } finally {
     loading.value = false
@@ -61,7 +62,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <UCard>
           <template #header>
             <p class="font-semibold">Create Platform User</p>
-            <p class="text-dimmed text-sm mt-1">Creates a user without org membership. Use org settings to add them to orgs.</p>
+            <p class="text-dimmed text-sm mt-1">
+              Creates a user without org membership. Use org settings to add them to orgs.
+            </p>
           </template>
 
           <UForm :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
@@ -69,9 +72,18 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               <UInput v-model="state.username" placeholder="johndoe" class="w-full" />
             </UFormField>
             <UFormField label="Email" name="email">
-              <UInput v-model="state.email" type="email" placeholder="john@example.com" class="w-full" />
+              <UInput
+                v-model="state.email"
+                type="email"
+                placeholder="john@example.com"
+                class="w-full"
+              />
             </UFormField>
-            <UFormField label="Password" name="password" description="Optional — user can set later">
+            <UFormField
+              label="Password"
+              name="password"
+              description="Optional — user can set later"
+            >
               <UInput v-model="state.password" type="password" class="w-full" />
             </UFormField>
             <UButton type="submit" label="Create User" :loading="loading" class="w-fit" />
@@ -88,11 +100,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <dl class="grid grid-cols-2 gap-3">
             <div>
               <dt class="text-dimmed text-sm">User ID</dt>
-              <dd class="font-mono text-sm mt-1">{{ created.user_id }}</dd>
+              <dd class="font-mono text-sm mt-1">
+                {{ created.user_id }}
+              </dd>
             </div>
             <div>
               <dt class="text-dimmed text-sm">Username</dt>
-              <dd class="mt-1">{{ created.username }}</dd>
+              <dd class="mt-1">
+                {{ created.username }}
+              </dd>
             </div>
           </dl>
         </UCard>

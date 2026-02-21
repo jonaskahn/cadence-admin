@@ -1,19 +1,15 @@
 import type { OrchestratorResponse, CreateOrchestratorRequest } from '~/types'
+import { getApiErrorMessage } from '~/utils'
 
 function updateOrchestratorInList(
   orchestrators: OrchestratorResponse[],
   instanceId: string,
   updated: OrchestratorResponse
 ): void {
-  const idx = orchestrators.findIndex(o => o.instance_id === instanceId)
+  const idx = orchestrators.findIndex((o) => o.instance_id === instanceId)
   if (idx >= 0) {
     orchestrators[idx] = updated
   }
-}
-
-function getErrorMessage(err: unknown, fallback: string): string {
-  const obj = err as { statusMessage?: string }
-  return obj?.statusMessage ?? fallback
 }
 
 /**
@@ -32,7 +28,9 @@ export function useOrchestrators() {
     if (!orgId.value) return
     loading.value = true
     try {
-      orchestrators.value = await $fetch<OrchestratorResponse[]>(`/api/orgs/${orgId.value}/orchestrators`)
+      orchestrators.value = await $fetch<OrchestratorResponse[]>(
+        `/api/orgs/${orgId.value}/orchestrators`
+      )
     } catch {
       toast.add({ title: 'Failed to load orchestrators', color: 'error' })
     } finally {
@@ -50,7 +48,7 @@ export function useOrchestrators() {
       toast.add({ title: 'Orchestrator created', color: 'success', icon: 'i-lucide-check' })
       return result
     } catch (err: unknown) {
-      const msg = getErrorMessage(err, 'Create failed')
+      const msg = getApiErrorMessage(err, 'Create failed')
       toast.add({ title: 'Failed to create orchestrator', description: msg, color: 'error' })
       return null
     }
@@ -80,7 +78,9 @@ export function useOrchestrators() {
 
   async function unload(instanceId: string): Promise<void> {
     try {
-      await $fetch(`/api/orgs/${orgId.value}/orchestrators/${instanceId}/unload`, { method: 'POST' })
+      await $fetch(`/api/orgs/${orgId.value}/orchestrators/${instanceId}/unload`, {
+        method: 'POST'
+      })
       toast.add({ title: 'Unload event sent', icon: 'i-lucide-check' })
     } catch {
       toast.add({ title: 'Failed to unload orchestrator', color: 'error' })
@@ -89,10 +89,13 @@ export function useOrchestrators() {
 
   async function updateStatus(instanceId: string, status: 'active' | 'suspended'): Promise<void> {
     try {
-      const result = await $fetch<OrchestratorResponse>(`/api/orgs/${orgId.value}/orchestrators/${instanceId}/status`, {
-        method: 'PATCH',
-        body: { status }
-      })
+      const result = await $fetch<OrchestratorResponse>(
+        `/api/orgs/${orgId.value}/orchestrators/${instanceId}/status`,
+        {
+          method: 'PATCH',
+          body: { status }
+        }
+      )
       updateOrchestratorInList(orchestrators.value, instanceId, result)
       toast.add({ title: `Status set to ${status}`, icon: 'i-lucide-check' })
     } catch {
@@ -100,12 +103,18 @@ export function useOrchestrators() {
     }
   }
 
-  async function updateConfig(instanceId: string, config: Record<string, unknown>): Promise<OrchestratorResponse | null> {
+  async function updateConfig(
+    instanceId: string,
+    config: Record<string, unknown>
+  ): Promise<OrchestratorResponse | null> {
     try {
-      const result = await $fetch<OrchestratorResponse>(`/api/orgs/${orgId.value}/orchestrators/${instanceId}/config`, {
-        method: 'PATCH',
-        body: { config }
-      })
+      const result = await $fetch<OrchestratorResponse>(
+        `/api/orgs/${orgId.value}/orchestrators/${instanceId}/config`,
+        {
+          method: 'PATCH',
+          body: { config }
+        }
+      )
       updateOrchestratorInList(orchestrators.value, instanceId, result)
       toast.add({ title: 'Config updated', icon: 'i-lucide-check' })
       return result

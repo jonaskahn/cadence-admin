@@ -9,11 +9,7 @@ const CONTENT_TYPE_JSON = 'application/json'
 const CONTENT_TYPE_MULTIPART = 'multipart/form-data'
 const ACCEPT_SSE = 'text/event-stream'
 
-function buildBackendUrl(
-  baseUrl: string,
-  path: string,
-  query: Record<string, unknown>
-): URL {
+function buildBackendUrl(baseUrl: string, path: string, query: Record<string, unknown>): URL {
   const url = new URL(`/api/${path}`, baseUrl)
   for (const [key, value] of Object.entries(query)) {
     if (value !== undefined && value !== null) {

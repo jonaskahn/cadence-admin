@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { getApiErrorMessage } from '~/utils'
 
 definePageMeta({ layout: 'auth' })
 
@@ -27,13 +28,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     if (!ok) {
       toast.add({ title: 'Login failed', color: 'error', icon: 'i-lucide-x-circle' })
     } else if (auth.orgList.value.length === 0) {
-      toast.add({ title: 'No organizations available', color: 'warning', icon: 'i-lucide-alert-triangle' })
+      toast.add({
+        title: 'No organizations available',
+        color: 'warning',
+        icon: 'i-lucide-alert-triangle'
+      })
     } else {
       await navigateTo('/org-select')
     }
   } catch (err: unknown) {
-    const msg = (err as { statusMessage?: string })?.statusMessage || 'Invalid credentials'
-    toast.add({ title: 'Login failed', description: msg, color: 'error', icon: 'i-lucide-x-circle' })
+    const msg = getApiErrorMessage(err, 'Invalid credentials')
+    toast.add({
+      title: 'Login failed',
+      description: msg,
+      color: 'error',
+      icon: 'i-lucide-x-circle'
+    })
   } finally {
     loading.value = false
   }
@@ -51,11 +61,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     <UForm :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
       <UFormField label="Username" name="username">
-        <UInput v-model="state.username" placeholder="Enter username" autocomplete="username" class="w-full" />
+        <UInput
+          v-model="state.username"
+          placeholder="Enter username"
+          autocomplete="username"
+          class="w-full"
+        />
       </UFormField>
 
       <UFormField label="Password" name="password">
-        <UInput v-model="state.password" type="password" placeholder="Enter password" autocomplete="current-password" class="w-full" />
+        <UInput
+          v-model="state.password"
+          type="password"
+          placeholder="Enter password"
+          autocomplete="current-password"
+          class="w-full"
+        />
       </UFormField>
 
       <UButton type="submit" label="Sign in" block :loading="loading" />

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { HealthResponse, HealthCheckResponse } from '~/types'
+import { HEALTH_SERVICE_LABELS } from '~/constants'
 
 const { data: systemHealth } = await useFetch<HealthResponse>('/api/system-health')
 const { data: instanceHealth } = await useFetch<HealthCheckResponse[]>('/api/admin/health')
@@ -30,7 +31,9 @@ const columns = [
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon
-                :name="systemHealth?.status === 'healthy' ? 'i-lucide-check-circle' : 'i-lucide-x-circle'"
+                :name="
+                  systemHealth?.status === 'healthy' ? 'i-lucide-check-circle' : 'i-lucide-x-circle'
+                "
                 :class="systemHealth?.status === 'healthy' ? 'text-success' : 'text-error'"
                 class="size-5"
               />
@@ -39,20 +42,34 @@ const columns = [
           </template>
 
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div v-for="(label, key) in { postgres: 'PostgreSQL', redis: 'Redis', mongodb: 'MongoDB' }" :key="key">
-              <p class="text-dimmed text-sm">{{ label }}</p>
+            <div v-for="(label, key) in HEALTH_SERVICE_LABELS" :key="key">
+              <p class="text-dimmed text-sm">
+                {{ label }}
+              </p>
               <div class="flex items-center gap-1 mt-1">
                 <UIcon
-                  :name="systemHealth?.[key as keyof typeof systemHealth] === 'connected' ? 'i-lucide-circle-check' : 'i-lucide-circle-x'"
-                  :class="systemHealth?.[key as keyof typeof systemHealth] === 'connected' ? 'text-success' : 'text-error'"
+                  :name="
+                    systemHealth?.[key as keyof typeof systemHealth] === 'connected'
+                      ? 'i-lucide-circle-check'
+                      : 'i-lucide-circle-x'
+                  "
+                  :class="
+                    systemHealth?.[key as keyof typeof systemHealth] === 'connected'
+                      ? 'text-success'
+                      : 'text-error'
+                  "
                   class="size-4"
                 />
-                <span class="text-sm">{{ systemHealth?.[key as keyof typeof systemHealth] || 'unknown' }}</span>
+                <span class="text-sm">{{
+                  systemHealth?.[key as keyof typeof systemHealth] || 'unknown'
+                }}</span>
               </div>
             </div>
           </div>
 
-          <p v-if="systemHealth?.error" class="mt-3 text-error text-sm">{{ systemHealth.error }}</p>
+          <p v-if="systemHealth?.error" class="mt-3 text-error text-sm">
+            {{ systemHealth.error }}
+          </p>
         </UCard>
 
         <!-- Instance health -->
@@ -66,7 +83,11 @@ const columns = [
               <span class="font-mono text-xs">{{ row.original.instance_id }}</span>
             </template>
             <template #is_ready-cell="{ row }">
-              <UBadge :color="row.original.is_ready ? 'success' : 'error'" variant="subtle" size="sm">
+              <UBadge
+                :color="row.original.is_ready ? 'success' : 'error'"
+                variant="subtle"
+                size="sm"
+              >
                 {{ row.original.is_ready ? 'ready' : 'not ready' }}
               </UBadge>
             </template>

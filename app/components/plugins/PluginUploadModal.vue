@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getApiErrorMessage } from '~/utils'
+
 const props = defineProps<{
   orgId: string
   isAdmin?: boolean
@@ -34,7 +36,7 @@ async function onUpload() {
     toast.add({ title: 'Plugin uploaded', icon: 'i-lucide-check', color: 'success' })
     emit('close')
   } catch (err: unknown) {
-    const msg = (err as { statusMessage?: string })?.statusMessage || 'Upload failed'
+    const msg = getApiErrorMessage(err, 'Upload failed')
     toast.add({ title: 'Upload failed', description: msg, color: 'error' })
   } finally {
     uploading.value = false
@@ -54,9 +56,11 @@ async function onUpload() {
         @click="fileInput?.click()"
       >
         <UIcon name="i-lucide-upload" class="size-10 mx-auto mb-2 text-dimmed" />
-        <p class="text-sm font-medium">{{ selectedFile ? selectedFile.name : 'Click to select plugin (.zip)' }}</p>
+        <p class="text-sm font-medium">
+          {{ selectedFile ? selectedFile.name : 'Click to select plugin (.zip)' }}
+        </p>
         <p v-if="!selectedFile" class="text-xs text-dimmed mt-1">Plugin package in ZIP format</p>
-        <input ref="fileInput" type="file" accept=".zip" class="hidden" @change="onFileChange">
+        <input ref="fileInput" type="file" accept=".zip" class="hidden" @change="onFileChange" />
       </div>
 
       <div class="flex justify-end gap-2">

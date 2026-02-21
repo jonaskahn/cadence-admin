@@ -2,6 +2,7 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import type { OrganizationResponse } from '~/types'
+import { formatDate } from '~/utils'
 
 const toast = useToast()
 const showCreate = ref(false)
@@ -55,12 +56,16 @@ const columns = [
         <UCard>
           <UTable :data="orgs || []" :columns="columns">
             <template #status-cell="{ row }">
-              <UBadge :color="row.original.status === 'active' ? 'success' : 'neutral'" variant="subtle" size="sm">
+              <UBadge
+                :color="row.original.status === 'active' ? 'success' : 'neutral'"
+                variant="subtle"
+                size="sm"
+              >
                 {{ row.original.status }}
               </UBadge>
             </template>
             <template #created_at-cell="{ row }">
-              <span class="text-sm text-dimmed">{{ new Date(row.original.created_at).toLocaleDateString() }}</span>
+              <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
             </template>
             <template #actions-cell="{ row }">
               <UButton

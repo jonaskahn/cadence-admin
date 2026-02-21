@@ -33,11 +33,13 @@ const state = reactive<Partial<Schema>>({
 
 const loading = ref(false)
 
-const pluginOptions = computed(() =>
-  (plugins.value || []).filter(p => p.is_latest).map(p => ({
-    label: `${p.name} (${p.pid})`,
-    value: p.pid
-  }))
+const pluginOptions = computed<{ label: string; value: string }[]>(() =>
+  (plugins.value || [])
+    .filter((p) => p.is_latest)
+    .map((p) => ({
+      label: `${p.name} (${p.pid})`,
+      value: p.pid
+    }))
 )
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
@@ -101,6 +103,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <USelectMenu
           v-model="state.active_plugins"
           :items="pluginOptions"
+          value-key="value"
           multiple
           placeholder="Select plugins..."
           class="w-full"

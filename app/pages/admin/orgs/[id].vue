@@ -6,11 +6,15 @@ const toast = useToast()
 const orgId = route.params.id as string
 const showAdd = ref(false)
 
-const { data: org } = await useFetch<OrganizationResponse>(`/api/admin/orgs`, {
-  transform: (orgs: OrganizationResponse[]) => orgs.find(o => o.org_id === orgId) || null
-})
+const { data: org } = await useAsyncData(`admin-org-${orgId}`, () =>
+  $fetch<OrganizationResponse[]>(`/api/admin/orgs`).then(
+    (orgs) => orgs.find((o) => o.org_id === orgId) ?? null
+  )
+)
 
-const { data: members, refresh } = await useFetch<UserMembershipResponse[]>(`/api/orgs/${orgId}/users`)
+const { data: members, refresh } = await useFetch<UserMembershipResponse[]>(
+  `/api/orgs/${orgId}/users`
+)
 
 async function removeMember(userId: string) {
   if (!confirm('Remove member?')) return
@@ -53,12 +57,18 @@ const columns = [
           <dl class="grid grid-cols-2 gap-4">
             <div>
               <dt class="text-dimmed text-sm">Org ID</dt>
-              <dd class="font-mono text-sm mt-1">{{ org.org_id }}</dd>
+              <dd class="font-mono text-sm mt-1">
+                {{ org.org_id }}
+              </dd>
             </div>
             <div>
               <dt class="text-dimmed text-sm">Status</dt>
               <dd class="mt-1">
-                <UBadge :color="org.status === 'active' ? 'success' : 'neutral'" variant="subtle" size="sm">
+                <UBadge
+                  :color="org.status === 'active' ? 'success' : 'neutral'"
+                  variant="subtle"
+                  size="sm"
+                >
                   {{ org.status }}
                 </UBadge>
               </dd>
@@ -72,7 +82,11 @@ const columns = [
           </template>
           <UTable :data="members || []" :columns="columns">
             <template #is_admin-cell="{ row }">
-              <UBadge :color="row.original.is_admin ? 'warning' : 'neutral'" variant="subtle" size="sm">
+              <UBadge
+                :color="row.original.is_admin ? 'warning' : 'neutral'"
+                variant="subtle"
+                size="sm"
+              >
                 {{ row.original.is_admin ? 'org_admin' : 'member' }}
               </UBadge>
             </template>
@@ -93,7 +107,13 @@ const columns = [
 
   <UModal v-model:open="showAdd">
     <template #content>
-      <AddMemberModal :org-id="orgId" @close="showAdd = false; refresh()" />
+      <AddMemberModal
+        :org-id="orgId"
+        @close="
+          showAdd = false
+          refresh()
+        "
+      />
     </template>
   </UModal>
 </template>

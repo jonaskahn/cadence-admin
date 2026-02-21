@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { OrchestratorResponse } from '~/types'
+import { tierColor, statusColor } from '~/utils'
 
 const auth = useAuth()
 const orchestrators = useOrchestrators()
@@ -7,36 +8,14 @@ const showCreate = ref(false)
 
 onMounted(() => orchestrators.fetchAll())
 
-const columns = [{
-  accessorKey: 'name',
-  header: 'Name'
-}, {
-  accessorKey: 'framework_type',
-  header: 'Framework'
-}, {
-  accessorKey: 'mode',
-  header: 'Mode'
-}, {
-  accessorKey: 'tier',
-  header: 'Tier'
-}, {
-  accessorKey: 'status',
-  header: 'Status'
-}, {
-  id: 'actions'
-}]
-
-const tierColor = (tier: string) => {
-  if (tier === 'hot') return 'error'
-  if (tier === 'warm') return 'warning'
-  return 'neutral'
-}
-
-const statusColor = (status: string) => {
-  if (status === 'active') return 'success'
-  if (status === 'suspended') return 'warning'
-  return 'neutral'
-}
+const columns = [
+  { accessorKey: 'name', header: 'Name' },
+  { accessorKey: 'framework_type', header: 'Framework' },
+  { accessorKey: 'mode', header: 'Mode' },
+  { accessorKey: 'tier', header: 'Tier' },
+  { accessorKey: 'status', header: 'Status' },
+  { id: 'actions' }
+]
 
 async function onDelete(row: OrchestratorResponse) {
   if (!confirm(`Delete "${row.name}"?`)) return

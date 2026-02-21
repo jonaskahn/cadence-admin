@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { OrchestratorResponse, PluginMetadataResponse, PoolStatsResponse } from '~/types'
+import { tierColor, statusColor } from '~/utils'
 
 const auth = useAuth()
 const orgId = computed(() => auth.currentOrgId.value)
@@ -15,24 +16,21 @@ const { data: plugins } = await useFetch<PluginMetadataResponse[]>(
 )
 
 // Always call useFetch unconditionally — never put composables in a ternary
-const { data: poolStats } = await useAsyncData<PoolStatsResponse | null>(
-  'pool-stats',
-  async () => {
-    if (!auth.isSysAdmin.value) return null
-    try {
-      return await $fetch<PoolStatsResponse>('/api/admin/pool/stats')
-    } catch {
-      return null
-    }
+const { data: poolStats } = await useAsyncData<PoolStatsResponse | null>('pool-stats', async () => {
+  if (!auth.isSysAdmin.value) return null
+  try {
+    return await $fetch<PoolStatsResponse>('/api/admin/pool/stats')
+  } catch {
+    return null
   }
-)
+})
 
 const tierCounts = computed(() => {
   const list = orchestrators.value || []
   return {
-    hot: list.filter(o => o.tier === 'hot').length,
-    warm: list.filter(o => o.tier === 'warm').length,
-    cold: list.filter(o => o.tier === 'cold').length,
+    hot: list.filter((o) => o.tier === 'hot').length,
+    warm: list.filter((o) => o.tier === 'warm').length,
+    cold: list.filter((o) => o.tier === 'cold').length,
     total: list.length
   }
 })
@@ -56,7 +54,9 @@ const tierCounts = computed(() => {
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-cpu" class="size-8 text-primary" />
               <div>
-                <p class="text-2xl font-bold">{{ tierCounts.total }}</p>
+                <p class="text-2xl font-bold">
+                  {{ tierCounts.total }}
+                </p>
                 <p class="text-dimmed text-sm">Total Orchestrators</p>
               </div>
             </div>
@@ -66,7 +66,9 @@ const tierCounts = computed(() => {
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-flame" class="size-8 text-error" />
               <div>
-                <p class="text-2xl font-bold">{{ tierCounts.hot }}</p>
+                <p class="text-2xl font-bold">
+                  {{ tierCounts.hot }}
+                </p>
                 <p class="text-dimmed text-sm">Hot Tier</p>
               </div>
             </div>
@@ -76,7 +78,9 @@ const tierCounts = computed(() => {
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-puzzle" class="size-8 text-success" />
               <div>
-                <p class="text-2xl font-bold">{{ plugins?.length || 0 }}</p>
+                <p class="text-2xl font-bold">
+                  {{ plugins?.length || 0 }}
+                </p>
                 <p class="text-dimmed text-sm">Plugins</p>
               </div>
             </div>
@@ -96,7 +100,9 @@ const tierCounts = computed(() => {
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-thermometer" class="size-8 text-info" />
               <div>
-                <p class="text-2xl font-bold">{{ tierCounts.warm }}</p>
+                <p class="text-2xl font-bold">
+                  {{ tierCounts.warm }}
+                </p>
                 <p class="text-dimmed text-sm">Warm Tier</p>
               </div>
             </div>
@@ -112,19 +118,27 @@ const tierCounts = computed(() => {
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
                 <p class="text-dimmed text-sm">Hot</p>
-                <p class="text-xl font-bold">{{ poolStats.hot_tier_count }}</p>
+                <p class="text-xl font-bold">
+                  {{ poolStats.hot_tier_count }}
+                </p>
               </div>
               <div>
                 <p class="text-dimmed text-sm">Warm</p>
-                <p class="text-xl font-bold">{{ poolStats.warm_tier_count }}</p>
+                <p class="text-xl font-bold">
+                  {{ poolStats.warm_tier_count }}
+                </p>
               </div>
               <div>
                 <p class="text-dimmed text-sm">Cold</p>
-                <p class="text-xl font-bold">{{ poolStats.cold_tier_count }}</p>
+                <p class="text-xl font-bold">
+                  {{ poolStats.cold_tier_count }}
+                </p>
               </div>
               <div>
                 <p class="text-dimmed text-sm">Shared Models</p>
-                <p class="text-xl font-bold">{{ poolStats.shared_model_count }}</p>
+                <p class="text-xl font-bold">
+                  {{ poolStats.shared_model_count }}
+                </p>
               </div>
             </div>
           </UCard>
@@ -136,11 +150,7 @@ const tierCounts = computed(() => {
             <p class="font-semibold">Quick Actions</p>
           </template>
           <div class="flex flex-wrap gap-3">
-            <UButton
-              label="Start Chat"
-              icon="i-lucide-message-square"
-              to="/chat"
-            />
+            <UButton label="Start Chat" icon="i-lucide-message-square" to="/chat" />
             <UButton
               label="View Orchestrators"
               icon="i-lucide-cpu"
@@ -178,20 +188,12 @@ const tierCounts = computed(() => {
               ]"
             >
               <template #tier-cell="{ row }">
-                <UBadge
-                  :color="row.original.tier === 'hot' ? 'error' : row.original.tier === 'warm' ? 'warning' : 'neutral'"
-                  variant="subtle"
-                  size="sm"
-                >
+                <UBadge :color="tierColor(row.original.tier)" variant="subtle" size="sm">
                   {{ row.original.tier }}
                 </UBadge>
               </template>
               <template #status-cell="{ row }">
-                <UBadge
-                  :color="row.original.status === 'active' ? 'success' : 'neutral'"
-                  variant="subtle"
-                  size="sm"
-                >
+                <UBadge :color="statusColor(row.original.status)" variant="subtle" size="sm">
                   {{ row.original.status }}
                 </UBadge>
               </template>

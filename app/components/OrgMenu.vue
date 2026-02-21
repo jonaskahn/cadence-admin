@@ -8,7 +8,7 @@ defineProps<{
 const auth = useAuth()
 
 const items = computed<DropdownMenuItem[][]>(() => {
-  const orgItems = auth.orgList.value.map(org => ({
+  const orgItems = auth.orgList.value.map((org) => ({
     label: org.org_name,
     icon: org.org_id === auth.currentOrgId.value ? 'i-lucide-check' : undefined,
     onSelect() {
@@ -16,16 +16,19 @@ const items = computed<DropdownMenuItem[][]>(() => {
     }
   }))
 
-  return [orgItems, [{
-    label: 'Select organization',
-    icon: 'i-lucide-building',
-    to: '/org-select'
-  }]]
+  return [
+    orgItems,
+    [
+      {
+        label: 'Select organization',
+        icon: 'i-lucide-building',
+        to: '/org-select'
+      }
+    ]
+  ]
 })
 
-const currentOrgName = computed(() =>
-  auth.currentOrg.value?.org_name || 'Select org'
-)
+const currentOrgName = computed(() => auth.currentOrg.value?.org_name || 'Select org')
 </script>
 
 <template>

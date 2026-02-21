@@ -22,24 +22,31 @@ async function deletePlugin(id: number) {
   }
 }
 
-const columns = [{
-  accessorKey: 'name',
-  header: 'Name'
-}, {
-  accessorKey: 'pid',
-  header: 'PID'
-}, {
-  accessorKey: 'version',
-  header: 'Version'
-}, {
-  accessorKey: 'source',
-  header: 'Source'
-}, {
-  accessorKey: 'agent_type',
-  header: 'Type'
-}, {
-  id: 'actions'
-}]
+const columns = [
+  {
+    accessorKey: 'name',
+    header: 'Name'
+  },
+  {
+    accessorKey: 'pid',
+    header: 'PID'
+  },
+  {
+    accessorKey: 'version',
+    header: 'Version'
+  },
+  {
+    accessorKey: 'source',
+    header: 'Source'
+  },
+  {
+    accessorKey: 'agent_type',
+    header: 'Type'
+  },
+  {
+    id: 'actions'
+  }
+]
 </script>
 
 <template>
@@ -50,11 +57,7 @@ const columns = [{
           <UDashboardSidebarCollapse />
         </template>
         <template #right>
-          <UButton
-            label="Upload"
-            icon="i-lucide-upload"
-            @click="showUpload = true"
-          />
+          <UButton label="Upload" icon="i-lucide-upload" @click="showUpload = true" />
         </template>
       </UDashboardNavbar>
     </template>
@@ -64,7 +67,11 @@ const columns = [{
         <UCard>
           <UTable :data="plugins || []" :columns="columns">
             <template #source-cell="{ row }">
-              <UBadge :color="row.original.source === 'system' ? 'info' : 'success'" variant="subtle" size="sm">
+              <UBadge
+                :color="row.original.source === 'system' ? 'info' : 'success'"
+                variant="subtle"
+                size="sm"
+              >
                 {{ row.original.source }}
               </UBadge>
             </template>
@@ -87,7 +94,13 @@ const columns = [{
 
   <UModal v-model:open="showUpload">
     <template #content>
-      <PluginUploadModal :org-id="orgId" @close="showUpload = false; refresh()" />
+      <PluginUploadModal
+        :org-id="orgId"
+        @close="
+          showUpload = false
+          refresh()
+        "
+      />
     </template>
   </UModal>
 </template>

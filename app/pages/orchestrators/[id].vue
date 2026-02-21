@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { OrchestratorResponse } from '~/types'
+import { tierColor, statusColor } from '~/utils'
 
 const route = useRoute()
 const auth = useAuth()
 const orchestrators = useOrchestrators()
-const toast = useToast()
 
 const instanceId = route.params.id as string
 const orgId = computed(() => auth.currentOrgId.value || '')
@@ -20,11 +20,15 @@ const configJson = ref('')
 const configError = ref('')
 const savingConfig = ref(false)
 
-watch(orchestrator, (val) => {
-  if (val) {
-    configJson.value = JSON.stringify(val.config, null, 2)
-  }
-}, { immediate: true })
+watch(
+  orchestrator,
+  (val) => {
+    if (val) {
+      configJson.value = JSON.stringify(val.config, null, 2)
+    }
+  },
+  { immediate: true }
+)
 
 async function saveConfig() {
   configError.value = ''
@@ -39,12 +43,6 @@ async function saveConfig() {
     savingConfig.value = false
   }
 }
-
-const tierColor = (tier: string) => {
-  if (tier === 'hot') return 'error'
-  if (tier === 'warm') return 'warning'
-  return 'neutral'
-}
 </script>
 
 <template>
@@ -52,11 +50,7 @@ const tierColor = (tier: string) => {
     <template #header>
       <UDashboardNavbar :title="orchestrator?.name || 'Orchestrator'">
         <template #leading>
-          <UButton
-            icon="i-lucide-arrow-left"
-            variant="ghost"
-            to="/orchestrators"
-          />
+          <UButton icon="i-lucide-arrow-left" variant="ghost" to="/orchestrators" />
         </template>
         <template #right>
           <template v-if="auth.isOrgAdmin.value && orchestrator">
@@ -100,15 +94,21 @@ const tierColor = (tier: string) => {
             <dl class="grid grid-cols-2 gap-4">
               <div>
                 <dt class="text-dimmed text-sm">Instance ID</dt>
-                <dd class="font-mono text-sm mt-1">{{ orchestrator.instance_id }}</dd>
+                <dd class="font-mono text-sm mt-1">
+                  {{ orchestrator.instance_id }}
+                </dd>
               </div>
               <div>
                 <dt class="text-dimmed text-sm">Framework</dt>
-                <dd class="mt-1">{{ orchestrator.framework_type }}</dd>
+                <dd class="mt-1">
+                  {{ orchestrator.framework_type }}
+                </dd>
               </div>
               <div>
                 <dt class="text-dimmed text-sm">Mode</dt>
-                <dd class="mt-1">{{ orchestrator.mode }}</dd>
+                <dd class="mt-1">
+                  {{ orchestrator.mode }}
+                </dd>
               </div>
               <div>
                 <dt class="text-dimmed text-sm">Tier</dt>
@@ -121,14 +121,16 @@ const tierColor = (tier: string) => {
               <div>
                 <dt class="text-dimmed text-sm">Status</dt>
                 <dd class="mt-1">
-                  <UBadge :color="orchestrator.status === 'active' ? 'success' : 'neutral'" variant="subtle" size="sm">
+                  <UBadge :color="statusColor(orchestrator.status)" variant="subtle" size="sm">
                     {{ orchestrator.status }}
                   </UBadge>
                 </dd>
               </div>
               <div>
                 <dt class="text-dimmed text-sm">Config Hash</dt>
-                <dd class="font-mono text-xs mt-1">{{ orchestrator.config_hash || '—' }}</dd>
+                <dd class="font-mono text-xs mt-1">
+                  {{ orchestrator.config_hash || '—' }}
+                </dd>
               </div>
             </dl>
           </UCard>
@@ -179,7 +181,9 @@ const tierColor = (tier: string) => {
               class="font-mono text-sm w-full"
               :disabled="!auth.isOrgAdmin.value"
             />
-            <p v-if="configError" class="text-error text-sm mt-1">{{ configError }}</p>
+            <p v-if="configError" class="text-error text-sm mt-1">
+              {{ configError }}
+            </p>
           </UCard>
         </div>
       </div>

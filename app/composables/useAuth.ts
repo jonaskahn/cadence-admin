@@ -19,18 +19,14 @@ export const useAuth = () => {
 
   const currentOrg = computed<OrgAccessResponse | null>(() => {
     if (!currentOrgId.value) return null
-    return orgList.value.find(o => o.org_id === currentOrgId.value) ?? null
+    return orgList.value.find((o) => o.org_id === currentOrgId.value) ?? null
   })
 
   const isAuthenticated = computed(() => !!authUser.value)
 
-  const isSysAdmin = computed(() =>
-    orgList.value.some(o => o.role === 'sys_admin')
-  )
+  const isSysAdmin = computed(() => orgList.value.some((o) => o.role === 'sys_admin'))
 
-  const isOrgAdmin = computed(() =>
-    currentOrg.value?.role === 'org_admin' || isSysAdmin.value
-  )
+  const isOrgAdmin = computed(() => currentOrg.value?.role === 'org_admin' || isSysAdmin.value)
 
   async function login(username: string, password: string): Promise<boolean> {
     const response = await $fetch<{ token: string }>('/api/auth/login', {

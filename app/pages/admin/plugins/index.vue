@@ -45,7 +45,11 @@ const columns = [
         <UCard>
           <UTable :data="plugins || []" :columns="columns">
             <template #is_active-cell="{ row }">
-              <UBadge :color="row.original.is_active ? 'success' : 'neutral'" variant="subtle" size="sm">
+              <UBadge
+                :color="row.original.is_active ? 'success' : 'neutral'"
+                variant="subtle"
+                size="sm"
+              >
                 {{ row.original.is_active ? 'active' : 'inactive' }}
               </UBadge>
             </template>
@@ -66,7 +70,14 @@ const columns = [
 
   <UModal v-model:open="showUpload">
     <template #content>
-      <PluginUploadModal org-id="" :is-admin="true" @close="showUpload = false; refresh()" />
+      <PluginUploadModal
+        org-id=""
+        :is-admin="true"
+        @close="
+          showUpload = false
+          refresh()
+        "
+      />
     </template>
   </UModal>
 </template>

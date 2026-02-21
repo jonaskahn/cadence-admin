@@ -35,18 +35,23 @@ async function removeMember(userId: string) {
   }
 }
 
-const columns = [{
-  accessorKey: 'username',
-  header: 'Username'
-}, {
-  accessorKey: 'email',
-  header: 'Email'
-}, {
-  accessorKey: 'is_admin',
-  header: 'Role'
-}, {
-  id: 'actions'
-}]
+const columns = [
+  {
+    accessorKey: 'username',
+    header: 'Username'
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email'
+  },
+  {
+    accessorKey: 'is_admin',
+    header: 'Role'
+  },
+  {
+    id: 'actions'
+  }
+]
 </script>
 
 <template>
@@ -96,7 +101,13 @@ const columns = [{
 
   <UModal v-model:open="showAdd">
     <template #content>
-      <AddMemberModal :org-id="orgId" @close="showAdd = false; refresh()" />
+      <AddMemberModal
+        :org-id="orgId"
+        @close="
+          showAdd = false
+          refresh()
+        "
+      />
     </template>
   </UModal>
 </template>

@@ -47,9 +47,8 @@ async function processSSEStream(
         const rawData = line.slice(SSE_DATA_PREFIX.length).trim()
         try {
           const parsed = JSON.parse(rawData) as Record<string, unknown>
-          const isMessageContent
-            = currentEventType === MESSAGE_EVENT_TYPE
-              || (!currentEventType && parsed.content)
+          const isMessageContent =
+            currentEventType === MESSAGE_EVENT_TYPE || (!currentEventType && parsed.content)
 
           if (isMessageContent) {
             callbacks.onContent((parsed.content as string) ?? '')
@@ -86,7 +85,9 @@ export function useChat() {
 
   async function loadOrchestrators(): Promise<void> {
     if (!orgId.value) return
-    orchestrators.value = await $fetch<OrchestratorResponse[]>(`/api/orgs/${orgId.value}/orchestrators`)
+    orchestrators.value = await $fetch<OrchestratorResponse[]>(
+      `/api/orgs/${orgId.value}/orchestrators`
+    )
   }
 
   async function sendMessage(message: string): Promise<void> {
@@ -111,7 +112,7 @@ export function useChat() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'text/event-stream'
+          Accept: 'text/event-stream'
         },
         body: JSON.stringify({
           instance_id: selectedInstanceId.value,
@@ -126,9 +127,15 @@ export function useChat() {
 
       const reader = response.body!.getReader()
       await processSSEStream(reader, {
-        onContent: (chunk) => { currentStreamContent.value += chunk },
-        onEvent: (event) => { currentEvents.value.push(event) },
-        onSessionId: (id) => { conversationId.value = id }
+        onContent: (chunk) => {
+          currentStreamContent.value += chunk
+        },
+        onEvent: (event) => {
+          currentEvents.value.push(event)
+        },
+        onSessionId: (id) => {
+          conversationId.value = id
+        }
       })
 
       messages.value.push({

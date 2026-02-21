@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { roleColor, roleLabel } from '~/utils'
+
 definePageMeta({ layout: 'auth' })
 
 const auth = useAuth()
 
-// If not authenticated, redirect to login
 if (!auth.isAuthenticated.value) {
   await navigateTo('/login')
 }
 
-// If already has an org selected and only one org, auto-select
 onMounted(async () => {
   if (auth.orgList.value.length === 0) {
     await auth.loadOrgs()
@@ -17,18 +17,6 @@ onMounted(async () => {
     auth.selectOrg(auth.orgList.value[0]!.org_id)
   }
 })
-
-const roleBadgeColor = (role: string) => {
-  if (role === 'sys_admin') return 'error'
-  if (role === 'org_admin') return 'warning'
-  return 'neutral'
-}
-
-const roleLabel = (role: string) => {
-  if (role === 'sys_admin') return 'sys_admin'
-  if (role === 'org_admin') return 'org_admin'
-  return 'member'
-}
 </script>
 
 <template>
@@ -47,10 +35,14 @@ const roleLabel = (role: string) => {
       >
         <div class="flex items-center justify-between">
           <div>
-            <p class="font-medium">{{ org.org_name }}</p>
-            <p class="text-dimmed text-xs mt-0.5">{{ org.org_id }}</p>
+            <p class="font-medium">
+              {{ org.org_name }}
+            </p>
+            <p class="text-dimmed text-xs mt-0.5">
+              {{ org.org_id }}
+            </p>
           </div>
-          <UBadge :color="roleBadgeColor(org.role)" variant="subtle" size="sm">
+          <UBadge :color="roleColor(org.role)" variant="subtle" size="sm">
             {{ roleLabel(org.role) }}
           </UBadge>
         </div>
@@ -58,24 +50,12 @@ const roleLabel = (role: string) => {
 
       <UCard v-if="auth.orgList.value.length === 0" class="text-center py-8">
         <p class="text-dimmed">No organizations available</p>
-        <UButton
-          label="Refresh"
-          variant="ghost"
-          size="sm"
-          class="mt-2"
-          @click="auth.loadOrgs()"
-        />
+        <UButton label="Refresh" variant="ghost" size="sm" class="mt-2" @click="auth.loadOrgs()" />
       </UCard>
     </div>
 
     <div class="text-center">
-      <UButton
-        label="Sign out"
-        variant="ghost"
-        color="neutral"
-        size="sm"
-        @click="auth.logout()"
-      />
+      <UButton label="Sign out" variant="ghost" color="neutral" size="sm" @click="auth.logout()" />
     </div>
   </div>
 </template>

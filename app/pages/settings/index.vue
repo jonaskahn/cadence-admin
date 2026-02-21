@@ -66,7 +66,11 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
     passwordState.new_password = ''
     toast.add({ title: 'Password updated', icon: 'i-lucide-check', color: 'success' })
   } catch {
-    toast.add({ title: 'Failed to update password', description: 'Check your current password', color: 'error' })
+    toast.add({
+      title: 'Failed to update password',
+      description: 'Check your current password',
+      color: 'error'
+    })
   } finally {
     changingPassword.value = false
   }
@@ -80,7 +84,9 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
       <dl class="grid grid-cols-2 gap-4">
         <div>
           <dt class="text-dimmed text-sm">Organization ID</dt>
-          <dd class="font-mono text-sm mt-1">{{ orgId }}</dd>
+          <dd class="font-mono text-sm mt-1">
+            {{ orgId }}
+          </dd>
         </div>
         <div>
           <dt class="text-dimmed text-sm">Your Role</dt>
@@ -94,7 +100,11 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
     </UPageCard>
 
     <!-- Tenant Settings -->
-    <UPageCard title="Organization Settings" description="Key-value settings for this organization." variant="subtle">
+    <UPageCard
+      title="Organization Settings"
+      description="Override global defaults for this organization. Instance configs take the highest priority in the 3-tier cascade."
+      variant="subtle"
+    >
       <div class="flex flex-col gap-3">
         <div
           v-for="setting in settings"
@@ -102,13 +112,21 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
           class="flex items-center justify-between py-2 border-b border-default last:border-0"
         >
           <div>
-            <p class="font-medium text-sm">{{ setting.key }}</p>
-            <p class="text-dimmed text-xs">{{ setting.value_type }}</p>
+            <p class="font-medium text-sm">
+              {{ setting.key }}
+            </p>
+            <p class="text-dimmed text-xs">
+              {{ setting.value_type }}
+            </p>
           </div>
-          <p class="text-sm">{{ String(setting.value) }}</p>
+          <p class="text-sm">
+            {{ String(setting.value) }}
+          </p>
         </div>
 
-        <p v-if="!settings?.length" class="text-dimmed text-sm text-center py-2">No settings configured.</p>
+        <p v-if="!settings?.length" class="text-dimmed text-sm text-center py-2">
+          No settings configured.
+        </p>
 
         <USeparator class="my-2" />
 
@@ -119,19 +137,19 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
           <UFormField label="Value" class="flex-1">
             <UInput v-model="newValue" placeholder="value" class="w-full" />
           </UFormField>
-          <UButton
-            label="Set"
-            :loading="savingSetting"
-            :disabled="!newKey"
-            @click="addSetting"
-          />
+          <UButton label="Set" :loading="savingSetting" :disabled="!newKey" @click="addSetting" />
         </div>
       </div>
     </UPageCard>
 
     <!-- Change Password -->
     <UPageCard title="Change Password" description="Update your login password." variant="subtle">
-      <UForm :schema="passwordSchema" :state="passwordState" class="flex flex-col gap-4" @submit="onPasswordSubmit">
+      <UForm
+        :schema="passwordSchema"
+        :state="passwordState"
+        class="flex flex-col gap-4"
+        @submit="onPasswordSubmit"
+      >
         <UFormField label="Current Password" name="current_password">
           <UInput v-model="passwordState.current_password" type="password" class="w-full" />
         </UFormField>
