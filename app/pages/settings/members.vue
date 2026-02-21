@@ -24,6 +24,11 @@ async function toggleAdmin(member: UserMembershipResponse) {
   }
 }
 
+function handleAddClose() {
+  showAdd.value = false
+  refresh()
+}
+
 async function removeMember(userId: string) {
   if (!confirm('Remove this member from the organization?')) return
   try {
@@ -101,13 +106,7 @@ const columns = [
 
   <UModal v-model:open="showAdd">
     <template #content>
-      <AddMemberModal
-        :org-id="orgId"
-        @close="
-          showAdd = false
-          refresh()
-        "
-      />
+      <AddMemberModal :org-id="orgId" @close="handleAddClose" />
     </template>
   </UModal>
 </template>

@@ -12,6 +12,11 @@ const { data: configs, refresh } = await useFetch<LLMConfigResponse[]>(
   { watch: [orgId] }
 )
 
+function handleAddClose() {
+  showAdd.value = false
+  refresh()
+}
+
 async function deleteConfig(name: string) {
   if (!confirm(`Delete config "${name}"?`)) return
   try {
@@ -96,13 +101,7 @@ const columns = [
 
   <UModal v-model:open="showAdd">
     <template #content>
-      <LLMConfigModal
-        :org-id="orgId"
-        @close="
-          showAdd = false
-          refresh()
-        "
-      />
+      <LLMConfigModal :org-id="orgId" @close="handleAddClose" />
     </template>
   </UModal>
 </template>

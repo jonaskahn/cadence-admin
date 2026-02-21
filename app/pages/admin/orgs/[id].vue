@@ -16,6 +16,11 @@ const { data: members, refresh } = await useFetch<UserMembershipResponse[]>(
   `/api/orgs/${orgId}/users`
 )
 
+function handleAddClose() {
+  showAdd.value = false
+  refresh()
+}
+
 async function removeMember(userId: string) {
   if (!confirm('Remove member?')) return
   try {
@@ -107,13 +112,7 @@ const columns = [
 
   <UModal v-model:open="showAdd">
     <template #content>
-      <AddMemberModal
-        :org-id="orgId"
-        @close="
-          showAdd = false
-          refresh()
-        "
-      />
+      <AddMemberModal :org-id="orgId" @close="handleAddClose" />
     </template>
   </UModal>
 </template>

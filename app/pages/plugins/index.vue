@@ -11,6 +11,11 @@ const { data: plugins, refresh } = await useFetch<PluginMetadataResponse[]>(
   { watch: [orgId] }
 )
 
+function handleUploadClose() {
+  showUpload.value = false
+  refresh()
+}
+
 async function deletePlugin(id: number) {
   if (!confirm('Delete this plugin?')) return
   try {
@@ -94,13 +99,7 @@ const columns = [
 
   <UModal v-model:open="showUpload">
     <template #content>
-      <PluginUploadModal
-        :org-id="orgId"
-        @close="
-          showUpload = false
-          refresh()
-        "
-      />
+      <PluginUploadModal :org-id="orgId" @close="handleUploadClose" />
     </template>
   </UModal>
 </template>

@@ -3,8 +3,14 @@ import type { SystemPluginResponse } from '~/types'
 
 const toast = useToast()
 const showUpload = ref(false)
+const orgId = computed(() => auth.currentOrgId.value || '')
 
 const { data: plugins, refresh } = await useFetch<SystemPluginResponse[]>('/api/admin/plugins')
+
+function handleUploadClose() {
+  showUpload.value = false
+  refresh()
+}
 
 async function deletePlugin(id: number) {
   if (!confirm('Delete this system plugin?')) return
@@ -70,14 +76,7 @@ const columns = [
 
   <UModal v-model:open="showUpload">
     <template #content>
-      <PluginUploadModal
-        org-id=""
-        :is-admin="true"
-        @close="
-          showUpload = false
-          refresh()
-        "
-      />
+      <PluginUploadModal :org-id="orgId" :is-admin="true" @close="handleUploadClose" />
     </template>
   </UModal>
 </template>
