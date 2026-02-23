@@ -1,0 +1,17 @@
+# Build output
+.nuxt/
+.output/
+dist/
+node_modules/
+
+# Generated
+*.min.js
+*.min.css
+pnpm-lock.yaml
+
+# Env
+.env
+.env.*
+
+# Logs
+*.log
