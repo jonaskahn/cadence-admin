@@ -124,11 +124,15 @@ export function useChat() {
     currentAgentStep.value = null
 
     try {
-      const response = await fetch(`/api/orgs/${orgId.value}/chat/completion`, {
+      const response = await fetch('/api/chat/completion', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'text/event-stream',
+          'X-ORG-ID': orgId.value,
+          'X-INSTANCE-ID': selectedInstanceId.value ?? ''
+        },
         body: JSON.stringify({
-          instance_id: selectedInstanceId.value,
           message,
           conversation_id: conversationId.value,
           stream: enableStream.value

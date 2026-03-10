@@ -248,7 +248,7 @@ const isDisabled = computed(() => selectedVersion.value && 'enabled' in selected
             <p class="font-medium text-dimmed mb-1">{{ t('pluginDetail.details') }}</p>
             <p>
               {{ selectedVersion.agent_type }}
-              <span v-if="selectedVersion.stateless">· {{ t('plugins.stateless') }}</span>
+              <span v-if="selectedVersion.stateless"> - stateless</span>
             </p>
           </div>
 

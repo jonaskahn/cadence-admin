@@ -19,6 +19,8 @@ function buildBackendUrl(baseUrl: string, path: string, query: Record<string, un
   return url
 }
 
+const FORWARD_HEADERS = ['X-ORG-ID', 'X-INSTANCE-ID', 'X-CENTRAL-ID'] as const
+
 function buildForwardHeaders(event: H3Event, token: string | undefined): Record<string, string> {
   const headers: Record<string, string> = {
     'Content-Type': event.headers.get('content-type') ?? CONTENT_TYPE_JSON
@@ -29,6 +31,12 @@ function buildForwardHeaders(event: H3Event, token: string | undefined): Record<
   const accept = event.headers.get('accept')
   if (accept) {
     headers.Accept = accept
+  }
+  for (const name of FORWARD_HEADERS) {
+    const value = event.headers.get(name)
+    if (value) {
+      headers[name] = value
+    }
   }
   return headers
 }

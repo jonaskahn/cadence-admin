@@ -64,6 +64,7 @@ export interface TierQuota {
   max_messages_per_month: number
   max_messages_per_day: number
   rate_limit_rpm: number
+  rate_chat_limit_rpm: number
   rate_limit_burst: number
   max_llm_configs: number
   description: string

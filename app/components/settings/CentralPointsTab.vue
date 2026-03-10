@@ -1,22 +1,27 @@
 <script lang="ts" setup>
 import type { CentralPointResponse, OrchestratorResponse } from '~/types'
-import { formatDate } from '~/utils'
+import { CENTRAL_POINTS_TIERS, formatDate } from '~/utils'
 
 const props = defineProps<{ orgId: string }>()
 
 const emit = defineEmits<{ openModal: [] }>()
 
-const canUseCentralPoints = inject<ComputedRef<boolean>>(
-  'canUseCentralPoints',
-  computed(() => false)
+const injected = inject<ComputedRef<boolean>>('canUseCentralPoints', null)
+const { centerPoints, loading, fetchAll, remove } = useCentralPoints(toRef(props, 'orgId'))
+defineExpose({ fetchAll })
+
+const { data: org } = await useFetch<{ tier?: string }>(() => `/api/orgs/${props.orgId}`, { watch: [() => props.orgId] })
+const canUseCentralPoints = computed(
+  () =>
+    injected?.value ??
+    (props.orgId &&
+      org.value?.tier &&
+      (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase()))
 )
 
 const router = useRouter()
 const localePath = useLocalePath()
 const { t } = useI18n()
-const { centerPoints, loading, fetchAll, remove } = useCentralPoints(toRef(props, 'orgId'))
-
-defineExpose({ fetchAll })
 
 const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/api/orgs/${props.orgId}/orchestrators`, { watch: [() => props.orgId] })
 
@@ -57,7 +62,7 @@ const columns = computed(() => [
               {{ t('centralPoints.description') }}
             </p>
           </div>
-          <UButton v-if="canUseCentralPoints?.value" icon="i-lucide-plus" :label="t('centralPoints.addCenterPoint')" @click="emit('openModal')" />
+          <UButton v-if="canUseCentralPoints" icon="i-lucide-plus" :label="t('centralPoints.addCenterPoint')" @click="emit('openModal')" />
         </div>
       </template>
       <div v-if="loading" class="flex flex-col gap-2 p-4">

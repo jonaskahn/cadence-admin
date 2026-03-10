@@ -2,6 +2,9 @@ export const LLM_PROVIDERS = ['openai', 'anthropic', 'google', 'groq', 'azure', 
 
 export const SUBSCRIPTION_TIERS = ['free', 'plus', 'pro', 'premium', 'business', 'enterprise'] as const
 
+/** Tiers that allow central points (pro and above). Free, plus, and unknown tiers are excluded. */
+export const CENTRAL_POINTS_TIERS = ['pro', 'premium', 'business', 'enterprise'] as const
+
 export function subscriptionTierColor(tier: string): 'success' | 'primary' | 'warning' | 'error' | 'neutral' {
   if (tier === 'free') return 'neutral'
   if (tier === 'plus') return 'success'

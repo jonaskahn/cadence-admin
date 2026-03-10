@@ -69,6 +69,11 @@ const orgAdminLinks = computed<NavigationMenuItem[]>(() => {
           onSelect: closeMenu
         },
         {
+          label: t('nav.orchestrators'),
+          to: localePath('/settings/orchestrators'),
+          onSelect: closeMenu
+        },
+        {
           label: t('nav.centralPoints'),
           to: localePath('/settings/central-points'),
           onSelect: closeMenu

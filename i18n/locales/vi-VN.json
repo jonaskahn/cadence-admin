@@ -256,8 +256,7 @@
     "org": "Tổ chức",
     "enabled": "Đã bật",
     "disabled": "Đã tắt",
-    "noPluginsMatch": "Không có plugin nào khớp với bộ lọc đã chọn.",
-    "stateless": "không trạng thái"
+    "noPluginsMatch": "Không có plugin nào khớp với bộ lọc đã chọn."
   },
   "orchestrators": {
     "title": "Orchestrator",
@@ -347,6 +346,7 @@
     "messagesPerMonth": "Tin nhắn / Tháng",
     "messagesPerDay": "Tin nhắn / Ngày",
     "rateLimitRpm": "Rate Limit (RPM)",
+    "rateChatLimitRpm": "Chat Rate Limit (RPM)",
     "rateLimitBurst": "Rate Limit Burst",
     "maxLlmConfigs": "Tối đa cấu hình LLM",
     "removeMemberConfirm": "Xóa thành viên?",
@@ -406,6 +406,7 @@
     "maxMessagesDayHint": "-1 = không giới hạn",
     "maxLlmConfigsHint": "-1 = không giới hạn",
     "rateLimitRpmHint": "Yêu cầu mỗi phút",
+    "rateChatLimitRpmHint": "Yêu cầu mỗi phút cho endpoint chat completion",
     "rateLimitBurstHint": "Cho phép burst",
     "settings": "Cài đặt",
     "llmProviders": "Nhà cung cấp LLM",

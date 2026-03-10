@@ -117,6 +117,7 @@ const QUOTA_FIELDS = computed(() => [
   { key: 'max_messages_per_day' as const, label: t('admin.messagesPerDay'), hint: t('admin.maxMessagesDayHint') },
   { key: 'max_llm_configs' as const, label: t('admin.maxLlmConfigs'), hint: t('admin.maxLlmConfigsHint') },
   { key: 'rate_limit_rpm' as const, label: t('admin.rateLimitRpm'), hint: t('admin.rateLimitRpmHint') },
+  { key: 'rate_chat_limit_rpm' as const, label: t('admin.rateChatLimitRpm'), hint: t('admin.rateChatLimitRpmHint') },
   { key: 'rate_limit_burst' as const, label: t('admin.rateLimitBurst'), hint: t('admin.rateLimitBurstHint') }
 ])
 

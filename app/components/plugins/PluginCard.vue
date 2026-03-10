@@ -75,7 +75,7 @@ function onCardClick() {
 
       <div class="flex items-center gap-2 mt-auto pt-1 text-xs text-dimmed">
         <span>{{ plugin.agent_type }}</span>
-        <span v-if="plugin.stateless">· {{ t('plugins.stateless') }}</span>
+        <span v-if="plugin.stateless"> - stateless</span>
       </div>
     </div>
   </UCard>

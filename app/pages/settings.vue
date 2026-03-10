@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui'
+import { CENTRAL_POINTS_TIERS } from '~/utils'
 
 const auth = useAuth()
 const { t } = useI18n()
@@ -10,7 +11,9 @@ const { data: org } = await useFetch<{ tier: string }>(() => `/api/orgs/${orgId.
   watch: [orgId]
 })
 
-const canUseCentralPoints = computed(() => orgId.value && org.value?.tier && !['free', 'plus'].includes(org.value.tier.toLowerCase()))
+const canUseCentralPoints = computed(() =>
+  orgId.value && org.value?.tier && (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase())
+)
 
 provide('canUseCentralPoints', canUseCentralPoints)
 

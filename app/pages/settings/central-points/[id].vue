@@ -110,12 +110,10 @@ const langTabs = [
 const curlCode = computed(() => {
   const authLine = isPrivate.value ? `\n  -H 'Authorization: Bearer YOUR_TOKEN' \\` : ''
   return `curl -X POST '${baseUrl.value}/api/chat/completion' \\
-  -H 'Content-Type: application/json' \\${authLine}
-  -d '{
-    "cid": "${centerPointId}",
-    "message": "Hello!",
-    "stream": false
-  }'`
+  -H 'Content-Type: application/json' \\
+  -H 'X-ORG-ID: ${orgId.value}' \\
+  -H 'X-CENTRAL-ID: ${centerPointId}' \\${authLine}
+  -d '{"message": "Hello!", "conversation_id": null, "stream": false}'`
 })
 
 const pythonCode = computed(() => {
@@ -125,11 +123,13 @@ const pythonCode = computed(() => {
 response = requests.post(
     '${baseUrl.value}/api/chat/completion',
     headers={
-        'Content-Type': 'application/json',${authLine}
+        'Content-Type': 'application/json',
+        'X-ORG-ID': '${orgId.value}',
+        'X-CENTRAL-ID': '${centerPointId}',${authLine}
     },
     json={
-        'cid': '${centerPointId}',
         'message': 'Hello!',
+        'conversation_id': None,
         'stream': False,
     }
 )
@@ -143,11 +143,13 @@ const jsCode = computed(() => {
   return `const response = await fetch('${baseUrl.value}/api/chat/completion', {
   method: 'POST',
   headers: {
-    'Content-Type': 'application/json',${authHeader}
+    'Content-Type': 'application/json',
+    'X-ORG-ID': '${orgId.value}',
+    'X-CENTRAL-ID': '${centerPointId}',${authHeader}
   },
   body: JSON.stringify({
-    cid: '${centerPointId}',
     message: 'Hello!',
+    conversation_id: null,
     stream: false,
   }),
 });
@@ -168,11 +170,13 @@ const tsCode = computed(() => {
 const response = await fetch('${baseUrl.value}/api/chat/completion', {
   method: 'POST',
   headers: {
-    'Content-Type': 'application/json',${authHeader}
+    'Content-Type': 'application/json',
+    'X-ORG-ID': '${orgId.value}',
+    'X-CENTRAL-ID': '${centerPointId}',${authHeader}
   },
   body: JSON.stringify({
-    cid: '${centerPointId}',
     message: 'Hello!',
+    conversation_id: null,
     stream: false,
   }),
 });
@@ -194,8 +198,8 @@ import (
 
 func main() {
 \tpayload := map[string]interface{}{
-\t\t"cid": "${centerPointId}",
 \t\t"message":         "Hello!",
+\t\t"conversation_id": nil,
 \t\t"stream":          false,
 \t}
 \tbody, _ := json.Marshal(payload)
@@ -205,7 +209,9 @@ func main() {
 \t\t"${baseUrl.value}/api/chat/completion",
 \t\tbytes.NewReader(body),
 \t)
-\treq.Header.Set("Content-Type", "application/json")${authLine}
+\treq.Header.Set("Content-Type", "application/json")
+\treq.Header.Set("X-ORG-ID", "${orgId.value}")
+\treq.Header.Set("X-CENTRAL-ID", "${centerPointId}")${authLine}
 
 \tclient := &http.Client{}
 \tresp, _ := client.Do(req)
