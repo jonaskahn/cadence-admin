@@ -48,8 +48,8 @@ const schema = computed(() =>
   z.object({
     name: z
       .string()
-      .min(10, { message: t('orchestrators.create.nameMinLength') })
-      .max(200),
+      .min(5, { message: t('orchestrators.create.nameMinLength') })
+      .max(55),
     framework_type: z.string().min(1),
     mode: z.string().min(1),
     tier: z.enum(['hot', 'warm', 'cold'])

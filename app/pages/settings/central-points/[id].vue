@@ -24,7 +24,7 @@ const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/a
 
 const schema = computed(() =>
   z.object({
-    name: z.string().min(1, t('common.nameRequired')).max(255),
+    name: z.string().min(5, t('common.nameRequired')).max(50),
     description: z.string().optional().nullable(),
     orchestrator_id: z.string().min(1, t('centralPoints.orchestratorRequired')),
     visibility: z.enum(['public', 'private'])
@@ -225,7 +225,18 @@ func main() {
 
 async function copyToClipboard(text: string) {
   try {
-    await navigator.clipboard.writeText(text)
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text)
+    } else {
+      const textArea = document.createElement('textarea')
+      textArea.value = text
+      textArea.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0'
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+    }
     toast.add({ title: t('centralPoints.copiedToClipboard'), icon: 'i-lucide-check', color: 'success' })
   } catch {
     toast.add({ title: t('centralPoints.failedCopy'), color: 'error' })
@@ -238,12 +249,8 @@ async function copyToClipboard(text: string) {
     <!-- Back navigation -->
     <div>
       <UButton
-        color="neutral"
-        icon="i-lucide-arrow-left"
-        :label="t('centralPoints.backToCenterPoints')"
-        variant="ghost"
-        @click="router.push(localePath('/settings/central-points'))"
-      />
+color="neutral" icon="i-lucide-arrow-left" :label="t('centralPoints.backToCenterPoints')" variant="ghost"
+        @click="router.push(localePath('/settings/central-points'))" />
     </div>
 
     <!-- Not found -->
@@ -272,20 +279,19 @@ async function copyToClipboard(text: string) {
             <UInput v-model="state.name" class="w-full" :placeholder="t('centralPoints.namePlaceholder')" />
           </UFormField>
           <UFormField :label="t('settings.description')" name="description">
-            <UTextarea v-model="state.description" class="w-full" :placeholder="t('centralPoints.descriptionPlaceholder')" />
+            <UTextarea
+v-model="state.description" class="w-full"
+              :placeholder="t('centralPoints.descriptionPlaceholder')" />
           </UFormField>
           <UFormField :label="t('centralPoints.orchestrator')" name="orchestrator_id">
             <USelect
-              v-model="state.orchestrator_id"
-              :items="orchestratorOptions"
-              class="w-full"
-              label-key="label"
-              :placeholder="t('centralPoints.selectOrchestrator')"
-              value-key="value"
-            />
+v-model="state.orchestrator_id" :items="orchestratorOptions" class="w-full" label-key="label"
+              :placeholder="t('centralPoints.selectOrchestrator')" value-key="value" />
           </UFormField>
           <UFormField :label="t('centralPoints.visibility')" name="visibility">
-            <USelect v-model="state.visibility" :items="visibilityItems" class="w-full" label-key="label" value-key="value" />
+            <USelect
+v-model="state.visibility" :items="visibilityItems" class="w-full" label-key="label"
+              value-key="value" />
           </UFormField>
           <div class="flex justify-end">
             <UButton :loading="saving" :label="t('centralPoints.saveChanges')" type="submit" />
@@ -308,29 +314,21 @@ async function copyToClipboard(text: string) {
             <p class="mb-1.5 text-sm font-medium">{{ t('centralPoints.centerPointId') }}</p>
             <div class="flex items-center gap-2">
               <code class="flex-1 break-all rounded-md bg-elevated px-3 py-2 font-mono text-sm">
-                {{ centerPoint.id }}
-              </code>
-              <UButton color="neutral" icon="i-lucide-copy" size="sm" variant="outline" @click="copyToClipboard(centerPoint?.id ?? '')" />
+          {{ centerPoint.id }}
+        </code>
+              <UButton
+color="neutral" icon="i-lucide-copy" size="sm" variant="outline"
+                @click="copyToClipboard(centerPoint?.id ?? '')" />
             </div>
           </div>
 
           <!-- Auth notice -->
           <UAlert
-            v-if="isPrivate"
-            color="warning"
-            :description="t('centralPoints.privateAuthDescription')"
-            icon="i-lucide-lock"
-            :title="t('centralPoints.privateAuthRequired')"
-            variant="subtle"
-          />
+v-if="isPrivate" color="warning" :description="t('centralPoints.privateAuthDescription')"
+            icon="i-lucide-lock" :title="t('centralPoints.privateAuthRequired')" variant="subtle" />
           <UAlert
-            v-else
-            color="info"
-            :description="t('centralPoints.publicNoAuthDescription')"
-            icon="i-lucide-globe"
-            :title="t('centralPoints.publicNoAuth')"
-            variant="subtle"
-          />
+v-else color="info" :description="t('centralPoints.publicNoAuthDescription')" icon="i-lucide-globe"
+            :title="t('centralPoints.publicNoAuth')" variant="subtle" />
 
           <!-- Endpoint -->
           <div>
@@ -348,45 +346,50 @@ async function copyToClipboard(text: string) {
               <template #curl>
                 <div class="relative mt-3">
                   <pre
-                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
-                  ><code>{{ curlCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyToClipboard(curlCode)" />
+                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"><code>{{ curlCode }}</code></pre>
+                  <UButton
+class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost"
+                    @click="copyToClipboard(curlCode)" />
                 </div>
               </template>
 
               <template #python>
                 <div class="relative mt-3">
                   <pre
-                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
-                  ><code>{{ pythonCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyToClipboard(pythonCode)" />
+                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"><code>{{ pythonCode }}</code></pre>
+                  <UButton
+class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost"
+                    @click="copyToClipboard(pythonCode)" />
                 </div>
               </template>
 
               <template #js>
                 <div class="relative mt-3">
                   <pre
-                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
-                  ><code>{{ jsCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyToClipboard(jsCode)" />
+                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"><code>{{ jsCode }}</code></pre>
+                  <UButton
+class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost"
+                    @click="copyToClipboard(jsCode)" />
                 </div>
               </template>
 
               <template #ts>
                 <div class="relative mt-3">
                   <pre
-                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
-                  ><code>{{ tsCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyToClipboard(tsCode)" />
+                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"><code>{{ tsCode }}</code></pre>
+                  <UButton
+class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost"
+                    @click="copyToClipboard(tsCode)" />
                 </div>
               </template>
 
               <template #go>
                 <div class="relative mt-3">
                   <pre
-                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
-                  ><code>{{ goCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyToClipboard(goCode)" />
+                    class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"><code>{{ goCode }}</code></pre>
+                  <UButton
+class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost"
+                    @click="copyToClipboard(goCode)" />
                 </div>
               </template>
             </UTabs>
