@@ -30,9 +30,9 @@ const tabDropdownItems = computed<DropdownMenuItem[][]>(() => [
   ]
 ])
 
-function refresh() {
-  if (activeTab.value === 'system') refreshSystem()
-  else refreshOrg()
+async function refresh() {
+  if (activeTab.value === 'system') await refreshSystem()
+  else await refreshOrg()
 }
 
 function handleUploadClose() {
@@ -79,6 +79,7 @@ function onDrawerClosed() {
               class="w-56"
               :placeholder="t('common.selectOrg')"
             />
+            <UButton icon="i-lucide-refresh-cw" color="neutral" variant="ghost" :aria-label="t('common.refresh')" @click="refresh()" />
             <UButton v-if="activeTab === 'system'" icon="i-lucide-upload" :label="t('admin.uploadPlugin')" @click="showUpload = true" />
           </div>
         </template>
