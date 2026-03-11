@@ -21,14 +21,19 @@ async function withMemberAction(fn: () => Promise<void>, errorTitle: string): Pr
 }
 
 async function toggleAdmin(member: UserMembershipResponse) {
-  await withMemberAction(async () => {
-    await $fetch(`/api/orgs/${orgId.value}/users/${member.user_id}/membership`, {
-      method: 'PATCH',
-      body: {is_admin: !member.is_admin}
-    })
-    await refresh()
-    toast.add({title: t('settings.roleUpdated'), icon: 'i-lucide-check'})
-  }, t('settings.failedUpdateRole'))
+  toggling.value = member.user_id
+  try {
+    await withMemberAction(async () => {
+      await $fetch(`/api/orgs/${orgId.value}/users/${member.user_id}/membership`, {
+        method: 'PATCH',
+        body: {is_admin: !member.is_admin}
+      })
+      await refresh()
+      toast.add({title: t('settings.roleUpdated'), icon: 'i-lucide-check'})
+    }, t('settings.failedUpdateRole'))
+  } finally {
+    toggling.value = null
+  }
 }
 
 function handleAddClose() {
@@ -36,13 +41,20 @@ function handleAddClose() {
   refresh()
 }
 
+const removing = ref<string | null>(null)
+const toggling = ref<string | null>(null)
+
 async function removeMember(userId: string) {
-  if (!confirm(t('settings.removeMemberConfirm'))) return
-  await withMemberAction(async () => {
-    await $fetch(`/api/orgs/${orgId.value}/users/${userId}`, {method: 'DELETE'})
-    await refresh()
-    toast.add({title: t('settings.memberRemoved'), icon: 'i-lucide-check'})
-  }, t('settings.failedRemoveMember'))
+  removing.value = userId
+  try {
+    await withMemberAction(async () => {
+      await $fetch(`/api/orgs/${orgId.value}/users/${userId}`, {method: 'DELETE'})
+      await refresh()
+      toast.add({title: t('settings.memberRemoved'), icon: 'i-lucide-check'})
+    }, t('settings.failedRemoveMember'))
+  } finally {
+    removing.value = null
+  }
 }
 
 const columns = computed(() => [
@@ -85,15 +97,45 @@ const columns = computed(() => [
 
           <template #actions-cell="{ row }">
             <div class="flex items-center gap-1">
-              <UButton
-                :label="row.original.is_admin ? t('settings.demote') : t('settings.promote')"
-                size="xs"
-                variant="ghost"
-                @click="toggleAdmin(row.original)"
-              />
-              <UButton
-color="error" icon="i-lucide-x" size="xs" variant="ghost"
-                       @click="removeMember(row.original.user_id)"/>
+              <UPopover>
+                <UButton
+                  :label="row.original.is_admin ? t('settings.demote') : t('settings.promote')"
+                  size="xs"
+                  variant="ghost"
+                />
+                <template #content="{ close }">
+                  <div class="p-4 min-w-48">
+                    <p class="text-sm text-dimmed mb-3">
+                      {{ row.original.is_admin ? t('settings.demoteConfirm') : t('settings.promoteConfirm') }}
+                    </p>
+                    <div class="flex justify-end gap-2">
+                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                      <UButton
+                        :label="row.original.is_admin ? t('settings.demote') : t('settings.promote')"
+                        :loading="toggling === row.original.user_id"
+                        @click="async () => { await toggleAdmin(row.original); close() }"
+                      />
+                    </div>
+                  </div>
+                </template>
+              </UPopover>
+              <UPopover>
+                <UButton color="error" icon="i-lucide-x" size="xs" variant="ghost" />
+                <template #content="{ close }">
+                  <div class="p-4 min-w-48">
+                    <p class="text-sm text-dimmed mb-3">{{ t('settings.removeMemberConfirm') }}</p>
+                    <div class="flex justify-end gap-2">
+                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                      <UButton
+                        color="error"
+                        :label="t('common.remove')"
+                        :loading="removing === row.original.user_id"
+                        @click="async () => { await removeMember(row.original.user_id); close() }"
+                      />
+                    </div>
+                  </div>
+                </template>
+              </UPopover>
             </div>
           </template>
         </UTable>

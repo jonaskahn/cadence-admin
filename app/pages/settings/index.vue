@@ -39,6 +39,7 @@ const profileState = reactive<Partial<ProfileSchema>>({
 })
 
 const savingProfile = ref(false)
+const settingsProfileFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
   savingProfile.value = true
@@ -102,7 +103,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
 
     <!-- Editable profile (org_admin only) -->
     <UPageCard v-if="isOrgAdmin" :description="t('settings.orgProfileDescription')" :title="t('settings.organizationProfile')" variant="subtle">
-      <UForm :schema="profileSchema" :state="profileState" class="flex flex-col gap-4" @submit="onProfileSubmit">
+      <UForm ref="settingsProfileFormRef" :schema="profileSchema" :state="profileState" class="flex flex-col gap-4" @submit="onProfileSubmit">
         <div class="grid grid-cols-2 gap-4">
           <UFormField :label="t('settings.displayName')" name="display_name">
             <UInput v-model="profileState.display_name" class="w-full" :placeholder="t('settings.acmePlaceholder')" />
@@ -126,7 +127,23 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
             <UTextarea v-model="profileState.description" class="w-full" :placeholder="t('settings.briefDescription')" />
           </UFormField>
         </div>
-        <UButton :loading="savingProfile" class="w-fit" :label="t('settings.saveProfile')" type="submit" />
+        <UPopover>
+          <UButton type="button" class="w-fit" :label="t('settings.saveProfile')" />
+          <template #content="{ close }">
+            <div class="p-4 min-w-48">
+              <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+              <div class="flex justify-end gap-2">
+                <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                <UButton
+                  :loading="savingProfile"
+                  class="w-fit"
+                  :label="t('settings.saveProfile')"
+                  @click="settingsProfileFormRef?.$el?.requestSubmit?.(); close()"
+                />
+              </div>
+            </div>
+          </template>
+        </UPopover>
       </UForm>
     </UPageCard>
   </div>

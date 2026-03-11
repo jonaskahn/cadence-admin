@@ -19,17 +19,49 @@ const columns = computed(() => [
 
 onMounted(orchestrators.fetchAll)
 
+const deactivating = ref<string | null>(null)
+const unloading = ref<string | null>(null)
+const loadingId = ref<string | null>(null)
+const activating = ref<string | null>(null)
+
 async function onDeactivate(row: OrchestratorResponse) {
-  if (!confirm(t('orchestrators.deactivateConfirm', { name: row.name }))) return
-  await orchestrators.deactivate(row.instance_id)
+  deactivating.value = row.instance_id
+  try {
+    await orchestrators.deactivate(row.instance_id)
+  } finally {
+    deactivating.value = null
+  }
 }
 
 async function onActivate(row: OrchestratorResponse) {
-  await orchestrators.activate(row.instance_id)
+  activating.value = row.instance_id
+  try {
+    await orchestrators.activate(row.instance_id)
+  } finally {
+    activating.value = null
+  }
+}
+
+async function onLoad(row: OrchestratorResponse) {
+  loadingId.value = row.instance_id
+  try {
+    await orchestrators.load(row.instance_id)
+  } finally {
+    loadingId.value = null
+  }
 }
 
 function onClone(row: OrchestratorResponse) {
   navigateTo(localePath(`/orchestrators/create?clone=${row.instance_id}`))
+}
+
+async function onUnload(row: OrchestratorResponse) {
+  unloading.value = row.instance_id
+  try {
+    await orchestrators.unload(row.instance_id)
+  } finally {
+    unloading.value = null
+  }
 }
 </script>
 
@@ -49,7 +81,12 @@ function onClone(row: OrchestratorResponse) {
     <template #body>
       <div class="p-6 min-w-0 w-full">
         <UCard>
-          <UTable :columns="columns" :data="orchestrators.orchestrators.value" :loading="orchestrators.loading.value">
+          <UTable
+            :columns="columns"
+            :data="orchestrators.orchestrators.value"
+            :loading="orchestrators.loading.value"
+            :meta="{ class: { tr: (row) => (row?.original?.is_deleted ? 'opacity-60' : '') } }"
+          >
             <template #tier-cell="{ row }">
               <UBadge :color="tierColor(row.original.tier)" size="sm" variant="subtle">
                 {{ row?.original?.tier?.toUpperCase() }}
@@ -57,9 +94,14 @@ function onClone(row: OrchestratorResponse) {
             </template>
 
             <template #status-cell="{ row }">
-              <UBadge :color="statusColor(row.original.status)" size="sm" variant="subtle">
-                {{ row.original.status }}
-              </UBadge>
+              <div class="flex items-center gap-1.5">
+                <UBadge :color="statusColor(row.original.status)" size="sm" variant="subtle">
+                  {{ row.original.status }}
+                </UBadge>
+                <UBadge v-if="row.original.is_deleted" color="neutral" size="sm" variant="subtle">
+                  {{ t('common.deleted') }}
+                </UBadge>
+              </div>
             </template>
 
             <template #ready-cell="{ row }">
@@ -73,26 +115,85 @@ function onClone(row: OrchestratorResponse) {
                 <template v-if="auth.isOrgAdmin.value">
                   <UButton icon="i-lucide-copy" size="xs" :title="t('orchestrators.clone')" variant="ghost" @click="onClone(row.original)" />
                   <template v-if="row.original.status === 'active'">
-                    <UButton icon="i-lucide-play" size="xs" variant="ghost" @click="orchestrators.load(row.original.instance_id)" />
-                    <UButton icon="i-lucide-square" size="xs" variant="ghost" @click="orchestrators.unload(row.original.instance_id)" />
-                    <UButton
-                      color="neutral"
-                      icon="i-lucide-route-off"
-                      size="xs"
-                      :title="t('orchestrators.deactivate')"
-                      variant="ghost"
-                      @click="onDeactivate(row.original)"
-                    />
+                    <UPopover>
+                      <UButton icon="i-lucide-play" size="xs" :title="t('orchestrators.load')" variant="ghost" />
+                      <template #content="{ close }">
+                        <div class="p-4 min-w-48">
+                          <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.loadConfirm', { name: row.original.name }) }}</p>
+                          <div class="flex justify-end gap-2">
+                            <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                            <UButton
+                              :label="t('orchestrators.load')"
+                              :loading="loadingId === row.original.instance_id"
+                              @click="async () => { await onLoad(row.original); close() }"
+                            />
+                          </div>
+                        </div>
+                      </template>
+                    </UPopover>
+                    <UPopover>
+                      <UButton icon="i-lucide-square" size="xs" :title="t('orchestrators.unload')" variant="ghost" />
+                      <template #content="{ close }">
+                        <div class="p-4 min-w-48">
+                          <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.unloadConfirm', { name: row.original.name }) }}</p>
+                          <div class="flex justify-end gap-2">
+                            <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                            <UButton
+                              :label="t('orchestrators.unload')"
+                              :loading="unloading === row.original.instance_id"
+                              @click="async () => { await onUnload(row.original); close() }"
+                            />
+                          </div>
+                        </div>
+                      </template>
+                    </UPopover>
+                    <UPopover>
+                      <UButton
+                        color="error"
+                        icon="i-lucide-route-off"
+                        size="xs"
+                        :title="t('orchestrators.deactivate')"
+                        variant="ghost"
+                      />
+                      <template #content="{ close }">
+                        <div class="p-4 min-w-48">
+                          <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: row.original.name }) }}</p>
+                          <div class="flex justify-end gap-2">
+                            <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                            <UButton
+                              color="primary"
+                              :label="t('orchestrators.deactivate')"
+                              :loading="deactivating === row.original.instance_id"
+                              @click="async () => { await onDeactivate(row.original); close() }"
+                            />
+                          </div>
+                        </div>
+                      </template>
+                    </UPopover>
                   </template>
-                  <UButton
-                    v-else
-                    color="success"
-                    icon="i-lucide-route"
-                    size="xs"
-                    :title="t('orchestrators.activate')"
-                    variant="ghost"
-                    @click="onActivate(row.original)"
-                  />
+                  <UPopover v-else>
+                    <UButton
+                      color="success"
+                      icon="i-lucide-route"
+                      size="xs"
+                      :title="t('orchestrators.activate')"
+                      variant="ghost"
+                    />
+                    <template #content="{ close }">
+                      <div class="p-4 min-w-48">
+                        <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.activateConfirm', { name: row.original.name }) }}</p>
+                        <div class="flex justify-end gap-2">
+                          <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                          <UButton
+                            color="success"
+                            :label="t('orchestrators.activate')"
+                            :loading="activating === row.original.instance_id"
+                            @click="async () => { await onActivate(row.original); close() }"
+                          />
+                        </div>
+                      </div>
+                    </template>
+                  </UPopover>
                 </template>
               </div>
             </template>

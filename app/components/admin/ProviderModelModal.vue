@@ -15,6 +15,7 @@ const emit = defineEmits<{
 const toast = useToast()
 const { t } = useI18n()
 const loading = ref(false)
+const providerModelFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 function providerLabel(provider: string): string {
   const key = `providers.${provider}`
@@ -94,7 +95,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>): Promise<void> {
       </p>
     </template>
 
-    <UForm :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
+    <UForm ref="providerModelFormRef" :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
       <UFormField :label="t('admin.provider')" name="provider" required>
         <div v-if="isEdit" class="text-sm py-1.5 text-muted">
           {{ providerLabel(state.provider) }}
@@ -116,7 +117,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>): Promise<void> {
 
       <div class="flex justify-end gap-2">
         <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="emit('close')" />
-        <UButton :label="isEdit ? t('llmConfig.saveChanges') : t('admin.addModel')" :loading="loading" type="submit" />
+        <UPopover>
+          <UButton type="button" :label="isEdit ? t('llmConfig.saveChanges') : t('admin.addModel')" />
+          <template #content="{ close }">
+            <div class="p-4 min-w-48">
+              <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+              <div class="flex justify-end gap-2">
+                <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                <UButton
+                  :loading="loading"
+                  :label="isEdit ? t('llmConfig.saveChanges') : t('admin.addModel')"
+                  @click="providerModelFormRef?.$el?.requestSubmit?.(); close()"
+                />
+              </div>
+            </div>
+          </template>
+        </UPopover>
       </div>
     </UForm>
   </UCard>

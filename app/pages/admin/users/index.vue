@@ -61,6 +61,7 @@ async function onCreate(event: FormSubmitEvent<CreateSchema>) {
 
 const editTarget = ref<UserMembershipResponse | null>(null)
 const editLoading = ref(false)
+const editUserFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 const editSchema = z.object({
   username: z.string().min(1, () => t('common.required')),
@@ -101,23 +102,20 @@ async function onEdit(event: FormSubmitEvent<EditSchema>) {
   }
 }
 
-const deleteTarget = ref<UserMembershipResponse | null>(null)
-const deleteLoading = ref(false)
+const deleting = ref<string | null>(null)
 
-async function onDelete() {
-  if (!deleteTarget.value) return
-  deleteLoading.value = true
+async function onDelete(user: UserMembershipResponse) {
+  deleting.value = user.user_id
   try {
     await withUserActionError(async () => {
-      await $fetch(`/api/admin/users/${deleteTarget.value!.user_id}`, { method: 'DELETE' })
+      await $fetch(`/api/admin/users/${user.user_id}`, { method: 'DELETE' })
       toast.add({ title: t('admin.userDeleted'), icon: 'i-lucide-check', color: 'success' })
-      deleteTarget.value = null
       await refresh()
     }, t('admin.failedDeleteUser'))
   } catch {
     /* withUserActionError handles toast */
   } finally {
-    deleteLoading.value = false
+    deleting.value = null
   }
 }
 
@@ -158,7 +156,23 @@ const columns = computed(() => [
             <template #actions-cell="{ row }">
               <div class="flex items-center gap-1">
                 <UButton icon="i-lucide-pencil" size="xs" variant="ghost" @click="openEdit(row.original)" />
-                <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="ghost" @click="deleteTarget = row.original" />
+                <UPopover>
+                  <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="ghost" />
+                  <template #content="{ close }">
+                    <div class="p-4 min-w-48">
+                      <p class="text-sm text-dimmed mb-3">{{ t('admin.deleteUserConfirm', { username: row.original.username }) }}</p>
+                      <div class="flex justify-end gap-2">
+                        <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                        <UButton
+                          color="error"
+                          :label="t('common.delete')"
+                          :loading="deleting === row.original.user_id"
+                          @click="async () => { await onDelete(row.original); close() }"
+                        />
+                      </div>
+                    </div>
+                  </template>
+                </UPopover>
               </div>
             </template>
           </UTable>
@@ -198,7 +212,7 @@ const columns = computed(() => [
         <template #header>
           <p class="font-semibold">{{ t('admin.editUser') }}</p>
         </template>
-        <UForm :schema="editSchema" :state="editState" class="flex flex-col gap-4" @submit="onEdit">
+        <UForm ref="editUserFormRef" :schema="editSchema" :state="editState" class="flex flex-col gap-4" @submit="onEdit">
           <UFormField :label="t('auth.username')" name="username" required>
             <UInput v-model="editState.username" class="w-full" />
           </UFormField>
@@ -210,27 +224,26 @@ const columns = computed(() => [
           </UFormField>
           <div class="flex justify-end gap-2">
             <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="editTarget = null" />
-            <UButton :loading="editLoading" :label="t('common.save')" type="submit" />
+            <UPopover>
+              <UButton :label="t('common.save')" />
+              <template #content="{ close }">
+                <div class="p-4 min-w-48">
+                  <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+                  <div class="flex justify-end gap-2">
+                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                    <UButton
+                      :loading="editLoading"
+                      :label="t('common.save')"
+                      @click="editUserFormRef?.$el?.requestSubmit?.(); close()"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UPopover>
           </div>
         </UForm>
       </UCard>
     </template>
   </UModal>
 
-  <UModal :open="!!deleteTarget" @update:open="deleteTarget = null">
-    <template #content>
-      <UCard class="w-full max-w-sm">
-        <template #header>
-          <p class="font-semibold">{{ t('admin.deleteUser') }}</p>
-        </template>
-        <p class="text-sm text-dimmed">
-          {{ t('admin.deleteUserConfirm', { username: deleteTarget?.username }) }}
-        </p>
-        <div class="flex justify-end gap-2 mt-4">
-          <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="deleteTarget = null" />
-          <UButton :loading="deleteLoading" color="error" :label="t('common.delete')" @click="onDelete" />
-        </div>
-      </UCard>
-    </template>
-  </UModal>
 </template>

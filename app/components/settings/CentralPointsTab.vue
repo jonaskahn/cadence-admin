@@ -27,12 +27,16 @@ const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/a
 
 onMounted(() => fetchAll())
 
+const deleting = ref<string | null>(null)
+
 async function onDelete(cp: CentralPointResponse) {
-  if (!confirm(t('centralPoints.deleteConfirm', { name: cp.name }))) return
+  deleting.value = cp.id
   try {
     await remove(cp.id)
   } catch {
     /* toast from composable */
+  } finally {
+    deleting.value = null
   }
 }
 
@@ -94,7 +98,23 @@ const columns = computed(() => [
               variant="ghost"
               @click="router.push(localePath(`/settings/central-points/${row.original.id}`))"
             />
-            <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="ghost" @click="onDelete(row.original)" />
+            <UPopover>
+              <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="ghost" />
+              <template #content="{ close }">
+                <div class="p-4 min-w-48">
+                  <p class="text-sm text-dimmed mb-3">{{ t('centralPoints.deleteConfirm', { name: row.original.name }) }}</p>
+                  <div class="flex justify-end gap-2">
+                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                    <UButton
+                      color="error"
+                      :label="t('common.delete')"
+                      :loading="deleting === row.original.id"
+                      @click="async () => { await onDelete(row.original); close() }"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UPopover>
           </div>
         </template>
       </UTable>

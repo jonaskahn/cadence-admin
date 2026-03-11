@@ -21,7 +21,7 @@ export const useAuth = () => {
 
   const isAuthenticated = computed(() => !!authUser.value)
 
-  const isOrgAdmin = computed(() => currentOrg.value?.role === 'org_admin' || isSysAdmin.value)
+  const isOrgAdmin = computed(() => currentOrg.value?.role === 'org_admin')
 
   async function loadUserContext(username: string): Promise<void> {
     authUser.value = { username }

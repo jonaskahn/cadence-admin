@@ -163,7 +163,23 @@ const tabs = computed(() => [
                       </div>
                       <div class="flex items-center gap-2 min-w-56">
                         <UInput v-model="editValues[setting.key]" class="flex-1" size="sm" />
-                        <UButton :loading="saving[setting.key]" :label="t('common.save')" size="sm" @click="saveSetting(setting.key)" />
+                        <UPopover>
+                          <UButton :label="t('common.save')" size="sm" />
+                          <template #content="{ close }">
+                            <div class="p-4 min-w-48">
+                              <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+                              <div class="flex justify-end gap-2">
+                                <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                                <UButton
+                                  :loading="saving[setting.key]"
+                                  :label="t('common.save')"
+                                  size="sm"
+                                  @click="async () => { await saveSetting(setting.key); close() }"
+                                />
+                              </div>
+                            </div>
+                          </template>
+                        </UPopover>
                       </div>
                     </div>
                   </div>
@@ -209,13 +225,24 @@ const tabs = computed(() => [
 
                   <template #footer>
                     <div class="flex justify-end">
-                      <UButton
-                        :loading="tierSaving[tier.tier_name]"
-                        icon="i-lucide-save"
-                        :label="t('common.save')"
-                        size="sm"
-                        @click="saveTier(tier.tier_name)"
-                      />
+                      <UPopover>
+                        <UButton icon="i-lucide-save" :label="t('common.save')" size="sm" />
+                        <template #content="{ close }">
+                          <div class="p-4 min-w-48">
+                            <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+                            <div class="flex justify-end gap-2">
+                              <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                              <UButton
+                                :loading="tierSaving[tier.tier_name]"
+                                icon="i-lucide-save"
+                                :label="t('common.save')"
+                                size="sm"
+                                @click="async () => { await saveTier(tier.tier_name); close() }"
+                              />
+                            </div>
+                          </div>
+                        </template>
+                      </UPopover>
                     </div>
                   </template>
                 </UCard>

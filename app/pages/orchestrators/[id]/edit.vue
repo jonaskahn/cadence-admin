@@ -35,6 +35,7 @@ type Schema = { name: string; tier: 'hot' | 'warm' | 'cold' }
 const name = ref('')
 const tier = ref<'hot' | 'warm' | 'cold'>('cold')
 const loading = ref(false)
+const orchestratorEditFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 const supervisorProviderRef = ref<{
   isValid: () => boolean
   getValue: () => Record<string, unknown>
@@ -59,12 +60,16 @@ const supportedProviders = computed(() => (frameworkCapabilities.value?.supports
 const supportedModes = computed(() => frameworkCapabilities.value?.supported_modes ?? [])
 const isSupervisor = computed(() => orchestrator.value?.mode === 'supervisor' && supportedModes.value.includes('supervisor'))
 
-const llmConfigOptions = computed(() =>
-  (llmConfigs.value ?? []).map((c) => ({
-    label: `${c.name} (${providerLabel(c.provider)})`,
-    value: c.id
-  }))
-)
+const llmConfigOptions = computed(() => {
+  const configs = llmConfigs.value ?? []
+  const currentId = orchestrator.value?.config?.default_llm_config_id
+  return configs
+    .filter((c) => c.is_enabled !== false || c.id === currentId)
+    .map((c) => ({
+      label: c.is_enabled === false ? `${c.name} (${providerLabel(c.provider)}) — ${t('common.disabled')}` : `${c.name} (${providerLabel(c.provider)})`,
+      value: c.id
+    }))
+})
 
 watch(
   orchestrator,
@@ -99,7 +104,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       await patchConfig(supervisorProviderRef.value.getValue())
     } else if (!isSupervisor.value && defaultLlmConfigId.value !== undefined) {
       await orchestrators.updateMetadata(instanceId, {
-        default_llm_config_id: defaultLlmConfigId.value ? parseInt(defaultLlmConfigId.value, 10) : null
+        default_llm_config_id: defaultLlmConfigId.value || null
       })
     }
 
@@ -132,7 +137,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <UAlert v-else-if="error" color="error" :description="error.message" :title="t('orchestrators.edit.failedLoad')" class="m-6" />
 
       <div v-else-if="orchestrator" class="p-6 min-w-0 w-full">
-        <UForm :schema="schema" :state="{ name, tier }" @submit="onSubmit">
+        <UForm ref="orchestratorEditFormRef" :schema="schema" :state="{ name, tier }" @submit="onSubmit">
           <div class="flex flex-col gap-8 w-full">
             <UCard class="min-w-0 w-full">
               <template #header>
@@ -193,7 +198,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
           <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">
             <UButton color="neutral" :label="t('common.cancel')" :to="localePath(`/orchestrators/${instanceId}`)" variant="ghost" />
-            <UButton :loading="loading" :label="t('common.save')" type="submit" />
+            <UPopover>
+              <UButton type="button" :label="t('common.save')" />
+              <template #content="{ close }">
+                <div class="p-4 min-w-48">
+                  <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+                  <div class="flex justify-end gap-2">
+                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                    <UButton
+                      :loading="loading"
+                      :label="t('common.save')"
+                      @click="orchestratorEditFormRef?.$el?.requestSubmit?.(); close()"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UPopover>
           </div>
         </UForm>
       </div>

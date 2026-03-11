@@ -163,6 +163,7 @@ export interface OrchestratorResponse {
   plugin_settings: Record<string, PluginSettingsEntry>
   config_hash: string | null
   is_ready: boolean
+  is_deleted: boolean
   created_at: string
   updated_at: string
 }
@@ -183,7 +184,7 @@ export interface UpdateOrchestratorConfigRequest {
 export interface UpdateOrchestratorMetadataRequest {
   name?: string | null
   tier?: 'hot' | 'warm' | 'cold' | null
-  default_llm_config_id?: number | null
+  default_llm_config_id?: string | null
 }
 
 export interface UpdateOrchestratorStatusRequest {
@@ -293,6 +294,7 @@ export interface LLMConfigResponse {
   provider: string
   base_url: string | null
   additional_config: Record<string, unknown> | null
+  is_enabled: boolean
   created_at: string
 }
 
@@ -390,7 +392,7 @@ export interface FrameworkSupportedProvidersResponse {
 }
 
 export interface OrchestratorDefaults {
-  default_llm_config_id: number | null
+  default_llm_config_id: string | null
   default_model_name: string | null
   default_max_tokens: number | null
   default_timeout: number | null

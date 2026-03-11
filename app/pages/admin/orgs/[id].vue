@@ -11,6 +11,7 @@ const localePath = useLocalePath()
 const orgId = route.params.id as string
 const showAdd = ref(false)
 const saving = ref(false)
+const orgFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 const { data: org, refresh: refreshOrg } = await useFetch<OrganizationResponse>(`/api/admin/orgs/${orgId}`)
 const { data: quota, refresh: refreshQuota } = await useFetch<TierQuota>(`/api/admin/orgs/${orgId}/quota`)
@@ -75,14 +76,18 @@ function handleAddClose() {
   refreshMembers()
 }
 
+const removing = ref<string | null>(null)
+
 async function removeMember(userId: string) {
-  if (!confirm(t('admin.removeMemberConfirm'))) return
+  removing.value = userId
   try {
     await $fetch(`/api/orgs/${orgId}/users/${userId}`, { method: 'DELETE' })
     await refreshMembers()
     toast.add({ title: t('settings.memberRemoved'), icon: 'i-lucide-check' })
   } catch (err) {
     toast.add({ title: t('errors.error'), description: getApiErrorMessage(err, t('settings.failedRemoveMember')), color: 'error' })
+  } finally {
+    removing.value = null
   }
 }
 
@@ -190,7 +195,7 @@ const quotaRows = computed(() => {
           <template #header>
             <p class="font-semibold">{{ t('admin.editOrganization') }}</p>
           </template>
-          <UForm :schema="editSchema" :state="form" class="flex flex-col gap-4" @submit="saveOrg">
+          <UForm ref="orgFormRef" :schema="editSchema" :state="form" class="flex flex-col gap-4" @submit="saveOrg">
             <div class="grid grid-cols-2 gap-4">
               <UFormField :label="t('settings.displayName')" name="display_name">
                 <UInput v-model="form.display_name" class="w-full" :placeholder="t('settings.acmePlaceholder')" />
@@ -221,7 +226,23 @@ const quotaRows = computed(() => {
               </UFormField>
             </div>
             <div class="flex justify-end mt-2">
-              <UButton :loading="saving" icon="i-lucide-save" :label="t('llmConfig.saveChanges')" type="submit" />
+              <UPopover>
+                <UButton icon="i-lucide-save" :label="t('llmConfig.saveChanges')" />
+                <template #content="{ close }">
+                  <div class="p-4 min-w-48">
+                    <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+                    <div class="flex justify-end gap-2">
+                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                      <UButton
+                        :loading="saving"
+                        icon="i-lucide-save"
+                        :label="t('llmConfig.saveChanges')"
+                        @click="() => { orgFormRef?.$el?.requestSubmit?.(); close() }"
+                      />
+                    </div>
+                  </div>
+                </template>
+              </UPopover>
             </div>
           </UForm>
         </UCard>
@@ -256,7 +277,23 @@ const quotaRows = computed(() => {
               </UBadge>
             </template>
             <template #actions-cell="{ row }">
-              <UButton color="error" icon="i-lucide-x" size="xs" variant="ghost" @click="removeMember(row.original.user_id)" />
+              <UPopover>
+                <UButton color="error" icon="i-lucide-x" size="xs" variant="ghost" />
+                <template #content="{ close }">
+                  <div class="p-4 min-w-48">
+                    <p class="text-sm text-dimmed mb-3">{{ t('admin.removeMemberConfirm') }}</p>
+                    <div class="flex justify-end gap-2">
+                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                      <UButton
+                        color="error"
+                        :label="t('common.remove')"
+                        :loading="removing === row.original.user_id"
+                        @click="async () => { await removeMember(row.original.user_id); close() }"
+                      />
+                    </div>
+                  </div>
+                </template>
+              </UPopover>
             </template>
           </UTable>
         </UCard>

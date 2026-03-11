@@ -182,7 +182,18 @@ async function save() {
         </UFormField>
 
         <div class="flex justify-end pt-2">
-          <UButton :loading="saving" icon="i-lucide-save" :label="t('settings.saveDefaults')" @click="save" />
+          <UPopover>
+            <UButton icon="i-lucide-save" :label="t('settings.saveDefaults')" />
+            <template #content="{ close }">
+              <div class="p-4 min-w-48">
+                <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+                <div class="flex justify-end gap-2">
+                  <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                  <UButton :loading="saving" icon="i-lucide-save" :label="t('common.save')" @click="async () => { await save(); close() }" />
+                </div>
+              </div>
+            </template>
+          </UPopover>
         </div>
       </div>
     </UCard>

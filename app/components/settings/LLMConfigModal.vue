@@ -12,6 +12,7 @@ const emit = defineEmits<{ close: [] }>()
 const toast = useToast()
 const { t } = useI18n()
 const loading = ref(false)
+const llmConfigFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 function providerLabel(provider: string): string {
   const key = `providers.${provider}`
@@ -49,7 +50,7 @@ async function submitEdit(data: Schema): Promise<void> {
   const body: Record<string, unknown> = { name: data.name, base_url: data.base_url || null }
   if (data.api_key) body.api_key = data.api_key
   if (isAzure.value) body.additional_config = data.api_version ? { api_version: data.api_version } : null
-  await $fetch(`/api/orgs/${props.orgId}/llm-configs/${props.initialValue!.name}`, { method: 'PATCH', body })
+  await $fetch(`/api/orgs/${props.orgId}/llm-configs/${props.initialValue!.id}`, { method: 'PATCH', body })
   toast.add({ title: t('llmConfig.configUpdated'), icon: 'i-lucide-check', color: 'success' })
 }
 
@@ -88,7 +89,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </p>
     </template>
 
-    <UForm :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
+    <UForm ref="llmConfigFormRef" :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
       <UFormField :description="t('llmConfig.configNameDescription')" :label="t('llmConfig.configName')" name="name">
         <UInput v-model="state.name" class="w-full" :placeholder="t('llmConfig.primaryPlaceholder')" />
       </UFormField>
@@ -114,7 +115,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
       <div class="flex justify-end gap-2">
         <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="emit('close')" />
-        <UButton :label="isEdit ? t('llmConfig.saveChanges') : t('settings.addConfig')" :loading="loading" type="submit" />
+        <UPopover>
+          <UButton type="button" :label="isEdit ? t('llmConfig.saveChanges') : t('settings.addConfig')" />
+          <template #content="{ close }">
+            <div class="p-4 min-w-48">
+              <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+              <div class="flex justify-end gap-2">
+                <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                <UButton
+                  :loading="loading"
+                  :label="isEdit ? t('llmConfig.saveChanges') : t('settings.addConfig')"
+                  @click="llmConfigFormRef?.$el?.requestSubmit?.(); close()"
+                />
+              </div>
+            </div>
+          </template>
+        </UPopover>
       </div>
     </UForm>
   </UCard>

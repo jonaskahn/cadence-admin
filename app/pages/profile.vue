@@ -59,6 +59,8 @@ const passwordState = reactive<Partial<PasswordSchema>>({
 })
 
 const changingPassword = ref(false)
+const profileFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
+const passwordFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
   changingPassword.value = true
@@ -123,14 +125,30 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
           <template #header>
             <p class="font-semibold">{{ t('profile.profile') }}</p>
           </template>
-          <UForm :schema="profileSchema" :state="profileState" class="flex flex-col gap-4" @submit="onProfileSubmit">
+          <UForm ref="profileFormRef" :schema="profileSchema" :state="profileState" class="flex flex-col gap-4" @submit="onProfileSubmit">
             <UFormField :label="t('profile.displayName')" name="display_name">
               <UInput v-model="profileState.display_name" class="w-full" :placeholder="t('profile.yourName')" />
             </UFormField>
             <UFormField :label="t('profile.email')" name="email">
               <UInput v-model="profileState.email" class="w-full" :placeholder="t('profile.emailPlaceholder')" type="email" />
             </UFormField>
-            <UButton :loading="savingProfile" class="w-fit" :label="t('profile.saveProfile')" type="submit" />
+            <UPopover>
+              <UButton class="w-fit" :label="t('profile.saveProfile')" />
+              <template #content="{ close }">
+                <div class="p-4 min-w-48">
+                  <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+                  <div class="flex justify-end gap-2">
+                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                    <UButton
+                      :loading="savingProfile"
+                      class="w-fit"
+                      :label="t('profile.saveProfile')"
+                      @click="profileFormRef?.$el?.requestSubmit?.(); close()"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UPopover>
           </UForm>
         </UCard>
 
@@ -139,14 +157,30 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
           <template #header>
             <p class="font-semibold">{{ t('profile.changePassword') }}</p>
           </template>
-          <UForm :schema="passwordSchema" :state="passwordState" class="flex flex-col gap-4" @submit="onPasswordSubmit">
+          <UForm ref="passwordFormRef" :schema="passwordSchema" :state="passwordState" class="flex flex-col gap-4" @submit="onPasswordSubmit">
             <UFormField :label="t('profile.currentPassword')" name="current_password">
               <UInput v-model="passwordState.current_password" class="w-full" type="password" />
             </UFormField>
             <UFormField :label="t('profile.newPassword')" name="new_password">
               <UInput v-model="passwordState.new_password" class="w-full" type="password" />
             </UFormField>
-            <UButton :loading="changingPassword" class="w-fit" :label="t('profile.updatePassword')" type="submit" />
+            <UPopover>
+              <UButton class="w-fit" :label="t('profile.updatePassword')" />
+              <template #content="{ close }">
+                <div class="p-4 min-w-48">
+                  <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
+                  <div class="flex justify-end gap-2">
+                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                    <UButton
+                      :loading="changingPassword"
+                      class="w-fit"
+                      :label="t('profile.updatePassword')"
+                      @click="passwordFormRef?.$el?.requestSubmit?.(); close()"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UPopover>
           </UForm>
         </UCard>
       </div>

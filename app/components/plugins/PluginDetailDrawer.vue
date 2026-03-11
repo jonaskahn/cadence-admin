@@ -130,10 +130,13 @@ function handleOpenChange(value: boolean) {
   emit('update:open', value)
 }
 
+const disabling = ref(false)
+const enabling = ref(false)
+
 async function disablePlugin() {
   if (!selectedVersion.value) return
   const id = selectedVersion.value.id
-  if (!confirm(t('pluginDetail.disableConfirm'))) return
+  disabling.value = true
   try {
     if (props.source === 'system') {
       await $fetch(`/api/admin/plugins/${id}`, { method: 'DELETE' })
@@ -146,13 +149,15 @@ async function disablePlugin() {
     closeDrawer()
   } catch {
     toast.add({ title: t('pluginDetail.failedDisable'), color: 'error' })
+  } finally {
+    disabling.value = false
   }
 }
 
 async function enablePlugin() {
   if (!selectedVersion.value) return
   const id = selectedVersion.value.id
-  if (!confirm(t('pluginDetail.enableConfirm'))) return
+  enabling.value = true
   try {
     if (props.source === 'system') {
       await $fetch(`/api/admin/plugins/${id}`, {
@@ -169,6 +174,8 @@ async function enablePlugin() {
     closeDrawer()
   } catch {
     toast.add({ title: t('pluginDetail.failedEnable'), color: 'error' })
+  } finally {
+    enabling.value = false
   }
 }
 
@@ -288,8 +295,44 @@ const isDisabled = computed(() => selectedVersion.value && 'enabled' in selected
 
     <template v-if="selectedVersion && canManage" #footer>
       <div class="flex justify-end w-full gap-2">
-        <UButton v-if="isDisabled" color="primary" icon="i-lucide-route" :label="t('pluginDetail.enable')" @click="enablePlugin" />
-        <UButton v-else color="error" icon="i-lucide-route-off" :label="t('pluginDetail.disable')" @click="disablePlugin" />
+        <template v-if="isDisabled">
+          <UPopover>
+            <UButton color="primary" icon="i-lucide-route" :label="t('pluginDetail.enable')" />
+            <template #content="{ close }">
+              <div class="p-4 min-w-48">
+                <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.enableConfirm') }}</p>
+                <div class="flex justify-end gap-2">
+                  <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                  <UButton
+                    color="primary"
+                    :label="t('pluginDetail.enable')"
+                    :loading="enabling"
+                    @click="async () => { await enablePlugin(); close() }"
+                  />
+                </div>
+              </div>
+            </template>
+          </UPopover>
+        </template>
+        <template v-else>
+          <UPopover>
+            <UButton color="error" icon="i-lucide-route-off" :label="t('pluginDetail.disable')" />
+            <template #content="{ close }">
+              <div class="p-4 min-w-48">
+                <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.disableConfirm') }}</p>
+                <div class="flex justify-end gap-2">
+                  <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                  <UButton
+                    color="error"
+                    :label="t('pluginDetail.disable')"
+                    :loading="disabling"
+                    @click="async () => { await disablePlugin(); close() }"
+                  />
+                </div>
+              </div>
+            </template>
+          </UPopover>
+        </template>
       </div>
     </template>
   </USlideover>
