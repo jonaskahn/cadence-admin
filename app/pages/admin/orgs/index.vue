@@ -101,7 +101,10 @@ const columns = computed(() => [
           <UDashboardSidebarCollapse />
         </template>
         <template #right>
-          <UButton icon="i-lucide-plus" :label="t('admin.createOrg')" @click="showCreate = true" />
+          <div class="flex items-center gap-2">
+            <InfoPopover title-key="info.admin.orgs.title" description-key="info.admin.orgs.description" />
+            <UButton icon="i-lucide-plus" :label="t('admin.createOrg')" @click="showCreate = true" />
+          </div>
         </template>
       </UDashboardNavbar>
     </template>
@@ -122,15 +125,20 @@ const columns = computed(() => [
               </UBadge>
             </template>
             <template #status-cell="{ row }">
-              <UBadge :color="row.original.status === 'active' ? 'success' : 'neutral'" size="sm" variant="subtle">
-                {{ row.original.status }}
-              </UBadge>
+              <div class="flex items-center gap-1.5">
+                <UBadge :color="row.original.status === 'active' ? 'success' : 'neutral'" size="sm" variant="subtle">
+                  {{ row.original.status }}
+                </UBadge>
+                <UBadge v-if="row.original.is_deleted" color="error" size="sm" variant="subtle">
+                  {{ t('common.deleted') }}
+                </UBadge>
+              </div>
             </template>
             <template #created_at-cell="{ row }">
               <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
             </template>
             <template #actions-cell="{ row }">
-              <UButton :to="`/admin/orgs/${row.original.org_id}`" icon="i-lucide-info" size="xs" variant="ghost" />
+              <UButton :to="`/admin/orgs/${row.original.org_id}`" icon="i-lucide-info" :label="t('common.viewDetails')" size="xs" variant="outline" />
             </template>
           </UTable>
         </UCard>
@@ -178,8 +186,8 @@ const columns = computed(() => [
             </UFormField>
           </div>
           <div class="flex justify-end gap-2">
-            <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="showCreate = false" />
-            <UButton :loading="creating" :label="t('common.create')" type="submit" />
+            <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="showCreate = false" />
+            <UButton color="primary" variant="outline" :loading="creating" :label="t('common.create')" type="submit" />
           </div>
         </UForm>
       </UCard>

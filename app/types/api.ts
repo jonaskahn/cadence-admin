@@ -41,6 +41,7 @@ export interface CentralPointResponse {
   status: string
   created_at: string
   updated_at: string
+  is_deleted?: boolean
 }
 
 export interface CreateCentralPointRequest {
@@ -90,6 +91,7 @@ export interface OrganizationResponse {
   logo_url?: string | null
   country?: string | null
   timezone?: string | null
+  is_deleted?: boolean
 }
 
 export interface CreateOrganizationRequest {
@@ -269,7 +271,7 @@ export interface UserMembershipResponse {
   email: string | null
   is_sys_admin: boolean
   is_admin: boolean
-  deleted: boolean
+  is_deleted: boolean
   created_at?: string
 }
 
@@ -296,6 +298,7 @@ export interface LLMConfigResponse {
   additional_config: Record<string, unknown> | null
   is_enabled: boolean
   created_at: string
+  is_deleted?: boolean
 }
 
 export interface AddLLMConfigRequest {

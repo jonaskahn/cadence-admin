@@ -7,7 +7,7 @@ const props = defineProps<{ orgId: string }>()
 const emit = defineEmits<{ openModal: [] }>()
 
 const injected = inject<ComputedRef<boolean>>('canUseCentralPoints', null)
-const { centerPoints, loading, fetchAll, remove } = useCentralPoints(toRef(props, 'orgId'))
+const { centerPoints, loading, fetchAll, remove, purge } = useCentralPoints(toRef(props, 'orgId'))
 defineExpose({ fetchAll })
 
 const { data: org } = await useFetch<{ tier?: string }>(() => `/api/orgs/${props.orgId}`, { watch: [() => props.orgId] })
@@ -19,8 +19,10 @@ const canUseCentralPoints = computed(
       (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase()))
 )
 
+const auth = useAuth()
 const router = useRouter()
 const localePath = useLocalePath()
+const toast = useToast()
 const { t } = useI18n()
 
 const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/api/orgs/${props.orgId}/orchestrators`, { watch: [() => props.orgId] })
@@ -28,6 +30,7 @@ const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/a
 onMounted(() => fetchAll())
 
 const deleting = ref<string | null>(null)
+const purging = ref<string | null>(null)
 
 async function onDelete(cp: CentralPointResponse) {
   deleting.value = cp.id
@@ -37,6 +40,22 @@ async function onDelete(cp: CentralPointResponse) {
     /* toast from composable */
   } finally {
     deleting.value = null
+  }
+}
+
+async function onPurge(cp: CentralPointResponse) {
+  purging.value = cp.id
+  try {
+    await purge(cp.id)
+  } catch (err: unknown) {
+    const status = (err as { status?: number })?.status
+    if (status === 409) {
+      toast.add({ title: t('errors.purgeReferencedError'), color: 'error' })
+    } else {
+      toast.add({ title: t('centralPoints.failedLoad'), color: 'error' })
+    }
+  } finally {
+    purging.value = null
   }
 }
 
@@ -66,7 +85,14 @@ const columns = computed(() => [
               {{ t('centralPoints.description') }}
             </p>
           </div>
-          <UButton v-if="canUseCentralPoints" icon="i-lucide-plus" :label="t('centralPoints.addCenterPoint')" @click="emit('openModal')" />
+          <UButton
+            v-if="canUseCentralPoints && auth.isAdmin.value"
+            color="primary"
+            variant="outline"
+            icon="i-lucide-plus"
+            :label="t('centralPoints.addCenterPoint')"
+            @click="emit('openModal')"
+          />
         </div>
       </template>
       <div v-if="loading" class="flex flex-col gap-2 p-4">
@@ -82,9 +108,14 @@ const columns = computed(() => [
           </UBadge>
         </template>
         <template #status-cell="{ row }">
-          <UBadge :color="row.original.status === 'active' ? 'success' : 'neutral'" size="sm" variant="subtle">
-            {{ row.original.status }}
-          </UBadge>
+          <div class="flex items-center gap-1.5">
+            <UBadge :color="row.original.status === 'active' ? 'success' : 'neutral'" size="sm" variant="subtle">
+              {{ row.original.status }}
+            </UBadge>
+            <UBadge v-if="row.original.is_deleted" color="error" size="sm" variant="subtle">
+              {{ t('common.deleted') }}
+            </UBadge>
+          </div>
         </template>
         <template #created_at-cell="{ row }">
           <span class="text-dimmed text-sm">{{ formatDate(row.original.created_at) }}</span>
@@ -92,24 +123,43 @@ const columns = computed(() => [
         <template #actions-cell="{ row }">
           <div class="flex items-center gap-1">
             <UButton
-              color="neutral"
+              v-if="auth.isAdmin.value"
+              color="primary"
+              variant="outline"
               icon="i-lucide-pencil"
+              :label="t('common.edit')"
               size="xs"
-              variant="ghost"
               @click="router.push(localePath(`/settings/central-points/${row.original.id}`))"
             />
-            <UPopover>
-              <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="ghost" />
+            <UPopover v-if="!row.original.is_deleted && auth.isAdmin.value">
+              <UButton color="error" icon="i-lucide-trash-2" size="xs" />
               <template #content="{ close }">
                 <div class="p-4 min-w-48">
                   <p class="text-sm text-dimmed mb-3">{{ t('centralPoints.deleteConfirm', { name: row.original.name }) }}</p>
                   <div class="flex justify-end gap-2">
-                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
                     <UButton
                       color="error"
                       :label="t('common.delete')"
                       :loading="deleting === row.original.id"
                       @click="async () => { await onDelete(row.original); close() }"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UPopover>
+            <UPopover v-else-if="auth.isSysAdmin.value && row.original.is_deleted">
+              <UButton color="error" icon="i-lucide-shredder" size="xs"/>
+              <template #content="{ close }">
+                <div class="p-4 min-w-48">
+                  <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
+                  <div class="flex justify-end gap-2">
+                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                    <UButton
+                      color="error"
+                      :label="t('common.purge')"
+                      :loading="purging === row.original.id"
+                      @click="async () => { await onPurge(row.original); close() }"
                     />
                   </div>
                 </div>

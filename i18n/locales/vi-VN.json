@@ -7,6 +7,21 @@
   "common": {
     "cancel": "Hủy",
     "save": "Lưu",
+    "update": "Cập nhật",
+    "saveNow": "Lưu ngay",
+    "saveConfirm": "Lưu thay đổi?",
+    "saveConfirmTitle": "Lưu thay đổi",
+    "updateConfirmTitle": "Cập nhật thay đổi",
+    "deleteConfirmTitle": "Xác nhận xóa",
+    "addConfirmTitle": "Xác nhận thêm",
+    "saveConfirmMessage": "Thay đổi của bạn sẽ được áp dụng ngay lập tức.",
+    "updateConfirmMessage": "Thay đổi sẽ có hiệu lực.",
+    "deleteConfirmMessage": "Hành động này không thể hoàn tác.",
+    "saveConfirmFriendly": "Hãy lưu nó",
+    "updateConfirmFriendly": "Hãy cập nhật ngay",
+    "deleteConfirmFriendly": "Hãy xóa nó",
+    "addConfirmMessage": "Nó sẽ có sẵn sau khi tạo.",
+    "addConfirmFriendly": "Hãy thêm nó",
     "create": "Tạo",
     "delete": "Xóa",
     "deleted": "Đã xóa",
@@ -16,6 +31,8 @@
     "upload": "Tải lên",
     "add": "Thêm",
     "edit": "Chỉnh sửa",
+    "view": "Xem",
+    "viewDetails": "Xem chi tiết",
     "viewAll": "Xem tất cả",
     "unlimited": "Không giới hạn",
     "enabled": "Đã bật",
@@ -33,7 +50,8 @@
     "empty": "—",
     "memoryUnitMB": "MB",
     "remove": "Xóa",
-    "saveConfirm": "Lưu thay đổi?"
+    "purge": "Xóa vĩnh viễn",
+    "purgeConfirm": "Xóa vĩnh viễn bản ghi này? Hành động này không thể hoàn tác."
   },
   "roles": {
     "sysAdmin": "Quản trị viên hệ thống",
@@ -197,6 +215,8 @@
     "llmConfigs": "Cấu hình LLM",
     "llmConfigsDescription": "Cấu hình nhà cung cấp LLM Bring Your Own Key (BYOK).",
     "addConfig": "Thêm cấu hình",
+    "addConfigTitle": "Thêm cấu hình mới",
+    "addConfigMessage": "Nó sẽ có sẵn cho tổ chức của bạn.",
     "baseUrl": "URL cơ sở",
     "created": "Đã tạo",
     "configDeleted": "Đã xóa cấu hình",
@@ -220,7 +240,8 @@
     "none": "Không",
     "selectModel": "Chọn mô hình…",
     "modelPlaceholder": "vd. gpt-4o, gemini-2.0-flash",
-    "saveDefaults": "Lưu mặc định",
+    "saveOrchestratorDefaultsTitle": "Lưu mặc định orchestrator",
+    "saveOrchestratorDefaultsMessage": "Các giá trị này sẽ điền sẵn cho instance orchestrator mới. Instance hiện có không bị ảnh hưởng.",
     "defaultsSaved": "Đã lưu mặc định",
     "failedSaveDefaults": "Không thể lưu mặc định",
     "selectFromList": "Chọn từ danh sách",
@@ -243,7 +264,7 @@
     "failedUpdateConfig": "Không thể cập nhật cấu hình",
     "failedAddConfig": "Không thể thêm cấu hình",
     "configName": "Tên cấu hình",
-    "configNameDescription": "Tên duy nhất cho cấu hình này (vd. 'primary', 'fast')",
+    "configNameDescription": "Tên cho cấu hình này (vd. 'primary', 'fast')",
     "primaryPlaceholder": "primary",
     "provider": "Nhà cung cấp",
     "providerRequired": "Nhà cung cấp là bắt buộc",
@@ -427,6 +448,8 @@
     "settings": "Cài đặt",
     "llmProviders": "Nhà cung cấp LLM",
     "addModel": "Thêm mô hình",
+    "addModelTitle": "Thêm mô hình vào danh mục",
+    "addModelMessage": "Nó sẽ có sẵn để chọn trong danh mục mô hình.",
     "editModel": "Chỉnh sửa mô hình",
     "modelUpdated": "Đã cập nhật mô hình",
     "modelAdded": "Đã thêm mô hình",
@@ -495,7 +518,8 @@
     "notFound": "Không tìm thấy trang",
     "notFoundDescription": "Rất tiếc, trang này không tồn tại.",
     "error": "Lỗi",
-    "unknown": "không xác định"
+    "unknown": "không xác định",
+    "purgeReferencedError": "Không thể xóa vĩnh viễn: bản ghi vẫn được tham chiếu bởi các mục đang hoạt động."
   },
   "settingsGroups": {
     "llm": "LLM",
@@ -599,6 +623,148 @@
     "azure": "Azure OpenAI",
     "litellm": "LiteLLM",
     "tensorzero": "TensorZero"
+  },
+  "info": {
+    "pages": {
+      "dashboard": {
+        "title": "Bảng điều khiển",
+        "description": "**Chức năng:**\n\nTrung tâm điều phối AI của tổ chức. Hiển thị:\n\n- **Số lượng orchestrator** — Tổng, tầng nóng, ấm và lạnh\n- **Thống kê pool** — Mô hình dùng chung, bộ nhớ (chỉ sys admin)\n- **Thao tác nhanh** — Bắt đầu chat, xem orchestrator, quản lý plugin\n\n**Tầng:** Nóng = load ngay; Ấm = làm nóng trước; Lạnh = theo yêu cầu."
+      },
+      "chat": {
+        "title": "Trò chuyện",
+        "description": "**Chức năng:**\n\nSân chơi tương tác để kiểm tra orchestrator với hội thoại thực.\n\n**Cách dùng:**\n1. Chọn orchestrator từ sidebar (phải active và ready)\n2. Nhập tin nhắn và nhấn Enter\n3. Xem phản hồi, bước agent và nguồn tool\n\n**Tính năng:** Phản hồi streaming, bước và nguồn có thể mở rộng, phiên giữ cho đến khi xóa."
+      },
+      "orchestrators": {
+        "title": "Orchestrator",
+        "description": "**Chức năng:**\n\nTạo và quản lý phiên bản AI orchestrator chạy plugin.\n\n**Tác vụ:** Load, Unload, Activate, Deactivate, Clone. Cột: Tên, framework, mode, tier, status, ready."
+      },
+      "plugins": {
+        "title": "Plugin",
+        "description": "**Chức năng:**\n\nDuyệt và quản lý plugin mở rộng khả năng orchestrator.\n\n**Loại:** System (toàn nền tảng) | Org (theo tổ chức). Tác vụ: Bật/tắt, xem chi tiết, cấu hình."
+      },
+      "profile": {
+        "title": "Hồ sơ",
+        "description": "**Chức năng:**\n\nCài đặt tài khoản cá nhân. **Phần:** Account (ID, vai trò), Profile (tên, email), Password. Chỉ org admin mới sửa được."
+      }
+    },
+    "settings": {
+      "orgIdentity": {
+        "title": "Tổ chức",
+        "description": "**Nội dung:**\n\nThông tin tổ chức chỉ đọc: ID, slug, domain, gói đăng ký, trạng thái. Chỉ sys admin mới thay đổi được."
+      },
+      "orgProfile": {
+        "title": "Hồ sơ tổ chức",
+        "description": "**Chức năng:**\n\nHồ sơ công khai có thể chỉnh sửa. Tên, email, website, logo, mô tả. Chỉ org admin mới sửa được."
+      },
+      "members": {
+        "title": "Thành viên",
+        "description": "**Chức năng:**\n\nQuản lý thành viên tổ chức. Thêm, thăng/hạ admin, xóa. Chỉ org admin mới quản lý được."
+      },
+      "llmConfigs": {
+        "title": "Cấu hình LLM",
+        "description": "**Chức năng:**\n\nBYOK — lưu API key cho nhà cung cấp LLM. Hỗ trợ: OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero. Mỗi config: tên, provider, API key, base URL tùy chọn."
+      },
+      "orchestrators": {
+        "title": "Cài đặt Orchestrator",
+        "description": "**Chức năng:**\n\nGiá trị mặc định điền sẵn khi tạo orchestrator **mới**. Mặc định: LLM config, model, max tokens, timeout. **Phiên bản hiện có không bị ảnh hưởng.**"
+      },
+      "centralPoints": {
+        "title": "Central Points",
+        "description": "**Chức năng:**\n\nĐiểm cuối API ổn định. Máy khách dùng ID central point; bạn có thể đổi orchestrator mà không cần thay đổi máy khách. Private (cần auth) hoặc public."
+      }
+    },
+    "admin": {
+      "orgs": {
+        "title": "Tổ chức",
+        "description": "**Chức năng:**\n\nQuản lý tổ chức toàn hệ thống (chỉ sys admin). Tạo org, đặt hạn ngạch gói, quản lý domain. Hạn ngạch gói kiểm soát max orchestrator, thành viên, v.v."
+      },
+      "orgDetail": {
+        "title": "Chi tiết tổ chức",
+        "description": "**Chức năng:**\n\nChỉnh sửa một tổ chức (chỉ sys admin). Phần: Profile, hạn ngạch gói, thành viên. Xem trước mức sử dụng hạn ngạch."
+      },
+      "users": {
+        "title": "Người dùng",
+        "description": "**Chức năng:**\n\nQuản lý người dùng nền tảng (chỉ sys admin). Tạo, sửa, xóa. Gán vai trò sys admin. Người dùng có thể thuộc nhiều tổ chức."
+      },
+      "systemPlugins": {
+        "title": "Plugin hệ thống",
+        "description": "**Chức năng:**\n\nQuản lý plugin có sẵn cho **mọi** tổ chức (chỉ sys admin). Tab: System | Org. Tải lên, bật/tắt, xem chi tiết."
+      },
+      "globalSettings": {
+        "title": "Cài đặt diện rộng",
+        "description": "**Chức năng:**\n\nMặc định toàn nền tảng (chỉ sys admin). Gói đăng ký, danh mục model, cài đặt tính năng. Một số có thể ghi đè theo tổ chức."
+      },
+      "pool": {
+        "title": "Instance Pool",
+        "description": "**Chức năng:**\n\nThống kê pool thời gian thực (chỉ sys admin). Tổng instance, tầng nóng/ấm/lạnh, mô hình dùng chung, bộ nhớ. Tự làm mới mỗi 30 giây."
+      },
+      "health": {
+        "title": "Trạng thái hệ thống",
+        "description": "**Chức năng:**\n\nTrạng thái hệ thống và dịch vụ (chỉ sys admin). Kiểm tra PostgreSQL, Redis, MongoDB, instance orchestrator đã load."
+      }
+    },
+    "fields": {
+      "displayName": {
+        "title": "Tên hiển thị",
+        "description": "**Là gì:**\n\nTên công khai hiển thị trong UI và tích hợp. Dùng cho nhận diện thương hiệu, không dùng cho xác thực."
+      },
+      "llmConfig": {
+        "provider": {
+          "title": "Nhà cung cấp",
+          "description": "**Là gì:**\n\nNhà cung cấp LLM (OpenAI, Anthropic, Google, v.v.). Xác định định dạng API và model có sẵn."
+        },
+        "model": {
+          "title": "Model",
+          "description": "**Là gì:**\n\nĐịnh danh model (vd. gpt-4o, gemini-2.0-flash). Phải được nhà cung cấp đã chọn hỗ trợ."
+        },
+        "apiKey": {
+          "title": "API Key",
+          "description": "**Là gì:**\n\nAPI key của bạn cho nhà cung cấp. Lưu trữ mã hóa. Không bao giờ hiển thị trong log hoặc UI sau khi lưu."
+        }
+      },
+      "centralPoint": {
+        "endpoint": {
+          "title": "URL Endpoint",
+          "description": "**Là gì:**\n\nURL ổn định cho chat completion: POST /api/chat/completion. Header: X-ORG-ID, X-CENTRAL-ID, Authorization (cho private)."
+        },
+        "apiKey": {
+          "title": "API Key",
+          "description": "**Central point riêng tư:**\n\nMáy khách phải gửi Authorization: Bearer YOUR_TOKEN. **Public:** Không cần header auth."
+        }
+      },
+      "orchestrator": {
+        "framework": {
+          "title": "Framework",
+          "description": "**Là gì:**\n\nFramework điều phối: LangGraph, Google ADK, OpenAI Agents. Xác định cấu trúc graph, loại node và mô hình thực thi. Không đổi sau khi tạo."
+        },
+        "llmConfig": {
+          "title": "Cấu hình LLM",
+          "description": "**Là gì:**\n\nCấu hình LLM orchestrator sử dụng cho inference. Phải từ Cấu hình LLM của tổ chức (Settings → LLM Configs)."
+        }
+      }
+    },
+    "orchestratorSections": {
+      "createBasic": {
+        "title": "Cơ bản",
+        "description": "**Chức năng:**\n\nThiết lập cốt lõi cho orchestrator mới.\n\n**Trường:** Tên (10–55 ký tự), Framework (không đổi sau khi tạo), Mode, Tầng ban đầu (Hot/Warm/Cold)."
+      },
+      "createPlugins": {
+        "title": "Plugin",
+        "description": "**Chức năng:**\n\nChọn plugin mở rộng khả năng orchestrator. Nhấn Thêm Plugin, tìm và thêm plugin (bắt buộc), cấu hình cài đặt bên dưới bảng."
+      },
+      "supervisorLlmConfig": {
+        "title": "Cấu hình LLM (Supervisor)",
+        "description": "**Chức năng:**\n\nCài đặt LLM mặc định cho mọi node. Node Config cho phép ghi đè theo từng node."
+      },
+      "nodeConfig": {
+        "title": "Cấu hình Node",
+        "description": "**Chức năng:**\n\nGhi đè cài đặt LLM theo từng node (Router, Planner, Synthesizer, v.v.). Để trống để dùng mặc định."
+      },
+      "editBasic": {
+        "title": "Cơ bản",
+        "description": "**Chức năng:**\n\nChỉnh sửa tên và tầng. Framework và mode không đổi. Supervisor: LLM config ở phần dưới. Không phải Supervisor: chọn LLM config ở đây."
+      }
+    }
   },
   "centralPoints": {
     "selectOrgTitle": "Chọn tổ chức",

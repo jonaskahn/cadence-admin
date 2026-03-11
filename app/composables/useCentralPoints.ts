@@ -46,5 +46,11 @@ export function useCentralPoints(orgId: ComputedRef<string>) {
     toast.add({ title: t('centralPoints.deletedSuccess'), color: 'success', icon: 'i-lucide-check' })
   }
 
-  return { centerPoints, loading, fetchAll, create, remove }
+  async function purge(id: string): Promise<void> {
+    await $fetch(`/api/orgs/${orgId.value}/central-points/${id}/purge`, { method: 'DELETE' })
+    await fetchAll()
+    toast.add({ title: t('centralPoints.deletedSuccess'), color: 'success', icon: 'i-lucide-check' })
+  }
+
+  return { centerPoints, loading, fetchAll, create, remove, purge }
 }

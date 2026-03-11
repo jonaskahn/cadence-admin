@@ -22,6 +22,9 @@ const columns = computed(() => [
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
+        <template #right>
+          <InfoPopover title-key="info.admin.health.title" description-key="info.admin.health.description" />
+        </template>
       </UDashboardNavbar>
     </template>
 

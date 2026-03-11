@@ -127,7 +127,8 @@ async function onToggleActive(model: ProviderModelCatalogEntry) {
                 :icon="row.original.enabled ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                 :label="row.original.enabled ? t('admin.disable') : t('admin.enable')"
                 :color="row.original.enabled ? 'neutral' : 'success'"
-                variant="ghost"
+                size="xs"
+                variant="outline"
               />
               <template #content="{ close }">
                 <div class="p-4 min-w-48">
@@ -135,8 +136,9 @@ async function onToggleActive(model: ProviderModelCatalogEntry) {
                     {{ row.original.enabled ? t('admin.disableModelConfirm') : t('admin.enableModelConfirm') }}
                   </p>
                   <div class="flex justify-end gap-2">
-                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                    <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                     <UButton
+                      variant="outline"
                       :color="row.original.enabled ? 'neutral' : 'success'"
                       :label="row.original.enabled ? t('admin.disable') : t('admin.enable')"
                       :loading="toggling === `${row.original.provider}:${row.original.model_id}`"
@@ -146,7 +148,7 @@ async function onToggleActive(model: ProviderModelCatalogEntry) {
                 </div>
               </template>
             </UPopover>
-            <UButton icon="i-lucide-pencil" :label="t('common.edit')" variant="ghost" @click="openEdit(row.original)" />
+            <UButton icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
           </div>
         </template>
       </UTable>

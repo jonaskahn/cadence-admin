@@ -63,8 +63,8 @@ async function onUpload() {
       </div>
 
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="emit('close')" />
-        <UButton :disabled="!selectedFile" :loading="uploading" icon="i-lucide-upload" :label="t('common.upload')" @click="onUpload" />
+        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="emit('close')" />
+        <UButton color="primary" variant="outline" :disabled="!selectedFile" :loading="uploading" icon="i-lucide-upload" :label="t('common.upload')" @click="onUpload" />
       </div>
     </div>
   </UCard>

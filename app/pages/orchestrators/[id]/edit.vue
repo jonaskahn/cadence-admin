@@ -64,7 +64,7 @@ const llmConfigOptions = computed(() => {
   const configs = llmConfigs.value ?? []
   const currentId = orchestrator.value?.config?.default_llm_config_id
   return configs
-    .filter((c) => c.is_enabled !== false || c.id === currentId)
+    .filter((c) => !c.is_deleted && (c.is_enabled !== false || c.id === currentId))
     .map((c) => ({
       label: c.is_enabled === false ? `${c.name} (${providerLabel(c.provider)}) — ${t('common.disabled')}` : `${c.name} (${providerLabel(c.provider)})`,
       value: c.id
@@ -120,7 +120,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <template #header>
       <UDashboardNavbar :title="orchestrator?.name ?? t('orchestrators.edit.title')">
         <template #leading>
-          <UButton icon="i-lucide-arrow-left" :to="localePath(`/orchestrators/${instanceId}`)" variant="ghost" />
+          <UButton icon="i-lucide-arrow-left" :to="localePath(`/orchestrators/${instanceId}`)" variant="outline" />
+        </template>
+        <template #right>
+          <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
         </template>
       </UDashboardNavbar>
     </template>
@@ -141,7 +144,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <div class="flex flex-col gap-8 w-full">
             <UCard class="min-w-0 w-full">
               <template #header>
-                <p class="font-semibold">{{ t('orchestrators.edit.basic') }}</p>
+                <div class="flex items-center gap-2">
+                  <p class="font-semibold">{{ t('orchestrators.edit.basic') }}</p>
+                  <InfoPopover title-key="info.orchestratorSections.editBasic.title" description-key="info.orchestratorSections.editBasic.description" />
+                </div>
               </template>
               <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <UFormField :label="t('dashboard.name')" name="name" required>
@@ -182,13 +188,19 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               >
                 <UCard class="min-w-0 w-full">
                   <template #header>
-                    <p class="font-semibold">{{ t('orchestrators.create.llmConfig') }}</p>
+                    <div class="flex items-center gap-2">
+                      <p class="font-semibold">{{ t('orchestrators.create.llmConfig') }}</p>
+                      <InfoPopover title-key="info.orchestratorSections.supervisorLlmConfig.title" description-key="info.orchestratorSections.supervisorLlmConfig.description" />
+                    </div>
                   </template>
                   <LangGraphSupervisorLLMConfig />
                 </UCard>
                 <UCard class="min-w-0 w-full">
                   <template #header>
-                    <p class="font-semibold">{{ t('orchestrators.create.nodeConfig') }}</p>
+                    <div class="flex items-center gap-2">
+                      <p class="font-semibold">{{ t('orchestrators.create.nodeConfig') }}</p>
+                      <InfoPopover title-key="info.orchestratorSections.nodeConfig.title" description-key="info.orchestratorSections.nodeConfig.description" />
+                    </div>
                   </template>
                   <LangGraphSupervisorNodeConfig />
                 </UCard>
@@ -197,23 +209,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           </div>
 
           <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">
-            <UButton color="neutral" :label="t('common.cancel')" :to="localePath(`/orchestrators/${instanceId}`)" variant="ghost" />
-            <UPopover>
-              <UButton type="button" :label="t('common.save')" />
-              <template #content="{ close }">
-                <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-                  <div class="flex justify-end gap-2">
-                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                    <UButton
-                      :loading="loading"
-                      :label="t('common.save')"
-                      @click="orchestratorEditFormRef?.$el?.requestSubmit?.(); close()"
-                    />
-                  </div>
-                </div>
-              </template>
-            </UPopover>
+            <UButton color="neutral" :label="t('common.cancel')" :to="localePath(`/orchestrators/${instanceId}`)" variant="outline" />
+            <ConfirmActionPopover
+              label-key="common.save"
+              confirm-title-key="common.saveConfirmTitle"
+              confirm-message-key="common.saveConfirmMessage"
+              confirm-label-key="common.saveConfirmFriendly"
+              :loading="loading"
+              :on-confirm="() => orchestratorEditFormRef?.$el?.requestSubmit?.()"
+            />
           </div>
         </UForm>
       </div>

@@ -7,6 +7,21 @@
   "common": {
     "cancel": "Abbrechen",
     "save": "Speichern",
+    "update": "Aktualisieren",
+    "saveNow": "Jetzt speichern",
+    "saveConfirm": "Änderungen speichern?",
+    "saveConfirmTitle": "Änderungen speichern",
+    "updateConfirmTitle": "Änderungen aktualisieren",
+    "deleteConfirmTitle": "Löschen bestätigen",
+    "addConfirmTitle": "Hinzufügen bestätigen",
+    "saveConfirmMessage": "Ihre Änderungen werden sofort übernommen.",
+    "updateConfirmMessage": "Änderungen treten in Kraft.",
+    "deleteConfirmMessage": "Dies kann nicht rückgängig gemacht werden.",
+    "saveConfirmFriendly": "Lass uns speichern",
+    "updateConfirmFriendly": "Lass uns jetzt aktualisieren",
+    "deleteConfirmFriendly": "Lass uns löschen",
+    "addConfirmMessage": "Es steht nach der Erstellung zur Verfügung.",
+    "addConfirmFriendly": "Lass uns hinzufügen",
     "create": "Erstellen",
     "delete": "Löschen",
     "deleted": "Gelöscht",
@@ -16,6 +31,8 @@
     "upload": "Hochladen",
     "add": "Hinzufügen",
     "edit": "Bearbeiten",
+    "view": "Anzeigen",
+    "viewDetails": "Details anzeigen",
     "viewAll": "Alle anzeigen",
     "unlimited": "Unbegrenzt",
     "enabled": "Aktiviert",
@@ -33,7 +50,8 @@
     "empty": "—",
     "memoryUnitMB": "MB",
     "remove": "Entfernen",
-    "saveConfirm": "Änderungen speichern?"
+    "purge": "Bereinigen",
+    "purgeConfirm": "Diesen Datensatz dauerhaft löschen? Dies kann nicht rückgängig gemacht werden."
   },
   "roles": {
     "sysAdmin": "System-Admin",
@@ -197,6 +215,8 @@
     "llmConfigs": "LLM-Konfigurationen",
     "llmConfigsDescription": "Bring Your Own Key (BYOK) LLM-Provider-Konfigurationen.",
     "addConfig": "Konfiguration hinzufügen",
+    "addConfigTitle": "Neue Konfiguration hinzufügen",
+    "addConfigMessage": "Sie steht Ihrer Organisation zur Verfügung.",
     "baseUrl": "Basis-URL",
     "created": "Erstellt",
     "configDeleted": "Konfiguration gelöscht",
@@ -220,7 +240,8 @@
     "none": "Keine",
     "selectModel": "Modell auswählen…",
     "modelPlaceholder": "z.B. gpt-4o, gemini-2.0-flash",
-    "saveDefaults": "Standardwerte speichern",
+    "saveOrchestratorDefaultsTitle": "Orchestrator-Standardwerte speichern",
+    "saveOrchestratorDefaultsMessage": "Diese Werte füllen neue Orchestrator-Instanzen vor. Bestehende Instanzen sind nicht betroffen.",
     "defaultsSaved": "Standardwerte gespeichert",
     "failedSaveDefaults": "Standardwerte konnten nicht gespeichert werden",
     "selectFromList": "Aus Liste auswählen",
@@ -243,7 +264,7 @@
     "failedUpdateConfig": "Konfiguration konnte nicht aktualisiert werden",
     "failedAddConfig": "Konfiguration konnte nicht hinzugefügt werden",
     "configName": "Konfigurationsname",
-    "configNameDescription": "Eindeutiger Name für diese Konfiguration (z.B. 'primary', 'fast')",
+    "configNameDescription": "Name für diese Konfiguration (z.B. 'primary', 'fast')",
     "primaryPlaceholder": "primary",
     "provider": "Provider",
     "providerRequired": "Provider ist erforderlich",
@@ -428,6 +449,8 @@
     "settings": "Einstellungen",
     "llmProviders": "LLM-Provider",
     "addModel": "Modell hinzufügen",
+    "addModelTitle": "Modell zum Katalog hinzufügen",
+    "addModelMessage": "Es steht im Modellkatalog zur Auswahl zur Verfügung.",
     "editModel": "Modell bearbeiten",
     "modelUpdated": "Modell aktualisiert",
     "modelAdded": "Modell hinzugefügt",
@@ -496,7 +519,8 @@
     "notFound": "Seite nicht gefunden",
     "notFoundDescription": "Diese Seite konnte leider nicht gefunden werden.",
     "error": "Fehler",
-    "unknown": "unbekannt"
+    "unknown": "unbekannt",
+    "purgeReferencedError": "Bereinigung nicht möglich: Der Datensatz wird noch von aktiven Elementen referenziert."
   },
   "settingsGroups": {
     "llm": "LLM",
@@ -600,6 +624,148 @@
     "azure": "Azure OpenAI",
     "litellm": "LiteLLM",
     "tensorzero": "TensorZero"
+  },
+  "info": {
+    "pages": {
+      "dashboard": {
+        "title": "Dashboard",
+        "description": "**Funktion:**\n\nZentrale Übersicht für die AI-Orchestrierung Ihrer Organisation. Zeigt:\n\n- **Orchestrator-Anzahl** — Gesamt, Hot-, Warm- und Cold-Tier\n- **Pool-Statistiken** — Gemeinsame Modelle, Speicher (nur Sys-Admin)\n- **Schnellaktionen** — Chat starten, Orchestratoren anzeigen, Plugins verwalten\n\n**Tiers:** Hot = sofort geladen; Warm = vorgewärmt; Cold = on-demand."
+      },
+      "chat": {
+        "title": "Chat",
+        "description": "**Funktion:**\n\nInteraktiver Bereich zum Testen von Orchestratoren mit echten Gesprächen.\n\n**Verwendung:**\n1. Orchestrator in der Sidebar wählen (muss aktiv und bereit sein)\n2. Nachricht eingeben und Enter drücken\n3. Antwort, Agent-Schritte und Tool-Quellen anzeigen\n\n**Features:** Streaming-Antworten, aufklappbare Schritte und Quellen, Sitzung bleibt bis zum Löschen."
+      },
+      "orchestrators": {
+        "title": "Orchestratoren",
+        "description": "**Funktion:**\n\nAI-Orchestrator-Instanzen erstellen und verwalten, die Ihre Plugins ausführen.\n\n**Aktionen:** Load, Unload, Activate, Deactivate, Clone. Spalten: Name, Framework, Mode, Tier, Status, Ready."
+      },
+      "plugins": {
+        "title": "Plugins",
+        "description": "**Funktion:**\n\nPlugins durchsuchen und verwalten, die Orchestrator-Funktionen erweitern.\n\n**Typen:** System (plattformweit) | Org (pro Organisation). Aktionen: Aktivieren/Deaktivieren, Details anzeigen, konfigurieren."
+      },
+      "profile": {
+        "title": "Profil",
+        "description": "**Funktion:**\n\nPersönliche Kontoeinstellungen. **Bereiche:** Account (ID, Rolle), Profil (Name, E-Mail), Passwort. Änderungen gelten sofort."
+      }
+    },
+    "settings": {
+      "orgIdentity": {
+        "title": "Organisation",
+        "description": "**Inhalt:**\n\nSchreibgeschützte Organisationsidentität: ID, Slug, Domain, Abo-Stufe, Status. Nur Sys-Admins können diese Werte ändern."
+      },
+      "orgProfile": {
+        "title": "Organisationsprofil",
+        "description": "**Funktion:**\n\nBearbeitbares öffentliches Profil für Org-Mitglieder sichtbar. Anzeigename, Kontakt-E-Mail, Website, Logo, Beschreibung. Nur Org-Admins können bearbeiten."
+      },
+      "members": {
+        "title": "Mitglieder",
+        "description": "**Funktion:**\n\nVerwalten, wer zu Ihrer Organisation gehört. Mitglieder hinzufügen, Admins befördern/degradieren, entfernen. Nur Org-Admins können verwalten."
+      },
+      "llmConfigs": {
+        "title": "LLM-Konfigurationen",
+        "description": "**Funktion:**\n\nBYOK — API-Schlüssel für LLM-Provider speichern. Unterstützt: OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero. Pro Config: Name, Provider, API-Key, optionale Base-URL."
+      },
+      "orchestrators": {
+        "title": "Orchestrator-Einstellungen",
+        "description": "**Funktion:**\n\nStandardwerte beim Erstellen **neuer** Orchestratoren vorausgefüllt. Standard: LLM-Config, Modell, Max-Tokens, Timeout. **Bestehende Instanzen sind nicht betroffen.**"
+      },
+      "centralPoints": {
+        "title": "Central Points",
+        "description": "**Funktion:**\n\nStabile API-Endpunkte, die Orchestrator-Identität abstrahieren. Clients nutzen Central-Point-ID; Sie können Orchestratoren wechseln ohne Client-Änderungen. Private (Auth erforderlich) oder öffentlich."
+      }
+    },
+    "admin": {
+      "orgs": {
+        "title": "Organisationen",
+        "description": "**Funktion:**\n\nOrganisationsverwaltung systemweit (nur Sys-Admin). Organisationen erstellen, Tier-Quotas setzen, Domains verwalten. Tier-Quotas steuern max. Orchestratoren, Mitglieder usw."
+      },
+      "orgDetail": {
+        "title": "Organisationsdetails",
+        "description": "**Funktion:**\n\nEine Organisation bearbeiten (nur Sys-Admin). Bereiche: Profil, Tier-Quotas, Mitglieder. Vorschau der Quota-Nutzung."
+      },
+      "users": {
+        "title": "Benutzer",
+        "description": "**Funktion:**\n\nPlattform-Benutzerverwaltung (nur Sys-Admin). Benutzer erstellen, bearbeiten, löschen. System-Admin-Rolle zuweisen. Benutzer können mehreren Organisationen angehören."
+      },
+      "systemPlugins": {
+        "title": "System-Plugins",
+        "description": "**Funktion:**\n\nPlugins verwalten, die für **alle** Organisationen verfügbar sind (nur Sys-Admin). Tabs: System | Org. Hochladen, Aktivieren/Deaktivieren, Details anzeigen."
+      },
+      "globalSettings": {
+        "title": "Globale Einstellungen",
+        "description": "**Funktion:**\n\nPlattformweite Standardwerte (nur Sys-Admin). Abo-Stufen, Modell-Katalog, Feature-Einstellungen. Einige pro Org überschreibbar."
+      },
+      "pool": {
+        "title": "Instance Pool",
+        "description": "**Funktion:**\n\nEchtzeit-Pool-Statistiken (nur Sys-Admin). Gesamt-Instanzen, Hot-/Warm-/Cold-Tier, gemeinsame Modelle, Speicher. Aktualisiert sich alle 30 Sekunden."
+      },
+      "health": {
+        "title": "Systemstatus",
+        "description": "**Funktion:**\n\nSystem- und Dienstestatus (nur Sys-Admin). PostgreSQL, Redis, MongoDB, geladene Orchestrator-Instanzen prüfen."
+      }
+    },
+    "fields": {
+      "displayName": {
+        "title": "Anzeigename",
+        "description": "**Was es ist:**\n\nÖffentlicher Name in UI und Integrationen. Für Branding und Identifikation, nicht für Authentifizierung."
+      },
+      "llmConfig": {
+        "provider": {
+          "title": "Provider",
+          "description": "**Was es ist:**\n\nLLM-Provider (OpenAI, Anthropic, Google usw.). Bestimmt API-Format und Endpoint. Wählen Sie den Provider mit Ihrem API-Schlüssel."
+        },
+        "model": {
+          "title": "Modell",
+          "description": "**Was es ist:**\n\nModellkennung (z.B. gpt-4o, gemini-2.0-flash). Muss vom gewählten Provider unterstützt werden."
+        },
+        "apiKey": {
+          "title": "API-Schlüssel",
+          "description": "**Was es ist:**\n\nIhr API-Schlüssel für den Provider. Verschlüsselt gespeichert. Nie in Logs oder UI nach dem Speichern angezeigt."
+        }
+      },
+      "centralPoint": {
+        "endpoint": {
+          "title": "Endpoint-URL",
+          "description": "**Was es ist:**\n\nStabile URL für Chat-Completion: POST /api/chat/completion. Header: X-ORG-ID, X-CENTRAL-ID, Authorization (für private)."
+        },
+        "apiKey": {
+          "title": "API-Schlüssel",
+          "description": "**Private Central Points:**\n\nClients müssen Authorization: Bearer YOUR_TOKEN senden. **Öffentlich:** Kein Auth-Header erforderlich."
+        }
+      },
+      "orchestrator": {
+        "framework": {
+          "title": "Framework",
+          "description": "**Was es ist:**\n\nOrchestrierungs-Framework: LangGraph, Google ADK, OpenAI Agents. Bestimmt Graph-Struktur, Node-Typen und Ausführungsmodell. Nach Erstellung unveränderlich."
+        },
+        "llmConfig": {
+          "title": "LLM-Konfiguration",
+          "description": "**Was es ist:**\n\nLLM-Config, die dieser Orchestrator für Inference nutzt. Muss aus den LLM-Konfigurationen Ihrer Org stammen (Einstellungen → LLM-Configs)."
+        }
+      }
+    },
+    "orchestratorSections": {
+      "createBasic": {
+        "title": "Basis",
+        "description": "**Funktion:**\n\nZentrale Einstellungen für den neuen Orchestrator.\n\n**Felder:**\n- **Name** — Eindeutige Kennung (10–55 Zeichen). Wird in URLs und API verwendet.\n- **Framework** — LangGraph, Google ADK oder OpenAI Agents. **Nach Erstellung unveränderlich.**\n- **Mode** — Supervisor (Multi-Agent) oder andere Modi. Abhängig vom Framework.\n- **Initial tier** — Hot (sofort laden), Warm (vorgewärmt), Cold (on-demand). Beeinflusst Pool-Speicher."
+      },
+      "createPlugins": {
+        "title": "Plugins",
+        "description": "**Funktion:**\n\nPlugins auswählen, die diesem Orchestrator Funktionen hinzufügen.\n\n**Ablauf:**\n1. **Add Plugin** klicken, um die Auswahl zu öffnen\n2. Ein oder mehrere Plugins suchen und hinzufügen (erforderlich)\n3. Einstellungen jedes Plugins unter der Tabelle konfigurieren\n\n**Hinweis:** Jedes Plugin kann Pflichtfelder haben. Validierung vor dem Erstellen."
+      },
+      "supervisorLlmConfig": {
+        "title": "LLM-Config (Supervisor)",
+        "description": "**Funktion:**\n\nStandard-LLM-Einstellungen für alle Nodes im Supervisor-Graph.\n\n**Felder:** Standard-LLM-Config, Modell, Temperature, Max-Tokens, Timeout.\n\n**Überschreiben:** Node-Config-Bereich ermöglicht pro-Node-Überschreibungen (Router, Planner, Synthesizer usw.)."
+      },
+      "nodeConfig": {
+        "title": "Node-Config",
+        "description": "**Funktion:**\n\nLLM-Einstellungen pro Node im Supervisor-Graph überschreiben.\n\n**Nodes:** Router, Planner, Synthesizer, Clarifier, Responder, Validation, Error Handler.\n\n**Pro Node:** LLM-Config, Modell, Temperature, Max-Tokens, Timeout überschreiben. Leer lassen für Standard aus LLM-Config oben."
+      },
+      "editBasic": {
+        "title": "Basis",
+        "description": "**Funktion:**\n\nMetadata und Tier bearbeiten. Framework und Mode sind **unveränderlich** nach Erstellung.\n\n**Bearbeitbar:** Name, Tier. **Nur Supervisor:** LLM-Config in Supervisor Settings unten. **Nicht-Supervisor:** LLM-Config hier auswählen — wird für alle Inference verwendet."
+      }
+    }
   },
   "centralPoints": {
     "selectOrgTitle": "Organisation auswählen",

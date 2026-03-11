@@ -53,7 +53,7 @@ const llmConfigPlaceholder = computed(() => {
             :title="supervisor.defaultModelManual ? t('settings.selectFromList') : t('settings.enterManually')"
             color="neutral"
             size="sm"
-            variant="ghost"
+            variant="outline"
             @click="supervisor.defaultModelManual = !supervisor.defaultModelManual; supervisor.defaultModelName = undefined"
           />
         </div>
@@ -138,7 +138,7 @@ const llmConfigPlaceholder = computed(() => {
             :title="supervisor.nodeModelManual['autocompact'] ? t('settings.selectFromList') : t('settings.enterManually')"
             color="neutral"
             size="sm"
-            variant="ghost"
+            variant="outline"
             @click="supervisor.nodeModelManual['autocompact'] = !supervisor.nodeModelManual['autocompact']; supervisor.autocompactNode.model_name = ''"
           />
         </div>

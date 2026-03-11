@@ -88,7 +88,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <template #footer>
       <div class="flex justify-end">
         <UDropdownMenu :items="[localeItems]">
-          <UButton color="neutral" variant="ghost" size="sm" icon="i-lucide-languages" :label="currentLocaleName" />
+          <UButton color="neutral" variant="outline" size="sm" icon="i-lucide-languages" :label="currentLocaleName" />
         </UDropdownMenu>
       </div>
     </template>

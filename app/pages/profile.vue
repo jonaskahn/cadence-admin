@@ -90,6 +90,9 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
+        <template #right>
+          <InfoPopover title-key="info.pages.profile.title" description-key="info.pages.profile.description" />
+        </template>
       </UDashboardNavbar>
     </template>
 
@@ -132,23 +135,14 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
             <UFormField :label="t('profile.email')" name="email">
               <UInput v-model="profileState.email" class="w-full" :placeholder="t('profile.emailPlaceholder')" type="email" />
             </UFormField>
-            <UPopover>
-              <UButton class="w-fit" :label="t('profile.saveProfile')" />
-              <template #content="{ close }">
-                <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-                  <div class="flex justify-end gap-2">
-                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                    <UButton
-                      :loading="savingProfile"
-                      class="w-fit"
-                      :label="t('profile.saveProfile')"
-                      @click="profileFormRef?.$el?.requestSubmit?.(); close()"
-                    />
-                  </div>
-                </div>
-              </template>
-            </UPopover>
+            <ConfirmActionPopover
+              label-key="common.save"
+              confirm-title-key="common.saveConfirmTitle"
+              confirm-message-key="common.saveConfirmMessage"
+              confirm-label-key="common.saveConfirmFriendly"
+              :loading="savingProfile"
+              :on-confirm="() => profileFormRef?.$el?.requestSubmit?.()"
+            />
           </UForm>
         </UCard>
 
@@ -164,23 +158,14 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
             <UFormField :label="t('profile.newPassword')" name="new_password">
               <UInput v-model="passwordState.new_password" class="w-full" type="password" />
             </UFormField>
-            <UPopover>
-              <UButton class="w-fit" :label="t('profile.updatePassword')" />
-              <template #content="{ close }">
-                <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-                  <div class="flex justify-end gap-2">
-                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                    <UButton
-                      :loading="changingPassword"
-                      class="w-fit"
-                      :label="t('profile.updatePassword')"
-                      @click="passwordFormRef?.$el?.requestSubmit?.(); close()"
-                    />
-                  </div>
-                </div>
-              </template>
-            </UPopover>
+            <ConfirmActionPopover
+              label-key="common.update"
+              confirm-title-key="common.updateConfirmTitle"
+              confirm-message-key="common.updateConfirmMessage"
+              confirm-label-key="common.updateConfirmFriendly"
+              :loading="changingPassword"
+              :on-confirm="() => passwordFormRef?.$el?.requestSubmit?.()"
+            />
           </UForm>
         </UCard>
       </div>

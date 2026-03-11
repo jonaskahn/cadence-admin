@@ -19,8 +19,8 @@ provide('canUseCentralPoints', canUseCentralPoints)
 
 const links = computed<NavigationMenuItem[][]>(() => {
   const base = [
-    { label: t('nav.general'), icon: 'i-lucide-user', to: localePath('/settings'), exact: true },
-    { label: t('nav.members'), icon: 'i-lucide-users', to: localePath('/settings/members') },
+    { label: t('nav.general'), icon: 'i-lucide-blocks', to: localePath('/settings'), exact: true },
+    { label: t('nav.members'), icon: 'i-lucide-contact', to: localePath('/settings/members') },
     { label: t('nav.llmConfigs'), icon: 'i-lucide-key', to: localePath('/settings/llm-configs') },
     { label: t('nav.orchestrators'), icon: 'i-lucide-cpu', to: localePath('/settings/orchestrators') },
     { label: t('nav.centralPoints'), icon: 'i-lucide-radio', to: localePath('/settings/central-points') }
@@ -44,7 +44,7 @@ const links = computed<NavigationMenuItem[][]>(() => {
     </template>
 
     <template #body>
-      <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 max-w-4xl lg::max-w-2xl mx-auto">
+      <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 w-full max-w-6xl mx-auto">
         <NuxtPage />
       </div>
     </template>

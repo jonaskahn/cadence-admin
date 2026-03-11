@@ -57,6 +57,7 @@ export function useLangGraphSupervisor(
 
   const llmConfigOptions = computed(() =>
     (llmConfigs.value ?? [])
+      .filter((c) => !c.is_deleted && c.is_enabled !== false)
       .filter((c) => !supportedProviders.value || supportedProviders.value.includes(c.provider))
       .map((c) => ({
         label: `${c.name} (${providerLabel(c.provider)})`,

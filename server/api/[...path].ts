@@ -2,7 +2,6 @@ import type { H3Event } from 'h3'
 import { deleteCookie, getCookie, sendStream, setCookie } from 'h3'
 
 const COOKIE_NAME = 'ctx-ca-tk'
-const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 7
 const TOKEN_PLACEHOLDER = '[set]'
 const METHODS_WITH_BODY = new Set(['POST', 'PUT', 'PATCH', 'DELETE'])
 const CONTENT_TYPE_JSON = 'application/json'
@@ -65,13 +64,13 @@ async function handleLogin(event: H3Event, url: string, headers: Record<string, 
     const errBody = await response.text()
     throw createError({ statusCode: response.status, message: errBody })
   }
-  const data = (await response.json()) as { token?: string }
+  const data = (await response.json()) as { token?: string; expires_in?: number }
   if (data.token) {
     setCookie(event, COOKIE_NAME, data.token, {
       httpOnly: true,
       sameSite: 'lax',
       path: '/',
-      maxAge: COOKIE_MAX_AGE_SECONDS
+      maxAge: data.expires_in ?? 60 * 60 * 3
     })
   }
   return { token: TOKEN_PLACEHOLDER }

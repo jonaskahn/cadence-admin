@@ -286,7 +286,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <template #header>
         <UDashboardNavbar :title="t('orchestrators.create.title')">
           <template #leading>
-            <UButton icon="i-lucide-arrow-left" :to="localePath('/orchestrators')" variant="ghost" />
+            <UButton icon="i-lucide-arrow-left" :to="localePath('/orchestrators')" variant="outline" />
+          </template>
+          <template #right>
+            <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
           </template>
         </UDashboardNavbar>
       </template>
@@ -298,7 +301,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               <!-- Section 1: Basic -->
               <UCard class="min-w-0 w-full">
                 <template #header>
-                  <p class="font-semibold">{{ t('orchestrators.create.basic') }}</p>
+                  <div class="flex items-center gap-2">
+                    <p class="font-semibold">{{ t('orchestrators.create.basic') }}</p>
+                    <InfoPopover title-key="info.orchestratorSections.createBasic.title" description-key="info.orchestratorSections.createBasic.description" />
+                  </div>
                 </template>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <UFormField :label="t('dashboard.name')" name="name" required>
@@ -320,14 +326,17 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               <UCard class="min-w-0 w-full">
                 <template #header>
                   <div class="flex items-center justify-between w-full">
-                    <p class="font-semibold">{{ t('orchestrators.create.plugins') }}</p>
+                    <div class="flex items-center gap-2">
+                      <p class="font-semibold">{{ t('orchestrators.create.plugins') }}</p>
+                      <InfoPopover title-key="info.orchestratorSections.createPlugins.title" description-key="info.orchestratorSections.createPlugins.description" />
+                    </div>
                     <UButton icon="i-lucide-plus" :label="t('orchestrators.create.addPlugin')" size="sm" variant="outline" @click="showPluginSelector = true" />
                   </div>
                 </template>
                 <div class="flex flex-col gap-4">
                   <UTable :columns="pluginTableColumns" :data="pluginTableData" class="w-full min-w-0">
                     <template #remove-cell="{ row }">
-                      <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="ghost" @click="removePlugin(row.index)" />
+                      <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="outline" @click="removePlugin(row.index)" />
                     </template>
                   </UTable>
 
@@ -349,13 +358,19 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 >
                   <UCard class="min-w-0 w-full">
                     <template #header>
-                      <p class="font-semibold">{{ t('orchestrators.create.llmConfig') }}</p>
+                      <div class="flex items-center gap-2">
+                        <p class="font-semibold">{{ t('orchestrators.create.llmConfig') }}</p>
+                        <InfoPopover title-key="info.orchestratorSections.supervisorLlmConfig.title" description-key="info.orchestratorSections.supervisorLlmConfig.description" />
+                      </div>
                     </template>
                     <LangGraphSupervisorLLMConfig />
                   </UCard>
                   <UCard class="min-w-0 w-full">
                     <template #header>
-                      <p class="font-semibold">{{ t('orchestrators.create.nodeConfig') }}</p>
+                      <div class="flex items-center gap-2">
+                        <p class="font-semibold">{{ t('orchestrators.create.nodeConfig') }}</p>
+                        <InfoPopover title-key="info.orchestratorSections.nodeConfig.title" description-key="info.orchestratorSections.nodeConfig.description" />
+                      </div>
                     </template>
                     <LangGraphSupervisorNodeConfig />
                   </UCard>
@@ -364,8 +379,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </div>
 
             <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">
-              <UButton color="neutral" :label="t('common.cancel')" :to="localePath('/orchestrators')" variant="ghost" />
-              <UButton :loading="loading" :label="t('common.create')" type="submit" />
+              <UButton color="neutral" :label="t('common.cancel')" :to="localePath('/orchestrators')" variant="outline" />
+              <UButton color="primary" variant="outline" :loading="loading" :label="t('common.create')" type="submit" />
             </div>
           </UForm>
         </div>

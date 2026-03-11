@@ -108,62 +108,65 @@ async function onDeactivate() {
     <template #header>
       <UDashboardNavbar :title="orchestrator?.name ?? t('orchestrators.title')">
         <template #leading>
-          <UButton icon="i-lucide-arrow-left" :to="localePath('/orchestrators')" variant="ghost" />
+          <UButton icon="i-lucide-arrow-left" :to="localePath('/orchestrators')" variant="outline" />
         </template>
         <template #right>
-          <template v-if="auth.isOrgAdmin.value && orchestrator">
-            <UButton icon="i-lucide-pencil" :label="t('common.edit')" size="sm" variant="outline" :to="localePath(`/orchestrators/${instanceId}/edit`)" />
+          <div class="flex items-center gap-2">
+            <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
+            <template v-if="auth.isOrgAdmin.value && orchestrator">
+            <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="sm" :to="localePath(`/orchestrators/${instanceId}/edit`)" />
             <template v-if="orchestrator.status === 'active'">
               <UPopover>
-                <UButton icon="i-lucide-play" :label="t('orchestrators.load')" size="sm" variant="outline" />
+                <UButton color="primary" variant="outline" icon="i-lucide-play" :label="t('orchestrators.load')" size="sm" />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.loadConfirm', { name: orchestrator.name }) }}</p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                      <UButton :label="t('orchestrators.load')" :loading="loadingId" @click="async () => { await onLoad(); close() }" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                      <UButton color="primary" variant="outline" :label="t('orchestrators.load')" :loading="loadingId" @click="async () => { await onLoad(); close() }" />
                     </div>
                   </div>
                 </template>
               </UPopover>
               <UPopover>
-                <UButton icon="i-lucide-square" :label="t('orchestrators.unload')" size="sm" variant="outline" />
+                <UButton color="primary" variant="outline" icon="i-lucide-square" :label="t('orchestrators.unload')" size="sm" />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.unloadConfirm', { name: orchestrator.name }) }}</p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                      <UButton :label="t('orchestrators.unload')" :loading="unloadingId" @click="async () => { await onUnload(); close() }" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                      <UButton color="primary" variant="outline" :label="t('orchestrators.unload')" :loading="unloadingId" @click="async () => { await onUnload(); close() }" />
                     </div>
                   </div>
                 </template>
               </UPopover>
               <UPopover>
-                <UButton color="neutral" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="sm" variant="outline" />
+                <UButton color="primary" variant="outline" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="sm" />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: orchestrator.name }) }}</p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                      <UButton :label="t('orchestrators.deactivate')" :loading="deactivating" @click="async () => { await onDeactivate(); close() }" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                      <UButton color="primary" variant="outline" :label="t('orchestrators.deactivate')" :loading="deactivating" @click="async () => { await onDeactivate(); close() }" />
                     </div>
                   </div>
                 </template>
               </UPopover>
             </template>
             <UPopover v-else>
-              <UButton color="success" icon="i-lucide-route" :label="t('orchestrators.activate')" size="sm" variant="outline" />
+              <UButton color="primary" variant="outline" icon="i-lucide-route" :label="t('orchestrators.activate')" size="sm" />
               <template #content="{ close }">
                 <div class="p-4 min-w-48">
                   <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.activateConfirm', { name: orchestrator.name }) }}</p>
                   <div class="flex justify-end gap-2">
-                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                    <UButton color="success" :label="t('orchestrators.activate')" :loading="activating" @click="async () => { await onActivate(); close() }" />
+                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                    <UButton color="primary" variant="outline" :label="t('orchestrators.activate')" :loading="activating" @click="async () => { await onActivate(); close() }" />
                   </div>
                 </div>
               </template>
             </UPopover>
-          </template>
+            </template>
+          </div>
         </template>
       </UDashboardNavbar>
     </template>
@@ -226,18 +229,16 @@ async function onDeactivate() {
                 <p class="font-semibold">Plugin Settings</p>
                 <p class="text-dimmed text-xs mt-0.5">Configure settings for each active plugin. Activate a version to switch.</p>
               </div>
-              <UPopover v-if="auth.isOrgAdmin.value">
-                <UButton :label="t('common.save')" size="sm" />
-                <template #content="{ close }">
-                  <div class="p-4 min-w-48">
-                    <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-                    <div class="flex justify-end gap-2">
-                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                      <UButton :loading="savingPluginSettings" :label="t('common.save')" size="sm" @click="async () => { await savePluginSettings(); close() }" />
-                    </div>
-                  </div>
-                </template>
-              </UPopover>
+              <ConfirmActionPopover
+                v-if="auth.isOrgAdmin.value"
+                label-key="common.save"
+                size="sm"
+                confirm-title-key="common.saveConfirmTitle"
+                confirm-message-key="common.saveConfirmMessage"
+                confirm-label-key="common.saveConfirmFriendly"
+                :loading="savingPluginSettings"
+                :on-confirm="savePluginSettings"
+              />
             </div>
           </template>
           <OrchestratorPluginSettings

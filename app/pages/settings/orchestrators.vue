@@ -66,10 +66,12 @@ if (initLlmConfigId) {
 
 const llmConfigOptions = computed(() => [
   { label: t('settings.none'), value: null },
-  ...(llmConfigs.value || []).map((c) => ({
-    label: `${c.name} (${providerLabel(c.provider)})`,
-    value: c.id
-  }))
+  ...(llmConfigs.value || [])
+    .filter((c) => !c.is_deleted && c.is_enabled !== false)
+    .map((c) => ({
+      label: `${c.name} (${providerLabel(c.provider)})`,
+      value: c.id
+    }))
 ])
 
 const modelOptions = computed(() => {
@@ -137,18 +139,23 @@ async function save() {
 
 <template>
   <div class="flex flex-col gap-6">
-    <UPageCard
-      :description="t('settings.orchestratorSettingsDescription')"
-      orientation="horizontal"
-      :title="t('settings.orchestratorSettings')"
-      variant="naked"
-    />
+    <UPageCard orientation="horizontal" variant="naked">
+      <template #header>
+        <div class="flex flex-col gap-0.5">
+          <div class="flex items-center gap-2">
+            <span class="font-semibold text-sm">{{ t('settings.orchestratorSettings') }}</span>
+            <InfoPopover title-key="info.settings.orchestrators.title" description-key="info.settings.orchestrators.description" />
+          </div>
+          <p class="text-sm text-dimmed">{{ t('settings.orchestratorSettingsDescription') }}</p>
+        </div>
+      </template>
+    </UPageCard>
     <UCard>
       <div class="flex flex-col gap-5">
         <UFormField :description="t('settings.defaultLlmConfigDescription')" :label="t('settings.defaultLlmConfig')">
           <USelect
             v-model="form.default_llm_config_id"
-            :disabled="llmConfigsLoading"
+            :disabled="llmConfigsLoading || !auth.isAdmin.value"
             :items="llmConfigOptions"
             :loading="llmConfigsLoading"
             class="w-full"
@@ -160,40 +167,63 @@ async function save() {
 
         <UFormField v-if="form.default_llm_config_id" :description="t('settings.defaultModelDescription')" :label="t('settings.defaultModelName')">
           <div class="flex gap-2 items-center w-full">
-            <UInput v-if="modelManual" v-model="form.default_model_name" class="flex-1" :placeholder="t('settings.modelPlaceholder')" />
-            <USelect v-else v-model="form.default_model_name" :items="modelOptions" class="flex-1" :placeholder="t('settings.selectModel')" />
+            <UInput
+              v-if="modelManual"
+              v-model="form.default_model_name"
+              class="flex-1"
+              :disabled="!auth.isAdmin.value"
+              :placeholder="t('settings.modelPlaceholder')"
+            />
+            <USelect
+              v-else
+              v-model="form.default_model_name"
+              :items="modelOptions"
+              class="flex-1"
+              :disabled="!auth.isAdmin.value"
+              :placeholder="t('settings.selectModel')"
+            />
             <UButton
               :icon="modelManual ? 'i-lucide-list' : 'i-lucide-pencil'"
               :title="modelManual ? t('settings.selectFromList') : t('settings.enterManually')"
+              :disabled="!auth.isAdmin.value"
               color="neutral"
               size="sm"
-              variant="ghost"
+              variant="outline"
               @click="modelManual = !modelManual; form.default_model_name = null"
             />
           </div>
         </UFormField>
 
         <UFormField :label="t('settings.defaultMaxTokens')">
-          <UInput v-model.number="form.default_max_tokens" class="w-full" :placeholder="t('settings.placeholder4096')" type="number" />
+          <UInput
+            v-model.number="form.default_max_tokens"
+            class="w-full"
+            :disabled="!auth.isAdmin.value"
+            :placeholder="t('settings.placeholder4096')"
+            type="number"
+          />
         </UFormField>
 
         <UFormField :label="t('settings.defaultTimeout')">
-          <UInput v-model.number="form.default_timeout" class="w-full" :placeholder="t('settings.placeholder60')" type="number" />
+          <UInput
+            v-model.number="form.default_timeout"
+            class="w-full"
+            :disabled="!auth.isAdmin.value"
+            :placeholder="t('settings.placeholder60')"
+            type="number"
+          />
         </UFormField>
 
-        <div class="flex justify-end pt-2">
-          <UPopover>
-            <UButton icon="i-lucide-save" :label="t('settings.saveDefaults')" />
-            <template #content="{ close }">
-              <div class="p-4 min-w-48">
-                <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-                <div class="flex justify-end gap-2">
-                  <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                  <UButton :loading="saving" icon="i-lucide-save" :label="t('common.save')" @click="async () => { await save(); close() }" />
-                </div>
-              </div>
-            </template>
-          </UPopover>
+        <div v-if="auth.isAdmin.value" class="flex justify-end pt-2">
+          <ConfirmActionPopover
+            label-key="common.save"
+            icon="i-lucide-save"
+            confirm-title-key="settings.saveOrchestratorDefaultsTitle"
+            confirm-message-key="settings.saveOrchestratorDefaultsMessage"
+            confirm-label-key="common.saveConfirmFriendly"
+            :loading="saving"
+            :on-confirm="save"
+          />
         </div>
       </div>
     </UCard>

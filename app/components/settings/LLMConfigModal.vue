@@ -28,7 +28,7 @@ const providerOptions = computed(() => LLM_PROVIDERS.map((p) => ({ label: provid
 
 const schema = computed(() =>
   z.object({
-    name: z.string().min(1, () => t('common.nameRequired')),
+    name: z.string().min(5, () => t('common.nameRequired')),
     ...(isEdit.value ? {} : { provider: z.string().min(1, () => t('llmConfig.providerRequired')) }),
     api_key: isEdit.value ? z.string().optional() : z.string().min(1, () => t('llmConfig.apiKeyRequired')),
     base_url: z.string().optional(),
@@ -114,23 +114,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="emit('close')" />
-        <UPopover>
-          <UButton type="button" :label="isEdit ? t('llmConfig.saveChanges') : t('settings.addConfig')" />
-          <template #content="{ close }">
-            <div class="p-4 min-w-48">
-              <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-              <div class="flex justify-end gap-2">
-                <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                <UButton
-                  :loading="loading"
-                  :label="isEdit ? t('llmConfig.saveChanges') : t('settings.addConfig')"
-                  @click="llmConfigFormRef?.$el?.requestSubmit?.(); close()"
-                />
-              </div>
-            </div>
-          </template>
-        </UPopover>
+        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="emit('close')" />
+        <ConfirmActionPopover
+          :label-key="isEdit ? 'common.save' : 'settings.addConfig'"
+          :confirm-title-key="isEdit ? 'common.saveConfirmTitle' : 'settings.addConfigTitle'"
+          :confirm-message-key="isEdit ? 'common.saveConfirmMessage' : 'settings.addConfigMessage'"
+          :confirm-label-key="isEdit ? 'common.saveConfirmFriendly' : 'common.addConfirmFriendly'"
+          :loading="loading"
+          :on-confirm="() => llmConfigFormRef?.$el?.requestSubmit?.()"
+        />
       </div>
     </UForm>
   </UCard>

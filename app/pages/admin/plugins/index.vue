@@ -64,6 +64,7 @@ function onDrawerClosed() {
         </template>
         <template #right>
           <div class="flex items-center gap-2">
+            <InfoPopover title-key="info.admin.systemPlugins.title" description-key="info.admin.systemPlugins.description" />
             <UFieldGroup>
               <UButton color="neutral" variant="subtle" :label="activeTab === 'system' ? t('plugins.system') : t('plugins.org')" />
               <UDropdownMenu :items="tabDropdownItems">
@@ -79,7 +80,7 @@ function onDrawerClosed() {
               class="w-56"
               :placeholder="t('common.selectOrg')"
             />
-            <UButton icon="i-lucide-refresh-cw" color="neutral" variant="ghost" :aria-label="t('common.refresh')" @click="refresh()" />
+            <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" :aria-label="t('common.refresh')" @click="refresh()" />
             <UButton v-if="activeTab === 'system'" icon="i-lucide-upload" :label="t('admin.uploadPlugin')" @click="showUpload = true" />
           </div>
         </template>

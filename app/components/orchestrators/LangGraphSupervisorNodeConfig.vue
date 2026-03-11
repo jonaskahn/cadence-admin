@@ -66,7 +66,7 @@ function modelDescription(key: NodeKey): string {
                 :title="supervisor.nodeModelManual[key] ? t('settings.selectFromList') : t('settings.enterManually')"
                 color="neutral"
                 size="sm"
-                variant="ghost"
+                variant="outline"
                 @click="supervisor.nodeModelManual[key] = !supervisor.nodeModelManual[key]; supervisor.nodeConfigs[key].model_name = ''"
               />
             </div>

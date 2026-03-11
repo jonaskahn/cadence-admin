@@ -79,16 +79,27 @@ const columns = computed(() => [
 <template>
   <div>
     <div class="flex flex-col gap-6">
-      <UPageCard
-:description="t('settings.membersDescription')" :title="t('settings.members')" orientation="horizontal"
-                 variant="naked">
+      <UPageCard orientation="horizontal" variant="naked">
+        <template #header>
+          <div class="flex items-center gap-2">
+            <span class="font-semibold text-sm">{{ t('settings.members') }}</span>
+            <InfoPopover title-key="info.settings.members.title" description-key="info.settings.members.description" />
+          </div>
+          <p class="mt-0.5 text-sm text-dimmed">{{ t('settings.membersDescription') }}</p>
+        </template>
         <UButton
-:label="t('settings.addMember')" class="w-fit lg:ms-auto" icon="i-lucide-user-plus"
-                 @click="showAdd = true"/>
+          v-if="auth.isAdmin.value"
+          color="primary"
+          variant="outline"
+          :label="t('settings.addMember')"
+          class="w-fit lg:ms-auto"
+          icon="i-lucide-user-plus"
+          @click="showAdd = true"
+        />
       </UPageCard>
 
-      <UCard>
-        <UTable :columns="columns" :data="members || []">
+      <UCard class="w-full">
+        <UTable :columns="columns" :data="members || []" class="w-full">
           <template #is_admin-cell="{ row }">
             <UBadge :color="row.original.is_admin ? 'warning' : 'neutral'" size="sm" variant="subtle">
               {{ row.original.is_admin ? t('roles.orgAdmin') : t('roles.member') }}
@@ -96,12 +107,13 @@ const columns = computed(() => [
           </template>
 
           <template #actions-cell="{ row }">
-            <div class="flex items-center gap-1">
+            <div v-if="auth.isAdmin.value" class="flex items-center gap-1">
               <UPopover>
                 <UButton
+                  :icon="row.original.is_admin ? 'i-lucide-shield-off' : 'i-lucide-shield'"
                   :label="row.original.is_admin ? t('settings.demote') : t('settings.promote')"
                   size="xs"
-                  variant="ghost"
+                  variant="outline"
                 />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
@@ -109,8 +121,10 @@ const columns = computed(() => [
                       {{ row.original.is_admin ? t('settings.demoteConfirm') : t('settings.promoteConfirm') }}
                     </p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
                       <UButton
+                        color="primary"
+                        variant="outline"
                         :label="row.original.is_admin ? t('settings.demote') : t('settings.promote')"
                         :loading="toggling === row.original.user_id"
                         @click="async () => { await toggleAdmin(row.original); close() }"
@@ -120,12 +134,12 @@ const columns = computed(() => [
                 </template>
               </UPopover>
               <UPopover>
-                <UButton color="error" icon="i-lucide-x" size="xs" variant="ghost" />
+                <UButton color="error" icon="i-lucide-trash" size="xs" />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('settings.removeMemberConfirm') }}</p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
                       <UButton
                         color="error"
                         :label="t('common.remove')"

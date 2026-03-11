@@ -23,6 +23,7 @@ const deactivating = ref<string | null>(null)
 const unloading = ref<string | null>(null)
 const loadingId = ref<string | null>(null)
 const activating = ref<string | null>(null)
+const purging = ref<string | null>(null)
 
 async function onDeactivate(row: OrchestratorResponse) {
   deactivating.value = row.instance_id
@@ -63,6 +64,15 @@ async function onUnload(row: OrchestratorResponse) {
     unloading.value = null
   }
 }
+
+async function onPurge(row: OrchestratorResponse) {
+  purging.value = row.instance_id
+  try {
+    await orchestrators.purge(row.instance_id)
+  } finally {
+    purging.value = null
+  }
+}
 </script>
 
 <template>
@@ -73,7 +83,10 @@ async function onUnload(row: OrchestratorResponse) {
           <UDashboardSidebarCollapse />
         </template>
         <template #right>
-          <UButton v-if="auth.isOrgAdmin.value" icon="i-lucide-plus" :label="t('dashboard.create')" :to="localePath('/orchestrators/create')" />
+          <div class="flex items-center gap-2">
+            <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
+            <UButton v-if="auth.isOrgAdmin.value || auth.isSysAdmin.value" icon="i-lucide-plus" :label="t('dashboard.create')" :to="localePath('/orchestrators/create')" />
+          </div>
         </template>
       </UDashboardNavbar>
     </template>
@@ -111,18 +124,19 @@ async function onUnload(row: OrchestratorResponse) {
 
             <template #actions-cell="{ row }">
               <div class="flex items-center gap-1">
-                <UButton :to="localePath(`/orchestrators/${row.original.instance_id}`)" icon="i-lucide-info" size="xs" variant="ghost" />
+                <UButton :to="localePath(`/orchestrators/${row.original.instance_id}`)" icon="i-lucide-info" :label="t('common.view')" size="xs" variant="outline" />
                 <template v-if="auth.isOrgAdmin.value">
-                  <UButton icon="i-lucide-copy" size="xs" :title="t('orchestrators.clone')" variant="ghost" @click="onClone(row.original)" />
+                  <UButton icon="i-lucide-copy" :label="t('orchestrators.clone')" size="xs" variant="outline" @click="onClone(row.original)" />
                   <template v-if="row.original.status === 'active'">
                     <UPopover>
-                      <UButton icon="i-lucide-play" size="xs" :title="t('orchestrators.load')" variant="ghost" />
+                      <UButton icon="i-lucide-play" :label="t('orchestrators.load')" size="xs" variant="outline" />
                       <template #content="{ close }">
                         <div class="p-4 min-w-48">
                           <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.loadConfirm', { name: row.original.name }) }}</p>
                           <div class="flex justify-end gap-2">
-                            <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                            <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                             <UButton
+                              variant="outline"
                               :label="t('orchestrators.load')"
                               :loading="loadingId === row.original.instance_id"
                               @click="async () => { await onLoad(row.original); close() }"
@@ -132,13 +146,14 @@ async function onUnload(row: OrchestratorResponse) {
                       </template>
                     </UPopover>
                     <UPopover>
-                      <UButton icon="i-lucide-square" size="xs" :title="t('orchestrators.unload')" variant="ghost" />
+                      <UButton icon="i-lucide-square" :label="t('orchestrators.unload')" size="xs" variant="outline" />
                       <template #content="{ close }">
                         <div class="p-4 min-w-48">
                           <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.unloadConfirm', { name: row.original.name }) }}</p>
                           <div class="flex justify-end gap-2">
-                            <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                            <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                             <UButton
+                              variant="outline"
                               :label="t('orchestrators.unload')"
                               :loading="unloading === row.original.instance_id"
                               @click="async () => { await onUnload(row.original); close() }"
@@ -151,16 +166,17 @@ async function onUnload(row: OrchestratorResponse) {
                       <UButton
                         color="error"
                         icon="i-lucide-route-off"
+                        :label="t('orchestrators.deactivate')"
                         size="xs"
-                        :title="t('orchestrators.deactivate')"
-                        variant="ghost"
+                        variant="outline"
                       />
                       <template #content="{ close }">
                         <div class="p-4 min-w-48">
                           <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: row.original.name }) }}</p>
                           <div class="flex justify-end gap-2">
-                            <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                            <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                             <UButton
+                              variant="outline"
                               color="primary"
                               :label="t('orchestrators.deactivate')"
                               :loading="deactivating === row.original.instance_id"
@@ -175,16 +191,17 @@ async function onUnload(row: OrchestratorResponse) {
                     <UButton
                       color="success"
                       icon="i-lucide-route"
+                      :label="t('orchestrators.activate')"
                       size="xs"
-                      :title="t('orchestrators.activate')"
-                      variant="ghost"
+                      variant="outline"
                     />
                     <template #content="{ close }">
                       <div class="p-4 min-w-48">
                         <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.activateConfirm', { name: row.original.name }) }}</p>
                         <div class="flex justify-end gap-2">
-                          <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                          <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton
+                            variant="outline"
                             color="success"
                             :label="t('orchestrators.activate')"
                             :loading="activating === row.original.instance_id"
@@ -195,6 +212,24 @@ async function onUnload(row: OrchestratorResponse) {
                     </template>
                   </UPopover>
                 </template>
+                <UPopover v-if="auth.isSysAdmin.value && row.original.is_deleted">
+                  <UButton color="neutral" icon="i-lucide-shredder" size="xs" />
+                  <template #content="{ close }">
+                    <div class="p-4 min-w-48">
+                      <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
+                      <div class="flex justify-end gap-2">
+                        <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
+                        <UButton
+                          variant="outline"
+                          color="error"
+                          :label="t('common.purge')"
+                          :loading="purging === row.original.instance_id"
+                          @click="async () => { await onPurge(row.original); close() }"
+                        />
+                      </div>
+                    </div>
+                  </template>
+                </UPopover>
               </div>
             </template>
           </UTable>

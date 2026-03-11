@@ -56,12 +56,12 @@ onMounted(async () => {
 
       <UCard v-if="auth.orgList.value.length === 0" class="text-center py-8">
         <p class="text-dimmed">{{ t('auth.noOrgsAvailable') }}</p>
-        <UButton class="mt-2" :label="t('common.refresh')" size="sm" variant="ghost" @click="auth.loadOrgs()" />
+        <UButton class="mt-2" :label="t('common.refresh')" size="sm" variant="outline" @click="auth.loadOrgs()" />
       </UCard>
     </div>
 
     <div class="text-center">
-      <UButton color="neutral" :label="t('auth.signOut')" size="sm" variant="ghost" @click="auth.logout()" />
+      <UButton color="neutral" :label="t('auth.signOut')" size="sm" variant="outline" @click="auth.logout()" />
     </div>
   </div>
 </template>

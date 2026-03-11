@@ -143,10 +143,13 @@ const quotaRows = computed(() => {
     <template #header>
       <UDashboardNavbar :title="org?.display_name || org?.name || orgId">
         <template #leading>
-          <UButton icon="i-lucide-arrow-left" :to="localePath('/admin/orgs')" variant="ghost" />
+          <UButton icon="i-lucide-arrow-left" :to="localePath('/admin/orgs')" variant="outline" />
         </template>
         <template #right>
-          <UButton icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="showAdd = true" />
+          <div class="flex items-center gap-2">
+            <InfoPopover title-key="info.admin.orgDetail.title" description-key="info.admin.orgDetail.description" />
+            <UButton color="primary" variant="outline" icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="showAdd = true" />
+          </div>
         </template>
       </UDashboardNavbar>
     </template>
@@ -226,23 +229,15 @@ const quotaRows = computed(() => {
               </UFormField>
             </div>
             <div class="flex justify-end mt-2">
-              <UPopover>
-                <UButton icon="i-lucide-save" :label="t('llmConfig.saveChanges')" />
-                <template #content="{ close }">
-                  <div class="p-4 min-w-48">
-                    <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-                    <div class="flex justify-end gap-2">
-                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                      <UButton
-                        :loading="saving"
-                        icon="i-lucide-save"
-                        :label="t('llmConfig.saveChanges')"
-                        @click="() => { orgFormRef?.$el?.requestSubmit?.(); close() }"
-                      />
-                    </div>
-                  </div>
-                </template>
-              </UPopover>
+              <ConfirmActionPopover
+                label-key="common.save"
+                icon="i-lucide-save"
+                confirm-title-key="common.saveConfirmTitle"
+                confirm-message-key="common.saveConfirmMessage"
+                confirm-label-key="common.saveConfirmFriendly"
+                :loading="saving"
+                :on-confirm="() => orgFormRef?.$el?.requestSubmit?.()"
+              />
             </div>
           </UForm>
         </UCard>
@@ -278,12 +273,12 @@ const quotaRows = computed(() => {
             </template>
             <template #actions-cell="{ row }">
               <UPopover>
-                <UButton color="error" icon="i-lucide-x" size="xs" variant="ghost" />
+                <UButton color="error" icon="i-lucide-trash" size="xs" />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('admin.removeMemberConfirm') }}</p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
                       <UButton
                         color="error"
                         :label="t('common.remove')"

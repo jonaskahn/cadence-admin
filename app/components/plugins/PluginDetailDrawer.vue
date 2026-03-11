@@ -302,8 +302,9 @@ const isDisabled = computed(() => selectedVersion.value && 'enabled' in selected
               <div class="p-4 min-w-48">
                 <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.enableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
-                  <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                  <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                   <UButton
+                    variant="outline"
                     color="primary"
                     :label="t('pluginDetail.enable')"
                     :loading="enabling"
@@ -321,8 +322,9 @@ const isDisabled = computed(() => selectedVersion.value && 'enabled' in selected
               <div class="p-4 min-w-48">
                 <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.disableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
-                  <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                  <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                   <UButton
+                    variant="outline"
                     color="error"
                     :label="t('pluginDetail.disable')"
                     :loading="disabling"

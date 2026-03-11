@@ -37,7 +37,7 @@ const baseLinks = computed<NavigationMenuItem[]>(() => {
 })
 
 const orgAdminLinks = computed<NavigationMenuItem[]>(() => {
-  if (!auth.currentOrgId.value || !auth.isOrgAdmin.value) return []
+  if (!auth.currentOrgId.value || !auth.isAuthenticated.value) return []
   return [
     {
       label: t('nav.plugins'),
@@ -54,27 +54,32 @@ const orgAdminLinks = computed<NavigationMenuItem[]>(() => {
       children: [
         {
           label: t('nav.general'),
+          icon: 'i-lucide-blocks',
           to: localePath('/settings'),
           exact: true,
           onSelect: closeMenu
         },
         {
           label: t('nav.members'),
+          icon: 'i-lucide-contact',
           to: localePath('/settings/members'),
           onSelect: closeMenu
         },
         {
           label: t('nav.llmConfigs'),
+          icon: 'i-lucide-key',
           to: localePath('/settings/llm-configs'),
           onSelect: closeMenu
         },
         {
           label: t('nav.orchestrators'),
+          icon: 'i-lucide-cpu',
           to: localePath('/settings/orchestrators'),
           onSelect: closeMenu
         },
         {
           label: t('nav.centralPoints'),
+          icon: 'i-lucide-radio',
           to: localePath('/settings/central-points'),
           onSelect: closeMenu
         }

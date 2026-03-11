@@ -58,7 +58,9 @@ watch(
 )
 
 const orchestratorOptions = computed(() =>
-  (orchestrators.value || []).filter((o) => o.status === 'active').map((o) => ({ label: o.name, value: o.instance_id }))
+  (orchestrators.value || [])
+    .filter((o) => o.status === 'active' && !o.is_deleted)
+    .map((o) => ({ label: o.name, value: o.instance_id }))
 )
 
 const visibilityItems = computed(() => [
@@ -67,6 +69,7 @@ const visibilityItems = computed(() => [
 ])
 
 const saving = ref(false)
+const basicInfoFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   saving.value = true
@@ -249,7 +252,7 @@ async function copyToClipboard(text: string) {
     <!-- Back navigation -->
     <div>
       <UButton
-color="neutral" icon="i-lucide-arrow-left" :label="t('centralPoints.backToCenterPoints')" variant="ghost"
+color="neutral" icon="i-lucide-arrow-left" :label="t('centralPoints.backToCenterPoints')" variant="outline"
         @click="router.push(localePath('/settings/central-points'))" />
     </div>
 
@@ -271,30 +274,59 @@ color="neutral" icon="i-lucide-arrow-left" :label="t('centralPoints.backToCenter
       <!-- Section 1: Basic Information -->
       <UCard>
         <template #header>
-          <p class="font-semibold">{{ t('centralPoints.basicInfo') }}</p>
+          <div class="flex items-center gap-2">
+            <p class="font-semibold">{{ t('centralPoints.basicInfo') }}</p>
+            <InfoPopover title-key="info.settings.centralPoints.title" description-key="info.settings.centralPoints.description" />
+          </div>
         </template>
 
-        <UForm :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
+        <UForm ref="basicInfoFormRef" :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
           <UFormField :label="t('centralPoints.name')" name="name">
-            <UInput v-model="state.name" class="w-full" :placeholder="t('centralPoints.namePlaceholder')" />
+            <UInput
+              v-model="state.name"
+              class="w-full"
+              :disabled="!auth.isAdmin.value"
+              :placeholder="t('centralPoints.namePlaceholder')"
+            />
           </UFormField>
           <UFormField :label="t('settings.description')" name="description">
             <UTextarea
-v-model="state.description" class="w-full"
-              :placeholder="t('centralPoints.descriptionPlaceholder')" />
+              v-model="state.description"
+              class="w-full"
+              :disabled="!auth.isAdmin.value"
+              :placeholder="t('centralPoints.descriptionPlaceholder')"
+            />
           </UFormField>
           <UFormField :label="t('centralPoints.orchestrator')" name="orchestrator_id">
             <USelect
-v-model="state.orchestrator_id" :items="orchestratorOptions" class="w-full" label-key="label"
-              :placeholder="t('centralPoints.selectOrchestrator')" value-key="value" />
+              v-model="state.orchestrator_id"
+              :items="orchestratorOptions"
+              class="w-full"
+              :disabled="!auth.isAdmin.value"
+              label-key="label"
+              :placeholder="t('centralPoints.selectOrchestrator')"
+              value-key="value"
+            />
           </UFormField>
           <UFormField :label="t('centralPoints.visibility')" name="visibility">
             <USelect
-v-model="state.visibility" :items="visibilityItems" class="w-full" label-key="label"
-              value-key="value" />
+              v-model="state.visibility"
+              :items="visibilityItems"
+              class="w-full"
+              :disabled="!auth.isAdmin.value"
+              label-key="label"
+              value-key="value"
+            />
           </UFormField>
-          <div class="flex justify-end">
-            <UButton :loading="saving" :label="t('centralPoints.saveChanges')" type="submit" />
+          <div v-if="auth.isAdmin.value" class="flex justify-end">
+            <ConfirmActionPopover
+              label-key="common.save"
+              confirm-title-key="common.saveConfirmTitle"
+              confirm-message-key="common.saveConfirmMessage"
+              confirm-label-key="common.saveConfirmFriendly"
+              :loading="saving"
+              :on-confirm="() => basicInfoFormRef?.$el?.requestSubmit?.()"
+            />
           </div>
         </UForm>
       </UCard>
@@ -302,7 +334,10 @@ v-model="state.visibility" :items="visibilityItems" class="w-full" label-key="la
       <!-- Section 2: API Integration -->
       <UCard>
         <template #header>
-          <p class="font-semibold">{{ t('centralPoints.apiIntegration') }}</p>
+          <div class="flex items-center gap-2">
+            <p class="font-semibold">{{ t('centralPoints.apiIntegration') }}</p>
+            <InfoPopover title-key="info.fields.centralPoint.endpoint.title" description-key="info.fields.centralPoint.endpoint.description" />
+          </div>
           <p class="mt-0.5 text-sm text-dimmed">
             {{ t('centralPoints.apiIntegrationDescription') }}
           </p>

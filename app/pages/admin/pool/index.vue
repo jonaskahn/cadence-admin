@@ -57,7 +57,10 @@ const statCards = computed(() => {
           <UDashboardSidebarCollapse />
         </template>
         <template #right>
-          <UButton icon="i-lucide-refresh-cw" :label="t('common.refresh')" size="sm" variant="ghost" @click="refresh()" />
+          <div class="flex items-center gap-2">
+            <InfoPopover title-key="info.admin.pool.title" description-key="info.admin.pool.description" />
+            <UButton icon="i-lucide-refresh-cw" :label="t('common.refresh')" size="sm" variant="outline" @click="refresh()" />
+          </div>
         </template>
       </UDashboardNavbar>
     </template>

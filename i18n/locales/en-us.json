@@ -7,7 +7,21 @@
   "common": {
     "cancel": "Cancel",
     "save": "Save",
+    "update": "Update",
+    "saveNow": "Save now",
     "saveConfirm": "Save changes?",
+    "saveConfirmTitle": "Save changes",
+    "updateConfirmTitle": "Update changes",
+    "deleteConfirmTitle": "Confirm delete",
+    "addConfirmTitle": "Confirm add",
+    "saveConfirmMessage": "Your changes will be applied immediately.",
+    "updateConfirmMessage": "Changes will take effect.",
+    "deleteConfirmMessage": "This cannot be undone.",
+    "saveConfirmFriendly": "Let's save it",
+    "updateConfirmFriendly": "Let's update it now",
+    "deleteConfirmFriendly": "Let's delete it",
+    "addConfirmMessage": "It will be available after creation.",
+    "addConfirmFriendly": "Let's add it",
     "create": "Create",
     "delete": "Delete",
     "deleted": "Deleted",
@@ -17,6 +31,8 @@
     "upload": "Upload",
     "add": "Add",
     "edit": "Edit",
+    "view": "View",
+    "viewDetails": "View Details",
     "viewAll": "View all",
     "unlimited": "Unlimited",
     "enabled": "Enabled",
@@ -33,7 +49,9 @@
     "other": "Other",
     "empty": "—",
     "memoryUnitMB": "MB",
-    "remove": "Remove"
+    "remove": "Remove",
+    "purge": "Purge",
+    "purgeConfirm": "Permanently delete this record? This cannot be undone."
   },
   "roles": {
     "sysAdmin": "System admin",
@@ -197,6 +215,8 @@
     "llmConfigs": "LLM Configurations",
     "llmConfigsDescription": "Bring Your Own Key (BYOK) LLM provider configurations.",
     "addConfig": "Add Config",
+    "addConfigTitle": "Add new configuration",
+    "addConfigMessage": "It will be available to your organization.",
     "baseUrl": "Base URL",
     "created": "Created",
     "configDeleted": "Config deleted",
@@ -220,7 +240,8 @@
     "none": "None",
     "selectModel": "Select model…",
     "modelPlaceholder": "e.g. gpt-4o, gemini-2.0-flash",
-    "saveDefaults": "Save Defaults",
+    "saveOrchestratorDefaultsTitle": "Save orchestrator defaults",
+    "saveOrchestratorDefaultsMessage": "These values will pre-fill new orchestrator instances. Existing instances are not affected.",
     "defaultsSaved": "Defaults saved",
     "failedSaveDefaults": "Failed to save defaults",
     "selectFromList": "Select from list",
@@ -243,7 +264,7 @@
     "failedUpdateConfig": "Failed to update config",
     "failedAddConfig": "Failed to add config",
     "configName": "Config Name",
-    "configNameDescription": "Unique name for this config (e.g. 'primary', 'fast')",
+    "configNameDescription": "Name for this config (e.g. 'primary', 'fast')",
     "primaryPlaceholder": "primary",
     "provider": "Provider",
     "providerRequired": "Provider is required",
@@ -428,6 +449,8 @@
     "settings": "Settings",
     "llmProviders": "LLM Providers",
     "addModel": "Add Model",
+    "addModelTitle": "Add model to catalog",
+    "addModelMessage": "It will be available for selection in the model catalog.",
     "editModel": "Edit Model",
     "modelUpdated": "Model updated",
     "modelAdded": "Model added",
@@ -496,7 +519,8 @@
     "notFound": "Page not found",
     "notFoundDescription": "We are sorry but this page could not be found.",
     "error": "Error",
-    "unknown": "unknown"
+    "unknown": "unknown",
+    "purgeReferencedError": "Cannot purge: record is still referenced by active items."
   },
   "settingsGroups": {
     "llm": "LLM",
@@ -600,6 +624,148 @@
     "azure": "Azure OpenAI",
     "litellm": "LiteLLM",
     "tensorzero": "TensorZero"
+  },
+  "info": {
+    "pages": {
+      "dashboard": {
+        "title": "Dashboard",
+        "description": "**What it does:**\n\nCentral hub for your organization's AI orchestration. Shows:\n\n- **Orchestrator counts** — Total, hot, warm, and cold tier instances\n- **Pool statistics** — Shared models, memory usage (sys admin only)\n- **Quick actions** — Start chat, view orchestrators, manage plugins\n\n**Tiers:** Hot = loaded immediately; Warm = pre-warmed; Cold = on-demand."
+      },
+      "chat": {
+        "title": "Chat",
+        "description": "**What it does:**\n\nInteractive playground to test orchestrators with real conversations.\n\n**How to use:**\n1. Select an orchestrator from the sidebar (must be active and ready)\n2. Type a message and press Enter\n3. View the response, agent steps, and tool sources\n\n**Features:**\n- Streaming responses with progress\n- Expandable steps and sources per message\n- Session persists until you clear"
+      },
+      "orchestrators": {
+        "title": "Orchestrators",
+        "description": "**What it does:**\n\nCreate and manage AI orchestrator instances that run your plugins.\n\n**Actions:**\n- **Load** — Start the orchestrator (uses pool memory)\n- **Unload** — Stop and free memory\n- **Activate** — Enable for use; **Deactivate** — Disable\n- **Clone** — Copy config to create a new instance\n\n**Columns:** Name, framework, mode, tier, status, ready indicator."
+      },
+      "plugins": {
+        "title": "Plugins",
+        "description": "**What it does:**\n\nBrowse and manage plugins that extend orchestrator capabilities.\n\n**Plugin types:**\n- **System** — Platform-wide, available to all orgs\n- **Org** — Per-organization, uploaded by org admins\n\n**Actions:** Enable/disable, view details, configure settings. Plugins provide tools and capabilities that orchestrators use during conversations."
+      },
+      "profile": {
+        "title": "Profile",
+        "description": "**What it does:**\n\nYour personal account settings.\n\n**Sections:**\n- **Account** — User ID, role (read-only)\n- **Profile** — Display name, email (editable)\n- **Password** — Change password (requires current password)\n\nChanges apply immediately. Your role determines access across organizations."
+      }
+    },
+    "settings": {
+      "orgIdentity": {
+        "title": "Organization",
+        "description": "**What it shows:**\n\nRead-only identity of your current organization:\n\n- **Organization ID** — Unique identifier\n- **Slug** — URL-friendly name\n- **Domain** — Assigned domain (e.g. acme.com)\n- **Subscription tier** — free, pro, enterprise\n- **Status** — active, suspended, etc.\n\n**Note:** Only system admins can change these values."
+      },
+      "orgProfile": {
+        "title": "Organization Profile",
+        "description": "**What it does:**\n\nEditable public profile visible to org members.\n\n**Fields:**\n- Display name, contact email, website\n- Logo URL, country, timezone\n- Description (brief org summary)\n\n**Who can edit:** Org admins only. Used for branding and contact info."
+      },
+      "members": {
+        "title": "Members",
+        "description": "**What it does:**\n\nManage who belongs to your organization.\n\n**Actions:**\n- **Add member** — By email, username, or user ID\n- **Promote** — Grant org admin rights\n- **Demote** — Remove org admin rights\n- **Remove** — Remove from organization\n\n**Who can manage:** Org admins only. Members can belong to multiple orgs."
+      },
+      "llmConfigs": {
+        "title": "LLM Configurations",
+        "description": "**What it does:**\n\nBring Your Own Key (BYOK) — store API keys for LLM providers.\n\n**Supported:** OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero\n\n**Per config:** Name, provider, API key, optional base URL, API version (Azure)\n\n**Usage:** Orchestrators select a config when running. Disabled configs are hidden. Configs in use cannot be deleted until unlinked."
+      },
+      "orchestrators": {
+        "title": "Orchestrator Settings",
+        "description": "**What it does:**\n\nDefault values pre-filled when creating **new** orchestrators.\n\n**Defaults:**\n- Default LLM config\n- Default model name\n- Default max tokens\n- Node execution timeout (seconds)\n\n**Important:** Existing orchestrators are **not** affected. Only new instances get these values."
+      },
+      "centralPoints": {
+        "title": "Central Points",
+        "description": "**What it does:**\n\nStable API endpoints that abstract orchestrator identity.\n\n**Why use them:**\n- Clients use a **central point ID** — never the orchestrator ID\n- Swap orchestrators behind the endpoint without client changes\n- Private (auth required) or public (no auth)\n\n**Flow:** Create central point → assign orchestrator → clients call `/api/chat/completion` with `X-CENTRAL-ID` header."
+      }
+    },
+    "admin": {
+      "orgs": {
+        "title": "Organizations",
+        "description": "**What it does:**\n\nSystem-wide organization management (sys admin only).\n\n**Actions:**\n- Create organizations (name, domain, tier)\n- View and edit org details\n- Set tier quotas and rate limits\n\n**Tier quotas** control max orchestrators, members, LLM configs, messages, etc. per organization."
+      },
+      "orgDetail": {
+        "title": "Organization Details",
+        "description": "**What it does:**\n\nEdit a single organization (sys admin only).\n\n**Sections:**\n- **Profile** — Display name, domain, tier, contact info\n- **Tier quotas** — Max orchestrators, members, central points, messages, LLM configs, rate limits\n- **Members** — Add, promote, demote, remove\n\n**Preview** shows current usage vs. quota limits."
+      },
+      "users": {
+        "title": "Users",
+        "description": "**What it does:**\n\nPlatform user management (sys admin only).\n\n**Actions:**\n- Create users (username, email, optional password)\n- Edit username, email, system admin flag\n- Delete users (removes all org memberships)\n\n**System admin** — Full platform access. Users can belong to multiple organizations with different roles."
+      },
+      "systemPlugins": {
+        "title": "System Plugins",
+        "description": "**What it does:**\n\nManage plugins available to **all** organizations (sys admin only).\n\n**Tabs:** System (platform-wide) | Org (per-organization)\n\n**Actions:**\n- Upload plugin (ZIP)\n- Enable/disable versions\n- View plugin details and config\n\nOrg admins enable system plugins for their org. Org plugins are uploaded per-org in Settings."
+      },
+      "globalSettings": {
+        "title": "Global Settings",
+        "description": "**What it does:**\n\nPlatform-wide defaults (sys admin only).\n\n**Sections:**\n- **Subscription tiers** — Quota limits per tier (orchestrators, members, messages, etc.)\n- **LLM providers** — Model catalog per provider\n- **Feature settings** — Pool, caching, rate limiting, etc.\n\n**Override:** Some settings can be overridden per-organization. Tier quotas are global."
+      },
+      "pool": {
+        "title": "Instance Pool",
+        "description": "**What it does:**\n\nReal-time pool statistics (sys admin only).\n\n**Metrics:**\n- Total instances, hot/warm/cold tier counts\n- Shared models and bundles\n- Memory estimate\n\n**Auto-refresh:** Every 30 seconds. Use Refresh to update manually."
+      },
+      "health": {
+        "title": "System Health",
+        "description": "**What it does:**\n\nSystem and service status (sys admin only).\n\n**Checks:**\n- **PostgreSQL, Redis, MongoDB** — Database connectivity\n- **Orchestrator instances** — Loaded instances, ready state\n\n**Use for:** Diagnosing outages, verifying instance health before traffic."
+      }
+    },
+    "fields": {
+      "displayName": {
+        "title": "Display Name",
+        "description": "**What it is:**\n\nPublic name shown in the UI and integrations.\n\n**Use for:** Branding, user identification, contact display. Not used for authentication."
+      },
+      "llmConfig": {
+        "provider": {
+          "title": "Provider",
+          "description": "**What it is:**\n\nLLM provider (OpenAI, Anthropic, Google, etc.).\n\n**Effect:** Determines API format and endpoint. Each provider has different models and pricing. Select the provider that holds your API key."
+        },
+        "model": {
+          "title": "Model",
+          "description": "**What it is:**\n\nModel identifier (e.g. `gpt-4o`, `gemini-2.0-flash`).\n\n**Rule:** Must be supported by the selected provider. Check provider docs for valid model IDs. Use catalog for platform-managed models."
+        },
+        "apiKey": {
+          "title": "API Key",
+          "description": "**What it is:**\n\nYour API key for the provider.\n\n**Security:** Stored encrypted. Never shown in logs or UI after save. Rotate keys if compromised."
+        }
+      },
+      "centralPoint": {
+        "endpoint": {
+          "title": "Endpoint URL",
+          "description": "**What it is:**\n\nStable URL for chat completion: `POST /api/chat/completion`\n\n**Headers required:**\n- `X-ORG-ID` — Organization ID\n- `X-CENTRAL-ID` — Central point ID\n- `Authorization: Bearer` — For private (optional for public)"
+        },
+        "apiKey": {
+          "title": "API Key",
+          "description": "**Private central points:**\n\nClients must send `Authorization: Bearer YOUR_TOKEN` in every request.\n\n**Public:** No auth header required. Use for open demos or internal tools."
+        }
+      },
+      "orchestrator": {
+        "framework": {
+          "title": "Framework",
+          "description": "**What it is:**\n\nOrchestration framework:\n\n- **LangGraph** — Multi-node graphs, state machines\n- **Google ADK** — Agent Development Kit\n- **OpenAI Agents** — OpenAI agent framework\n\n**Effect:** Determines graph structure, node types, and execution model. Immutable after creation."
+        },
+        "llmConfig": {
+          "title": "LLM Configuration",
+          "description": "**What it is:**\n\nLLM config used by this orchestrator for inference.\n\n**Source:** Must be from your org's LLM Configurations (Settings → LLM Configs).\n\n**Supervisor mode:** Can override per-node. Non-supervisor uses this config globally."
+        }
+      }
+    },
+    "orchestratorSections": {
+      "createBasic": {
+        "title": "Basic",
+        "description": "**What it does:**\n\nCore identity and runtime settings for the new orchestrator.\n\n**Fields:**\n- **Name** — Unique identifier (10–55 chars). Used in URLs and API.\n- **Framework** — LangGraph, Google ADK, or OpenAI Agents. **Immutable after creation.**\n- **Mode** — Supervisor (multi-agent) or other modes. Depends on framework.\n- **Initial tier** — Hot (load immediately), Warm (pre-warm), or Cold (on-demand). Affects pool memory."
+      },
+      "createPlugins": {
+        "title": "Plugins",
+        "description": "**What it does:**\n\nSelect plugins that add capabilities to this orchestrator.\n\n**Flow:**\n1. Click **Add Plugin** to open the selector\n2. Search and add one or more plugins (required)\n3. Configure each plugin's settings below the table\n\n**Note:** Each plugin can have required fields. Validation runs before create. You can remove plugins before saving."
+      },
+      "supervisorLlmConfig": {
+        "title": "LLM Config (Supervisor)",
+        "description": "**What it does:**\n\nDefault LLM settings for all nodes in the supervisor graph.\n\n**Fields:**\n- **Default LLM config** — Required. Config from your org's LLM Configurations.\n- **Default model** — Model used by all nodes unless overridden per-node.\n- **Temperature, max tokens, timeout** — Global defaults.\n\n**Override:** Node Config section lets you override these per node (Router, Planner, Synthesizer, etc.)."
+      },
+      "nodeConfig": {
+        "title": "Node Config",
+        "description": "**What it does:**\n\nOverride LLM settings per node in the supervisor graph.\n\n**Nodes:**\n- **Router** — Classifies incoming messages\n- **Planner** — Plans steps\n- **Synthesizer** — Final response\n- **Clarifier, Responder, Validation, Error Handler** — Specialized nodes\n\n**Per node:** Override LLM config, model, temperature, max tokens, timeout. Leave empty to use the default from LLM Config above."
+      },
+      "editBasic": {
+        "title": "Basic",
+        "description": "**What it does:**\n\nEdit metadata and tier. Framework and mode are **immutable** after creation.\n\n**Editable:**\n- **Name** — Display name (10–200 chars)\n- **Tier** — Hot, Warm, or Cold\n\n**Supervisor only:** LLM config is in the Supervisor Settings section below.\n\n**Non-supervisor:** Select LLM config here — it's used for all inference."
+      }
+    }
   },
   "centralPoints": {
     "selectOrgTitle": "Select an organization",

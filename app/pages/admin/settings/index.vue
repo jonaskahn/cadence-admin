@@ -135,6 +135,9 @@ const tabs = computed(() => [
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
+        <template #right>
+          <InfoPopover title-key="info.admin.globalSettings.title" description-key="info.admin.globalSettings.description" />
+        </template>
       </UDashboardNavbar>
     </template>
 
@@ -163,23 +166,15 @@ const tabs = computed(() => [
                       </div>
                       <div class="flex items-center gap-2 min-w-56">
                         <UInput v-model="editValues[setting.key]" class="flex-1" size="sm" />
-                        <UPopover>
-                          <UButton :label="t('common.save')" size="sm" />
-                          <template #content="{ close }">
-                            <div class="p-4 min-w-48">
-                              <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-                              <div class="flex justify-end gap-2">
-                                <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                                <UButton
-                                  :loading="saving[setting.key]"
-                                  :label="t('common.save')"
-                                  size="sm"
-                                  @click="async () => { await saveSetting(setting.key); close() }"
-                                />
-                              </div>
-                            </div>
-                          </template>
-                        </UPopover>
+                        <ConfirmActionPopover
+                          label-key="common.save"
+                          size="sm"
+                          confirm-title-key="common.saveConfirmTitle"
+                          confirm-message-key="common.saveConfirmMessage"
+                          confirm-label-key="common.saveConfirmFriendly"
+                          :loading="saving[setting.key]"
+                          :on-confirm="() => saveSetting(setting.key)"
+                        />
                       </div>
                     </div>
                   </div>
@@ -225,24 +220,16 @@ const tabs = computed(() => [
 
                   <template #footer>
                     <div class="flex justify-end">
-                      <UPopover>
-                        <UButton icon="i-lucide-save" :label="t('common.save')" size="sm" />
-                        <template #content="{ close }">
-                          <div class="p-4 min-w-48">
-                            <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-                            <div class="flex justify-end gap-2">
-                              <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                              <UButton
-                                :loading="tierSaving[tier.tier_name]"
-                                icon="i-lucide-save"
-                                :label="t('common.save')"
-                                size="sm"
-                                @click="async () => { await saveTier(tier.tier_name); close() }"
-                              />
-                            </div>
-                          </div>
-                        </template>
-                      </UPopover>
+                      <ConfirmActionPopover
+                        label-key="common.save"
+                        icon="i-lucide-save"
+                        size="sm"
+                        confirm-title-key="common.saveConfirmTitle"
+                        confirm-message-key="common.saveConfirmMessage"
+                        confirm-label-key="common.saveConfirmFriendly"
+                        :loading="tierSaving[tier.tier_name]"
+                        :on-confirm="() => saveTier(tier.tier_name)"
+                      />
                     </div>
                   </template>
                 </UCard>

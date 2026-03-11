@@ -18,6 +18,7 @@ function updateOrchestratorInList(orchestrators: OrchestratorResponse[], instanc
 export function useOrchestrators() {
   const auth = useAuth()
   const toast = useToast()
+  const { t } = useI18n()
   const orgId = computed(() => auth.currentOrgId.value || '')
 
   const orchestrators = ref<OrchestratorResponse[]>([])
@@ -67,6 +68,22 @@ export function useOrchestrators() {
       toast.add({ title: 'Orchestrator deactivated', icon: 'i-lucide-check' })
     } catch {
       toast.add({ title: 'Failed to deactivate orchestrator', color: 'error' })
+    }
+  }
+
+  async function purge(instanceId: string): Promise<void> {
+    try {
+      await $fetch(`/api/orgs/${orgId.value}/orchestrators/${instanceId}/purge`, { method: 'DELETE' })
+      await fetchAll()
+      toast.add({ title: 'Orchestrator purged', icon: 'i-lucide-check' })
+    } catch (err: unknown) {
+      const status = (err as { status?: number })?.status
+      if (status === 409) {
+        toast.add({ title: t('errors.purgeReferencedError'), color: 'error' })
+      } else {
+        toast.add({ title: 'Failed to purge orchestrator', color: 'error' })
+      }
+      throw err
     }
   }
 
@@ -180,6 +197,7 @@ export function useOrchestrators() {
     create,
     deactivate,
     remove: deactivate,
+    purge,
     activate,
     load,
     unload,

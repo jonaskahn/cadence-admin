@@ -50,6 +50,9 @@ const tierCounts = computed(() => {
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
+        <template #right>
+          <InfoPopover title-key="info.pages.dashboard.title" description-key="info.pages.dashboard.description" />
+        </template>
       </UDashboardNavbar>
     </template>
 
@@ -166,7 +169,7 @@ const tierCounts = computed(() => {
           <template #header>
             <div class="flex items-center justify-between">
               <p class="font-semibold">{{ t('dashboard.orchestrators') }}</p>
-              <UButton :label="t('common.viewAll')" size="sm" :to="localePath('/orchestrators')" variant="ghost" />
+              <UButton :label="t('common.viewAll')" size="sm" :to="localePath('/orchestrators')" variant="outline" />
             </div>
           </template>
 

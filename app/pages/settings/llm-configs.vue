@@ -55,6 +55,26 @@ async function deleteConfig(configId: string) {
   }
 }
 
+const purging = ref<string | null>(null)
+
+async function purgeConfig(configId: string) {
+  purging.value = configId
+  try {
+    await $fetch(`/api/orgs/${orgId.value}/llm-configs/${configId}/purge`, { method: 'DELETE' })
+    await refresh()
+    toast.add({ title: t('settings.configDeleted'), icon: 'i-lucide-check' })
+  } catch (err: unknown) {
+    const status = (err as { status?: number })?.status
+    if (status === 409) {
+      toast.add({ title: t('errors.purgeReferencedError'), color: 'error' })
+    } else {
+      toast.add({ title: t('settings.failedDeleteConfig'), color: 'error' })
+    }
+  } finally {
+    purging.value = null
+  }
+}
+
 const toggling = ref<string | null>(null)
 
 async function toggleEnabled(config: LLMConfigResponse) {
@@ -87,20 +107,34 @@ const columns = computed(() => [
 
 <template>
   <div class="flex flex-col gap-6">
-    <UPageCard :description="t('settings.llmConfigsDescription')" orientation="horizontal" :title="t('settings.llmConfigs')" variant="naked">
-      <UButton v-if="auth.isOrgAdmin.value" class="w-fit lg:ms-auto" icon="i-lucide-plus" :label="t('settings.addConfig')" @click="showAdd = true" />
+    <UPageCard orientation="horizontal" variant="naked">
+      <template #header>
+        <div class="flex flex-col gap-0.5">
+          <div class="flex items-center gap-2">
+            <span class="font-semibold text-sm">{{ t('settings.llmConfigs') }}</span>
+            <InfoPopover title-key="info.settings.llmConfigs.title" description-key="info.settings.llmConfigs.description" />
+          </div>
+          <p class="text-sm text-dimmed">{{ t('settings.llmConfigsDescription') }}</p>
+        </div>
+      </template>
+      <UButton v-if="auth.isAdmin.value" class="w-fit lg:ms-auto" color="primary" variant="outline" icon="i-lucide-plus" :label="t('settings.addConfig')" @click="showAdd = true" />
     </UPageCard>
 
     <UCard>
       <UTable :columns="columns" :data="configs || []">
         <template #provider-cell="{ row }">
-          <span :class="{ 'opacity-60': row.original.is_enabled === false }">{{ providerLabel(row.original.provider) }}</span>
+          <span :class="{ 'opacity-60': row?.original?.is_enabled === false }">{{ providerLabel(row.original.provider) }}</span>
         </template>
 
         <template #is_enabled-cell="{ row }">
-          <UBadge :color="row.original.is_enabled ? 'success' : 'neutral'" size="sm" variant="subtle">
-            {{ row.original.is_enabled ? t('common.enabled') : t('common.disabled') }}
-          </UBadge>
+          <div class="flex items-center gap-1.5">
+            <UBadge :color="row?.original?.is_enabled ? 'success' : 'neutral'" size="sm" variant="subtle">
+              {{ row?.original?.is_enabled ? t('common.enabled') : t('common.disabled') }}
+            </UBadge>
+            <UBadge v-if="row?.original?.is_deleted" color="error" size="sm" variant="subtle">
+              {{ t('common.deleted') }}
+            </UBadge>
+          </div>
         </template>
 
         <template #base_url-cell="{ row }">
@@ -113,29 +147,47 @@ const columns = computed(() => [
 
         <template #actions-cell="{ row }">
           <div class="flex items-center gap-1">
-            <template v-if="auth.isOrgAdmin.value">
-              <UButton color="neutral" icon="i-lucide-pencil" size="xs" variant="ghost" @click="startEdit(row.original)" />
+            <template v-if="auth.isAdmin.value">
+              <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="startEdit(row.original)" />
               <UButton
-                :icon="row.original.is_enabled ? 'i-lucide-toggle-right' : 'i-lucide-toggle-left'"
-                :loading="toggling === row.original.id"
+                color="primary"
+                :icon="row?.original?.is_enabled ? 'i-lucide-toggle-right' : 'i-lucide-toggle-left'"
+                :label="row?.original?.is_enabled ? t('settings.disableConfig') : t('settings.enableConfig')"
+                :loading="toggling === row?.original?.id"
                 size="xs"
-                :title="row.original.is_enabled ? t('settings.disableConfig') : t('settings.enableConfig')"
-                variant="ghost"
+                variant="outline"
                 @click="toggleEnabled(row.original)"
               />
             </template>
-            <UPopover v-if="auth.isSysAdmin.value">
-              <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="ghost" />
+            <UPopover v-if="auth.isSysAdmin.value && !row?.original?.is_deleted">
+              <UButton color="error" icon="i-lucide-trash-2" size="xs" />
               <template #content="{ close }">
                 <div class="p-4 min-w-48">
                   <p class="text-sm text-dimmed mb-3">{{ t('settings.deleteConfigConfirm', { name: row.original.name }) }}</p>
                   <div class="flex justify-end gap-2">
-                    <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
+                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
                     <UButton
                       color="error"
                       :label="t('common.delete')"
-                      :loading="deleting === row.original.id"
-                      @click="async () => { await deleteConfig(row.original.id); close() }"
+                      :loading="deleting === row?.original?.id"
+                      @click="async () => { await deleteConfig(row?.original?.id); close() }"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UPopover>
+            <UPopover v-else-if="auth.isSysAdmin.value && row?.original?.is_deleted">
+              <UButton color="error" icon="i-lucide-shredder" size="xs" />
+              <template #content="{ close }">
+                <div class="p-4 min-w-48">
+                  <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
+                  <div class="flex justify-end gap-2">
+                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                    <UButton
+                      color="error"
+                      :label="t('common.purge')"
+                      :loading="purging === row?.original?.id"
+                      @click="async () => { await purgeConfig(row?.original?.id); close() }"
                     />
                   </div>
                 </div>

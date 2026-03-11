@@ -61,7 +61,13 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
 <template>
   <div class="flex flex-col gap-8">
     <!-- Read-only org identity -->
-    <UPageCard :title="t('settings.organization')" variant="subtle">
+    <UPageCard variant="subtle">
+      <template #header>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-sm">{{ t('settings.organization') }}</span>
+          <InfoPopover title-key="info.settings.orgIdentity.title" description-key="info.settings.orgIdentity.description" />
+        </div>
+      </template>
       <dl class="grid grid-cols-2 gap-4">
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.organizationId') }}</dt>
@@ -102,10 +108,22 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
     </UPageCard>
 
     <!-- Editable profile (org_admin only) -->
-    <UPageCard v-if="isOrgAdmin" :description="t('settings.orgProfileDescription')" :title="t('settings.organizationProfile')" variant="subtle">
+    <UPageCard v-if="isOrgAdmin" :description="t('settings.orgProfileDescription')" variant="subtle">
+      <template #header>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-sm">{{ t('settings.organizationProfile') }}</span>
+          <InfoPopover title-key="info.settings.orgProfile.title" description-key="info.settings.orgProfile.description" />
+        </div>
+      </template>
       <UForm ref="settingsProfileFormRef" :schema="profileSchema" :state="profileState" class="flex flex-col gap-4" @submit="onProfileSubmit">
         <div class="grid grid-cols-2 gap-4">
-          <UFormField :label="t('settings.displayName')" name="display_name">
+          <UFormField name="display_name">
+            <template #label>
+              <div class="flex items-center gap-2">
+                <span>{{ t('settings.displayName') }}</span>
+                <InfoPopover title-key="info.fields.displayName.title" description-key="info.fields.displayName.description" />
+              </div>
+            </template>
             <UInput v-model="profileState.display_name" class="w-full" :placeholder="t('settings.acmePlaceholder')" />
           </UFormField>
           <UFormField :label="t('settings.contactEmail')" name="contact_email">
@@ -127,23 +145,16 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
             <UTextarea v-model="profileState.description" class="w-full" :placeholder="t('settings.briefDescription')" />
           </UFormField>
         </div>
-        <UPopover>
-          <UButton type="button" class="w-fit" :label="t('settings.saveProfile')" />
-          <template #content="{ close }">
-            <div class="p-4 min-w-48">
-              <p class="text-sm text-dimmed mb-3">{{ t('common.saveConfirm') }}</p>
-              <div class="flex justify-end gap-2">
-                <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="close" />
-                <UButton
-                  :loading="savingProfile"
-                  class="w-fit"
-                  :label="t('settings.saveProfile')"
-                  @click="settingsProfileFormRef?.$el?.requestSubmit?.(); close()"
-                />
-              </div>
-            </div>
-          </template>
-        </UPopover>
+        <div class="flex justify-end pt-2">
+          <ConfirmActionPopover
+            label-key="common.save"
+          confirm-title-key="common.saveConfirmTitle"
+          confirm-message-key="common.saveConfirmMessage"
+          confirm-label-key="common.saveConfirmFriendly"
+          :loading="savingProfile"
+          :on-confirm="() => settingsProfileFormRef?.$el?.requestSubmit?.()"
+          />
+        </div>
       </UForm>
     </UPageCard>
   </div>

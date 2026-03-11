@@ -12,7 +12,7 @@ const localePath = useLocalePath()
 const items = computed<DropdownMenuItem[][]>(() => {
   const orgItems = auth.orgList.value.map((org) => ({
     label: org.org_name,
-    icon: org.org_id === auth.currentOrgId.value ? 'i-lucide-check' : undefined,
+    icon: org.org_id === auth.currentOrgId.value ? 'i-lucide-check' : 'i-lucide-building',
     onSelect() {
       auth.selectOrg(org.org_id)
     }
@@ -48,7 +48,7 @@ const currentOrgName = computed(() => auth.currentOrg.value?.org_name || t('comm
       block
       class="data-[state=open]:bg-elevated"
       color="neutral"
-      leading-icon="i-lucide-building-2"
+      leading-icon="i-lucide-building"
       variant="ghost"
     />
   </UDropdownMenu>

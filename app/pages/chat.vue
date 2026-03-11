@@ -7,7 +7,9 @@ const inputText = ref('')
 
 onMounted(() => chat.loadOrchestrators())
 
-const readyOrchestrators = computed(() => chat.orchestrators.value.filter((o) => o.status === 'active' && o.is_ready))
+const readyOrchestrators = computed(() =>
+  chat.orchestrators.value.filter((o) => o.status === 'active' && o.is_ready && !o.is_deleted)
+)
 
 async function onSend() {
   const msg = inputText.value.trim()
@@ -53,7 +55,10 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
           <UDashboardSidebarCollapse />
         </template>
         <template #right>
-          <UButton icon="i-lucide-trash-2" :label="t('common.clear')" size="sm" variant="ghost" @click="chat.clearMessages()" />
+          <div class="flex items-center gap-2">
+            <InfoPopover title-key="info.pages.chat.title" description-key="info.pages.chat.description" />
+            <UButton icon="i-lucide-trash-2" :label="t('common.clear')" size="sm" variant="outline" @click="chat.clearMessages()" />
+          </div>
         </template>
       </UDashboardNavbar>
     </template>

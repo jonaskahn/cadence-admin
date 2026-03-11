@@ -23,6 +23,8 @@ export const useAuth = () => {
 
   const isOrgAdmin = computed(() => currentOrg.value?.role === 'org_admin')
 
+  const isAdmin = computed(() => isOrgAdmin.value || isSysAdmin.value)
+
   async function loadUserContext(username: string): Promise<void> {
     authUser.value = { username }
     await Promise.all([loadMe(), loadOrgs()])
@@ -108,6 +110,7 @@ export const useAuth = () => {
     isAuthenticated,
     isSysAdmin,
     isOrgAdmin,
+    isAdmin,
     login,
     logout,
     loadMe,
