@@ -171,7 +171,6 @@ export function useLangGraphSupervisor(
     message_context_window: 5,
     max_context_window: 16000,
     enabled_parallel_tool_calls: true,
-    enable_cache_tool_result: false,
     enabled_llm_validation: false,
     enabled_auto_compact: false
   })
@@ -184,7 +183,6 @@ export function useLangGraphSupervisor(
       modeConfig.message_context_window = Number(src.message_context_window ?? src.classifier_context_window ?? 5)
       modeConfig.max_context_window = Number(src.max_context_window ?? 16000)
       modeConfig.enabled_parallel_tool_calls = resolveBoolean(src, 'enabled_parallel_tool_calls', 'parallel_tool_calls', true)
-      modeConfig.enable_cache_tool_result = resolveBoolean(src, 'enable_cache_tool_result', 'enable_cache_tool_result', false)
       modeConfig.enabled_llm_validation = resolveBoolean(src, 'enabled_llm_validation', 'use_llm_validation', false)
       modeConfig.enabled_auto_compact = resolveBoolean(src, 'enabled_auto_compact', 'autocompact_enabled', false)
     },
@@ -356,7 +354,6 @@ export function useLangGraphSupervisor(
         message_context_window: modeConfig.message_context_window,
         max_context_window: modeConfig.max_context_window,
         enabled_parallel_tool_calls: modeConfig.enabled_parallel_tool_calls,
-        enable_cache_tool_result: modeConfig.enable_cache_tool_result,
         enabled_llm_validation: modeConfig.enabled_llm_validation,
         enabled_auto_compact: modeConfig.enabled_auto_compact,
         autocompact: modeConfig.enabled_auto_compact

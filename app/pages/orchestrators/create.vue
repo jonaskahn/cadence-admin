@@ -323,29 +323,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               </UCard>
 
               <!-- Section 2: Plugins -->
-              <UCard class="min-w-0 w-full">
-                <template #header>
-                  <div class="flex items-center justify-between w-full">
-                    <div class="flex items-center gap-2">
-                      <p class="font-semibold">{{ t('orchestrators.create.plugins') }}</p>
-                      <InfoPopover title-key="info.orchestratorSections.createPlugins.title" description-key="info.orchestratorSections.createPlugins.description" />
-                    </div>
-                    <UButton icon="i-lucide-plus" :label="t('orchestrators.create.addPlugin')" size="sm" variant="outline" @click="showPluginSelector = true" />
-                  </div>
-                </template>
-                <div class="flex flex-col gap-4">
-                  <UTable :columns="pluginTableColumns" :data="pluginTableData" class="w-full min-w-0">
-                    <template #remove-cell="{ row }">
-                      <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="outline" @click="removePlugin(row.index)" />
-                    </template>
-                  </UTable>
-
-                  <div v-if="selectedPlugins.length > 0" class="w-full">
-                    <OrchestratorPluginSettings ref="pluginSettingsRef" :initial-value="pluginSettingsInitialValue" :org-id="orgId" />
-                  </div>
-                  <p v-else class="text-dimmed text-sm py-4">{{ t('orchestrators.create.addPluginHint') }}</p>
+              <div class="flex flex-col gap-4 min-w-0 w-full">
+                <div class="flex items-center gap-3">
+                  <USeparator :label="t('orchestrators.create.plugins')" class="flex-1" />
+                  <InfoPopover title-key="info.orchestratorSections.createPlugins.title" description-key="info.orchestratorSections.createPlugins.description" />
+                  <UButton icon="i-lucide-plus" :label="t('orchestrators.create.addPlugin')" size="sm" variant="outline" @click="showPluginSelector = true" />
                 </div>
-              </UCard>
+                <UTable :columns="pluginTableColumns" :data="pluginTableData" class="w-full min-w-0">
+                  <template #remove-cell="{ row }">
+                    <UButton color="error" icon="i-lucide-trash-2" size="xs" variant="outline" @click="removePlugin(row.index)" />
+                  </template>
+                </UTable>
+                <div v-if="selectedPlugins.length > 0" class="w-full">
+                  <OrchestratorPluginSettings ref="pluginSettingsRef" :initial-value="pluginSettingsInitialValue" :org-id="orgId" />
+                </div>
+                <p v-else class="text-dimmed text-sm py-4">{{ t('orchestrators.create.addPluginHint') }}</p>
+              </div>
 
               <!-- Section 3 & 4: Supervisor Settings (when supervisor) -->
               <template v-if="isSupervisor && (cloneSource || orgDefaults !== null)">

@@ -100,7 +100,6 @@ const llmConfigPlaceholder = computed(() => {
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
       <UCheckbox v-model="supervisor.modeConfig.enabled_parallel_tool_calls" :disabled="disabled" :label="t('langGraphSupervisor.parallelToolCalls')" />
-      <UCheckbox v-model="supervisor.modeConfig.enable_cache_tool_result" :disabled="disabled" :label="t('langGraphSupervisor.enableToolResultCache')" />
       <UCheckbox v-model="supervisor.modeConfig.enabled_llm_validation" :disabled="disabled" :label="t('langGraphSupervisor.useLlmValidation')" />
       <UCheckbox v-model="supervisor.modeConfig.enabled_auto_compact" :disabled="disabled" :label="t('langGraphSupervisor.autoCompactMessages')" />
     </div>

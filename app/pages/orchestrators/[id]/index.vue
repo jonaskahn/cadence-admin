@@ -222,32 +222,28 @@ async function onDeactivate() {
           </UCard>
         </div>
 
-        <UCard class="mt-6 min-w-0">
-          <template #header>
-            <div class="flex items-center justify-between w-full flex-wrap gap-2">
-              <div>
-                <p class="font-semibold">Plugin Settings</p>
-                <p class="text-dimmed text-xs mt-0.5">Configure settings for each active plugin. Activate a version to switch.</p>
-              </div>
-              <ConfirmActionPopover
-                v-if="auth.isOrgAdmin.value"
-                label-key="common.save"
-                size="sm"
-                confirm-title-key="common.saveConfirmTitle"
-                confirm-message-key="common.saveConfirmMessage"
-                confirm-label-key="common.saveConfirmFriendly"
-                :loading="savingPluginSettings"
-                :on-confirm="savePluginSettings"
-              />
-            </div>
-          </template>
+        <div class="mt-6 flex flex-col gap-4 min-w-0">
+          <div class="flex items-center gap-3">
+            <USeparator label="Plugin Settings" class="flex-1" />
+            <ConfirmActionPopover
+              v-if="auth.isOrgAdmin.value"
+              label-key="common.save"
+              size="sm"
+              confirm-title-key="common.saveConfirmTitle"
+              confirm-message-key="common.saveConfirmMessage"
+              confirm-label-key="common.saveConfirmFriendly"
+              :loading="savingPluginSettings"
+              :on-confirm="savePluginSettings"
+            />
+          </div>
+          <p class="text-dimmed text-xs">Configure settings for each active plugin. Activate a version to switch.</p>
           <OrchestratorPluginSettings
             ref="pluginSettingsRef"
             :disabled="!auth.isOrgAdmin.value"
             :initial-value="orchestrator.plugin_settings"
             :org-id="orgId"
           />
-        </UCard>
+        </div>
       </div>
 
       <div v-else class="flex items-center justify-center p-12">
