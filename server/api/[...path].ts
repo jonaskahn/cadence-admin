@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
 import { deleteCookie, getCookie, sendStream, setCookie } from 'h3'
+import { COOKIE_ACCESS_TOKEN } from '~/constants'
 
-const COOKIE_NAME = 'ctx-ca-tk'
 const TOKEN_PLACEHOLDER = '[set]'
 const METHODS_WITH_BODY = new Set(['POST', 'PUT', 'PATCH', 'DELETE'])
 const CONTENT_TYPE_JSON = 'application/json'
@@ -66,7 +66,7 @@ async function handleLogin(event: H3Event, url: string, headers: Record<string, 
   }
   const data = (await response.json()) as { token?: string; expires_in?: number }
   if (data.token) {
-    setCookie(event, COOKIE_NAME, data.token, {
+    setCookie(event, COOKIE_ACCESS_TOKEN, data.token, {
       httpOnly: true,
       sameSite: 'lax',
       path: '/',
@@ -77,7 +77,7 @@ async function handleLogin(event: H3Event, url: string, headers: Record<string, 
 }
 
 async function handleLogout(event: H3Event, url: string, token: string | undefined, headers: Record<string, string>): Promise<null> {
-  deleteCookie(event, COOKIE_NAME, { path: '/' })
+  deleteCookie(event, COOKIE_ACCESS_TOKEN, { path: '/' })
   try {
     if (token) {
       await fetch(url, { method: 'DELETE', headers })
@@ -128,7 +128,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const url = buildBackendUrl(backendUrl, path, query)
-  const token = getCookie(event, COOKIE_NAME)
+  const token = getCookie(event, COOKIE_ACCESS_TOKEN)
   const headers = buildForwardHeaders(event, token)
   const body = await readRequestBody(event, headers, method)
 

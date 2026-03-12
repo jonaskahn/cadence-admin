@@ -531,7 +531,8 @@
     "orchestration": "Orchestration",
     "streaming": "Streaming",
     "checkpointing": "Checkpointing",
-    "featureFlags": "Feature Flags"
+    "featureFlags": "Feature Flags",
+    "security": "Security"
   },
   "healthServices": {
     "postgres": "PostgreSQL",

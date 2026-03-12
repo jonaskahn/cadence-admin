@@ -17,11 +17,11 @@ and [Nuxt UI v4](https://ui.nuxt.com).
 
 All API calls are proxied through the Nuxt server (`server/api/[...path].ts`), which:
 
-- Injects the JWT as a `Bearer` token from an httpOnly cookie (`cadence-token`)
+- Injects the JWT as a `Bearer` token from an httpOnly cookie (`ca_at`)
 - Handles SSE streaming for the chat endpoint
 - Sets/clears the auth cookie on login/logout
 
-The browser never touches the raw JWT — it only holds a non-sensitive org selection cookie (`cadence-org-id`).
+The browser never touches the raw JWT — it only holds a non-sensitive org context cookie (`ca_ctx`).
 
 ## Setup
 

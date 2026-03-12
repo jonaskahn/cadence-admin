@@ -1,4 +1,5 @@
 import type { AuthUser, OrgAccessResponse, OrgWithRoleResponse } from '~/types'
+import { COOKIE_SESSION_CONTEXT } from '~/constants'
 
 function mapOrgWithRoleToOrgAccess(org: OrgWithRoleResponse): OrgAccessResponse {
   return { org_id: org.org_id, org_name: org.name, role: org.role as OrgAccessResponse['role'] }
@@ -12,7 +13,7 @@ export const useAuth = () => {
   const authUser = useState<AuthUser | null>('auth:user', () => null)
   const orgList = useState<OrgAccessResponse[]>('auth:orgs', () => [])
   const isSysAdmin = useState<boolean>('auth:is_sys_admin', () => false)
-  const currentOrgId = useCookie<string | null>('cadence-org-id', { default: () => null })
+  const currentOrgId = useCookie<string | null>(COOKIE_SESSION_CONTEXT, { default: () => null })
 
   const currentOrg = computed<OrgAccessResponse | null>(() => {
     if (!currentOrgId.value) return null

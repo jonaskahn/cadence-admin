@@ -148,7 +148,7 @@ async function onToggleActive(model: ProviderModelCatalogEntry) {
                 </div>
               </template>
             </UPopover>
-            <UButton icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
+            <UButton icon="i-lucide-pencil" variant="outline" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
           </div>
         </template>
       </UTable>

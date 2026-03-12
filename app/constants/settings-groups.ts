@@ -1,3 +1,6 @@
+/** Setting keys that cannot be overridden by orgs (platform-level only) */
+export const NON_OVERRIDABLE_SETTING_KEYS = new Set(['access_token_ttl_seconds'])
+
 export const SETTINGS_GROUPS: Record<string, string[]> = {
   LLM: [
     'default_llm_provider',
@@ -35,5 +38,6 @@ export const SETTINGS_GROUPS: Record<string, string[]> = {
   ],
   Streaming: ['default_enable_streaming', 'sse_heartbeat_interval', 'sse_timeout'],
   Checkpointing: ['enable_checkpointing', 'checkpoint_storage', 'checkpoint_retention'],
-  'Feature Flags': ['enable_multi_tier_pool', 'enable_shared_resources', 'enable_hot_reload', 'enable_tenant_isolation']
+  'Feature Flags': ['enable_multi_tier_pool', 'enable_shared_resources', 'enable_hot_reload', 'enable_tenant_isolation'],
+  Security: ['access_token_ttl_seconds']
 }

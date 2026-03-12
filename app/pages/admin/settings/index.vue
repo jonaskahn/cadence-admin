@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { GlobalSettingResponse, TierDefinitionResponse, TierQuota } from '~/types'
-import { SETTINGS_GROUPS } from '~/constants'
+import { SETTINGS_GROUPS, NON_OVERRIDABLE_SETTING_KEYS } from '~/constants'
 import { getApiErrorMessage, subscriptionTierColor } from '~/utils'
 
 const toast = useToast()
@@ -15,7 +15,8 @@ const SETTINGS_GROUP_KEYS: Record<string, string> = {
   Orchestration: 'settingsGroups.orchestration',
   Streaming: 'settingsGroups.streaming',
   Checkpointing: 'settingsGroups.checkpointing',
-  'Feature Flags': 'settingsGroups.featureFlags'
+  'Feature Flags': 'settingsGroups.featureFlags',
+  Security: 'settingsGroups.security'
 }
 
 // --- Global Settings tab ---
@@ -160,7 +161,7 @@ const tabs = computed(() => [
                       <UBadge class="mt-1" size="xs" variant="subtle">{{ setting.value_type }}</UBadge>
                     </div>
                     <div class="flex items-center gap-4">
-                      <div class="flex items-center gap-1.5">
+                      <div v-if="!NON_OVERRIDABLE_SETTING_KEYS.has(setting.key)" class="flex items-center gap-1.5">
                         <UToggle v-model="overridableValues[setting.key]" size="sm" />
                         <span class="text-xs text-dimmed">{{ t('admin.overridable') }}</span>
                       </div>
