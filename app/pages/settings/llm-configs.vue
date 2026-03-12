@@ -151,7 +151,7 @@ const columns = computed(() => [
               <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="startEdit(row.original)" />
               <UButton
                 color="primary"
-                :icon="row?.original?.is_enabled ? 'i-lucide-toggle-right' : 'i-lucide-toggle-left'"
+                :icon="row?.original?.is_enabled ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                 :label="row?.original?.is_enabled ? t('settings.disableConfig') : t('settings.enableConfig')"
                 :loading="toggling === row?.original?.id"
                 size="xs"

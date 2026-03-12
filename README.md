@@ -31,11 +31,11 @@ Install dependencies:
 pnpm install
 ```
 
-Configure the backend URL (defaults to `http://localhost:8000`):
+Configure the backend URL (defaults to `http://localhost:8888`):
 
 ```bash
 # .env
-NUXT_BACKEND_URL=http://localhost:8000
+NUXT_BACKEND_URL=http://localhost:8888
 ```
 
 ## Development

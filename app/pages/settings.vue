@@ -21,7 +21,7 @@ const links = computed<NavigationMenuItem[][]>(() => {
   const base = [
     { label: t('nav.general'), icon: 'i-lucide-blocks', to: localePath('/settings'), exact: true },
     { label: t('nav.members'), icon: 'i-lucide-contact', to: localePath('/settings/members') },
-    { label: t('nav.llmConfigs'), icon: 'i-lucide-key', to: localePath('/settings/llm-configs') },
+    { label: t('nav.llmConfigs'), icon: 'i-lucide-cable', to: localePath('/settings/llm-configs') },
     { label: t('nav.orchestrators'), icon: 'i-lucide-cpu', to: localePath('/settings/orchestrators') },
     { label: t('nav.centralPoints'), icon: 'i-lucide-radio', to: localePath('/settings/central-points') }
   ]

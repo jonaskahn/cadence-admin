@@ -204,10 +204,10 @@ const isDisabled = computed(() => selectedVersion.value && 'enabled' in selected
         <template v-else-if="selectedVersion">
           <div :key="selectedVersion.id" class="flex flex-col gap-4">
             <div class="flex items-center gap-3">
-              <div v-if="pluginAvatarSrc" class="size-36 shrink-0 rounded-lg overflow-hidden bg-elevated">
+              <div v-if="pluginAvatarSrc" class="size-36 shrink-0 rounded-lg overflow-hidden bg-elevated p-4">
                 <img :alt="selectedVersion.name" :src="pluginAvatarSrc" class="size-full object-cover" />
               </div>
-              <UAvatar v-else :alt="selectedVersion.name" :text="pluginInitial" class="size-36 shrink-0" size="xl" />
+              <UAvatar v-else :alt="selectedVersion.name" :text="pluginInitial" class="size-36 shrink-0 p-4" size="xl" />
               <div class="min-w-0 flex-1">
                 <p class="font-medium text-dimmed text-xs mb-0.5">{{ t('pluginDetail.titleLabel') }}</p>
                 <p class="font-semibold">{{ selectedVersion.name }}</p>

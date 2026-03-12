@@ -24,6 +24,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "version:write": "node scripts/write-version.mjs",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "preview": "nuxt preview",

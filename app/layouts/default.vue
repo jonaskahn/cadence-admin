@@ -67,7 +67,7 @@ const orgAdminLinks = computed<NavigationMenuItem[]>(() => {
         },
         {
           label: t('nav.llmConfigs'),
-          icon: 'i-lucide-key',
+          icon: 'i-lucide-cable',
           to: localePath('/settings/llm-configs'),
           onSelect: closeMenu
         },

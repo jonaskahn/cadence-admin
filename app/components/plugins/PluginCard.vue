@@ -34,13 +34,13 @@ function onCardClick() {
 </script>
 
 <template>
-  <UCard class="cursor-pointer hover:bg-elevated/50 transition-colors h-full flex flex-col ring-1" @click="onCardClick">
+  <UCard class="cursor-pointer hover:bg-elevated/80 transition-colors h-full flex flex-col ring-1" @click="onCardClick">
     <div class="flex flex-col gap-3">
       <div class="flex items-start gap-3">
-        <div v-if="pluginAvatarSrc" class="size-12 shrink-0 rounded-lg overflow-hidden bg-elevated">
+        <div v-if="pluginAvatarSrc" class="size-12 shrink-0 rounded-lg overflow-hidden bg-elevated p-2">
           <img :alt="plugin.name" :src="pluginAvatarSrc" class="size-full object-cover" />
         </div>
-        <UAvatar v-else :alt="plugin.name" :text="pluginInitial" class="size-12 shrink-0" size="lg" />
+        <UAvatar v-else :alt="plugin.name" :text="pluginInitial" class="size-12 shrink-0 p-2" size="lg" />
         <div class="min-w-0 flex-1">
           <p class="font-medium truncate">
             {{ plugin.name }}

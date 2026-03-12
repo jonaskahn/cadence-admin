@@ -1,4 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+// NUXT_PUBLIC_APP_VERSION and NUXT_PUBLIC_GIT_HASH are written to .env
+// before dev/build by the predev / prebuild npm hooks (scripts/write-version.mjs).
+// They can also be set manually or injected by CI at runtime.
+
 export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/ui', '@vueuse/nuxt', '@nuxtjs/mdc', '@nuxtjs/i18n'],
 
@@ -16,10 +20,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
-    backendUrl: process.env.NUXT_BACKEND_URL || 'http://localhost:8000',
+    backendUrl: process.env.NUXT_BACKEND_URL || 'http://localhost:8888',
     public: {
       appName: process.env.NUXT_PUBLIC_APP_NAME || 'Cadence',
-      appTagline: process.env.NUXT_PUBLIC_APP_TAGLINE || 'AI Orchestration Platform'
+      appTagline: process.env.NUXT_PUBLIC_APP_TAGLINE || 'AI Orchestration Platform',
+      appVersion: process.env.NUXT_PUBLIC_APP_VERSION || 'dev',
+      gitHash: process.env.NUXT_PUBLIC_GIT_HASH || ''
     }
   },
 
