@@ -45,7 +45,8 @@ const tierCounts = computed(() => {
 </script>
 
 <template>
-  <UDashboardPanel id="dashboard">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="dashboard">
     <template #header>
       <UDashboardNavbar :title="t('dashboard.title')">
         <template #leading>
@@ -198,5 +199,6 @@ const tierCounts = computed(() => {
         </UCard>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
+  </div>
 </template>

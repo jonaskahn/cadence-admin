@@ -94,7 +94,8 @@ const columns = computed(() => [
 </script>
 
 <template>
-  <UDashboardPanel id="admin-orgs">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="admin-orgs">
     <template #header>
       <UDashboardNavbar :title="t('admin.organizations')">
         <template #leading>
@@ -144,9 +145,9 @@ const columns = computed(() => [
         </UCard>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
 
-  <UModal v-model:open="showCreate">
+    <UModal v-model:open="showCreate">
     <template #content>
       <UCard class="w-full">
         <template #header>
@@ -192,5 +193,6 @@ const columns = computed(() => [
         </UForm>
       </UCard>
     </template>
-  </UModal>
+    </UModal>
+  </div>
 </template>

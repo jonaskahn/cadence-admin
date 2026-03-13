@@ -98,7 +98,7 @@ const columns = computed(() => [
       <div v-if="loading" class="flex flex-col gap-2 p-4">
         <USkeleton v-for="n in 5" :key="n" class="h-10 w-full" />
       </div>
-      <UTable v-else :columns="columns" :data="centerPoints" :empty-state="{ icon: 'i-lucide-radio', label: t('centralPoints.noCenterPoints') }">
+      <UTable v-else :columns="columns" :data="centerPoints" :empty-state="{ icon: 'i-lucide-radio', label: t('centralPoints.noCenterPoints') }" class="w-full">
         <template #orchestrator_id-cell="{ row }">
           <span>{{ orchestratorLabel(row.original.orchestrator_id) }}</span>
         </template>

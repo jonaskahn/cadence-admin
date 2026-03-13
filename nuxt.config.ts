@@ -14,7 +14,12 @@ export default defineNuxtConfig({
   ],
 
   devtools: {
-    enabled: true
+    enabled: true,
+    componentInspector: false
+  },
+
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
   },
 
   css: ['~/assets/css/main.css'],
@@ -52,5 +57,5 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: false
     }
-  }
+  },
 })

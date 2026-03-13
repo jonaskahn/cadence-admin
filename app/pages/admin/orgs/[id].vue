@@ -139,7 +139,8 @@ const quotaRows = computed(() => {
 </script>
 
 <template>
-  <UDashboardPanel :id="`admin-org-${orgId}`">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel :id="`admin-org-${orgId}`">
     <template #header>
       <UDashboardNavbar :title="org?.display_name || org?.name || orgId">
         <template #leading>
@@ -294,11 +295,12 @@ const quotaRows = computed(() => {
         </UCard>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
 
-  <UModal v-model:open="showAdd">
+    <UModal v-model:open="showAdd">
     <template #content>
       <AddMemberModal :org-id="orgId" @close="handleAddClose" />
     </template>
-  </UModal>
+    </UModal>
+  </div>
 </template>

@@ -76,7 +76,8 @@ async function onPurge(row: OrchestratorResponse) {
 </script>
 
 <template>
-  <UDashboardPanel id="orchestrators" :ui="{ body: 'min-w-0' }">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="orchestrators" :ui="{ body: 'min-w-0' }">
     <template #header>
       <UDashboardNavbar :title="t('orchestrators.title')">
         <template #leading>
@@ -236,5 +237,6 @@ async function onPurge(row: OrchestratorResponse) {
         </UCard>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
+  </div>
 </template>

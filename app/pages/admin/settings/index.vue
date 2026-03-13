@@ -130,7 +130,8 @@ const tabs = computed(() => [
 </script>
 
 <template>
-  <UDashboardPanel id="admin-settings">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="admin-settings">
     <template #header>
       <UDashboardNavbar :title="t('admin.globalSettings')">
         <template #leading>
@@ -248,5 +249,6 @@ const tabs = computed(() => [
         </UTabs>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
+  </div>
 </template>

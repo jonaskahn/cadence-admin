@@ -1,0 +1,37 @@
+<script lang="ts" setup>
+const { t } = useI18n()
+
+const faqItems = computed(() => [
+  {
+    label: t('about.llmConfigs.faq1.question'),
+    content: t('about.llmConfigs.faq1.answer')
+  },
+  {
+    label: t('about.llmConfigs.faq2.question'),
+    content: t('about.llmConfigs.faq2.answer')
+  },
+  {
+    label: t('about.llmConfigs.faq3.question'),
+    content: t('about.llmConfigs.faq3.answer')
+  }
+])
+</script>
+
+<template>
+  <section class="space-y-6">
+    <div class="flex items-center gap-2 mb-1">
+      <UIcon name="i-lucide-cable" class="text-primary size-5" />
+      <h2 class="text-lg font-semibold">{{ t('about.llmConfigs.title') }}</h2>
+    </div>
+    <p class="text-sm text-muted">{{ t('about.llmConfigs.subtitle') }}</p>
+    <p class="text-sm">{{ t('about.llmConfigs.intro') }}</p>
+    <ul class="text-sm list-disc list-inside space-y-1 mb-4">
+      <li>{{ t('about.llmConfigs.bullet1') }}</li>
+      <li>{{ t('about.llmConfigs.bullet2') }}</li>
+      <li>{{ t('about.llmConfigs.bullet3') }}</li>
+      <li>{{ t('about.llmConfigs.bullet4') }}</li>
+      <li>{{ t('about.llmConfigs.bullet5') }}</li>
+    </ul>
+    <UAccordion :items="faqItems" />
+  </section>
+</template>

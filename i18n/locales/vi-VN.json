@@ -94,7 +94,8 @@
     "systemPlugins": "Plugin hệ thống",
     "globalSettings": "Cài đặt diện rộng",
     "pool": "Pool",
-    "health": "Trạng thái"
+    "health": "Trạng thái",
+    "about": "Giới thiệu"
   },
   "userMenu": {
     "language": "Ngôn ngữ",
@@ -200,6 +201,7 @@
     "failedUpdateOrg": "Không thể cập nhật tổ chức",
     "members": "Thành viên",
     "membersDescription": "Quản lý thành viên tổ chức.",
+    "noMembers": "Chưa có thành viên",
     "addMember": "Thêm thành viên",
     "username": "Tên đăng nhập",
     "role": "Vai trò",
@@ -215,6 +217,7 @@
     "llmConfigs": "Cấu hình LLM",
     "llmConfigsDescription": "Cấu hình nhà cung cấp LLM Bring Your Own Key (BYOK).",
     "addConfig": "Thêm cấu hình",
+    "noConfigs": "Chưa có cấu hình LLM",
     "addConfigTitle": "Thêm cấu hình mới",
     "addConfigMessage": "Nó sẽ có sẵn cho tổ chức của bạn.",
     "baseUrl": "URL cơ sở",
@@ -810,5 +813,48 @@
     "codeExamples": "Ví dụ mã",
     "copiedToClipboard": "Đã sao chép vào clipboard",
     "failedCopy": "Sao chép thất bại"
+  },
+  "about": {
+    "title": "Giới thiệu",
+    "tabs": {
+      "overview": "Tổng quan",
+      "orchestrator": "Orchestrator"
+    },
+    "overview": {
+      "title": "Tổng quan",
+      "subtitle": "Giới thiệu ngắn gọn về Cadence.",
+      "intro": "Cadence là nền tảng AI cho phép các nhóm triển khai và quản lý trợ lý AI. Bạn tạo trợ lý (orchestrator), kết nối nhà cung cấp AI ưa thích, thêm công cụ qua plugin và trò chuyện theo thời gian thực — không cần lập trình.",
+      "bullet1": "Đa tenant: mỗi nhóm có không gian làm việc riêng với dữ liệu và cài đặt biệt lập",
+      "bullet2": "Mang theo khóa AI của bạn: dùng OpenAI, Google, Anthropic và các dịch vụ khác — khóa của bạn, kiểm soát của bạn",
+      "bullet3": "Điều phối không cần code: cấu hình trợ lý qua giao diện, không cần lập trình",
+      "bullet4": "Trò chuyện thời gian thực: xem phản hồi khi chúng được truyền tải, minh bạch hoạt động của trợ lý",
+      "bullet5": "Mở rộng: thêm công cụ tùy chỉnh qua plugin để tăng khả năng cho trợ lý"
+    },
+    "orchestrator": {
+      "title": "Orchestrator",
+      "subtitle": "Trợ lý AI của bạn — cấu hình một lần, sẵn sàng trò chuyện.",
+      "intro": "Một orchestrator là trợ lý AI của bạn. Bạn chọn khả năng (plugins), kết nối nhà cung cấp AI và bắt đầu trò chuyện. Mỗi trợ lý chạy độc lập và có thể được tải hoặc gỡ để quản lý tài nguyên.",
+      "bullet1": "Tạo trợ lý từ trang Orchestrators",
+      "bullet2": "Chọn Hot (nhanh nhất), Warm (nhanh) hoặc Cold (chi phí thấp hơn, khởi động chậm hơn) theo nhu cầu",
+      "bullet3": "Tải và gỡ trợ lý để quản lý bộ nhớ khi có nhiều instance",
+      "bullet4": "Sao chép trợ lý hiện có để tái sử dụng cấu hình",
+      "bullet5": "Kích hoạt hoặc vô hiệu hóa mà không mất thiết lập",
+      "faq1": {
+        "question": "Orchestrator là gì?",
+        "answer": "Orchestrator là trợ lý AI đang chạy. Nó kết hợp engine thực thi, chế độ (cách nó suy luận) và bộ công cụ (plugins). Bạn cấu hình một lần, sau đó trò chuyện hoặc kết nối với ứng dụng của bạn."
+      },
+      "faq2": {
+        "question": "Hot, Warm và Cold nghĩa là gì?",
+        "answer": "Hot = đã tải trong bộ nhớ, sẵn sàng ngay. Warm = sẵn sàng cho khởi động nhanh. Cold = tải khi dùng lần đầu (khởi động chậm, chi phí thấp). Bạn có thể đổi tier bất cứ lúc nào."
+      },
+      "faq3": {
+        "question": "Tôi có thể chạy nhiều trợ lý cùng lúc không?",
+        "answer": "Có. Bạn có thể có nhiều orchestrator. Nền tảng quản lý bộ nhớ cho tất cả. Gói đăng ký của tổ chức xác định bao nhiêu có thể được tải cùng lúc."
+      }
+    },
+    "changelog": {
+      "title": "Lịch sử cập nhật",
+      "empty": "Chưa có bản phát hành nào."
+    }
   }
 }

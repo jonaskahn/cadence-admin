@@ -50,7 +50,8 @@ const statCards = computed(() => {
 </script>
 
 <template>
-  <UDashboardPanel id="admin-pool">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="admin-pool">
     <template #header>
       <UDashboardNavbar :title="t('admin.pool')">
         <template #leading>
@@ -102,5 +103,6 @@ const statCards = computed(() => {
         <p class="text-xs text-dimmed text-center">{{ t('admin.autoRefresh') }}</p>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
+  </div>
 </template>

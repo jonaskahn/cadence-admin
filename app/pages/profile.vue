@@ -84,7 +84,8 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
 </script>
 
 <template>
-  <UDashboardPanel id="profile">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="profile">
     <template #header>
       <UDashboardNavbar :title="t('profile.title')">
         <template #leading>
@@ -170,5 +171,6 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
         </UCard>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
+  </div>
 </template>

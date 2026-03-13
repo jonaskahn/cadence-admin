@@ -16,7 +16,8 @@ const columns = computed(() => [
 </script>
 
 <template>
-  <UDashboardPanel id="admin-health">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="admin-health">
     <template #header>
       <UDashboardNavbar :title="t('admin.health')">
         <template #leading>
@@ -83,5 +84,6 @@ const columns = computed(() => [
         </UCard>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
+  </div>
 </template>

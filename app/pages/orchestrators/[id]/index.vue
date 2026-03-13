@@ -104,7 +104,8 @@ async function onDeactivate() {
 </script>
 
 <template>
-  <UDashboardPanel :id="`orchestrator-${instanceId}`" :ui="{ body: 'min-w-0' }">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel :id="`orchestrator-${instanceId}`" :ui="{ body: 'min-w-0' }">
     <template #header>
       <UDashboardNavbar :title="orchestrator?.name ?? t('orchestrators.title')">
         <template #leading>
@@ -250,5 +251,6 @@ async function onDeactivate() {
         <UIcon class="size-8 animate-spin" name="i-lucide-loader" />
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
+  </div>
 </template>

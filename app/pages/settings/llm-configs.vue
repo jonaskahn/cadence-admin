@@ -106,22 +106,32 @@ const columns = computed(() => [
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
-    <UPageCard orientation="horizontal" variant="naked">
-      <template #header>
-        <div class="flex flex-col gap-0.5">
-          <div class="flex items-center gap-2">
-            <span class="font-semibold text-sm">{{ t('settings.llmConfigs') }}</span>
-            <InfoPopover title-key="info.settings.llmConfigs.title" description-key="info.settings.llmConfigs.description" />
+  <div>
+    <div class="flex flex-col gap-6 pt-4">
+      <UCard>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <p class="font-semibold">{{ t('settings.llmConfigs') }}</p>
+                <InfoPopover title-key="info.settings.llmConfigs.title" description-key="info.settings.llmConfigs.description" />
+              </div>
+              <p class="text-dimmed text-sm">{{ t('settings.llmConfigsDescription') }}</p>
+            </div>
+            <UButton
+              v-if="auth.isAdmin.value"
+              color="primary"
+              variant="outline"
+              icon="i-lucide-plus"
+              :label="t('settings.addConfig')"
+              @click="showAdd = true"
+            />
           </div>
-          <p class="text-sm text-dimmed">{{ t('settings.llmConfigsDescription') }}</p>
+        </template>
+        <div v-if="!configs" class="flex flex-col gap-2 p-4">
+          <USkeleton v-for="n in 5" :key="n" class="h-10 w-full" />
         </div>
-      </template>
-      <UButton v-if="auth.isAdmin.value" class="w-fit lg:ms-auto" color="primary" variant="outline" icon="i-lucide-plus" :label="t('settings.addConfig')" @click="showAdd = true" />
-    </UPageCard>
-
-    <UCard>
-      <UTable :columns="columns" :data="configs || []">
+        <UTable v-else :columns="columns" :data="configs" :empty-state="{ icon: 'i-lucide-cable', label: t('settings.noConfigs') }" class="w-full">
         <template #provider-cell="{ row }">
           <span :class="{ 'opacity-60': row?.original?.is_enabled === false }">{{ providerLabel(row.original.provider) }}</span>
         </template>
@@ -195,19 +205,20 @@ const columns = computed(() => [
             </UPopover>
           </div>
         </template>
-      </UTable>
-    </UCard>
+        </UTable>
+      </UCard>
+    </div>
+
+    <UModal v-model:open="showAdd" @after:leave="refresh()">
+      <template #content>
+        <LLMConfigModal :org-id="orgId" @close="handleModalClose" />
+      </template>
+    </UModal>
+
+    <UModal :open="!!editingConfig" @update:open="onEditModalClose">
+      <template #content>
+        <LLMConfigModal v-if="editingConfig" :initial-value="editingConfig" :org-id="orgId" @close="handleModalClose" />
+      </template>
+    </UModal>
   </div>
-
-  <UModal v-model:open="showAdd" @after:leave="refresh()">
-    <template #content>
-      <LLMConfigModal :org-id="orgId" @close="handleModalClose" />
-    </template>
-  </UModal>
-
-  <UModal :open="!!editingConfig" @update:open="onEditModalClose">
-    <template #content>
-      <LLMConfigModal v-if="editingConfig" :initial-value="editingConfig" :org-id="orgId" @close="handleModalClose" />
-    </template>
-  </UModal>
 </template>

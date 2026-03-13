@@ -94,7 +94,8 @@
     "systemPlugins": "System Plugins",
     "globalSettings": "Global Settings",
     "pool": "Pool",
-    "health": "Health"
+    "health": "Health",
+    "about": "About"
   },
   "userMenu": {
     "language": "Language",
@@ -200,6 +201,7 @@
     "failedUpdateOrg": "Failed to update organization",
     "members": "Members",
     "membersDescription": "Manage organization membership.",
+    "noMembers": "No members yet",
     "addMember": "Add Member",
     "username": "Username",
     "role": "Role",
@@ -215,6 +217,7 @@
     "llmConfigs": "LLM Configurations",
     "llmConfigsDescription": "Bring Your Own Key (BYOK) LLM provider configurations.",
     "addConfig": "Add Config",
+    "noConfigs": "No LLM configs yet",
     "addConfigTitle": "Add new configuration",
     "addConfigMessage": "It will be available to your organization.",
     "baseUrl": "Base URL",
@@ -811,5 +814,528 @@
     "codeExamples": "Code Examples",
     "copiedToClipboard": "Copied to clipboard",
     "failedCopy": "Failed to copy"
+  },
+  "about": {
+    "title": "About",
+    "tabs": {
+      "overview": "Overview",
+      "orchestrator": "Orchestrator",
+      "frameworks": "Frameworks",
+      "modes": "Modes",
+      "plugins": "Plugins",
+      "chat": "Chat",
+      "llmConfigs": "LLM Configs",
+      "centralPoints": "Central Points",
+      "orgs": "Organizations",
+      "roles": "Roles",
+      "admin": "Admin Tools"
+    },
+    "overview": {
+      "title": "Overview",
+      "subtitle": "A brief introduction to Cadence.",
+      "intro": "Cadence is an AI platform that lets teams deploy and manage AI assistants. You create assistants (orchestrators), connect your preferred AI provider, add tools via plugins, and chat in real time — no coding required.",
+      "bullet1": "Multi-tenant: each team has its own workspace with isolated data and settings",
+      "bullet2": "Bring your own AI keys: use OpenAI, Google, Anthropic, and others — your keys, your control",
+      "bullet3": "No-code orchestration: configure assistants through the UI, no programming needed",
+      "bullet4": "Real-time chat: see responses as they stream, with full visibility into how the assistant works",
+      "bullet5": "Extensible: add custom tools via plugins to give your assistants new capabilities"
+    },
+    "orchestrator": {
+      "title": "Orchestrator",
+      "subtitle": "Your AI assistant — configured once, ready to chat.",
+      "intro": "An orchestrator is your AI assistant. You choose its abilities (plugins), connect your AI provider, and start chatting. Each assistant runs independently and can be loaded or unloaded to manage resources.",
+      "bullet1": "Create assistants from the Orchestrators page",
+      "bullet2": "Choose Hot (fastest), Warm (quick), or Cold (lower cost, slower startup) based on your needs",
+      "bullet3": "Load and unload assistants to manage memory across many instances",
+      "bullet4": "Clone an existing assistant to reuse its configuration",
+      "bullet5": "Activate or deactivate without losing your setup",
+      "faq1": {
+        "question": "What is an orchestrator?",
+        "answer": "An orchestrator is a running AI assistant. It combines an execution engine, a mode (how it reasons), and a set of tools (plugins). You configure it once, then chat with it or connect it to your apps."
+      },
+      "faq2": {
+        "question": "What do Hot, Warm, and Cold mean?",
+        "answer": "Hot = loaded in memory and ready instantly. Warm = pre-warmed for fast startup. Cold = loads on first use (slower start, lower cost). You can change tier at any time."
+      },
+      "faq3": {
+        "question": "Can I run multiple assistants at once?",
+        "answer": "Yes. You can have many orchestrators. The platform manages memory across all of them. Your organization's subscription tier determines how many can be loaded at the same time."
+      },
+      "faq4": {
+        "question": "What is a plugin?",
+        "answer": "A plugin is a packaged capability — a set of tools your assistant can call. For example, a web search plugin lets your assistant search the web; a calendar plugin lets it read events. You choose which plugins to attach when creating an orchestrator."
+      },
+      "faq5": {
+        "question": "Can I change plugins after creating an orchestrator?",
+        "answer": "Plugin settings and versions can be updated at any time from the orchestrator's detail page. However, the framework and mode are fixed after creation — to change those, clone the orchestrator and start fresh."
+      },
+      "faq6": {
+        "question": "What happens when I change a setting?",
+        "answer": "Hot-tier orchestrators reload automatically to pick up the new setting. Cold and Warm orchestrators apply the change on their next load. You will see a brief interruption for hot-tier assistants during the reload."
+      },
+      "faq7": {
+        "question": "Which framework should I choose?",
+        "answer": "LangGraph is best for complex multi-step workflows that need fine-grained control. Google ADK is the natural fit if you are on Google Cloud or using Gemini models. OpenAI Agents is the quickest way to get started if you already use the OpenAI API."
+      },
+      "crudSection": {
+        "title": "Managing Orchestrators",
+        "intro": "Everything you need to create, configure, and manage your assistants is on the Orchestrators page.",
+        "create": "Create — give your assistant a name, choose a framework and mode, pick a tier, and attach plugins. The framework and mode cannot be changed after creation.",
+        "view": "View — see status, current tier, load state, and linked plugins at a glance from the orchestrator list or detail page.",
+        "edit": "Edit — update the display name, switch tiers, change plugin settings, or swap to a newer plugin version at any time.",
+        "clone": "Clone — duplicate an existing orchestrator's full configuration as a starting point for a new one.",
+        "delete": "Delete — permanently removes the orchestrator and all its history. This cannot be undone.",
+        "activate": "Activate / Deactivate — pause an orchestrator without deleting it. Deactivated orchestrators do not accept chat requests."
+      },
+      "tiersSection": {
+        "title": "Loading & Performance Tiers",
+        "intro": "Each orchestrator runs in one of three tiers that control how it is kept in memory and how fast it responds.",
+        "hot": {
+          "name": "Hot",
+          "desc": "Loaded in memory and ready instantly. Best for frequently used assistants where response speed matters."
+        },
+        "warm": {
+          "name": "Warm",
+          "desc": "Pre-warmed for fast startup. Slightly slower than Hot on first response but uses fewer resources when idle."
+        },
+        "cold": {
+          "name": "Cold",
+          "desc": "Loads on first use. Slowest to start but uses the fewest resources — ideal for occasional-use assistants."
+        },
+        "note": "You can change an orchestrator's tier at any time. You can also manually load or unload a Hot-tier assistant from its detail page without changing the tier."
+      },
+      "featuresSection": {
+        "title": "What You Can Do",
+        "intro": "Once an orchestrator is loaded, here is what you can do with it:",
+        "bullet1": "Chat in real time — send messages and see responses stream back with full reasoning steps visible",
+        "bullet2": "Inspect steps — expand each response to see which tools were called and what the assistant was thinking",
+        "bullet3": "Connect to a Central Point — assign a stable named endpoint so clients can reach the assistant without knowing its ID",
+        "bullet4": "Clone and experiment — duplicate a working assistant to try new plugins or settings safely",
+        "bullet5": "Share via your org — all org members can chat with any active orchestrator in the organization"
+      },
+      "pluginLoadSection": {
+        "title": "How Plugin Loading Works",
+        "intro": "When an orchestrator starts up, each of its plugins goes through a nine-step pipeline before any tool becomes available to the assistant.",
+        "step1": {
+          "title": "Pool Check",
+          "desc": "When a chat request arrives, the pool checks if the orchestrator is already in memory. If not, it acquires a lock and loads from the database.",
+          "ref": "OrchestratorPool.get()"
+        },
+        "step2": {
+          "title": "Instance Config Retrieved",
+          "desc": "The DB record for the orchestrator is fetched. It contains an active_plugins list (e.g. system:com.acme.search{'@'}1.0) and a plugin_settings map with per-plugin overrides.",
+          "ref": "OrchestratorPool._load_from_db()"
+        },
+        "step3": {
+          "title": "Plugin Manager Created",
+          "desc": "The factory constructs an SDKPluginManager, handing it the filesystem root, system plugins directory, optional S3 plugin store, and bundle cache.",
+          "ref": "OrchestratorFactory.create()"
+        },
+        "step4": {
+          "title": "Contract Resolution",
+          "desc": "For each plugin spec, the manager checks the in-memory registry first. On a miss it looks up the versioned directory on disk. If S3 is configured, it downloads and extracts the plugin zip before proceeding.",
+          "ref": "PluginLoaderMixin._resolve_contract()"
+        },
+        "step5": {
+          "title": "Module Loading",
+          "desc": "The plugin's plugin.py is scanned with Python's AST parser to reject any dangerous imports (os, subprocess, socket, etc.). If it passes, the file is loaded dynamically via importlib and the BasePlugin subclass is extracted and registered.",
+          "ref": "PluginLoaderMixin._load_plugin_module()"
+        },
+        "step6": {
+          "title": "Validation",
+          "desc": "The SDK validates that the plugin class has the required interface (create_agent(), get_metadata()). If the class defines validate_dependencies(), that runs too. Failures raise PluginValidationError and abort loading.",
+          "ref": "PluginBundleBuilderMixin._validate_plugin()"
+        },
+        "step7": {
+          "title": "Bundle Assembly",
+          "desc": "The plugin agent is instantiated. Settings are resolved in three layers: schema defaults → instance overrides from DB → validated final values. Tools are extracted, converted to the framework's native format, and bound to a dedicated LLM model. The result is an SDKPluginBundle.",
+          "ref": "PluginBundleBuilderMixin._create_bundle()"
+        },
+        "step8": {
+          "title": "Tool Aggregation",
+          "desc": "Once all bundles are built, a tool collector flattens every plugin's tools into a single list with reverse mappings (tool name → plugin id) and per-tool metadata flags.",
+          "ref": "SupervisorToolCollector.collect_all_tools()"
+        },
+        "step9": {
+          "title": "Graph Compiled",
+          "desc": "The framework-specific orchestrator (e.g. LangGraphSupervisor) receives the full tool list, binds it to the planner model, constructs the stateful execution graph, and compiles it. The orchestrator is now ready to handle requests.",
+          "ref": "LangGraphSupervisor._build_resources()"
+        },
+        "securityNote": "Security: every plugin file is parsed with Python's AST before execution. Any file that imports blocked modules (os, subprocess, socket, and others) is rejected before the code ever runs.",
+        "cacheNote": "Performance: stateless plugin bundles are cached by pid + version + settings hash. A second orchestrator using the same plugin version reuses the cached bundle instead of re-loading the module."
+      },
+      "faqSection": {
+        "title": "Frequently Asked Questions"
+      }
+    },
+    "frameworks": {
+      "title": "Frameworks",
+      "subtitle": "LangGraph, Google ADK, and OpenAI Agents SDK — each with different provider support and execution models.",
+      "intro": "The framework determines how your orchestrator executes internally — graph topology, agent handoff patterns, state management, and tool-calling conventions. Each framework integrates with different AI providers and has different strengths for different use cases.",
+      "bullet1": "LangGraph: multi-node state machines with full node-level override support",
+      "bullet2": "Google ADK: integrates with Gemini models and Google tooling",
+      "bullet3": "OpenAI Agents SDK: structured agent handoffs using OpenAI conventions",
+      "bullet4": "Framework is selected at creation and is immutable",
+      "bullet5": "Provider compatibility varies by framework — check docs before choosing",
+      "faq1": {
+        "question": "What is LangGraph?",
+        "answer": "LangGraph is a graph-based orchestration framework where nodes represent AI agents or processing steps and edges define control flow. It supports state machines and multi-agent coordination."
+      },
+      "faq2": {
+        "question": "What is Google ADK?",
+        "answer": "Google Agent Development Kit (ADK) is Google's framework for building and deploying AI agents. It integrates with Google's Gemini models and tooling ecosystem."
+      },
+      "faq3": {
+        "question": "What is OpenAI Agents SDK?",
+        "answer": "The OpenAI Agents SDK is OpenAI's framework for building multi-agent systems with handoffs, tool use, and structured orchestration patterns."
+      },
+      "faqSection": {
+        "title": "Frequently Asked Questions"
+      },
+      "executionSection": {
+        "title": "How Each Framework Executes",
+        "intro": "Cadence maps each framework to a set of specialized classes. The factory looks up the (framework, mode) pair in a registry and assembles the adapter, plugin manager, and orchestrator before returning a ready instance.",
+        "notImplemented": "(not yet implemented)",
+        "langgraph": {
+          "model": "Compiles a stateful StateGraph with eight specialized nodes: Router, Planner, Executor, Synthesizer, Clarifier, Responder, Validator, and Error Handler. Control-flow edges determine which node runs next based on structured output from the planner.",
+          "tools": "Plugin tools are converted to LangChain StructuredTool instances and bound to the planner via model.bind_tools(). A ToolNode handles actual execution and wraps results in ToolMessage objects that feed back into the graph.",
+          "ref": "LangGraphSupervisor._build_resources()"
+        },
+        "adk": {
+          "model": "Creates a separate LlmAgent for each pipeline stage. The planner agent receives all tools directly and handles its own function-call loop — no separate executor node. A custom BaseAgent subclass wraps the full pipeline and drives the ADK runner.",
+          "tools": "Plugin tools are converted to ADK FunctionTool instances and passed directly to LlmAgent(tools=all_tools). ADK's native loop processes function calls and yields structured event objects that the pipeline collects.",
+          "ref": "GoogleADKSupervisor._build_resources()"
+        },
+        "openai": {
+          "model": "Not yet implemented. The class exists as a registered placeholder that raises UnsupportedOperationError on use. Implementation is planned for a future release.",
+          "ref": "OpenAISupervisor (placeholder)"
+        }
+      },
+      "compatSection": {
+        "title": "Provider Compatibility",
+        "intro": "Each framework works with a specific set of LLM providers. The provider is configured in your LLM Config and must be compatible with the framework you select."
+      }
+    },
+    "modes": {
+      "title": "Orchestration Modes",
+      "subtitle": "Supervisor mode is fully implemented. Additional modes (Coordinator, Handoff, Pipeline) are in preview.",
+      "intro": "Modes define the high-level agent topology — how many agents run, how they hand off work, and how the final response is assembled. Supervisor mode uses a planner-synthesizer architecture where a router classifies incoming messages, the planner decomposes tasks, tool-calling agents handle subtasks, and the synthesizer assembles the final answer.",
+      "bullet1": "Supervisor: multi-node graph with Router, Planner, Synthesizer, and tool agents",
+      "bullet2": "Per-node AI config, model, temperature, and timeout overrides in Supervisor mode",
+      "bullet3": "Mode is set at creation and cannot be changed later",
+      "bullet4": "Additional modes planned: Coordinator, Handoff, Pipeline, and more",
+      "faq1": {
+        "question": "What is Supervisor mode?",
+        "answer": "Supervisor mode uses a multi-node architecture with specialized nodes: Router, Planner, Synthesizer, Clarifier, Responder, Validation, and Error Handler. The router classifies each message, the planner breaks it into steps, and the synthesizer composes the final answer."
+      },
+      "faq2": {
+        "question": "Are other modes available?",
+        "answer": "Additional modes (Coordinator, Handoff, Pipeline, etc.) are in preview and planned for future releases. Mode availability depends on the selected framework."
+      },
+      "faq3": {
+        "question": "Can I change the mode after creation?",
+        "answer": "No. The framework and mode are immutable after an orchestrator is created. To change mode, clone the orchestrator and select a different mode."
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "subtitle": "Upload ZIP packages to extend orchestrator capabilities with custom tools.",
+      "intro": "Plugins are Python packages that expose tools to orchestrators. They follow the Cadence SDK conventions — annotated function definitions that the orchestrator can invoke during a conversation. System plugins are available platform-wide; org plugins are scoped to the uploading organization.",
+      "bullet1": "Upload plugins as ZIP packages via Plugins → Upload",
+      "bullet2": "System plugins are managed by system admins and available to all orgs",
+      "bullet3": "Org plugins are uploaded per-organization and private to that org",
+      "bullet4": "Plugins can declare required configuration settings filled per-orchestrator",
+      "bullet5": "Enable or disable specific plugin versions independently",
+      "faq1": {
+        "question": "What format are plugins in?",
+        "answer": "Plugins are ZIP packages containing a Python module or package. They expose tools via the Cadence SDK using standard function definitions with type annotations."
+      },
+      "faq2": {
+        "question": "What is the difference between system and org plugins?",
+        "answer": "System plugins are uploaded by system admins and available to all organizations. Org plugins are uploaded by org admins and available only within that organization."
+      },
+      "faq3": {
+        "question": "Can a plugin require configuration?",
+        "answer": "Yes. Plugins can declare configuration settings (e.g. API keys, thresholds) that must be filled when adding the plugin to an orchestrator. Required settings block orchestrator creation if not filled."
+      },
+      "faqSection": {
+        "title": "Frequently Asked Questions"
+      },
+      "anatomySection": {
+        "title": "Plugin Anatomy",
+        "intro": "A plugin is three cooperating classes packaged in a single plugin.py file. The platform discovers the BasePlugin subclass automatically — no registration file needed.",
+        "basePlugin": {
+          "desc": "Stateless factory class. Provides metadata and creates agent instances on demand. All methods are static — BasePlugin is never instantiated itself.",
+          "method1": "get_metadata() → PluginMetadata  [required] declare identity, version, and capabilities",
+          "method2": "create_agent() → BaseAgent  [required] return a fresh agent instance on every load",
+          "method3": "validate_dependencies() → List[str]  [optional] return error strings or empty list if OK"
+        },
+        "baseAgent": {
+          "desc": "Holds runtime state and exposes tools to the framework. initialize() is called with the resolved settings dict before any tool runs.",
+          "method1": "get_tools() → List[UvTool]  [required] return all tool instances this agent provides",
+          "method2": "get_system_prompt() → str  [required] return the agent system instruction",
+          "method3": "initialize(config: Dict[str, Any])  [optional] receives resolved settings on load",
+          "method4": "async cleanup()  [optional] release resources when the orchestrator unloads"
+        },
+        "metadata": {
+          "desc": "Immutable descriptor returned by get_metadata(). The pid field is the plugin's permanent identity across version upgrades — changing it creates a new plugin.",
+          "field1": "pid — reverse-domain unique ID, e.g. com.acme.my_plugin (immutable after registration)",
+          "field2": "name, version, description — display fields; version must follow semver (e.g. 1.2.0)",
+          "field3": "capabilities — list of capability tag strings shown in the plugin catalogue",
+          "field4": "dependencies — pip requirement strings (e.g. requests>=2.28) installed at load time",
+          "field5": "stateless — set to False if the agent holds cross-request state; affects caching behaviour"
+        }
+      },
+      "toolsSection": {
+        "title": "Defining Tools",
+        "intro": "Each tool is a UvTool instance, most easily created with the {'@'}uvtool decorator on an async function. The decorator infers name and description from the function name and docstring if not specified.",
+        "field1": {
+          "desc": "Passed verbatim to the LLM planner. Clear, specific descriptions are the single most important factor in whether the planner calls the tool correctly and with the right arguments."
+        },
+        "field2": {
+          "desc": "Pydantic BaseModel subclass that validates the planner's arguments before the function runs. Field descriptions are appended to the tool prompt the planner sees."
+        },
+        "field3": {
+          "desc": "When True, the raw tool result is forwarded to the client immediately, before the synthesizer produces the final response. Useful for search results and data tables."
+        },
+        "field4": {
+          "desc": "Callable applied to the raw result before streaming. Use it to strip internal fields, secrets, or large blobs from what the client sees while the full result still flows through the pipeline."
+        },
+        "field5": {
+          "desc": "Instructs the orchestrator to run an LLM validation pass on the tool output before handing it to the synthesizer. Adds latency but catches tool errors before they reach the user."
+        }
+      },
+      "settingsSection": {
+        "title": "Declaring Plugin Settings",
+        "intro": "Apply the {'@'}plugin_settings decorator to the BasePlugin class to declare configuration that orchestrator owners must fill. Values are resolved through the three-tier cascade and passed to agent.initialize().",
+        "field1": {
+          "desc": "Machine-readable identifier. Becomes the key in the config dict passed to agent.initialize(config)."
+        },
+        "field2": {
+          "desc": "Value type — one of: str, int, float, bool, list, dict. The platform type-checks user input against this."
+        },
+        "field3": {
+          "desc": "If true, the orchestrator cannot be saved until this setting is provided. Blocks creation, not just a warning."
+        },
+        "field4": {
+          "desc": "Marks the value as secret — encrypted at rest, masked in the UI, and redacted from logs. Use for API keys and passwords."
+        },
+        "field5": {
+          "desc": "Fallback used when the orchestrator owner leaves the field blank. Must match the declared type."
+        }
+      },
+      "uploadSection": {
+        "title": "Upload & Validation Pipeline",
+        "intro": "Every uploaded plugin passes through an eight-step pipeline. A failure at any step rejects the upload and returns the error to the uploader.",
+        "step1": {
+          "title": "Package",
+          "desc": "Put plugin.py and any supporting modules in a directory. Use build_plugin_zip() from the SDK or zip the directory manually. __pycache__ and *.pyc are excluded automatically.",
+          "ref": "cadence_sdk.build_plugin_zip()"
+        },
+        "step2": {
+          "title": "Upload",
+          "desc": "Go to Plugins → Upload. System admins see a scope selector (system or org). Select the ZIP file and submit. File size is capped at the configured limit.",
+          "ref": "Plugins → Upload"
+        },
+        "step3": {
+          "title": "Extraction",
+          "desc": "The server extracts the ZIP into a versioned directory under the configured plugin root. The directory is named using the pid and version from the metadata.",
+          "ref": "PluginStoreRepository.save_plugin()"
+        },
+        "step4": {
+          "title": "Class Discovery",
+          "desc": "plugin.py is scanned for a class that inherits from BasePlugin. The upload is rejected if none is found or if more than one BasePlugin subclass is defined in the file.",
+          "ref": "PluginLoaderMixin._load_plugin_module()"
+        },
+        "step5": {
+          "title": "AST Security Scan",
+          "desc": "plugin.py is parsed with Python's AST before any code runs. Any import of a blocked module (os, subprocess, socket, sys, shutil, and others) immediately rejects the upload.",
+          "ref": "AST scanner (pre-execution)"
+        },
+        "step6": {
+          "title": "Metadata Validation",
+          "desc": "get_metadata() is called. The platform checks that pid follows reverse-domain format, version follows semver, and all required fields are present and correctly typed.",
+          "ref": "PluginBundleBuilderMixin._validate_plugin()"
+        },
+        "step7": {
+          "title": "Dependency Check",
+          "desc": "If the plugin defines validate_dependencies(), it is called. Any error strings returned are displayed to the uploader and abort registration. An empty list means all clear.",
+          "ref": "BasePlugin.validate_dependencies()"
+        },
+        "step8": {
+          "title": "Registration",
+          "desc": "The plugin record and version entry are written to the database. The plugin is now available in the catalogue and can be added to orchestrators.",
+          "ref": "PluginRepository.create_plugin_version()"
+        }
+      }
+    },
+    "chat": {
+      "title": "Chat",
+      "subtitle": "Real-time streaming chat with AI agents via orchestrators or Central Points.",
+      "intro": "The Chat page is an interactive playground for testing and using orchestrators. Messages stream in real time. Each response shows the agent's internal steps — which nodes fired, which tools were called, and what intermediate outputs were produced — giving you full visibility into agent reasoning.",
+      "bullet1": "Select a loaded orchestrator from the sidebar to start chatting",
+      "bullet2": "Responses stream token-by-token in real time",
+      "bullet3": "Expand \"steps\" and \"sources\" per message to inspect agent reasoning",
+      "bullet4": "Session persists until cleared — useful for multi-turn conversations",
+      "bullet5": "Also accessible via Central Points for stable endpoint routing",
+      "faq1": {
+        "question": "How does streaming work?",
+        "answer": "Chat uses Server-Sent Events to stream tokens from the orchestrator in real time. You see each token as it is generated rather than waiting for the full response."
+      },
+      "faq2": {
+        "question": "What are \"steps\" in a chat response?",
+        "answer": "Steps show the internal reasoning of the orchestrator — which nodes fired, which tools were called, and what intermediate outputs were produced. Expand them to debug or understand agent behavior."
+      },
+      "faq3": {
+        "question": "What is a Central Point in chat context?",
+        "answer": "A Central Point is a stable named endpoint you can assign to an orchestrator. Clients send messages to the central point ID; you can swap orchestrators behind it without changing client code."
+      }
+    },
+    "llmConfigs": {
+      "title": "LLM Configs (BYOK)",
+      "subtitle": "Add your own API keys for OpenAI, Anthropic, Google, Azure, Groq, and more.",
+      "intro": "Cadence is Bring Your Own Key (BYOK). You store your provider API keys in LLM Configs; your orchestrators reference those configs by name. Keys are stored encrypted, never logged, and never returned to the UI after saving. Each organization manages its own set of configs independently.",
+      "bullet1": "Supported: OpenAI, Anthropic, Google, Groq, Azure OpenAI, LiteLLM, TensorZero, Bifrost",
+      "bullet2": "Each config has a name, provider, API key, and optional base URL",
+      "bullet3": "Azure requires an API version in addition to the key",
+      "bullet4": "Disable a config to hide it without deleting — active orchestrators keep working",
+      "bullet5": "Configs in use by active orchestrators cannot be deleted until unlinked",
+      "faq1": {
+        "question": "What providers are supported?",
+        "answer": "OpenAI, Anthropic, Google (Gemini), Groq, Azure OpenAI, LiteLLM, TensorZero, and Bifrost. Each requires an API key and optionally a base URL."
+      },
+      "faq2": {
+        "question": "Are API keys stored securely?",
+        "answer": "Yes. API keys are stored encrypted and never returned or logged after saving. Rotate keys in Settings → LLM Configs if compromised."
+      },
+      "faq3": {
+        "question": "Can different orchestrators use different LLM configs?",
+        "answer": "Yes. Each orchestrator selects its own LLM config. In Supervisor mode you can also override the config and model per-node for fine-grained control."
+      }
+    },
+    "centralPoints": {
+      "title": "Central Points",
+      "subtitle": "Stable named endpoints that abstract away orchestrator instance IDs; public or private visibility.",
+      "intro": "A Central Point is an indirection layer between your clients and an orchestrator. Instead of calling a specific orchestrator ID, clients call a stable Central Point ID. You can swap the backing orchestrator at any time without changing client code. Central points can be private (require a Bearer token) or public (no auth required).",
+      "bullet1": "Create central points in Settings → Central Points",
+      "bullet2": "Assign an orchestrator to route traffic to it",
+      "bullet3": "Swap the backing orchestrator at any time without client changes",
+      "bullet4": "Private: requires Authorization Bearer header; Public: anonymous access",
+      "bullet5": "Use the X-CENTRAL-ID and X-ORG-ID headers when calling the chat endpoint",
+      "faq1": {
+        "question": "Why use a Central Point instead of calling an orchestrator directly?",
+        "answer": "Orchestrator IDs change when you recreate instances. A Central Point gives you a stable ID — swap the backing orchestrator any time without touching your client code or integrations."
+      },
+      "faq2": {
+        "question": "What is the difference between private and public?",
+        "answer": "Private central points require a Bearer token for every request. Public central points allow anonymous requests — useful for demos, embedded chat widgets, or open tools."
+      },
+      "faq3": {
+        "question": "How do I call a Central Point from my app?",
+        "answer": "POST to /api/chat/completion with headers X-ORG-ID and X-CENTRAL-ID. For private points, also send Authorization: Bearer {token}. The body is a standard messages array."
+      },
+      "faqSection": {
+        "title": "Frequently Asked Questions"
+      },
+      "useCasesSection": {
+        "title": "What You Can Do With Central Points",
+        "intro": "Central Points unlock patterns that would otherwise require changes to every app or integration that talks to your AI assistant. Here are the most common scenarios.",
+        "bluegreen": {
+          "title": "Safe Upgrades — No Downtime",
+          "scenario": "You have a customer-facing chat widget that calls your assistant. You want to upgrade the assistant with new plugins and a new model — but you cannot risk breaking anything live. So you build and test the new version alongside the old one. When you're happy, you flip the Central Point to the new version. If something goes wrong, one more flip brings the old version back instantly.",
+          "benefit": "Your customers never see an outage or a broken chat. The widget URL never changes."
+        },
+        "rollback": {
+          "title": "Instant Rollback",
+          "scenario": "You released a new orchestrator and users are reporting that answers are worse than before. You still have the previous version sitting idle. You reassign the Central Point back to it in seconds — no redeployment, no waiting for a build pipeline, no code change.",
+          "benefit": "Rolling back an AI assistant is as fast as changing a setting."
+        },
+        "testing": {
+          "title": "Test Before You Commit",
+          "scenario": "You want to try a new LLM model or an experimental plugin without exposing it to real users. Create a second private Central Point that points to the new orchestrator. Your QA team tests against the private point while production traffic keeps flowing through the stable one.",
+          "benefit": "Experiment freely without any risk to your live users."
+        },
+        "public": {
+          "title": "Public Demo or Embedded Widget",
+          "scenario": "You want to embed an AI assistant on a public webpage — no login required for visitors. Set the Central Point to public visibility. Anyone with the endpoint URL can chat with it. When you update the assistant, flip the Central Point; the widget never needs touching.",
+          "benefit": "Ship a public chatbot without exposing internal orchestrator IDs or managing per-visitor tokens."
+        },
+        "multienv": {
+          "title": "Separate Environments From One Codebase",
+          "scenario": "Your app reads the Central Point ID from an environment variable. You create one Central Point per environment (dev, staging, production), each backed by a different orchestrator. The app code is identical across environments — only the environment variable changes.",
+          "benefit": "Consistent code, environment-specific AI behaviour, zero hardcoded orchestrator IDs."
+        }
+      }
+    },
+    "orgs": {
+      "title": "Organizations & Members",
+      "subtitle": "Multi-tenant workspaces; users can belong to multiple orgs with different roles.",
+      "intro": "Cadence is multi-tenant. Each organization is an isolated workspace with its own orchestrators, plugins, LLM configs, central points, and members. A user can be a member of multiple organizations simultaneously, switching between them via the org menu. Each org has an independent subscription tier and quota.",
+      "bullet1": "Org admins add members by email, username, or user ID",
+      "bullet2": "Promote members to org admin or demote back to member",
+      "bullet3": "Remove members from the org without deleting their account",
+      "bullet4": "Users switch orgs from the top-left org menu in the sidebar",
+      "bullet5": "Subscription tier controls quotas: max orchestrators, members, messages, etc.",
+      "faq1": {
+        "question": "Can a user belong to multiple organizations?",
+        "answer": "Yes. A user can be a member of multiple organizations simultaneously, with a different role in each one. Switch between them using the org menu at the top of the sidebar."
+      },
+      "faq2": {
+        "question": "Who can create organizations?",
+        "answer": "Only system admins can create organizations. Org admins manage the membership and settings of their own organization."
+      },
+      "faq3": {
+        "question": "What happens if I am in an org but not an admin?",
+        "answer": "You get the Member role, which grants access to Chat only. Orchestrators, plugins, settings, and admin tools are not visible."
+      }
+    },
+    "roles": {
+      "title": "Role-Based Access",
+      "subtitle": "Three roles: System Admin (platform), Org Admin (workspace), Member (chat only).",
+      "intro": "Access in Cadence is controlled by two orthogonal role dimensions: system-level (System Admin vs. regular user) and org-level (Org Admin vs. Member). A System Admin has full platform access regardless of org membership. An Org Admin controls everything within their organization. A Member can only use Chat.",
+      "bullet1": "System Admin: create orgs, manage users, system plugins, global settings, pool, health",
+      "bullet2": "Org Admin: orchestrators, plugins, members, LLM configs, central points, settings",
+      "bullet3": "Member: Chat page only — cannot see settings, orchestrators, or plugins",
+      "bullet4": "Roles are enforced at both the API and UI layers",
+      "bullet5": "A user can be Org Admin in one org and Member in another simultaneously",
+      "faq1": {
+        "question": "What can a System Admin do?",
+        "answer": "System admins have full platform access: create orgs and users, manage system plugins, configure global settings, view pool stats, and check system health."
+      },
+      "faq2": {
+        "question": "What can an Org Admin do?",
+        "answer": "Org admins manage everything within their organization: orchestrators, plugins, members, LLM configs, central points, and org settings."
+      },
+      "faq3": {
+        "question": "What can a Member do?",
+        "answer": "Members can only access the Chat page. They cannot see orchestrators, plugins, or settings. They chat via loaded orchestrators or central points visible to their org."
+      }
+    },
+    "admin": {
+      "title": "Admin Tools",
+      "subtitle": "Pool stats, health monitoring, tier quotas, and global settings — system admin only.",
+      "intro": "System admins have access to a dedicated System section in the sidebar with tools for platform operations: real-time pool statistics, service health checks, subscription tier quota management, a platform-wide LLM model catalog, and global feature settings that cascade to all organizations.",
+      "bullet1": "Pool: total instances, tier breakdown, shared models, memory estimate (auto-refresh 30s)",
+      "bullet2": "Health: PostgreSQL, Redis, MongoDB status + per-instance orchestrator readiness",
+      "bullet3": "Global Settings: subscription tier quotas, LLM model catalog, feature flags",
+      "bullet4": "Organizations: create, edit, set quotas, manage members across all orgs",
+      "bullet5": "Users: create, edit, delete platform users; grant or revoke system admin flag",
+      "faq1": {
+        "question": "What is the Pool page?",
+        "answer": "The Pool page shows real-time statistics for all orchestrator instances across the platform: how many are hot/warm/cold, shared model count, and estimated memory usage. Auto-refreshes every 30 seconds."
+      },
+      "faq2": {
+        "question": "What does the Health page show?",
+        "answer": "The Health page shows the status of core services (PostgreSQL, Redis, MongoDB) and each loaded orchestrator instance with its ready state. Use it to diagnose outages or verify instances before routing traffic."
+      },
+      "faq3": {
+        "question": "What are Global Settings?",
+        "answer": "Global Settings are platform-wide defaults: subscription tier quotas, LLM provider model catalogs, and feature flags (pool behavior, caching, rate limiting, etc.). Some settings can be overridden per-organization by org admins."
+      }
+    },
+    "changelog": {
+      "title": "Changelog",
+      "empty": "No releases published yet."
+    }
   }
 }

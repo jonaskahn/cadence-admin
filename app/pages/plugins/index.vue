@@ -48,7 +48,8 @@ function onDrawerClosed() {
 </script>
 
 <template>
-  <UDashboardPanel id="plugins">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="plugins">
     <template #header>
       <UDashboardNavbar :title="t('plugins.title')">
         <template #leading>
@@ -73,9 +74,9 @@ function onDrawerClosed() {
         <p v-if="filteredPlugins.length === 0" class="py-8 text-center text-dimmed">{{ t('plugins.noPluginsMatch') }}</p>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
 
-  <PluginDetailDrawer
+    <PluginDetailDrawer
     v-if="selectedPlugin"
     v-model:open="drawerOpen"
     :allow-disable="selectedPlugin.source === 'org'"
@@ -85,11 +86,12 @@ function onDrawerClosed() {
     :source="(selectedPlugin.source as 'system' | 'org') ?? 'org'"
     @close="onDrawerClose"
     @closed="onDrawerClosed"
-  />
+    />
 
-  <UModal v-model:open="showUpload">
+    <UModal v-model:open="showUpload">
     <template #content>
       <PluginUploadModal :org-id="orgId" @close="handleUploadClose" />
     </template>
-  </UModal>
+    </UModal>
+  </div>
 </template>

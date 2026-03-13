@@ -66,7 +66,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <UCard class="w-md">
+  <div>
+    <UCard class="w-md">
     <template #header>
       <div class="flex flex-col items-center gap-2 py-2">
         <h1 class="text-2xl font-bold">{{ appName }}</h1>
@@ -92,5 +93,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </UDropdownMenu>
       </div>
     </template>
-  </UCard>
+    </UCard>
+  </div>
 </template>

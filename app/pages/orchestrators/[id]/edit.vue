@@ -119,7 +119,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <UDashboardPanel :id="`orchestrator-edit-${instanceId}`" :ui="{ body: 'min-w-0' }">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel :id="`orchestrator-edit-${instanceId}`" :ui="{ body: 'min-w-0' }">
     <template #header>
       <UDashboardNavbar :title="orchestrator?.name ?? t('orchestrators.edit.title')">
         <template #leading>
@@ -225,5 +226,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </UForm>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
+  </div>
 </template>

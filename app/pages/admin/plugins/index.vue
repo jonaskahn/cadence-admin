@@ -56,7 +56,8 @@ function onDrawerClosed() {
 </script>
 
 <template>
-  <UDashboardPanel id="admin-plugins">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="admin-plugins">
     <template #header>
       <UDashboardNavbar :title="t('plugins.title')">
         <template #leading>
@@ -99,9 +100,9 @@ function onDrawerClosed() {
         <p v-else-if="activeTab === 'org' && selectedOrgId && plugins.length === 0" class="py-8 text-center text-dimmed">{{ t('admin.noOrgPlugins') }}</p>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
 
-  <PluginDetailDrawer
+    <PluginDetailDrawer
     v-if="selectedPlugin"
     v-model:open="drawerOpen"
     :allow-disable="true"
@@ -111,11 +112,12 @@ function onDrawerClosed() {
     :source="activeTab"
     @close="onDrawerClose"
     @closed="onDrawerClosed"
-  />
+    />
 
-  <UModal v-model:open="showUpload">
+    <UModal v-model:open="showUpload">
     <template #content>
       <PluginUploadModal :is-admin="true" :org-id="orgId" @close="handleUploadClose" />
     </template>
-  </UModal>
+    </UModal>
+  </div>
 </template>

@@ -48,7 +48,8 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
 </script>
 
 <template>
-  <UDashboardPanel id="chat">
+  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+    <UDashboardPanel id="chat">
     <template #header>
       <UDashboardNavbar :title="t('chat.title')">
         <template #leading>
@@ -224,5 +225,6 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
         </div>
       </div>
     </template>
-  </UDashboardPanel>
+    </UDashboardPanel>
+  </div>
 </template>

@@ -146,6 +146,12 @@ const mainLinks = computed(() => {
   if (systemLinks.value.length) {
     links.push(...systemLinks.value)
   }
+  links.push({
+    label: t('nav.about'),
+    icon: 'i-lucide-info',
+    to: localePath('/about'),
+    onSelect: closeMenu
+  })
   return links
 })
 </script>

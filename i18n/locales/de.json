@@ -94,7 +94,8 @@
     "systemPlugins": "System-Plugins",
     "globalSettings": "Globale Einstellungen",
     "pool": "Pool",
-    "health": "Status"
+    "health": "Status",
+    "about": "Über"
   },
   "userMenu": {
     "language": "Sprache",
@@ -200,6 +201,7 @@
     "failedUpdateOrg": "Organisation konnte nicht aktualisiert werden",
     "members": "Mitglieder",
     "membersDescription": "Organisationsmitgliedschaft verwalten.",
+    "noMembers": "Noch keine Mitglieder",
     "addMember": "Mitglied hinzufügen",
     "username": "Benutzername",
     "role": "Rolle",
@@ -215,6 +217,7 @@
     "llmConfigs": "LLM-Konfigurationen",
     "llmConfigsDescription": "Bring Your Own Key (BYOK) LLM-Provider-Konfigurationen.",
     "addConfig": "Konfiguration hinzufügen",
+    "noConfigs": "Noch keine LLM-Konfigurationen",
     "addConfigTitle": "Neue Konfiguration hinzufügen",
     "addConfigMessage": "Sie steht Ihrer Organisation zur Verfügung.",
     "baseUrl": "Basis-URL",
@@ -811,5 +814,48 @@
     "codeExamples": "Code-Beispiele",
     "copiedToClipboard": "In Zwischenablage kopiert",
     "failedCopy": "Kopieren fehlgeschlagen"
+  },
+  "about": {
+    "title": "Über",
+    "tabs": {
+      "overview": "Übersicht",
+      "orchestrator": "Orchestrator"
+    },
+    "overview": {
+      "title": "Übersicht",
+      "subtitle": "Eine kurze Einführung in Cadence.",
+      "intro": "Cadence ist eine KI-Plattform, mit der Teams KI-Assistenten bereitstellen und verwalten können. Sie erstellen Assistenten (Orchestratoren), verbinden Ihren bevorzugten KI-Anbieter, fügen Tools über Plugins hinzu und chatten in Echtzeit — keine Programmierung erforderlich.",
+      "bullet1": "Multi-Tenant: Jedes Team hat seinen eigenen Arbeitsbereich mit isolierten Daten und Einstellungen",
+      "bullet2": "Bringen Sie Ihre eigenen KI-Schlüssel mit: Nutzen Sie OpenAI, Google, Anthropic und andere — Ihre Schlüssel, Ihre Kontrolle",
+      "bullet3": "Orchestrierung ohne Code: Konfigurieren Sie Assistenten über die Benutzeroberfläche, keine Programmierung nötig",
+      "bullet4": "Echtzeit-Chat: Sehen Sie Antworten beim Streamen mit voller Transparenz über die Arbeitsweise des Assistenten",
+      "bullet5": "Erweiterbar: Fügen Sie benutzerdefinierte Tools über Plugins hinzu, um Ihren Assistenten neue Fähigkeiten zu geben"
+    },
+    "orchestrator": {
+      "title": "Orchestrator",
+      "subtitle": "Ihr KI-Assistent — einmal konfiguriert, bereit für den Chat.",
+      "intro": "Ein Orchestrator ist Ihr KI-Assistent. Sie wählen seine Fähigkeiten (Plugins), verbinden Ihren KI-Anbieter und starten den Chat. Jeder Assistent läuft unabhängig und kann geladen oder entladen werden, um Ressourcen zu verwalten.",
+      "bullet1": "Erstellen Sie Assistenten auf der Seite Orchestratoren",
+      "bullet2": "Wählen Sie Hot (schnellste), Warm (schnell) oder Cold (günstiger, langsamer Start) je nach Bedarf",
+      "bullet3": "Laden und entladen Sie Assistenten, um den Speicher bei vielen Instanzen zu verwalten",
+      "bullet4": "Klonen Sie einen bestehenden Assistenten, um dessen Konfiguration wiederzuverwenden",
+      "bullet5": "Aktivieren oder deaktivieren Sie, ohne Ihre Einrichtung zu verlieren",
+      "faq1": {
+        "question": "Was ist ein Orchestrator?",
+        "answer": "Ein Orchestrator ist ein laufender KI-Assistent. Er kombiniert eine Ausführungsengine, einen Modus (wie er denkt) und einen Satz von Tools (Plugins). Sie konfigurieren ihn einmal und chatten dann damit oder verbinden ihn mit Ihren Apps."
+      },
+      "faq2": {
+        "question": "Was bedeuten Hot, Warm und Cold?",
+        "answer": "Hot = im Speicher geladen und sofort einsatzbereit. Warm = vorgeladen für schnellen Start. Cold = lädt bei erster Nutzung (langsamer Start, geringere Kosten). Sie können die Stufe jederzeit ändern."
+      },
+      "faq3": {
+        "question": "Kann ich mehrere Assistenten gleichzeitig betreiben?",
+        "answer": "Ja. Sie können viele Orchestratoren haben. Die Plattform verwaltet den Speicher für alle. Der Abonnement-Tarif Ihrer Organisation bestimmt, wie viele gleichzeitig geladen sein können."
+      }
+    },
+    "changelog": {
+      "title": "Änderungsprotokoll",
+      "empty": "Noch keine Versionen veröffentlicht."
+    }
   }
 }

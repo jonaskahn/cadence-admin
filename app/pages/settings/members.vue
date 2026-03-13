@@ -78,28 +78,31 @@ const columns = computed(() => [
 
 <template>
   <div>
-    <div class="flex flex-col gap-6">
-      <UPageCard orientation="horizontal" variant="naked">
+    <div class="flex flex-col gap-6 pt-4">
+      <UCard>
         <template #header>
-          <div class="flex items-center gap-2">
-            <span class="font-semibold text-sm">{{ t('settings.members') }}</span>
-            <InfoPopover title-key="info.settings.members.title" description-key="info.settings.members.description" />
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <p class="font-semibold">{{ t('settings.members') }}</p>
+                <InfoPopover title-key="info.settings.members.title" description-key="info.settings.members.description" />
+              </div>
+              <p class="text-dimmed text-sm">{{ t('settings.membersDescription') }}</p>
+            </div>
+            <UButton
+              v-if="auth.isAdmin.value"
+              color="primary"
+              variant="outline"
+              icon="i-lucide-user-plus"
+              :label="t('settings.addMember')"
+              @click="showAdd = true"
+            />
           </div>
-          <p class="mt-0.5 text-sm text-dimmed">{{ t('settings.membersDescription') }}</p>
         </template>
-        <UButton
-          v-if="auth.isAdmin.value"
-          color="primary"
-          variant="outline"
-          :label="t('settings.addMember')"
-          class="w-fit lg:ms-auto"
-          icon="i-lucide-user-plus"
-          @click="showAdd = true"
-        />
-      </UPageCard>
-
-      <UCard class="w-full">
-        <UTable :columns="columns" :data="members || []" class="w-full">
+        <div v-if="!members" class="flex flex-col gap-2 p-4">
+          <USkeleton v-for="n in 5" :key="n" class="h-10 w-full" />
+        </div>
+        <UTable v-else :columns="columns" :data="members" :empty-state="{ icon: 'i-lucide-contact', label: t('settings.noMembers') }" class="w-full">
           <template #is_admin-cell="{ row }">
             <UBadge :color="row.original.is_admin ? 'warning' : 'neutral'" size="sm" variant="subtle">
               {{ row.original.is_admin ? t('roles.orgAdmin') : t('roles.member') }}

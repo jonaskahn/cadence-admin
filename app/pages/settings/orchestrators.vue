@@ -138,19 +138,19 @@ async function save() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
-    <UPageCard orientation="horizontal" variant="naked">
+  <div class="flex flex-col gap-6 pt-4">
+    <UCard>
       <template #header>
-        <div class="flex flex-col gap-0.5">
-          <div class="flex items-center gap-2">
-            <span class="font-semibold text-sm">{{ t('settings.orchestratorSettings') }}</span>
-            <InfoPopover title-key="info.settings.orchestrators.title" description-key="info.settings.orchestrators.description" />
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <p class="font-semibold">{{ t('settings.orchestratorSettings') }}</p>
+              <InfoPopover title-key="info.settings.orchestrators.title" description-key="info.settings.orchestrators.description" />
+            </div>
+            <p class="text-dimmed text-sm">{{ t('settings.orchestratorSettingsDescription') }}</p>
           </div>
-          <p class="text-sm text-dimmed">{{ t('settings.orchestratorSettingsDescription') }}</p>
         </div>
       </template>
-    </UPageCard>
-    <UCard>
       <div class="flex flex-col gap-5">
         <UFormField :description="t('settings.defaultLlmConfigDescription')" :label="t('settings.defaultLlmConfig')">
           <USelect
