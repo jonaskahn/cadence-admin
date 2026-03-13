@@ -14,6 +14,9 @@ const closeMenu = () => {
 
 const baseLinks = computed<NavigationMenuItem[]>(() => {
   if (!auth.currentOrgId.value) return []
+  if (!auth.isAdmin.value) {
+    return [{ label: t('nav.chat'), icon: 'i-lucide-message-square', to: localePath('/chat'), onSelect: closeMenu }]
+  }
   return [
     {
       label: t('nav.dashboard'),
@@ -37,7 +40,7 @@ const baseLinks = computed<NavigationMenuItem[]>(() => {
 })
 
 const orgAdminLinks = computed<NavigationMenuItem[]>(() => {
-  if (!auth.currentOrgId.value || !auth.isAuthenticated.value) return []
+  if (!auth.currentOrgId.value || !auth.isAuthenticated.value || !auth.isAdmin.value) return []
   return [
     {
       label: t('nav.plugins'),

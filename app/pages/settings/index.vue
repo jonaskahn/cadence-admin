@@ -10,7 +10,7 @@ const { t } = useI18n()
 const orgId = computed(() => auth.currentOrgId.value || '')
 const isOrgAdmin = computed(() => auth.currentOrg.value?.role === 'org_admin' || auth.currentOrg.value?.role === 'sys_admin')
 
-const { data: org, refresh: refreshOrg } = await useFetch<OrganizationResponse>(() => `/api/orgs/${orgId.value}`, { watch: [orgId] })
+const { data: org, refresh: refreshOrg } = await useApiFetch<OrganizationResponse>(() => `/api/orgs/${orgId.value}`, { watch: [orgId] })
 
 const profileSchema = z.object({
   display_name: z.string().optional().nullable(),

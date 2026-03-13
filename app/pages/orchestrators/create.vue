@@ -16,6 +16,9 @@ const router = useRouter()
 const { t } = useI18n()
 const localePath = useLocalePath()
 const auth = useAuth()
+if (!auth.isAdmin.value) {
+  await navigateTo(localePath('/orchestrators'))
+}
 const orchestrators = useOrchestrators()
 const toast = useToast()
 const orgId = computed(() => auth.currentOrgId.value || '')
@@ -73,6 +76,7 @@ const state = reactive<Partial<Schema>>({
 const selectedPlugins = ref<PluginMetadataResponse[]>([])
 const showPluginSelector = ref(false)
 const loading = ref(false)
+const createFormRef = ref()
 const supervisorProviderRef = ref<{
   isValid: () => boolean
   getValue: () => Record<string, unknown>
@@ -296,7 +300,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
       <template #body>
         <div class="p-6 min-w-0 w-full">
-          <UForm :schema="schema" :state="state" @submit="onSubmit">
+          <UForm ref="createFormRef" :schema="schema" :state="state" @submit="onSubmit">
             <div class="flex flex-col gap-8 w-full">
               <!-- Section 1: Basic -->
               <UCard class="min-w-0 w-full">
@@ -373,7 +377,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
             <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">
               <UButton color="neutral" :label="t('common.cancel')" :to="localePath('/orchestrators')" variant="outline" />
-              <UButton color="primary" variant="outline" :loading="loading" :label="t('common.create')" type="submit" />
+              <ConfirmActionPopover
+                label-key="common.create"
+                confirm-title-key="common.addConfirmTitle"
+                confirm-message-key="common.addConfirmMessage"
+                confirm-label-key="common.addConfirmFriendly"
+                :loading="loading"
+                :on-confirm="() => createFormRef?.$el?.requestSubmit?.()"
+              />
             </div>
           </UForm>
         </div>

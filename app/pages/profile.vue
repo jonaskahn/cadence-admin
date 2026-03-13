@@ -6,7 +6,7 @@ import type { AboutMeResponse } from '~/types'
 const toast = useToast()
 const { t } = useI18n()
 
-const { data: me, refresh: refreshMe } = await useFetch<AboutMeResponse>('/api/me')
+const { data: me, refresh: refreshMe } = await useApiFetch<AboutMeResponse>('/api/me')
 
 // --- Profile edit form ---
 const profileSchema = z.object({

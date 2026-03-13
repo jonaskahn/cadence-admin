@@ -5,6 +5,9 @@ import { CENTRAL_POINTS_TIERS } from '~/utils'
 const auth = useAuth()
 const { t } = useI18n()
 const localePath = useLocalePath()
+if (!auth.isAdmin.value) {
+  await navigateTo(localePath('/dashboard'))
+}
 const orgId = computed(() => auth.currentOrgId.value || '')
 
 const { data: org } = await useFetch<{ tier: string }>(() => `/api/orgs/${orgId.value}`, {

@@ -1,6 +1,7 @@
 const PUBLIC_ROUTES = new Set(['/login'])
 const ORG_SELECT_PATH = '/org-select'
 const DASHBOARD_PATH = '/dashboard'
+const CHAT_PATH = '/chat'
 const LOGIN_PATH = '/login'
 const ADMIN_PATH = '/admin/orgs'
 
@@ -20,7 +21,9 @@ type Auth = ReturnType<typeof useAuth>
 
 function handleAuthenticatedRedirect(auth: Auth, localePath: (path: string) => string) {
   if (!auth.isAuthenticated.value) return
-  if (auth.currentOrgId.value) return navigateTo(localePath(DASHBOARD_PATH))
+  if (auth.currentOrgId.value) {
+    return navigateTo(localePath(auth.isAdmin.value ? DASHBOARD_PATH : CHAT_PATH))
+  }
   if (auth.isSysAdmin.value) return navigateTo(localePath(ADMIN_PATH))
   return navigateTo(localePath(ORG_SELECT_PATH))
 }
@@ -49,5 +52,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   if (isOrgSelectRoute(to.path)) return
   if (isAdminRoute(to.path)) return handleAdminRoute(auth, localePath)
-  return handleOrgRequiredRoute(auth, localePath)
+  const orgResult = await handleOrgRequiredRoute(auth, localePath)
+  if (orgResult) return orgResult
+  if (auth.currentOrgId.value && !auth.isAdmin.value && to.path !== localePath(CHAT_PATH)) {
+    return navigateTo(localePath(CHAT_PATH))
+  }
 })

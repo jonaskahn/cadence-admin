@@ -273,7 +273,7 @@
     "apiKeyPlaceholder": "sk-...",
     "baseUrl": "URL cơ sở",
     "baseUrlPlaceholder": "https://...",
-    "baseUrlDescription": "Endpoint tùy chọn (bắt buộc cho LiteLLM)",
+    "baseUrlDescription": "Endpoint tùy chọn (bắt buộc cho LiteLLM, TensorZero, Bifrost)",
     "apiVersion": "Phiên bản API",
     "apiVersionDescription": "Phiên bản Azure OpenAI API (vd. 2024-02-01)",
     "apiVersionPlaceholder": "2024-02-01",
@@ -623,7 +623,8 @@
     "groq": "Groq",
     "azure": "Azure OpenAI",
     "litellm": "LiteLLM",
-    "tensorzero": "TensorZero"
+    "tensorzero": "TensorZero",
+    "bifrost": "Bifrost"
   },
   "info": {
     "pages": {
@@ -663,7 +664,7 @@
       },
       "llmConfigs": {
         "title": "Cấu hình LLM",
-        "description": "**Chức năng:**\n\nBYOK — lưu API key cho nhà cung cấp LLM. Hỗ trợ: OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero. Mỗi config: tên, provider, API key, base URL tùy chọn."
+        "description": "**Chức năng:**\n\nBYOK — lưu API key cho nhà cung cấp LLM. Hỗ trợ: OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero, Bifrost. Mỗi config: tên, provider, API key, base URL tùy chọn."
       },
       "orchestrators": {
         "title": "Cài đặt Orchestrator",

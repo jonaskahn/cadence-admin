@@ -10,7 +10,7 @@ const showAdd = ref(false)
 const {
   data: members,
   refresh
-} = await useFetch<UserMembershipResponse[]>(() => `/api/orgs/${orgId.value}/users`, {watch: [orgId]})
+} = await useApiFetch<UserMembershipResponse[]>(() => `/api/orgs/${orgId.value}/users`, { watch: [orgId] })
 
 async function withMemberAction(fn: () => Promise<void>, errorTitle: string): Promise<void> {
   try {

@@ -9,7 +9,7 @@ const STAT_ICON_COLOR: Record<string, string> = {
 }
 
 const { t } = useI18n()
-const { data: stats, refresh } = await useFetch<PoolStatsResponse>('/api/admin/pool/stats')
+const { data: stats, refresh } = await useApiFetch<PoolStatsResponse>('/api/admin/pool/stats')
 
 const timer = ref<ReturnType<typeof setInterval> | null>(null)
 

@@ -13,6 +13,9 @@ const orchestrators = useOrchestrators()
 const toast = useToast()
 const orgId = computed(() => auth.currentOrgId.value || '')
 const instanceId = route.params.id as string
+if (!auth.isAdmin.value) {
+  await navigateTo(localePath(`/orchestrators/${instanceId}`))
+}
 
 const {
   data: orchestrator,

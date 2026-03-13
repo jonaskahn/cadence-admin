@@ -20,7 +20,7 @@ const SETTINGS_GROUP_KEYS: Record<string, string> = {
 }
 
 // --- Global Settings tab ---
-const { data: settings, refresh: refreshSettings } = await useFetch<GlobalSettingResponse[]>('/api/admin/settings')
+const { data: settings, refresh: refreshSettings } = await useApiFetch<GlobalSettingResponse[]>('/api/admin/settings')
 
 const editValues = ref<Record<string, string>>({})
 const overridableValues = ref<Record<string, boolean>>({})
@@ -76,7 +76,7 @@ const allGroups = computed(() => {
 })
 
 // --- Subscription Tiers tab ---
-const { data: tiers, refresh: refreshTiers } = await useFetch<TierDefinitionResponse[]>('/api/admin/tiers')
+const { data: tiers, refresh: refreshTiers } = await useApiFetch<TierDefinitionResponse[]>('/api/admin/tiers')
 
 const tierSaving = ref<Record<string, boolean>>({})
 const draftQuotas = ref<Record<string, TierQuota>>({})

@@ -7,14 +7,15 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const orgId = computed(() => auth.currentOrgId.value)
 
-const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/api/orgs/${orgId.value}/orchestrators`, { watch: [orgId] })
+const { data: orchestrators } = await useApiFetch<OrchestratorResponse[]>(() => `/api/orgs/${orgId.value}/orchestrators`, { watch: [orgId] })
 
-const { data: plugins } = await useFetch<PluginMetadataResponse[]>(() => `/api/orgs/${orgId.value}/plugins`, { watch: [orgId] })
+const { data: plugins } = await useApiFetch<PluginMetadataResponse[]>(() => `/api/orgs/${orgId.value}/plugins`, { watch: [orgId] })
 
+const apiFetch = useRequestFetch()
 const { data: poolStats } = await useAsyncData<PoolStatsResponse | null>('pool-stats', async () => {
   if (!auth.isSysAdmin.value) return null
   try {
-    return await $fetch<PoolStatsResponse>('/api/admin/pool/stats')
+    return await apiFetch<PoolStatsResponse>('/api/admin/pool/stats')
   } catch {
     return null
   }

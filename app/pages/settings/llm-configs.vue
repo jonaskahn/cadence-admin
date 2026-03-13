@@ -9,7 +9,7 @@ const orgId = computed(() => auth.currentOrgId.value || '')
 const showAdd = ref(false)
 const editingConfig = ref<LLMConfigResponse | null>(null)
 
-const { data: configs, refresh } = await useFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, { watch: [orgId] })
+const { data: configs, refresh } = await useApiFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, { watch: [orgId] })
 
 function providerLabel(provider: string): string {
   const key = `providers.${provider}`
@@ -159,7 +159,7 @@ const columns = computed(() => [
                 @click="toggleEnabled(row.original)"
               />
             </template>
-            <UPopover v-if="auth.isSysAdmin.value && !row?.original?.is_deleted">
+            <UPopover v-if="auth.isAdmin.value && !row?.original?.is_deleted">
               <UButton color="error" icon="i-lucide-trash-2" size="xs" />
               <template #content="{ close }">
                 <div class="p-4 min-w-48">

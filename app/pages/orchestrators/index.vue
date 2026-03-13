@@ -85,7 +85,7 @@ async function onPurge(row: OrchestratorResponse) {
         <template #right>
           <div class="flex items-center gap-2">
             <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
-            <UButton v-if="auth.isOrgAdmin.value || auth.isSysAdmin.value" icon="i-lucide-plus" :label="t('dashboard.create')" :to="localePath('/orchestrators/create')" />
+            <UButton v-if="auth.isAdmin.value" icon="i-lucide-plus" :label="t('dashboard.create')" :to="localePath('/orchestrators/create')" />
           </div>
         </template>
       </UDashboardNavbar>
@@ -125,7 +125,7 @@ async function onPurge(row: OrchestratorResponse) {
             <template #actions-cell="{ row }">
               <div class="flex items-center gap-1">
                 <UButton :to="localePath(`/orchestrators/${row.original.instance_id}`)" icon="i-lucide-info" :label="t('common.view')" size="xs" variant="outline" />
-                <template v-if="auth.isOrgAdmin.value">
+                <template v-if="auth.isAdmin.value">
                   <UButton icon="i-lucide-copy" :label="t('orchestrators.clone')" size="xs" variant="outline" @click="onClone(row.original)" />
                   <template v-if="row.original.status === 'active'">
                     <UPopover>

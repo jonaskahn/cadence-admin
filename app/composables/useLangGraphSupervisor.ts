@@ -38,22 +38,10 @@ export function useLangGraphSupervisor(
   supportedProviders: Ref<string[] | null | undefined>,
   _disabled: Ref<boolean> = ref(false)
 ) {
-  const llmConfigs = ref<LLMConfigResponse[] | null>(null)
-  const llmConfigsLoading = ref(false)
-
-  async function fetchLlmConfigs(id: string) {
-    if (!id) return
-    llmConfigsLoading.value = true
-    try {
-      llmConfigs.value = await $fetch<LLMConfigResponse[]>(`/api/orgs/${id}/llm-configs`)
-    } catch {
-      llmConfigs.value = []
-    } finally {
-      llmConfigsLoading.value = false
-    }
-  }
-
-  watch(orgId, fetchLlmConfigs, { immediate: true })
+  const { data: llmConfigs, pending: llmConfigsLoading } = useApiFetch<LLMConfigResponse[]>(
+    () => `/api/orgs/${orgId.value}/llm-configs`,
+    { watch: [orgId] }
+  )
 
   const llmConfigOptions = computed(() =>
     (llmConfigs.value ?? [])
@@ -344,7 +332,7 @@ export function useLangGraphSupervisor(
 
   function getValue(): Record<string, unknown> {
     return {
-      default_llm_config_id: defaultLlmConfigId.value ? parseInt(defaultLlmConfigId.value, 10) : undefined,
+      default_llm_config_id: defaultLlmConfigId.value ? String(defaultLlmConfigId.value) : undefined,
       default_model_name: defaultModelName.value || undefined,
       default_temperature: defaultTemperature.value,
       default_max_tokens: defaultMaxTokens.value,
@@ -358,7 +346,7 @@ export function useLangGraphSupervisor(
         enabled_auto_compact: modeConfig.enabled_auto_compact,
         autocompact: modeConfig.enabled_auto_compact
           ? {
-              llm_config_id: autocompactNode.llm_config_id ? parseInt(autocompactNode.llm_config_id, 10) : null,
+              llm_config_id: autocompactNode.llm_config_id ? String(autocompactNode.llm_config_id) : null,
               model_name: autocompactNode.model_name || null
             }
           : {},
@@ -366,7 +354,7 @@ export function useLangGraphSupervisor(
           NODE_KEYS.map((key) => [
             key,
             {
-              llm_config_id: nodeConfigs[key].llm_config_id ? parseInt(nodeConfigs[key].llm_config_id, 10) : null,
+              llm_config_id: nodeConfigs[key].llm_config_id ? String(nodeConfigs[key].llm_config_id) : null,
               model_name: nodeConfigs[key].model_name || null,
               prompt_override: nodeConfigs[key].prompt_override || null,
               temperature: nodeConfigs[key].temperature,

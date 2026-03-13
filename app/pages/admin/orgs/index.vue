@@ -9,7 +9,7 @@ const toast = useToast()
 const { t } = useI18n()
 const showCreate = ref(false)
 
-const { data: orgs, refresh } = await useFetch<OrganizationResponse[]>('/api/admin/orgs')
+const { data: orgs, refresh } = await useApiFetch<OrganizationResponse[]>('/api/admin/orgs')
 
 const schema = z.object({
   name: z.string().min(1, () => t('common.nameRequired')),

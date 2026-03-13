@@ -1,4 +1,4 @@
-export const LLM_PROVIDERS = ['openai', 'anthropic', 'google', 'groq', 'azure', 'litellm', 'tensorzero']
+export const LLM_PROVIDERS = ['openai', 'anthropic', 'google', 'groq', 'azure', 'litellm', 'tensorzero', 'bifrost']
 
 export const SUBSCRIPTION_TIERS = ['free', 'plus', 'pro', 'premium', 'business', 'enterprise'] as const
 
@@ -21,7 +21,9 @@ export const PROVIDER_DISPLAY_LABELS: Record<string, string> = {
   google: 'Google (Gemini)',
   groq: 'Groq',
   azure: 'Azure OpenAI',
-  litellm: 'LiteLLM'
+  litellm: 'LiteLLM',
+  tensorzero: 'Tensorzero',
+  bifrost: 'Bifrost',
 }
 
 export function providerLabel(provider: string): string {

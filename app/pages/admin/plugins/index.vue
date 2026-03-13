@@ -13,9 +13,9 @@ const activeTab = ref<'system' | 'org'>('system')
 const selectedOrgId = ref<string>('')
 const orgId = computed(() => auth.currentOrgId.value || '')
 
-const { data: systemPlugins, refresh: refreshSystem } = await useFetch<SystemPluginResponse[]>('/api/admin/plugins')
-const { data: orgs } = await useFetch<OrganizationResponse[]>('/api/admin/orgs')
-const { data: orgPlugins, refresh: refreshOrg } = await useFetch<PluginCardItem[]>(
+const { data: systemPlugins, refresh: refreshSystem } = await useApiFetch<SystemPluginResponse[]>('/api/admin/plugins')
+const { data: orgs } = await useApiFetch<OrganizationResponse[]>('/api/admin/orgs')
+const { data: orgPlugins, refresh: refreshOrg } = await useApiFetch<PluginCardItem[]>(
   () => (selectedOrgId.value ? `/api/admin/orgs/${selectedOrgId.value}/plugins` : null),
   { watch: [selectedOrgId] }
 )

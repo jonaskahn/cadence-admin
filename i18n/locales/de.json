@@ -273,7 +273,7 @@
     "apiKeyPlaceholder": "sk-...",
     "baseUrl": "Basis-URL",
     "baseUrlPlaceholder": "https://...",
-    "baseUrlDescription": "Optionale benutzerdefinierte Endpoint-URL (erforderlich für LiteLLM)",
+    "baseUrlDescription": "Optionale benutzerdefinierte Endpoint-URL (erforderlich für LiteLLM, TensorZero, Bifrost)",
     "apiVersion": "API-Version",
     "apiVersionDescription": "Azure OpenAI API-Version (z.B. 2024-02-01)",
     "apiVersionPlaceholder": "2024-02-01",
@@ -624,7 +624,8 @@
     "groq": "Groq",
     "azure": "Azure OpenAI",
     "litellm": "LiteLLM",
-    "tensorzero": "TensorZero"
+    "tensorzero": "TensorZero",
+    "bifrost": "Bifrost"
   },
   "info": {
     "pages": {
@@ -664,7 +665,7 @@
       },
       "llmConfigs": {
         "title": "LLM-Konfigurationen",
-        "description": "**Funktion:**\n\nBYOK — API-Schlüssel für LLM-Provider speichern. Unterstützt: OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero. Pro Config: Name, Provider, API-Key, optionale Base-URL."
+        "description": "**Funktion:**\n\nBYOK — API-Schlüssel für LLM-Provider speichern. Unterstützt: OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero, Bifrost. Pro Config: Name, Provider, API-Key, optionale Base-URL."
       },
       "orchestrators": {
         "title": "Orchestrator-Einstellungen",

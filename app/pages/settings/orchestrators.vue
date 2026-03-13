@@ -12,9 +12,9 @@ function providerLabel(provider: string): string {
   return val !== key ? val : provider
 }
 
-const { data: llmConfigs, pending: llmConfigsLoading } = await useFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, { watch: [orgId] })
+const { data: llmConfigs, pending: llmConfigsLoading } = await useApiFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, { watch: [orgId] })
 
-const { data: defaults, refresh } = await useFetch<OrchestratorDefaults>(() => `/api/orgs/${orgId.value}/orchestrator-defaults`, { watch: [orgId] })
+const { data: defaults, refresh } = await useApiFetch<OrchestratorDefaults>(() => `/api/orgs/${orgId.value}/orchestrator-defaults`, { watch: [orgId] })
 
 // --- Helpers ---
 
@@ -121,7 +121,7 @@ async function save() {
     await $fetch(`/api/orgs/${orgId.value}/orchestrator-defaults`, {
       method: 'PUT',
       body: {
-        default_llm_config_id: form.default_llm_config_id ? Number(form.default_llm_config_id) : null,
+        default_llm_config_id: form.default_llm_config_id ? String(form.default_llm_config_id) : null,
         default_model_name: form.default_model_name || null,
         default_max_tokens: form.default_max_tokens || null,
         default_timeout: form.default_timeout || null

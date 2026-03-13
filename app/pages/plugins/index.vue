@@ -3,13 +3,17 @@ import type { PluginMetadataResponse, SystemPluginResponse } from '~/types'
 
 const auth = useAuth()
 const { t } = useI18n()
+const localePath = useLocalePath()
+if (!auth.isAdmin.value) {
+  await navigateTo(localePath('/dashboard'))
+}
 const showUpload = ref(false)
 const drawerOpen = ref(false)
 const selectedPlugin = ref<PluginMetadataResponse | null>(null)
 const sourceFilter = ref<'all' | 'system' | 'org'>('all')
 const orgId = computed(() => auth.currentOrgId.value || '')
 
-const { data: plugins, refresh } = await useFetch<PluginMetadataResponse[]>(() => `/api/orgs/${orgId.value}/plugins`, { watch: [orgId] })
+const { data: plugins, refresh } = await useApiFetch<PluginMetadataResponse[]>(() => `/api/orgs/${orgId.value}/plugins`, { watch: [orgId] })
 
 const filteredPlugins = computed(() => {
   const list = plugins.value ?? []
@@ -55,7 +59,7 @@ function onDrawerClosed() {
             <InfoPopover title-key="info.pages.plugins.title" description-key="info.pages.plugins.description" />
             <USelect v-model="sourceFilter" :items="sourceFilterItems" value-key="value" label-key="label" class="w-32" />
             <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" :aria-label="t('common.refresh')" @click="refresh()" />
-            <UButton icon="i-lucide-upload" :label="t('common.upload')" @click="showUpload = true" />
+            <UButton v-if="auth.isAdmin.value" icon="i-lucide-upload" :label="t('common.upload')" @click="showUpload = true" />
           </div>
         </template>
       </UDashboardNavbar>

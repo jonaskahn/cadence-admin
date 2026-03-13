@@ -13,10 +13,10 @@ const showAdd = ref(false)
 const saving = ref(false)
 const orgFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
-const { data: org, refresh: refreshOrg } = await useFetch<OrganizationResponse>(`/api/admin/orgs/${orgId}`)
-const { data: quota, refresh: refreshQuota } = await useFetch<TierQuota>(`/api/admin/orgs/${orgId}/quota`)
-const { data: tiers } = await useFetch<TierDefinitionResponse[]>('/api/admin/tiers')
-const { data: members, refresh: refreshMembers } = await useFetch<UserMembershipResponse[]>(`/api/orgs/${orgId}/users`)
+const { data: org, refresh: refreshOrg } = await useApiFetch<OrganizationResponse>(`/api/admin/orgs/${orgId}`)
+const { data: quota, refresh: refreshQuota } = await useApiFetch<TierQuota>(`/api/admin/orgs/${orgId}/quota`)
+const { data: tiers } = await useApiFetch<TierDefinitionResponse[]>('/api/admin/tiers')
+const { data: members, refresh: refreshMembers } = await useApiFetch<UserMembershipResponse[]>(`/api/orgs/${orgId}/users`)
 
 const tierOptions = SUBSCRIPTION_TIERS.map((tier) => ({ label: tier.charAt(0).toUpperCase() + tier.slice(1), value: tier }))
 

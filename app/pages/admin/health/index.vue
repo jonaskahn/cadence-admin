@@ -4,7 +4,7 @@ import { HEALTH_SERVICE_LABELS } from '~/constants'
 
 const { t } = useI18n()
 const { data: systemHealth } = await useFetch<HealthResponse>('/api/system-health')
-const { data: instanceHealth } = await useFetch<HealthCheckResponse[]>('/api/admin/health')
+const { data: instanceHealth } = await useApiFetch<HealthCheckResponse[]>('/api/admin/health')
 
 const columns = computed(() => [
   { accessorKey: 'instance_id', header: t('admin.instanceId') },

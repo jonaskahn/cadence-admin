@@ -273,7 +273,7 @@
     "apiKeyPlaceholder": "sk-...",
     "baseUrl": "Base URL",
     "baseUrlPlaceholder": "https://...",
-    "baseUrlDescription": "Optional custom endpoint (required for LiteLLM)",
+    "baseUrlDescription": "Optional custom endpoint (required for LiteLLM, TensorZero, Bifrost)",
     "apiVersion": "API Version",
     "apiVersionDescription": "Azure OpenAI API version (e.g. 2024-02-01)",
     "apiVersionPlaceholder": "2024-02-01",
@@ -624,7 +624,8 @@
     "groq": "Groq",
     "azure": "Azure OpenAI",
     "litellm": "LiteLLM",
-    "tensorzero": "TensorZero"
+    "tensorzero": "TensorZero",
+    "bifrost": "Bifrost"
   },
   "info": {
     "pages": {
@@ -664,7 +665,7 @@
       },
       "llmConfigs": {
         "title": "LLM Configurations",
-        "description": "**What it does:**\n\nBring Your Own Key (BYOK) — store API keys for LLM providers.\n\n**Supported:** OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero\n\n**Per config:** Name, provider, API key, optional base URL, API version (Azure)\n\n**Usage:** Orchestrators select a config when running. Disabled configs are hidden. Configs in use cannot be deleted until unlinked."
+        "description": "**What it does:**\n\nBring Your Own Key (BYOK) — store API keys for LLM providers.\n\n**Supported:** OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero, Bifrost\n\n**Per config:** Name, provider, API key, optional base URL, API version (Azure)\n\n**Usage:** Orchestrators select a config when running. Disabled configs are hidden. Configs in use cannot be deleted until unlinked."
       },
       "orchestrators": {
         "title": "Orchestrator Settings",

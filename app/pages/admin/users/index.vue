@@ -16,7 +16,7 @@ async function withUserActionError<T>(fn: () => Promise<T>, errorMsg: string): P
   }
 }
 
-const { data: users, refresh } = await useFetch<UserMembershipResponse[]>('/api/admin/users')
+const { data: users, refresh } = await useApiFetch<UserMembershipResponse[]>('/api/admin/users')
 
 const showCreate = ref(false)
 const createLoading = ref(false)

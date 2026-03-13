@@ -113,7 +113,7 @@ async function onDeactivate() {
         <template #right>
           <div class="flex items-center gap-2">
             <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
-            <template v-if="auth.isOrgAdmin.value && orchestrator">
+            <template v-if="auth.isAdmin.value && orchestrator">
             <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="sm" :to="localePath(`/orchestrators/${instanceId}/edit`)" />
             <template v-if="orchestrator.status === 'active'">
               <UPopover>
@@ -226,7 +226,7 @@ async function onDeactivate() {
           <div class="flex items-center gap-3">
             <USeparator label="Plugin Settings" class="flex-1" />
             <ConfirmActionPopover
-              v-if="auth.isOrgAdmin.value"
+              v-if="auth.isAdmin.value"
               label-key="common.save"
               size="sm"
               confirm-title-key="common.saveConfirmTitle"
@@ -239,7 +239,7 @@ async function onDeactivate() {
           <p class="text-dimmed text-xs">Configure settings for each active plugin. Activate a version to switch.</p>
           <OrchestratorPluginSettings
             ref="pluginSettingsRef"
-            :disabled="!auth.isOrgAdmin.value"
+            :disabled="!auth.isAdmin.value"
             :initial-value="orchestrator.plugin_settings"
             :org-id="orgId"
           />
