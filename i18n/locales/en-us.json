@@ -297,6 +297,11 @@
   "orchestrators": {
     "title": "Orchestrators",
     "ready": "Ready",
+    "monitoring": "Monitoring",
+    "plugins": "Plugins",
+    "overviewSection": "Overview",
+    "details": "Details",
+    "graph": "Graph",
     "deactivate": "Deactivate",
     "activate": "Activate",
     "load": "Load",
@@ -333,7 +338,14 @@
       "pluginValidationFailed": "Plugin settings validation failed",
       "frameworkLangGraph": "LangGraph",
       "frameworkGoogleAdk": "Google ADK",
-      "frameworkOpenaiAgents": "OpenAI Agents"
+      "frameworkOpenaiAgents": "OpenAI Agents",
+      "pluginsEmpty": "No plugins added yet",
+      "pluginsEmptyDesc": "Add plugins to extend your orchestrator's capabilities",
+      "addFirstPlugin": "Add Your First Plugin",
+      "browsePlugins": "Browse & add more",
+      "pluginSettings": "Plugin Settings",
+      "pluginConfiguration": "Plugin Configuration",
+      "pluginConfigurationDesc": "Configure settings for each active plugin."
     },
     "pluginSelector": {
       "title": "Add Plugin",
