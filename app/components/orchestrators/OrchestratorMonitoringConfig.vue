@@ -47,6 +47,22 @@ const host = computed({
   get: () => props.modelValue.langfuse.host,
   set: (val: string) => emit('update:modelValue', { ...props.modelValue, langfuse: { ...props.modelValue.langfuse, host: val } })
 })
+
+function validate(): { valid: boolean; message?: string } {
+  if (!props.modelValue.enabled) return { valid: true }
+  if (props.modelValue.provider !== 'langfuse') return { valid: true }
+  const { secret_key, public_key, host } = props.modelValue.langfuse
+  const missing: string[] = []
+  if (!secret_key?.trim()) missing.push(t('orchestrators.edit.langfuseSecretKey'))
+  if (!public_key?.trim()) missing.push(t('orchestrators.edit.langfusePublicKey'))
+  if (!host?.trim()) missing.push(t('orchestrators.edit.langfuseHost'))
+  if (missing.length > 0) {
+    return { valid: false, message: t('orchestrators.edit.langfuseFieldsRequired') }
+  }
+  return { valid: true }
+}
+
+defineExpose({ validate })
 </script>
 
 <template>

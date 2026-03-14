@@ -369,7 +369,8 @@
       "langfuseHost": "Host URL",
       "langfuseSecretKeyPlaceholder": "sk-lf-...",
       "langfusePublicKeyPlaceholder": "pk-lf-...",
-      "langfuseHostPlaceholder": "https://cloud.langfuse.com"
+      "langfuseHostPlaceholder": "https://cloud.langfuse.com",
+      "langfuseFieldsRequired": "Secret Key, Public Key và Host URL là bắt buộc khi bật theo dõi"
     }
   },
   "admin": {

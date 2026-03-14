@@ -383,7 +383,8 @@
       "langfuseHost": "Host URL",
       "langfuseSecretKeyPlaceholder": "sk-lf-...",
       "langfusePublicKeyPlaceholder": "pk-lf-...",
-      "langfuseHostPlaceholder": "https://cloud.langfuse.com"
+      "langfuseHostPlaceholder": "https://cloud.langfuse.com",
+      "langfuseFieldsRequired": "Secret Key, Public Key, and Host URL are required when monitoring is enabled"
     }
   },
   "admin": {

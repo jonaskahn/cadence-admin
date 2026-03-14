@@ -359,7 +359,8 @@
       "placeholderSelectConfig": "LLM-Konfiguration auswählen…",
       "tierCold": "Cold",
       "tierWarm": "Warm",
-      "tierHot": "Hot (sofort laden)"
+      "tierHot": "Hot (sofort laden)",
+      "langfuseFieldsRequired": "Secret Key, Public Key und Host URL sind erforderlich, wenn die Überwachung aktiviert ist"
     }
   },
   "admin": {

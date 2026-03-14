@@ -44,6 +44,7 @@ const monitoringConfig = ref<MonitoringConfig>({
 })
 const loading = ref(false)
 const orchestratorEditFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
+const monitoringConfigRef = ref<{ validate?: () => { valid: boolean; message?: string } } | null>(null)
 const supervisorProviderRef = ref<{
   isValid: () => boolean
   getValue: () => Record<string, unknown>
@@ -97,6 +98,11 @@ async function patchConfig(config: Record<string, unknown>) {
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   if (!supervisorProviderRef.value?.isValid()) {
     toast.add({ title: t('orchestrators.edit.llmConfigRequired'), color: 'error' })
+    return
+  }
+  const monitoringValidation = monitoringConfigRef.value?.validate?.()
+  if (monitoringValidation && !monitoringValidation.valid) {
+    toast.add({ title: monitoringValidation.message ?? t('orchestrators.edit.langfuseFieldsRequired'), color: 'error' })
     return
   }
 
@@ -217,7 +223,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
                       <div class="flex flex-col gap-4">
                         <LLMContextSettings />
-                        <OrchestratorMonitoringConfig v-model="monitoringConfig" />
+                        <OrchestratorMonitoringConfig ref="monitoringConfigRef" v-model="monitoringConfig" />
                       </div>
                     </UCard>
                   </div>

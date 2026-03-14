@@ -88,6 +88,7 @@ function openPluginSelector() {
   showPluginSelector.value = true
 }
 const createFormRef = ref()
+const monitoringConfigRef = ref<{ validate?: () => { valid: boolean; message?: string } } | null>(null)
 const supervisorProviderRef = ref<{
   isValid: () => boolean
   getValue: () => Record<string, unknown>
@@ -269,6 +270,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     toast.add({ title: pluginValidation.message ?? t('orchestrators.create.pluginValidationFailed'), color: 'error' })
     return
   }
+  const monitoringValidation = monitoringConfigRef.value?.validate?.()
+  if (monitoringValidation && !monitoringValidation.valid) {
+    toast.add({ title: monitoringValidation.message ?? t('orchestrators.edit.langfuseFieldsRequired'), color: 'error' })
+    return
+  }
 
   loading.value = true
   try {
@@ -362,7 +368,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
                       <div class="flex flex-col gap-4">
                         <LLMContextSettings />
-                        <OrchestratorMonitoringConfig v-model="monitoringConfig" />
+                        <OrchestratorMonitoringConfig ref="monitoringConfigRef" v-model="monitoringConfig" />
                       </div>
                     </UCard>
                   </div>
