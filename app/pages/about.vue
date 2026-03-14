@@ -3,10 +3,26 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 definePageMeta({ layout: false })
 
-const { t } = useI18n()
+const { t, locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 
 const showChangelog = ref(false)
+
+const localeItems = computed(() =>
+  (locales.value as { code: string; name: string }[]).map((loc) => ({
+    label: loc.name,
+    type: 'checkbox' as const,
+    checked: locale.value === loc.code,
+    onSelect: (e: Event) => {
+      e.preventDefault()
+      setLocale(loc.code)
+    }
+  }))
+)
+
+const currentLocaleName = computed(
+  () => (locales.value as { code: string; name: string }[]).find((l) => l.code === locale.value)?.name ?? t('userMenu.language')
+)
 
 const links = computed<NavigationMenuItem[][]>(() => [
   [
@@ -32,6 +48,9 @@ const links = computed<NavigationMenuItem[][]>(() => [
         <div class="h-16 border-b border-default flex items-center justify-between px-6 shrink-0">
           <h1 class="text-base font-semibold">{{ t('about.title') }}</h1>
           <div class="flex items-center gap-2">
+            <UDropdownMenu :items="[localeItems]">
+              <UButton icon="i-lucide-languages" variant="outline" color="neutral" :label="currentLocaleName" />
+            </UDropdownMenu>
             <UButton icon="i-lucide-history" variant="outline" color="neutral" @click="showChangelog = true" />
             <UButton icon="i-lucide-house" to="/" external />
           </div>

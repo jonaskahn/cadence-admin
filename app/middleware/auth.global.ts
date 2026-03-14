@@ -1,5 +1,9 @@
 const PUBLIC_ROUTES = new Set(['/login'])
 const ALWAYS_PUBLIC_ROUTES = new Set(['/about'])
+
+function isAlwaysPublicRoute(path: string): boolean {
+  return ALWAYS_PUBLIC_ROUTES.has(path) || path.startsWith('/about/')
+}
 const ORG_SELECT_PATH = '/org-select'
 const DASHBOARD_PATH = '/dashboard'
 const CHAT_PATH = '/chat'
@@ -46,7 +50,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const auth = useAuth()
   const localePath = useLocalePath()
 
-  if (ALWAYS_PUBLIC_ROUTES.has(to.path)) return
+  if (isAlwaysPublicRoute(to.path)) return
   if (isPublicRoute(to.path)) return handleAuthenticatedRedirect(auth, localePath)
 
   if (!auth.isAuthenticated.value) await auth.restoreSession()

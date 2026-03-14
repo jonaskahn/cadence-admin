@@ -10,6 +10,7 @@ import type {
   PluginSettingsEntry
 } from '~/types'
 import { toPluginRefKey, toPluginUniquenessKey } from '~/utils'
+import type { MonitoringConfig } from '~/components/orchestrators/OrchestratorMonitoringConfig.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -71,6 +72,12 @@ const state = reactive<Partial<Schema>>({
   framework_type: 'langgraph',
   mode: 'supervisor',
   tier: 'cold'
+})
+
+const monitoringConfig = ref<MonitoringConfig>({
+  enabled: false,
+  provider: 'langfuse',
+  langfuse: { secret_key: '', public_key: '', host: '' }
 })
 
 const selectedPlugins = ref<PluginMetadataResponse[]>([])
@@ -244,7 +251,8 @@ function removePlugin(index: number) {
 
 async function createOrchestrator(data: Schema) {
   const activePluginIds = selectedPlugins.value.map((p) => p.id)
-  const config = isSupervisor.value ? supervisorProviderRef.value?.getValue() : undefined
+  const supervisorConfig = isSupervisor.value ? supervisorProviderRef.value?.getValue() : undefined
+  const config = { ...(supervisorConfig ?? {}), monitoring: monitoringConfig.value }
   return orchestrators.create({
     ...data,
     active_plugin_ids: activePluginIds,
@@ -324,6 +332,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     <USelect v-model="state.tier" :items="tierOptions" class="w-full" />
                   </UFormField>
                 </div>
+                <OrchestratorMonitoringConfig v-model="monitoringConfig" />
               </UCard>
 
               <!-- Section 2: Plugins -->

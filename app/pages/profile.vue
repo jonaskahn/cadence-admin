@@ -136,14 +136,16 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
             <UFormField :label="t('profile.email')" name="email">
               <UInput v-model="profileState.email" class="w-full" :placeholder="t('profile.emailPlaceholder')" type="email" />
             </UFormField>
-            <ConfirmActionPopover
-              label-key="common.save"
-              confirm-title-key="common.saveConfirmTitle"
-              confirm-message-key="common.saveConfirmMessage"
-              confirm-label-key="common.saveConfirmFriendly"
-              :loading="savingProfile"
-              :on-confirm="() => profileFormRef?.$el?.requestSubmit?.()"
-            />
+            <div class="flex justify-end">
+              <ConfirmActionPopover
+                label-key="common.update"
+                confirm-title-key="common.updateConfirmTitle"
+                confirm-message-key="common.updateConfirmMessage"
+                confirm-label-key="common.updateConfirmFriendly"
+                :loading="savingProfile"
+                :on-confirm="() => profileFormRef?.$el?.requestSubmit?.()"
+              />
+            </div>
           </UForm>
         </UCard>
 
@@ -159,14 +161,16 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
             <UFormField :label="t('profile.newPassword')" name="new_password">
               <UInput v-model="passwordState.new_password" class="w-full" type="password" />
             </UFormField>
-            <ConfirmActionPopover
-              label-key="common.update"
-              confirm-title-key="common.updateConfirmTitle"
-              confirm-message-key="common.updateConfirmMessage"
-              confirm-label-key="common.updateConfirmFriendly"
-              :loading="changingPassword"
-              :on-confirm="() => passwordFormRef?.$el?.requestSubmit?.()"
-            />
+            <div class="flex justify-end">
+              <ConfirmActionPopover
+                label-key="common.update"
+                confirm-title-key="common.updateConfirmTitle"
+                confirm-message-key="common.updateConfirmMessage"
+                confirm-label-key="common.updateConfirmFriendly"
+                :loading="changingPassword"
+                :on-confirm="() => passwordFormRef?.$el?.requestSubmit?.()"
+              />
+            </div>
           </UForm>
         </UCard>
       </div>

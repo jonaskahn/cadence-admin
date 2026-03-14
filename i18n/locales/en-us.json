@@ -359,7 +359,17 @@
       "placeholderSelectConfig": "Select LLM config…",
       "tierCold": "Cold",
       "tierWarm": "Warm",
-      "tierHot": "Hot (load immediately)"
+      "tierHot": "Hot (load immediately)",
+      "monitoring": "Monitoring",
+      "monitoringDescription": "Send traces to an observability provider",
+      "enableMonitoring": "Enable Monitoring",
+      "monitoringProvider": "Provider",
+      "langfuseSecretKey": "Secret Key",
+      "langfusePublicKey": "Public Key",
+      "langfuseHost": "Host URL",
+      "langfuseSecretKeyPlaceholder": "sk-lf-...",
+      "langfusePublicKeyPlaceholder": "pk-lf-...",
+      "langfuseHostPlaceholder": "https://cloud.langfuse.com"
     }
   },
   "admin": {
@@ -832,13 +842,29 @@
     },
     "overview": {
       "title": "Overview",
-      "subtitle": "A brief introduction to Cadence.",
-      "intro": "Cadence is an AI platform that lets teams deploy and manage AI assistants. You create assistants (orchestrators), connect your preferred AI provider, add tools via plugins, and chat in real time — no coding required.",
-      "bullet1": "Multi-tenant: each team has its own workspace with isolated data and settings",
-      "bullet2": "Bring your own AI keys: use OpenAI, Google, Anthropic, and others — your keys, your control",
-      "bullet3": "No-code orchestration: configure assistants through the UI, no programming needed",
-      "bullet4": "Real-time chat: see responses as they stream, with full visibility into how the assistant works",
-      "bullet5": "Extensible: add custom tools via plugins to give your assistants new capabilities"
+      "subtitle": "A quick introduction to Cadence.",
+      "intro": "Cadence helps teams deploy and manage AI assistants. Create assistants, add your AI provider, and chat — no coding required.",
+      "featuresTitle": "Key features",
+      "feature1": "Multi-tenant — each team has its own workspace with isolated data and settings",
+      "feature2": "Bring your own AI keys — use OpenAI, Google, Anthropic, and others; your keys, your control",
+      "feature3": "No-code setup — configure assistants through the UI, no programming needed",
+      "feature4": "Real-time chat — see responses stream in with full visibility into how the assistant works",
+      "feature5": "Extensible — add custom tools via plugins (web search, calendar, APIs, and more)",
+      "feature6": "Stable endpoints — connect apps and integrations via Central Points without hardcoding IDs",
+      "feature7": "Role-based access — control who can manage assistants, settings, or just chat",
+      "learnMore": "Learn more",
+      "sections": {
+        "orchestrator": "Your AI assistant — create, configure, and manage.",
+        "chat": "Talk to your assistants in real time.",
+        "plugins": "Add tools like web search or calendar to your assistants.",
+        "llmConfigs": "Your AI provider keys — OpenAI, Google, Anthropic, and more.",
+        "centralPoints": "Stable endpoints for apps and integrations.",
+        "orgs": "Teams and workspaces with isolated data.",
+        "roles": "Who can do what — admin, member, and more.",
+        "frameworks": "Technical execution engines — LangGraph, Google ADK, OpenAI.",
+        "modes": "How assistants reason and respond.",
+        "admin": "Platform management for system admins."
+      }
     },
     "orchestrator": {
       "title": "Orchestrator",

@@ -3,6 +3,7 @@ import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import type { FrameworkSupportedProvidersResponse, LLMConfigResponse, OrchestratorResponse } from '~/types'
 import { providerLabel } from '~/utils'
+import type { MonitoringConfig } from '~/components/orchestrators/OrchestratorMonitoringConfig.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -37,6 +38,11 @@ type Schema = { name: string; tier: 'hot' | 'warm' | 'cold' }
 
 const name = ref('')
 const tier = ref<'hot' | 'warm' | 'cold'>('cold')
+const monitoringConfig = ref<MonitoringConfig>({
+  enabled: false,
+  provider: 'langfuse',
+  langfuse: { secret_key: '', public_key: '', host: '' }
+})
 const loading = ref(false)
 const orchestratorEditFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 const supervisorProviderRef = ref<{
@@ -81,6 +87,18 @@ watch(
     name.value = o.name
     tier.value = o.tier as 'hot' | 'warm' | 'cold'
     defaultLlmConfigId.value = o.config?.default_llm_config_id != null ? String(o.config.default_llm_config_id) : undefined
+    const existing = (o.config as Record<string, unknown> | undefined)?.monitoring as MonitoringConfig | undefined
+    if (existing) {
+      monitoringConfig.value = {
+        enabled: existing.enabled ?? false,
+        provider: existing.provider ?? 'langfuse',
+        langfuse: {
+          secret_key: existing.langfuse?.secret_key ?? '',
+          public_key: existing.langfuse?.public_key ?? '',
+          host: existing.langfuse?.host ?? ''
+        }
+      }
+    }
   },
   { immediate: true }
 )
@@ -104,11 +122,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     await patchMetadata({ name: event.data.name, tier: event.data.tier })
 
     if (isSupervisor.value && supervisorProviderRef.value) {
-      await patchConfig(supervisorProviderRef.value.getValue())
+      const supervisorConfig = supervisorProviderRef.value.getValue()
+      await patchConfig({ ...supervisorConfig, monitoring: monitoringConfig.value })
     } else if (!isSupervisor.value && defaultLlmConfigId.value !== undefined) {
       await orchestrators.updateMetadata(instanceId, {
         default_llm_config_id: defaultLlmConfigId.value || null
       })
+      await patchConfig({ monitoring: monitoringConfig.value })
+    } else {
+      await patchConfig({ monitoring: monitoringConfig.value })
     }
 
     await router.push(localePath(`/orchestrators/${instanceId}`))
@@ -180,6 +202,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   />
                 </UFormField>
               </div>
+              <USeparator class="my-4" />
+              <OrchestratorMonitoringConfig v-model="monitoringConfig" />
             </UCard>
 
             <template v-if="isSupervisor">

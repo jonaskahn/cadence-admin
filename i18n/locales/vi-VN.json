@@ -2,31 +2,31 @@
   "app": {
     "name": "Cadence",
     "tagline": "Nền tảng điều phối AI",
-    "description": "Nền tảng điều phối AI đa tenant với pooling tầng nóng/ấm/lạnh, BYOK và hỗ trợ đa framework."
+    "description": "Nền tảng điều phối AI đa tenant với cơ chế pooling theo tầng hot/warm/cold, hỗ trợ BYOK và nhiều framework."
   },
   "common": {
     "cancel": "Hủy",
     "save": "Lưu",
     "update": "Cập nhật",
     "saveNow": "Lưu ngay",
-    "saveConfirm": "Lưu thay đổi?",
+    "saveConfirm": "Lưu thay đổi nhé?",
     "saveConfirmTitle": "Lưu thay đổi",
     "updateConfirmTitle": "Cập nhật thay đổi",
     "deleteConfirmTitle": "Xác nhận xóa",
     "addConfirmTitle": "Xác nhận thêm",
-    "saveConfirmMessage": "Thay đổi của bạn sẽ được áp dụng ngay lập tức.",
+    "saveConfirmMessage": "Thay đổi của bạn sẽ được áp dụng ngay.",
     "updateConfirmMessage": "Thay đổi sẽ có hiệu lực.",
-    "deleteConfirmMessage": "Hành động này không thể hoàn tác.",
-    "saveConfirmFriendly": "Hãy lưu nó",
-    "updateConfirmFriendly": "Hãy cập nhật ngay",
-    "deleteConfirmFriendly": "Hãy xóa nó",
-    "addConfirmMessage": "Nó sẽ có sẵn sau khi tạo.",
-    "addConfirmFriendly": "Hãy thêm nó",
+    "deleteConfirmMessage": "Không thể hoàn tác thao tác này.",
+    "saveConfirmFriendly": "Lưu lại nhé",
+    "updateConfirmFriendly": "Cập nhật luôn nhé",
+    "deleteConfirmFriendly": "Xóa nhé",
+    "addConfirmMessage": "Sau khi tạo xong thì sẽ dùng được.",
+    "addConfirmFriendly": "Thêm nhé",
     "create": "Tạo",
     "delete": "Xóa",
     "deleted": "Đã xóa",
     "refresh": "Làm mới",
-    "clear": "Xóa",
+    "clear": "Xóa hết",
     "send": "Gửi",
     "upload": "Tải lên",
     "add": "Thêm",
@@ -35,11 +35,11 @@
     "viewDetails": "Xem chi tiết",
     "viewAll": "Xem tất cả",
     "unlimited": "Không giới hạn",
-    "enabled": "Đã bật",
-    "disabled": "Vô hiệu hóa",
+    "enabled": "Đang bật",
+    "disabled": "Đang tắt",
     "user": "Người dùng",
     "selectOrg": "Chọn tổ chức",
-    "selectOrgShort": "Chọn tổ chức",
+    "selectOrgShort": "Chọn org",
     "nameRequired": "Tên là bắt buộc",
     "domainRequired": "Domain là bắt buộc",
     "invalidEmail": "Email không hợp lệ",
@@ -49,13 +49,13 @@
     "other": "Khác",
     "empty": "—",
     "memoryUnitMB": "MB",
-    "remove": "Xóa",
+    "remove": "Gỡ",
     "purge": "Xóa vĩnh viễn",
-    "purgeConfirm": "Xóa vĩnh viễn bản ghi này? Hành động này không thể hoàn tác."
+    "purgeConfirm": "Xóa vĩnh viễn bản ghi này nhé? Không thể hoàn tác đâu."
   },
   "roles": {
-    "sysAdmin": "Quản trị viên hệ thống",
-    "orgAdmin": "Quản trị tổ chức",
+    "sysAdmin": "Quản trị hệ thống",
+    "orgAdmin": "Quản trị org",
     "member": "Thành viên"
   },
   "auth": {
@@ -68,60 +68,60 @@
     "enterUsername": "Nhập tên đăng nhập",
     "enterPassword": "Nhập mật khẩu",
     "loginFailed": "Đăng nhập thất bại",
-    "invalidCredentials": "Thông tin đăng nhập không hợp lệ",
+    "invalidCredentials": "Thông tin đăng nhập không đúng",
     "selectOrgTitle": "Chọn tổ chức",
     "selectOrgSubtitle": "Chọn một tổ chức để tiếp tục",
-    "noOrgsAvailable": "Không có tổ chức nào",
+    "noOrgsAvailable": "Không có tổ chức nào khả dụng",
     "addMember": "Thêm thành viên",
-    "grantAdminRights": "Cấp quyền quản trị",
+    "grantAdminRights": "Cấp quyền admin",
     "user": "Người dùng",
-    "userPlaceholder": "email, tên đăng nhập hoặc ID người dùng",
-    "userDescription": "Nhập email, tên đăng nhập hoặc ID người dùng"
+    "userPlaceholder": "email, username hoặc user ID",
+    "userDescription": "Nhập email, username hoặc user ID của người dùng"
   },
   "nav": {
-    "dashboard": "Bảng điều khiển",
-    "chat": "Trò chuyện",
+    "dashboard": "Tổng quan",
+    "chat": "Chat",
     "orchestrators": "Orchestrator",
     "plugins": "Plugin",
     "settings": "Cài đặt",
     "general": "Chung",
     "members": "Thành viên",
     "llmConfigs": "Cấu hình LLM",
-    "centralPoints": "Central Points",
+    "centralPoints": "Central Point",
     "system": "Hệ thống",
     "organizations": "Tổ chức",
     "users": "Người dùng",
     "systemPlugins": "Plugin hệ thống",
-    "globalSettings": "Cài đặt diện rộng",
+    "globalSettings": "Cài đặt toàn cục",
     "pool": "Pool",
-    "health": "Trạng thái",
+    "health": "Tình trạng",
     "about": "Giới thiệu"
   },
   "userMenu": {
     "language": "Ngôn ngữ",
     "theme": "Giao diện",
-    "primary": "Chính",
+    "primary": "Màu chính",
     "neutral": "Trung tính",
-    "appearance": "Nền",
+    "appearance": "Hiển thị",
     "light": "Sáng",
     "dark": "Tối",
     "profile": "Hồ sơ",
     "logOut": "Đăng xuất"
   },
   "dashboard": {
-    "title": "Bảng điều khiển",
-    "totalOrchestrators": "Tổng Orchestrator",
-    "hotTier": "Tầng nóng",
-    "warmTier": "Tầng ấm",
-    "coldTier": "Tầng lạnh",
+    "title": "Tổng quan",
+    "totalOrchestrators": "Tổng số orchestrator",
+    "hotTier": "Tầng Hot",
+    "warmTier": "Tầng Warm",
+    "coldTier": "Tầng Cold",
     "plugins": "Plugin",
-    "poolMemory": "Bộ nhớ Pool",
-    "poolStatistics": "Thống kê Pool",
-    "sharedModels": "Mô hình dùng chung",
-    "quickActions": "Hành động nhanh",
-    "startChat": "Bắt đầu trò chuyện",
-    "viewOrchestrators": "Xem Orchestrator",
-    "managePlugins": "Quản lý Plugin",
+    "poolMemory": "Bộ nhớ pool",
+    "poolStatistics": "Thống kê pool",
+    "sharedModels": "Model dùng chung",
+    "quickActions": "Thao tác nhanh",
+    "startChat": "Bắt đầu chat",
+    "viewOrchestrators": "Xem orchestrator",
+    "managePlugins": "Quản lý plugin",
     "orchestrators": "Orchestrator",
     "noOrchestrators": "Chưa có orchestrator nào.",
     "create": "Tạo",
@@ -132,25 +132,25 @@
     "status": "Trạng thái"
   },
   "chat": {
-    "title": "Trò chuyện",
-    "selectOrchestrator": "Chọn Orchestrator",
-    "noOrchestratorsLoaded": "Hiện chưa có orchestrator nào được tải.",
-    "askOrgAdmin": "Yêu cầu Admin tổ chức tải một cái từ trang Orchestrator.",
-    "sessionId": "ID phiên",
-    "persistent": "liên tục",
+    "title": "Chat",
+    "selectOrchestrator": "Chọn orchestrator",
+    "noOrchestratorsLoaded": "Hiện chưa có orchestrator nào được load.",
+    "askOrgAdmin": "Nhờ Org Admin load một cái ở trang Orchestrators nhé.",
+    "sessionId": "Session ID",
+    "persistent": "duy trì",
     "sources": "Nguồn",
     "steps": "bước",
     "typeMessage": "Nhập tin nhắn...",
-    "stream": "Luồng",
-    "enterToSend": "Enter để gửi · Shift+Enter để xuống dòng",
-    "selectOrchestratorFirst": "Vui lòng chọn orchestrator trước",
-    "chatError": "Lỗi trò chuyện",
-    "selectAndStart": "Chọn orchestrator và bắt đầu trò chuyện"
+    "stream": "Stream",
+    "enterToSend": "Nhấn Enter để gửi · Shift+Enter để xuống dòng",
+    "selectOrchestratorFirst": "Chọn orchestrator trước đã",
+    "chatError": "Lỗi chat",
+    "selectAndStart": "Chọn orchestrator rồi bắt đầu chat"
   },
   "profile": {
     "title": "Hồ sơ",
     "account": "Tài khoản",
-    "userId": "ID người dùng",
+    "userId": "User ID",
     "role": "Vai trò",
     "profile": "Hồ sơ",
     "displayName": "Tên hiển thị",
@@ -162,26 +162,26 @@
     "currentPassword": "Mật khẩu hiện tại",
     "newPassword": "Mật khẩu mới",
     "updatePassword": "Cập nhật mật khẩu",
-    "profileUpdated": "Hồ sơ đã cập nhật",
-    "passwordUpdated": "Mật khẩu đã cập nhật",
-    "failedUpdatePassword": "Không thể cập nhật mật khẩu",
-    "failedSaveProfile": "Không thể lưu hồ sơ",
-    "checkCurrentPassword": "Kiểm tra mật khẩu hiện tại",
+    "profileUpdated": "Đã cập nhật hồ sơ",
+    "passwordUpdated": "Đã cập nhật mật khẩu",
+    "failedUpdatePassword": "Không cập nhật được mật khẩu",
+    "failedSaveProfile": "Không lưu được hồ sơ",
+    "checkCurrentPassword": "Kiểm tra lại mật khẩu hiện tại nhé",
     "min8Chars": "Tối thiểu 8 ký tự",
-    "roleSysAdmin": "Quản trị viên hệ thống",
+    "roleSysAdmin": "Quản trị hệ thống",
     "roleUser": "Người dùng"
   },
   "settings": {
     "title": "Cài đặt",
     "organization": "Tổ chức",
-    "organizationId": "ID tổ chức",
+    "organizationId": "Organization ID",
     "yourRole": "Vai trò của bạn",
     "slug": "Slug",
     "domain": "Domain",
-    "subscriptionTier": "Gói đăng ký",
+    "subscriptionTier": "Gói thuê bao",
     "status": "Trạng thái",
     "organizationProfile": "Hồ sơ tổ chức",
-    "orgProfileDescription": "Cập nhật hồ sơ công khai của tổ chức.",
+    "orgProfileDescription": "Cập nhật hồ sơ công khai của tổ chức bạn.",
     "displayName": "Tên hiển thị",
     "contactEmail": "Email liên hệ",
     "website": "Website",
@@ -189,96 +189,96 @@
     "timezone": "Múi giờ",
     "logoUrl": "URL logo",
     "description": "Mô tả",
-    "acmePlaceholder": "Công ty Acme",
+    "acmePlaceholder": "Acme Corporation",
     "adminEmailPlaceholder": "admin{'@'}acme.com",
     "websitePlaceholder": "https://acme.com",
-    "countryPlaceholder": "VN",
-    "timezonePlaceholder": "Asia/Ho_Chi_Minh",
+    "countryPlaceholder": "US",
+    "timezonePlaceholder": "America/New_York",
     "logoPlaceholder": "https://cdn.example.com/logo.png",
     "briefDescription": "Mô tả ngắn về tổ chức của bạn",
     "saveProfile": "Lưu hồ sơ",
-    "organizationUpdated": "Tổ chức đã cập nhật",
-    "failedUpdateOrg": "Không thể cập nhật tổ chức",
+    "organizationUpdated": "Đã cập nhật tổ chức",
+    "failedUpdateOrg": "Không cập nhật được tổ chức",
     "members": "Thành viên",
-    "membersDescription": "Quản lý thành viên tổ chức.",
-    "noMembers": "Chưa có thành viên",
+    "membersDescription": "Quản lý thành viên trong tổ chức.",
+    "noMembers": "Chưa có thành viên nào",
     "addMember": "Thêm thành viên",
     "username": "Tên đăng nhập",
     "role": "Vai trò",
-    "promote": "Thăng cấp",
-    "demote": "Hạ cấp",
-    "promoteConfirm": "Thăng cấp thành viên này lên quản trị tổ chức?",
-    "demoteConfirm": "Hạ cấp thành viên này khỏi quản trị tổ chức?",
-    "roleUpdated": "Vai trò đã cập nhật",
-    "memberRemoved": "Đã xóa thành viên",
-    "failedUpdateRole": "Không thể cập nhật vai trò",
-    "failedRemoveMember": "Không thể xóa thành viên",
-    "removeMemberConfirm": "Xóa thành viên này khỏi tổ chức?",
+    "promote": "Nâng quyền",
+    "demote": "Hạ quyền",
+    "promoteConfirm": "Nâng thành viên này lên org admin nhé?",
+    "demoteConfirm": "Hạ thành viên này khỏi org admin nhé?",
+    "roleUpdated": "Đã cập nhật vai trò",
+    "memberRemoved": "Đã gỡ thành viên",
+    "failedUpdateRole": "Không cập nhật được vai trò",
+    "failedRemoveMember": "Không gỡ được thành viên",
+    "removeMemberConfirm": "Gỡ thành viên này khỏi tổ chức nhé?",
     "llmConfigs": "Cấu hình LLM",
-    "llmConfigsDescription": "Cấu hình nhà cung cấp LLM Bring Your Own Key (BYOK).",
+    "llmConfigsDescription": "Cấu hình nhà cung cấp LLM theo kiểu Bring Your Own Key (BYOK).",
     "addConfig": "Thêm cấu hình",
-    "noConfigs": "Chưa có cấu hình LLM",
+    "noConfigs": "Chưa có cấu hình LLM nào",
     "addConfigTitle": "Thêm cấu hình mới",
-    "addConfigMessage": "Nó sẽ có sẵn cho tổ chức của bạn.",
-    "baseUrl": "URL cơ sở",
+    "addConfigMessage": "Sau khi tạo xong thì tổ chức của bạn sẽ dùng được.",
+    "baseUrl": "Base URL",
     "created": "Đã tạo",
     "configDeleted": "Đã xóa cấu hình",
     "enableConfig": "Bật",
     "disableConfig": "Tắt",
     "configEnabled": "Đã bật cấu hình",
     "configDisabled": "Đã tắt cấu hình",
-    "failedToggleConfig": "Không thể chuyển trạng thái cấu hình",
+    "failedToggleConfig": "Không đổi được trạng thái cấu hình",
     "cannotDeleteConfig": "Không thể xóa cấu hình",
-    "configReferenced": "Cấu hình này vẫn được tham chiếu bởi các orchestrator đang hoạt động.",
-    "failedDeleteConfig": "Không thể xóa cấu hình",
-    "deleteConfigConfirm": "Xóa cấu hình \"{name}\"?",
-    "orchestratorSettings": "Cài đặt Orchestrator diện rộng",
-    "orchestratorSettingsDescription": "Giá trị mặc định khi tạo instance orchestrator mới.",
+    "configReferenced": "Cấu hình này vẫn đang được orchestrator đang hoạt động tham chiếu.",
+    "failedDeleteConfig": "Không xóa được cấu hình",
+    "deleteConfigConfirm": "Xóa cấu hình \"{name}\" nhé?",
+    "orchestratorSettings": "Cài đặt orchestrator toàn cục",
+    "orchestratorSettingsDescription": "Giá trị mặc định được điền sẵn khi tạo orchestrator mới. Các instance hiện có sẽ không bị ảnh hưởng khi bạn đổi các giá trị này.",
     "defaultLlmConfig": "Cấu hình LLM mặc định",
-    "defaultLlmConfigDescription": "Điền sẵn dropdown cấu hình LLM cho instance mới.",
-    "defaultModelName": "Tên mô hình mặc định",
-    "defaultModelDescription": "Điền sẵn dropdown mô hình cho instance mới.",
+    "defaultLlmConfigDescription": "Điền sẵn dropdown LLM config cho instance mới.",
+    "defaultModelName": "Tên model mặc định",
+    "defaultModelDescription": "Điền sẵn dropdown model cho instance mới.",
     "defaultMaxTokens": "Max Tokens mặc định",
-    "defaultTimeout": "Timeout thực thi nút mặc định (giây)",
-    "none": "Không",
-    "selectModel": "Chọn mô hình…",
-    "modelPlaceholder": "vd. gpt-4o, gemini-2.0-flash",
+    "defaultTimeout": "Timeout mặc định cho thực thi node (giây)",
+    "none": "Không có",
+    "selectModel": "Chọn model…",
+    "modelPlaceholder": "ví dụ: gpt-4o, gemini-2.0-flash",
     "saveOrchestratorDefaultsTitle": "Lưu mặc định orchestrator",
-    "saveOrchestratorDefaultsMessage": "Các giá trị này sẽ điền sẵn cho instance orchestrator mới. Instance hiện có không bị ảnh hưởng.",
+    "saveOrchestratorDefaultsMessage": "Các giá trị này sẽ được điền sẵn cho orchestrator mới. Orchestrator hiện có sẽ không bị ảnh hưởng.",
     "defaultsSaved": "Đã lưu mặc định",
-    "failedSaveDefaults": "Không thể lưu mặc định",
+    "failedSaveDefaults": "Không lưu được mặc định",
     "selectFromList": "Chọn từ danh sách",
-    "enterManually": "Nhập thủ công",
-    "placeholder4096": "vd. 4096",
-    "placeholder60": "vd. 60",
+    "enterManually": "Tự nhập",
+    "placeholder4096": "ví dụ: 4096",
+    "placeholder60": "ví dụ: 60",
     "domainPlaceholder": "acme.com"
   },
   "addMember": {
     "title": "Thêm thành viên",
-    "identifierRequired": "Email, tên đăng nhập hoặc ID người dùng là bắt buộc",
+    "identifierRequired": "Email, username hoặc user ID là bắt buộc",
     "userNotFound": "Không tìm thấy người dùng",
-    "noUserMatch": "Không có người dùng khớp với email, tên đăng nhập hoặc ID đó.",
+    "noUserMatch": "Không có người dùng nào khớp với email, username hoặc ID đó.",
     "memberAdded": "Đã thêm thành viên",
-    "failedAddMember": "Không thể thêm thành viên"
+    "failedAddMember": "Không thêm được thành viên"
   },
   "llmConfig": {
     "editTitle": "Chỉnh sửa cấu hình LLM",
     "addTitle": "Thêm cấu hình LLM",
-    "failedUpdateConfig": "Không thể cập nhật cấu hình",
-    "failedAddConfig": "Không thể thêm cấu hình",
+    "failedUpdateConfig": "Không cập nhật được cấu hình",
+    "failedAddConfig": "Không thêm được cấu hình",
     "configName": "Tên cấu hình",
-    "configNameDescription": "Tên cho cấu hình này (vd. 'primary', 'fast')",
+    "configNameDescription": "Tên cho cấu hình này (ví dụ: 'primary', 'fast')",
     "primaryPlaceholder": "primary",
     "provider": "Nhà cung cấp",
     "providerRequired": "Nhà cung cấp là bắt buộc",
     "apiKey": "API Key",
-    "apiKeyRequired": "API Key là bắt buộc",
+    "apiKeyRequired": "API key là bắt buộc",
     "apiKeyPlaceholder": "sk-...",
-    "baseUrl": "URL cơ sở",
+    "baseUrl": "Base URL",
     "baseUrlPlaceholder": "https://...",
-    "baseUrlDescription": "Endpoint tùy chọn (bắt buộc cho LiteLLM, TensorZero, Bifrost)",
+    "baseUrlDescription": "Endpoint tùy chỉnh không bắt buộc (bắt buộc với LiteLLM, TensorZero, Bifrost)",
     "apiVersion": "Phiên bản API",
-    "apiVersionDescription": "Phiên bản Azure OpenAI API (vd. 2024-02-01)",
+    "apiVersionDescription": "Phiên bản API của Azure OpenAI (ví dụ: 2024-02-01)",
     "apiVersionPlaceholder": "2024-02-01",
     "saveChanges": "Lưu thay đổi",
     "configUpdated": "Đã cập nhật cấu hình LLM",
@@ -288,43 +288,44 @@
     "title": "Plugin",
     "all": "Tất cả",
     "system": "Hệ thống",
-    "org": "Tổ chức",
-    "enabled": "Đã bật",
-    "disabled": "Đã tắt",
-    "noPluginsMatch": "Không có plugin nào khớp với bộ lọc đã chọn."
+    "org": "Org",
+    "enabled": "Đang bật",
+    "disabled": "Đang tắt",
+    "noPluginsMatch": "Không có plugin nào khớp với bộ lọc đã chọn.",
+    "stateless": "không trạng thái"
   },
   "orchestrators": {
     "title": "Orchestrator",
     "ready": "Sẵn sàng",
-    "deactivate": "Vô hiệu hóa",
+    "deactivate": "Tắt kích hoạt",
     "activate": "Kích hoạt",
-    "load": "Tải",
-    "unload": "Dỡ tải",
+    "load": "Load",
+    "unload": "Unload",
     "clone": "Nhân bản",
-    "deactivateConfirm": "Vô hiệu hóa \"{name}\"?",
-    "activateConfirm": "Kích hoạt orchestrator \"{name}\"? Điều này sẽ bật orchestrator.",
-    "loadConfirm": "Tải orchestrator \"{name}\"? Điều này sẽ khởi động orchestrator.",
-    "unloadConfirm": "Dỡ tải orchestrator \"{name}\"? Điều này sẽ dừng orchestrator.",
+    "deactivateConfirm": "Tắt kích hoạt \"{name}\" nhé?",
+    "activateConfirm": "Kích hoạt orchestrator \"{name}\" nhé? Thao tác này sẽ bật orchestrator.",
+    "loadConfirm": "Load orchestrator \"{name}\" nhé? Thao tác này sẽ khởi động orchestrator.",
+    "unloadConfirm": "Unload orchestrator \"{name}\" nhé? Thao tác này sẽ dừng orchestrator.",
     "create": {
-      "title": "Tạo Orchestrator",
+      "title": "Tạo orchestrator",
       "basic": "Cơ bản",
       "plugins": "Plugin",
-      "addPlugin": "Thêm Plugin",
+      "addPlugin": "Thêm plugin",
       "addPluginHint": "Thêm ít nhất một plugin để cấu hình.",
       "supervisorSettings": "Cài đặt Supervisor",
       "llmConfig": "Cấu hình LLM",
-      "nodeConfig": "Cấu hình Node",
-      "namePlaceholder": "vd. customer-support-agent",
+      "nodeConfig": "Cấu hình node",
+      "namePlaceholder": "ví dụ: customer-support-agent",
       "initialTier": "Tầng ban đầu",
       "tierCold": "Cold (mặc định)",
       "tierWarm": "Warm",
-      "tierHot": "Hot (tải ngay)",
+      "tierHot": "Hot (load ngay)",
       "pluginTableName": "Tên",
       "pluginTablePid": "PID",
       "pluginTableVersion": "Phiên bản",
       "pluginTableSource": "Nguồn",
       "sourceSystem": "Hệ thống",
-      "sourceOrg": "Tổ chức",
+      "sourceOrg": "Org",
       "copyOf": "Bản sao của {name}",
       "nameMinLength": "Tên phải có ít nhất 10 ký tự",
       "selectPluginRequired": "Chọn ít nhất một plugin",
@@ -335,37 +336,47 @@
       "frameworkOpenaiAgents": "OpenAI Agents"
     },
     "pluginSelector": {
-      "title": "Thêm Plugin",
+      "title": "Thêm plugin",
       "searchPlaceholder": "Tìm theo tên hoặc PID…",
-      "selectOrgFirst": "Chọn tổ chức trước",
-      "failedLoad": "Không thể tải plugin",
-      "noPluginsMatch": "Không có plugin nào khớp với bộ lọc.",
+      "selectOrgFirst": "Chọn org trước đã",
+      "failedLoad": "Không tải được plugin",
+      "noPluginsMatch": "Không có plugin nào khớp bộ lọc.",
       "version": "Phiên bản",
       "add": "Thêm",
       "addPlugin": "Thêm plugin",
-      "failedLoadVersions": "Không thể tải phiên bản"
+      "failedLoadVersions": "Không tải được danh sách phiên bản"
     },
     "edit": {
-      "title": "Chỉnh sửa Orchestrator",
+      "title": "Chỉnh sửa orchestrator",
       "basic": "Cơ bản",
       "namePlaceholder": "Tên instance",
       "nameMinLength": "Tên phải có ít nhất 10 ký tự",
-      "nameMaxLength": "Tên không được quá 200 ký tự",
-      "immutableAfterCreation": "Không thay đổi sau khi tạo",
+      "nameMaxLength": "Tên tối đa 200 ký tự",
+      "immutableAfterCreation": "Không thể đổi sau khi tạo",
       "llmConfigForOrchestrator": "Cấu hình LLM cho orchestrator này",
       "llmConfigRequired": "Cấu hình LLM mặc định là bắt buộc",
-      "failedLoad": "Không thể tải orchestrator",
+      "failedLoad": "Không tải được orchestrator",
       "placeholderSelectConfig": "Chọn cấu hình LLM…",
       "tierCold": "Cold",
       "tierWarm": "Warm",
-      "tierHot": "Hot (tải ngay)"
+      "tierHot": "Hot (load ngay)",
+      "monitoring": "Theo dõi",
+      "monitoringDescription": "Gửi trace tới nhà cung cấp quan sát hệ thống",
+      "enableMonitoring": "Bật theo dõi",
+      "monitoringProvider": "Nhà cung cấp",
+      "langfuseSecretKey": "Secret Key",
+      "langfusePublicKey": "Public Key",
+      "langfuseHost": "Host URL",
+      "langfuseSecretKeyPlaceholder": "sk-lf-...",
+      "langfusePublicKeyPlaceholder": "pk-lf-...",
+      "langfuseHostPlaceholder": "https://cloud.langfuse.com"
     }
   },
   "admin": {
     "nameRequired": "Tên là bắt buộc",
     "domainRequired": "Domain là bắt buộc",
     "organizationUpdated": "Đã cập nhật tổ chức",
-    "failedSaveOrg": "Không thể lưu tổ chức",
+    "failedSaveOrg": "Không lưu được tổ chức",
     "organizations": "Tổ chức",
     "createOrg": "Tạo tổ chức",
     "id": "ID",
@@ -374,120 +385,120 @@
     "acmePlaceholder": "acme-corp",
     "descriptionPlaceholder": "Mô tả ngắn",
     "organizationCreated": "Đã tạo tổ chức",
-    "failedCreateOrg": "Không thể tạo tổ chức",
+    "failedCreateOrg": "Không tạo được tổ chức",
     "details": "Chi tiết",
-    "orgId": "ID tổ chức",
+    "orgId": "Org ID",
     "editOrganization": "Chỉnh sửa tổ chức",
-    "tierQuota": "Hạn mức tầng",
+    "tierQuota": "Quota theo gói",
     "preview": "Xem trước",
-    "maxOrchestrators": "Tối đa Orchestrator",
-    "maxCentralPoints": "Tối đa Central Points",
-    "maxMembers": "Tối đa thành viên",
-    "messagesPerMonth": "Tin nhắn / Tháng",
-    "messagesPerDay": "Tin nhắn / Ngày",
-    "rateLimitRpm": "Rate Limit (RPM)",
-    "rateChatLimitRpm": "Chat Rate Limit (RPM)",
-    "rateLimitBurst": "Rate Limit Burst",
-    "maxLlmConfigs": "Tối đa cấu hình LLM",
-    "removeMemberConfirm": "Xóa thành viên?",
+    "maxOrchestrators": "Số orchestrator tối đa",
+    "maxCentralPoints": "Số central point tối đa",
+    "maxMembers": "Số thành viên tối đa",
+    "messagesPerMonth": "Tin nhắn / tháng",
+    "messagesPerDay": "Tin nhắn / ngày",
+    "rateLimitRpm": "Giới hạn tốc độ (RPM)",
+    "rateChatLimitRpm": "Giới hạn tốc độ chat (RPM)",
+    "rateLimitBurst": "Burst limit",
+    "maxLlmConfigs": "Số cấu hình LLM tối đa",
+    "removeMemberConfirm": "Gỡ thành viên này nhé?",
     "users": "Người dùng",
     "newUser": "Người dùng mới",
     "userCreated": "Đã tạo người dùng",
     "userUpdated": "Đã cập nhật người dùng",
     "userDeleted": "Đã xóa người dùng",
-    "failedCreateUser": "Không thể tạo người dùng",
-    "failedUpdateUser": "Không thể cập nhật người dùng",
-    "failedDeleteUser": "Không thể xóa người dùng",
+    "failedCreateUser": "Không tạo được người dùng",
+    "failedUpdateUser": "Không cập nhật được người dùng",
+    "failedDeleteUser": "Không xóa được người dùng",
     "editUser": "Chỉnh sửa người dùng",
     "deleteUser": "Xóa người dùng",
-    "deleteUserConfirm": "Xóa {username}? Điều này sẽ xóa tất cả thành viên tổ chức của họ.",
-    "systemAdmin": "Quản trị viên hệ thống",
-    "passwordOptional": "Tùy chọn — người dùng có thể đặt sau",
-    "pool": "Thống kê Pool",
-    "totalInstances": "Tổng instance",
-    "hotTier": "Tầng nóng",
-    "warmTier": "Tầng ấm",
-    "coldTier": "Tầng lạnh",
-    "sharedModels": "Mô hình dùng chung",
+    "deleteUserConfirm": "Xóa {username} nhé? Thao tác này sẽ gỡ toàn bộ membership org của họ.",
+    "systemAdmin": "Quản trị hệ thống",
+    "passwordOptional": "Không bắt buộc — người dùng có thể đặt sau",
+    "pool": "Thống kê pool",
+    "totalInstances": "Tổng số instance",
+    "hotTier": "Tầng Hot",
+    "warmTier": "Tầng Warm",
+    "coldTier": "Tầng Cold",
+    "sharedModels": "Model dùng chung",
     "sharedBundles": "Bundle dùng chung",
     "memoryEstimate": "Ước tính bộ nhớ",
-    "memoryEstimateDescription": "Ước tính sử dụng bộ nhớ pool",
-    "autoRefresh": "Tự động làm mới mỗi 30 giây",
-    "health": "Trạng thái hệ thống",
+    "memoryEstimateDescription": "Ước tính dung lượng bộ nhớ pool đang dùng",
+    "autoRefresh": "Tự làm mới mỗi 30 giây",
+    "health": "Tình trạng hệ thống",
     "systemStatus": "Trạng thái hệ thống",
-    "instanceId": "ID instance",
+    "instanceId": "Instance ID",
     "plugins": "Plugin",
     "ready": "sẵn sàng",
     "notReady": "chưa sẵn sàng",
-    "noInstances": "Chưa có instance nào được tải.",
-    "orchestratorInstanceHealth": "Trạng thái instance Orchestrator",
+    "noInstances": "Không có instance nào được load.",
+    "orchestratorInstanceHealth": "Tình trạng instance orchestrator",
     "systemPlugins": "Plugin hệ thống",
     "uploadPlugin": "Tải plugin lên",
-    "selectOrgToView": "Chọn tổ chức để xem và quản lý plugin của nó.",
-    "noPluginsYet": "Chưa có plugin. Tải một cái lên để bắt đầu.",
-    "noOrgPlugins": "Không có plugin tổ chức cho tổ chức này.",
-    "globalSettings": "Cài đặt diện rộng",
+    "selectOrgToView": "Chọn một tổ chức để xem và quản lý plugin của org đó.",
+    "noPluginsYet": "Chưa có plugin nào. Tải một plugin lên để bắt đầu.",
+    "noOrgPlugins": "Không có plugin org nào cho tổ chức này.",
+    "globalSettings": "Cài đặt toàn cục",
     "platformDefaults": "Mặc định toàn nền tảng",
     "overridable": "Có thể ghi đè",
     "settingUpdated": "Đã cập nhật cài đặt",
-    "failedUpdateSetting": "Không thể cập nhật cài đặt",
-    "noGlobalSettings": "Không có cài đặt diện rộng.",
-    "subscriptionTiers": "Gói đăng ký",
-    "tierQuotasDescription": "Chỉnh sửa giới hạn hạn mức cho từng gói đăng ký.",
-    "tierUpdated": "Đã cập nhật tầng",
-    "quotaSaved": "đã lưu hạn mức",
+    "failedUpdateSetting": "Không cập nhật được cài đặt",
+    "noGlobalSettings": "Không có cài đặt toàn cục nào.",
+    "subscriptionTiers": "Gói thuê bao",
+    "tierQuotasDescription": "Chỉnh sửa quota cho từng gói thuê bao bên dưới. Các giá trị này áp dụng toàn cục — tổ chức không thể tự ghi đè.",
+    "tierUpdated": "Đã cập nhật gói",
+    "quotaSaved": "đã lưu quota",
     "saveFailed": "Lưu thất bại",
-    "failedSaveTier": "Không thể lưu tầng",
-    "noTierDefinitions": "Không tìm thấy định nghĩa tầng.",
+    "failedSaveTier": "Không lưu được gói",
+    "noTierDefinitions": "Không tìm thấy định nghĩa gói nào.",
     "maxOrchestratorsHint": "-1 = không giới hạn",
-    "maxCentralPointsHint": "0 = vô hiệu, -1 = không giới hạn",
+    "maxCentralPointsHint": "0 = tắt, -1 = không giới hạn",
     "maxMembersHint": "-1 = không giới hạn",
     "maxMessagesMonthHint": "-1 = không giới hạn",
     "maxMessagesDayHint": "-1 = không giới hạn",
     "maxLlmConfigsHint": "-1 = không giới hạn",
-    "rateLimitRpmHint": "Yêu cầu mỗi phút",
-    "rateChatLimitRpmHint": "Yêu cầu mỗi phút cho endpoint chat completion",
-    "rateLimitBurstHint": "Cho phép burst",
+    "rateLimitRpmHint": "Số request mỗi phút",
+    "rateChatLimitRpmHint": "Số request mỗi phút cho endpoint chat completion",
+    "rateLimitBurstHint": "Mức burst cho phép",
     "settings": "Cài đặt",
     "llmProviders": "Nhà cung cấp LLM",
-    "addModel": "Thêm mô hình",
-    "addModelTitle": "Thêm mô hình vào danh mục",
-    "addModelMessage": "Nó sẽ có sẵn để chọn trong danh mục mô hình.",
-    "editModel": "Chỉnh sửa mô hình",
-    "modelUpdated": "Đã cập nhật mô hình",
-    "modelAdded": "Đã thêm mô hình",
-    "failedUpdateModel": "Không thể cập nhật mô hình",
-    "failedAddModel": "Không thể thêm mô hình",
+    "addModel": "Thêm model",
+    "addModelTitle": "Thêm model vào catalog",
+    "addModelMessage": "Sau khi thêm xong thì model sẽ xuất hiện trong catalog để chọn.",
+    "editModel": "Chỉnh sửa model",
+    "modelUpdated": "Đã cập nhật model",
+    "modelAdded": "Đã thêm model",
+    "failedUpdateModel": "Không cập nhật được model",
+    "failedAddModel": "Không thêm được model",
     "provider": "Nhà cung cấp",
-    "modelId": "ID mô hình",
+    "modelId": "Model ID",
     "displayName": "Tên hiển thị",
     "aliases": "Bí danh",
     "status": "Trạng thái",
-    "platformModelCatalog": "Danh mục mô hình nền tảng",
-    "platformModelCatalogDesc": "Quản lý danh sách mô hình khả dụng diện rộng theo nhà cung cấp. Mô hình bị vô hiệu sẽ không xuất hiện trong lựa chọn mô hình.",
+    "platformModelCatalog": "Catalog model toàn nền tảng",
+    "platformModelCatalogDesc": "Quản lý danh sách model khả dụng toàn cục theo từng nhà cung cấp. Model bị tắt sẽ không xuất hiện trong danh sách chọn của nhà cung cấp.",
     "allProviders": "Tất cả nhà cung cấp",
-    "noModelsFound": "Không tìm thấy mô hình.",
+    "noModelsFound": "Không tìm thấy model nào.",
     "enable": "Bật",
     "disable": "Tắt",
-    "disableModelConfirm": "Vô hiệu hóa mô hình này trong danh mục?",
-    "enableModelConfirm": "Kích hoạt mô hình này trong danh mục?",
+    "disableModelConfirm": "Tắt model này trong catalog nhé?",
+    "enableModelConfirm": "Bật model này trong catalog nhé?",
     "domainPlaceholder": "acme.com",
-    "placeholderUsername": "nguyenvana",
-    "placeholderEmail": "nguyen{'@'}example.com",
-    "aliasesDescription": "Danh sách định danh thay thế, phân cách bằng dấu phẩy",
-    "modelIdPlaceholder": "vd. gpt-4o-mini",
-    "displayNamePlaceholder": "vd. GPT-4o Mini",
+    "placeholderUsername": "johndoe",
+    "placeholderEmail": "john{'@'}example.com",
+    "aliasesDescription": "Danh sách định danh thay thế, cách nhau bằng dấu phẩy",
+    "modelIdPlaceholder": "ví dụ: gpt-4o-mini",
+    "displayNamePlaceholder": "ví dụ: GPT-4o Mini",
     "aliasesPlaceholder": "gpt-4o-mini-2024-07-18, ..."
   },
   "pluginDetail": {
-    "title": "Chi tiết Plugin",
-    "failedToLoad": "Không thể tải phiên bản",
-    "disableConfirm": "Vô hiệu hóa plugin này?",
-    "enableConfirm": "Kích hoạt plugin này?",
-    "pluginDisabled": "Đã vô hiệu hóa plugin",
-    "pluginEnabled": "Đã kích hoạt plugin",
-    "failedDisable": "Không thể vô hiệu hóa plugin",
-    "failedEnable": "Không thể kích hoạt plugin",
+    "title": "Chi tiết plugin",
+    "failedToLoad": "Không tải được các phiên bản",
+    "disableConfirm": "Tắt plugin này nhé?",
+    "enableConfirm": "Bật plugin này nhé?",
+    "pluginDisabled": "Đã tắt plugin",
+    "pluginEnabled": "Đã bật plugin",
+    "failedDisable": "Không tắt được plugin",
+    "failedEnable": "Không bật được plugin",
     "titleLabel": "Tiêu đề",
     "namePid": "Tên (PID)",
     "version": "Phiên bản",
@@ -497,14 +508,14 @@
     "tag": "Tag",
     "details": "Chi tiết",
     "capabilities": "Khả năng",
-    "configSettings": "Cấu hình & Yêu cầu cài đặt",
+    "configSettings": "Cấu hình & yêu cầu cài đặt",
     "name": "Tên",
     "key": "Khóa",
-    "type": "Loại",
+    "type": "Kiểu",
     "default": "Mặc định",
     "required": "Bắt buộc",
     "sensitive": "Nhạy cảm",
-    "noConfigSettings": "Chưa định nghĩa cài đặt cấu hình.",
+    "noConfigSettings": "Không có cài đặt cấu hình nào.",
     "enable": "Bật",
     "disable": "Tắt",
     "yes": "Có",
@@ -514,15 +525,15 @@
     "title": "Tải plugin lên",
     "uploaded": "Đã tải plugin lên",
     "uploadFailed": "Tải lên thất bại",
-    "clickToSelect": "Nhấp để chọn plugin (.zip)",
-    "packageHint": "Gói plugin định dạng ZIP"
+    "clickToSelect": "Bấm để chọn plugin (.zip)",
+    "packageHint": "Gói plugin ở định dạng ZIP"
   },
   "errors": {
     "notFound": "Không tìm thấy trang",
-    "notFoundDescription": "Rất tiếc, trang này không tồn tại.",
+    "notFoundDescription": "Xin lỗi, không tìm thấy trang này.",
     "error": "Lỗi",
-    "unknown": "không xác định",
-    "purgeReferencedError": "Không thể xóa vĩnh viễn: bản ghi vẫn được tham chiếu bởi các mục đang hoạt động."
+    "unknown": "không rõ",
+    "purgeReferencedError": "Không thể xóa vĩnh viễn: bản ghi vẫn đang được mục đang hoạt động tham chiếu."
   },
   "settingsGroups": {
     "llm": "LLM",
@@ -533,7 +544,7 @@
     "orchestration": "Điều phối",
     "streaming": "Streaming",
     "checkpointing": "Checkpointing",
-    "featureFlags": "Feature Flags",
+    "featureFlags": "Cờ tính năng",
     "security": "Bảo mật"
   },
   "healthServices": {
@@ -542,8 +553,8 @@
     "mongodb": "MongoDB"
   },
   "orchestratorPlugin": {
-    "noSettingsConfigured": "Chưa cấu hình cài đặt plugin.",
-    "noSettingsForVersion": "Không có cài đặt cho phiên bản này.",
+    "noSettingsConfigured": "Chưa cấu hình cài đặt plugin nào.",
+    "noSettingsForVersion": "Phiên bản này không có cài đặt.",
     "active": "Đang hoạt động",
     "required": "Bắt buộc",
     "version": "phiên bản",
@@ -551,62 +562,62 @@
     "fieldRequired": "\"{label}\" là bắt buộc"
   },
   "orchestratorGraph": {
-    "failedRender": "Không thể hiển thị sơ đồ đồ thị",
-    "failedLoad": "Không thể tải đồ thị",
-    "notLoaded": "Orchestrator chưa được tải. Sử dụng nút Tải để khởi tạo, sau đó làm mới.",
+    "failedRender": "Không render được sơ đồ graph",
+    "failedLoad": "Không tải được graph",
+    "notLoaded": "Orchestrator chưa được load. Dùng nút Load để khởi tạo rồi bấm refresh nhé.",
     "refresh": "Làm mới",
     "retry": "Thử lại",
-    "notAvailable": "Trực quan hóa đồ thị không khả dụng cho orchestrator này."
+    "notAvailable": "Orchestrator này không có trực quan hóa graph."
   },
   "langGraphSupervisor": {
     "defaultLlmConfig": "Cấu hình LLM mặc định",
-    "defaultLlmConfigDescription": "Cấu hình LLM dùng cho tất cả node trừ khi ghi đè theo từng node",
-    "defaultModel": "Mô hình mặc định",
-    "defaultModelDescription": "Mô hình dùng cho tất cả node trừ khi ghi đè theo từng node",
+    "defaultLlmConfigDescription": "Cấu hình LLM được dùng cho mọi node trừ khi có override theo từng node",
+    "defaultModel": "Model mặc định",
+    "defaultModelDescription": "Model dùng cho mọi node trừ khi có override theo từng node",
     "placeholderLoading": "Đang tải…",
-    "placeholderNoConfigs": "Chưa có cấu hình LLM — thêm một cái trong Cài đặt trước",
+    "placeholderNoConfigs": "Không có cấu hình LLM nào — thêm ở phần Settings trước nhé",
     "placeholderSelectConfig": "Chọn cấu hình LLM…",
-    "placeholderSelectModel": "Chọn mô hình…",
+    "placeholderSelectModel": "Chọn model…",
     "placeholderUseDefault": "Dùng mặc định",
-    "placeholderUseDefaultModel": "Dùng mô hình mặc định",
+    "placeholderUseDefaultModel": "Dùng model mặc định",
     "placeholderSystemDefault": "Mặc định hệ thống",
-    "defaultTemperature": "Nhiệt độ mặc định",
-    "defaultTemperatureDescription": "Mặc định cho tất cả node (0.0–2.0)",
+    "defaultTemperature": "Temperature mặc định",
+    "defaultTemperatureDescription": "Mặc định cho mọi node (0.0–2.0)",
     "defaultMaxTokens": "Max Tokens mặc định",
-    "defaultMaxTokensDescription": "Max output tokens mặc định cho tất cả node (Min/Max: 1k/4k)",
-    "nodeExecutionTimeout": "Node Execution Timeout (s)",
-    "nodeExecutionTimeoutDescription": "Timeout mặc định (giây) cho mọi LLM/tool call của node (answer node dùng 2×)",
-    "maxAgentHops": "Max Agent Hops",
-    "maxAgentHopsDescription": "Số lần lặp planner tối đa trước khi tổng hợp (Min/Max: 5/50)",
-    "maxMessageContextWindow": "Max Message Context Window",
-    "maxMessageContextWindowDescription": "N tin nhắn cuối gửi tới orchestrator (Min/Max: 5/50)",
-    "maxTokenContextWindow": "Max Token Context Window",
-    "maxTokenContextWindowDescription": "Max tokens trong hội thoại (Min/Max: 4k/32k)",
-    "parallelToolCalls": "Parallel Tool Calls",
-    "enableToolResultCache": "Bật Tool Result Cache",
-    "useLlmValidation": "Dùng LLM Validation",
-    "autoCompactMessages": "Auto Compact Messages",
+    "defaultMaxTokensDescription": "Giới hạn token đầu ra mặc định cho mọi node (Min/Max: 1k/4k)",
+    "nodeExecutionTimeout": "Timeout thực thi node (s)",
+    "nodeExecutionTimeoutDescription": "Timeout mặc định theo giây cho mọi lệnh gọi LLM/tool của node (answer node dùng 2×)",
+    "maxAgentHops": "Số agent hop tối đa",
+    "maxAgentHopsDescription": "Số vòng lặp planner tối đa trước khi tổng hợp câu trả lời (Min/Max: 5/50)",
+    "maxMessageContextWindow": "Cửa sổ ngữ cảnh tin nhắn tối đa",
+    "maxMessageContextWindowDescription": "Số tin nhắn gần nhất gửi tới orchestrator (Min/Max: 5/50)",
+    "maxTokenContextWindow": "Cửa sổ ngữ cảnh token tối đa",
+    "maxTokenContextWindowDescription": "Số token tối đa trong hội thoại (Min/Max: 4k/32k)",
+    "parallelToolCalls": "Gọi tool song song",
+    "enableToolResultCache": "Bật cache kết quả tool",
+    "useLlmValidation": "Dùng LLM để xác thực",
+    "autoCompactMessages": "Tự động rút gọn tin nhắn",
     "autocompactLlmConfig": "Cấu hình LLM",
-    "autocompactLlmConfigDescription": "Cấu hình LLM dùng cho message compaction",
-    "autocompactModel": "Mô hình mặc định",
-    "autocompactModelDescription": "Mô hình dùng cho message compaction",
-    "overrideSet": "Đã ghi đè",
+    "autocompactLlmConfigDescription": "Cấu hình dùng LLM để rút gọn tin nhắn",
+    "autocompactModel": "Model mặc định",
+    "autocompactModelDescription": "Model dùng cho việc rút gọn tin nhắn",
+    "overrideSet": "Đã đặt override",
     "llmConfig": "Cấu hình LLM",
     "llmConfigOverrideDescription": "Ghi đè cấu hình LLM mặc định cho node này",
-    "model": "Mô hình",
-    "modelNodeConfigDescription": "Mô hình cho cấu hình LLM của node này",
-    "modelOverrideDescription": "Ghi đè mô hình mặc định cho node này",
-    "temperature": "Nhiệt độ",
-    "temperatureDescription": "Ghi đè nhiệt độ node (0.0–2.0)",
+    "model": "Model",
+    "modelNodeConfigDescription": "Model cho cấu hình LLM của node này",
+    "modelOverrideDescription": "Ghi đè model mặc định cho node này",
+    "temperature": "Temperature",
+    "temperatureDescription": "Ghi đè temperature của node (0.0–2.0)",
     "maxTokens": "Max Tokens",
-    "maxTokensDescription": "Ghi đè max output tokens của node",
+    "maxTokensDescription": "Ghi đè số token đầu ra tối đa của node",
     "timeout": "Timeout (s)",
-    "timeoutDescription": "Ghi đè timeout cho node này (giây)",
-    "placeholderDefaultFromInstance": "Mặc định (từ instance)",
+    "timeoutDescription": "Ghi đè timeout của node này theo giây",
+    "placeholderDefaultFromInstance": "Mặc định (lấy từ instance)",
     "placeholderUseGlobalTimeout": "Dùng node_execution_timeout toàn cục",
-    "promptOverride": "Ghi đè Prompt",
-    "promptOverrideDescription": "Phải chứa cùng {placeholders} như prompt mặc định",
-    "placeholderEmptyPrompt": "Để trống để dùng prompt mặc định",
+    "promptOverride": "Ghi đè prompt",
+    "promptOverrideDescription": "Phải chứa cùng các {placeholders} như prompt mặc định",
+    "placeholderEmptyPrompt": "Để trống nếu muốn dùng prompt mặc định",
     "viewDefaultPrompt": "Xem prompt mặc định",
     "hideDefaultPrompt": "Ẩn prompt mặc định",
     "nodeLabels": {
@@ -616,7 +627,7 @@
       "validation_node": "Validation",
       "clarifier_node": "Clarifier",
       "responder_node": "Responder",
-      "error_handler_node": "Error Handler"
+      "error_handler_node": "Xử lý lỗi"
     }
   },
   "providers": {
@@ -632,229 +643,725 @@
   "info": {
     "pages": {
       "dashboard": {
-        "title": "Bảng điều khiển",
-        "description": "**Chức năng:**\n\nTrung tâm điều phối AI của tổ chức. Hiển thị:\n\n- **Số lượng orchestrator** — Tổng, tầng nóng, ấm và lạnh\n- **Thống kê pool** — Mô hình dùng chung, bộ nhớ (chỉ sys admin)\n- **Thao tác nhanh** — Bắt đầu chat, xem orchestrator, quản lý plugin\n\n**Tầng:** Nóng = load ngay; Ấm = làm nóng trước; Lạnh = theo yêu cầu."
+        "title": "Tổng quan",
+        "description": "**Nó làm gì:**\n\nTrung tâm điều khiển AI orchestration của tổ chức bạn. Hiển thị:\n\n- **Số lượng orchestrator** — Tổng, hot, warm và cold tier instance\n- **Thống kê pool** — Model dùng chung, mức dùng bộ nhớ (chỉ sys admin)\n- **Thao tác nhanh** — Bắt đầu chat, xem orchestrator, quản lý plugin\n\n**Các tầng:** Hot = load ngay; Warm = làm nóng sẵn; Cold = theo yêu cầu."
       },
       "chat": {
-        "title": "Trò chuyện",
-        "description": "**Chức năng:**\n\nSân chơi tương tác để kiểm tra orchestrator với hội thoại thực.\n\n**Cách dùng:**\n1. Chọn orchestrator từ sidebar (phải active và ready)\n2. Nhập tin nhắn và nhấn Enter\n3. Xem phản hồi, bước agent và nguồn tool\n\n**Tính năng:** Phản hồi streaming, bước và nguồn có thể mở rộng, phiên giữ cho đến khi xóa."
+        "title": "Chat",
+        "description": "**Nó làm gì:**\n\nKhu vực tương tác để thử orchestrator bằng hội thoại thật.\n\n**Cách dùng:**\n1. Chọn một orchestrator ở thanh bên (phải đang active và ready)\n2. Gõ tin nhắn rồi nhấn Enter\n3. Xem phản hồi, các bước agent và nguồn tool\n\n**Tính năng:**\n- Streaming phản hồi theo tiến trình\n- Có thể mở rộng steps và sources cho từng tin nhắn\n- Phiên chat được giữ lại cho tới khi bạn xóa"
       },
       "orchestrators": {
         "title": "Orchestrator",
-        "description": "**Chức năng:**\n\nTạo và quản lý phiên bản AI orchestrator chạy plugin.\n\n**Tác vụ:** Load, Unload, Activate, Deactivate, Clone. Cột: Tên, framework, mode, tier, status, ready."
+        "description": "**Nó làm gì:**\n\nTạo và quản lý các orchestrator instance chạy plugin của bạn.\n\n**Hành động:**\n- **Load** — Khởi động orchestrator (dùng bộ nhớ pool)\n- **Unload** — Dừng và giải phóng bộ nhớ\n- **Activate** — Bật để sử dụng; **Deactivate** — Tắt sử dụng\n- **Clone** — Sao chép cấu hình để tạo instance mới\n\n**Cột:** Tên, framework, mode, tier, status, trạng thái ready."
       },
       "plugins": {
         "title": "Plugin",
-        "description": "**Chức năng:**\n\nDuyệt và quản lý plugin mở rộng khả năng orchestrator.\n\n**Loại:** System (toàn nền tảng) | Org (theo tổ chức). Tác vụ: Bật/tắt, xem chi tiết, cấu hình."
+        "description": "**Nó làm gì:**\n\nDuyệt và quản lý plugin để mở rộng khả năng của orchestrator.\n\n**Loại plugin:**\n- **System** — Toàn nền tảng, dùng được cho mọi org\n- **Org** — Theo từng tổ chức, do org admin tải lên\n\n**Hành động:** Bật/tắt, xem chi tiết, cấu hình cài đặt. Plugin cung cấp tool và capability mà orchestrator dùng trong lúc hội thoại."
       },
       "profile": {
         "title": "Hồ sơ",
-        "description": "**Chức năng:**\n\nCài đặt tài khoản cá nhân. **Phần:** Account (ID, vai trò), Profile (tên, email), Password. Chỉ org admin mới sửa được."
+        "description": "**Nó làm gì:**\n\nCài đặt tài khoản cá nhân của bạn.\n\n**Mục:**\n- **Tài khoản** — User ID, vai trò (chỉ đọc)\n- **Hồ sơ** — Tên hiển thị, email (có thể sửa)\n- **Mật khẩu** — Đổi mật khẩu (cần mật khẩu hiện tại)\n\nThay đổi sẽ được áp dụng ngay. Vai trò của bạn quyết định quyền truy cập giữa các tổ chức."
       }
     },
     "settings": {
       "orgIdentity": {
         "title": "Tổ chức",
-        "description": "**Nội dung:**\n\nThông tin tổ chức chỉ đọc: ID, slug, domain, gói đăng ký, trạng thái. Chỉ sys admin mới thay đổi được."
+        "description": "**Nó hiển thị gì:**\n\nThông tin định danh chỉ đọc của tổ chức hiện tại:\n\n- **Organization ID** — Mã định danh duy nhất\n- **Slug** — Tên thân thiện cho URL\n- **Domain** — Domain được gán (ví dụ: acme.com)\n- **Gói thuê bao** — free, pro, enterprise\n- **Trạng thái** — active, suspended, v.v.\n\n**Lưu ý:** Chỉ system admin mới có thể thay đổi các giá trị này."
       },
       "orgProfile": {
         "title": "Hồ sơ tổ chức",
-        "description": "**Chức năng:**\n\nHồ sơ công khai có thể chỉnh sửa. Tên, email, website, logo, mô tả. Chỉ org admin mới sửa được."
+        "description": "**Nó làm gì:**\n\nHồ sơ công khai có thể chỉnh sửa, hiển thị cho thành viên trong org.\n\n**Trường:**\n- Tên hiển thị, email liên hệ, website\n- URL logo, quốc gia, múi giờ\n- Mô tả (tóm tắt ngắn về org)\n\n**Ai có thể sửa:** Chỉ org admin. Dùng cho branding và thông tin liên hệ."
       },
       "members": {
         "title": "Thành viên",
-        "description": "**Chức năng:**\n\nQuản lý thành viên tổ chức. Thêm, thăng/hạ admin, xóa. Chỉ org admin mới quản lý được."
+        "description": "**Nó làm gì:**\n\nQuản lý ai thuộc tổ chức của bạn.\n\n**Hành động:**\n- **Thêm thành viên** — Bằng email, username hoặc user ID\n- **Nâng quyền** — Cấp quyền org admin\n- **Hạ quyền** — Gỡ quyền org admin\n- **Gỡ** — Loại khỏi tổ chức\n\n**Ai có thể quản lý:** Chỉ org admin. Một thành viên có thể thuộc nhiều org."
       },
       "llmConfigs": {
         "title": "Cấu hình LLM",
-        "description": "**Chức năng:**\n\nBYOK — lưu API key cho nhà cung cấp LLM. Hỗ trợ: OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero, Bifrost. Mỗi config: tên, provider, API key, base URL tùy chọn."
+        "description": "**Nó làm gì:**\n\nBring Your Own Key (BYOK) — lưu API key cho các nhà cung cấp LLM.\n\n**Hỗ trợ:** OpenAI, Anthropic, Google, Groq, Azure, LiteLLM, TensorZero, Bifrost\n\n**Mỗi cấu hình gồm:** Tên, nhà cung cấp, API key, base URL tùy chọn, API version (Azure)\n\n**Cách dùng:** Orchestrator sẽ chọn một config khi chạy. Config bị tắt sẽ bị ẩn. Config đang được dùng thì không thể xóa cho tới khi bỏ liên kết."
       },
       "orchestrators": {
-        "title": "Cài đặt Orchestrator",
-        "description": "**Chức năng:**\n\nGiá trị mặc định điền sẵn khi tạo orchestrator **mới**. Mặc định: LLM config, model, max tokens, timeout. **Phiên bản hiện có không bị ảnh hưởng.**"
+        "title": "Cài đặt orchestrator",
+        "description": "**Nó làm gì:**\n\nCác giá trị mặc định được điền sẵn khi tạo orchestrator **mới**.\n\n**Mặc định:**\n- Cấu hình LLM mặc định\n- Tên model mặc định\n- Max tokens mặc định\n- Timeout thực thi node (giây)\n\n**Quan trọng:** Orchestrator hiện có **không** bị ảnh hưởng. Chỉ instance mới mới nhận các giá trị này."
       },
       "centralPoints": {
-        "title": "Central Points",
-        "description": "**Chức năng:**\n\nĐiểm cuối API ổn định. Máy khách dùng ID central point; bạn có thể đổi orchestrator mà không cần thay đổi máy khách. Private (cần auth) hoặc public."
+        "title": "Central Point",
+        "description": "**Nó làm gì:**\n\nEndpoint API ổn định giúp trừu tượng hóa danh tính orchestrator.\n\n**Vì sao nên dùng:**\n- Client dùng **central point ID** — không bao giờ phải dùng orchestrator ID\n- Có thể thay orchestrator phía sau endpoint mà không cần sửa client\n- Có thể là private (cần auth) hoặc public (không cần auth)\n\n**Luồng:** Tạo central point → gán orchestrator → client gọi `/api/chat/completion` với header `X-CENTRAL-ID`."
       }
     },
     "admin": {
       "orgs": {
         "title": "Tổ chức",
-        "description": "**Chức năng:**\n\nQuản lý tổ chức toàn hệ thống (chỉ sys admin). Tạo org, đặt hạn ngạch gói, quản lý domain. Hạn ngạch gói kiểm soát max orchestrator, thành viên, v.v."
+        "description": "**Nó làm gì:**\n\nQuản lý tổ chức trên toàn hệ thống (chỉ sys admin).\n\n**Hành động:**\n- Tạo tổ chức (tên, domain, tier)\n- Xem và sửa chi tiết org\n- Đặt quota theo tier và giới hạn tốc độ\n\n**Quota theo tier** kiểm soát số orchestrator, thành viên, LLM config, tin nhắn, v.v. cho mỗi tổ chức."
       },
       "orgDetail": {
         "title": "Chi tiết tổ chức",
-        "description": "**Chức năng:**\n\nChỉnh sửa một tổ chức (chỉ sys admin). Phần: Profile, hạn ngạch gói, thành viên. Xem trước mức sử dụng hạn ngạch."
+        "description": "**Nó làm gì:**\n\nChỉnh sửa một tổ chức cụ thể (chỉ sys admin).\n\n**Mục:**\n- **Hồ sơ** — Tên hiển thị, domain, tier, thông tin liên hệ\n- **Quota theo tier** — Số orchestrator, thành viên, central point, tin nhắn, LLM config, giới hạn tốc độ\n- **Thành viên** — Thêm, nâng quyền, hạ quyền, gỡ\n\n**Preview** hiển thị mức dùng hiện tại so với giới hạn quota."
       },
       "users": {
         "title": "Người dùng",
-        "description": "**Chức năng:**\n\nQuản lý người dùng nền tảng (chỉ sys admin). Tạo, sửa, xóa. Gán vai trò sys admin. Người dùng có thể thuộc nhiều tổ chức."
+        "description": "**Nó làm gì:**\n\nQuản lý người dùng toàn nền tảng (chỉ sys admin).\n\n**Hành động:**\n- Tạo người dùng (username, email, mật khẩu tùy chọn)\n- Chỉnh sửa username, email, cờ system admin\n- Xóa người dùng (gỡ họ khỏi tất cả org)\n\n**System admin** — Toàn quyền nền tảng. Người dùng có thể thuộc nhiều tổ chức với vai trò khác nhau."
       },
       "systemPlugins": {
         "title": "Plugin hệ thống",
-        "description": "**Chức năng:**\n\nQuản lý plugin có sẵn cho **mọi** tổ chức (chỉ sys admin). Tab: System | Org. Tải lên, bật/tắt, xem chi tiết."
+        "description": "**Nó làm gì:**\n\nQuản lý plugin dùng được cho **mọi** tổ chức (chỉ sys admin).\n\n**Tab:** System (toàn nền tảng) | Org (theo từng tổ chức)\n\n**Hành động:**\n- Tải plugin lên (ZIP)\n- Bật/tắt từng phiên bản\n- Xem chi tiết plugin và cấu hình\n\nOrg admin có thể bật system plugin cho org của họ. Org plugin được tải lên riêng theo từng org trong Settings."
       },
       "globalSettings": {
-        "title": "Cài đặt diện rộng",
-        "description": "**Chức năng:**\n\nMặc định toàn nền tảng (chỉ sys admin). Gói đăng ký, danh mục model, cài đặt tính năng. Một số có thể ghi đè theo tổ chức."
+        "title": "Cài đặt toàn cục",
+        "description": "**Nó làm gì:**\n\nMặc định toàn nền tảng (chỉ sys admin).\n\n**Mục:**\n- **Gói thuê bao** — Quota cho từng tier (orchestrator, thành viên, tin nhắn, v.v.)\n- **Nhà cung cấp LLM** — Catalog model theo từng provider\n- **Cài đặt tính năng** — Pool, cache, giới hạn tốc độ, v.v.\n\n**Ghi đè:** Một số cài đặt có thể được ghi đè theo từng tổ chức. Quota theo tier là toàn cục."
       },
       "pool": {
         "title": "Instance Pool",
-        "description": "**Chức năng:**\n\nThống kê pool thời gian thực (chỉ sys admin). Tổng instance, tầng nóng/ấm/lạnh, mô hình dùng chung, bộ nhớ. Tự làm mới mỗi 30 giây."
+        "description": "**Nó làm gì:**\n\nThống kê pool theo thời gian thực (chỉ sys admin).\n\n**Chỉ số:**\n- Tổng số instance, số lượng hot/warm/cold tier\n- Model và bundle dùng chung\n- Ước tính bộ nhớ\n\n**Tự làm mới:** Mỗi 30 giây. Bấm Refresh để cập nhật thủ công."
       },
       "health": {
-        "title": "Trạng thái hệ thống",
-        "description": "**Chức năng:**\n\nTrạng thái hệ thống và dịch vụ (chỉ sys admin). Kiểm tra PostgreSQL, Redis, MongoDB, instance orchestrator đã load."
+        "title": "Tình trạng hệ thống",
+        "description": "**Nó làm gì:**\n\nTình trạng hệ thống và dịch vụ (chỉ sys admin).\n\n**Kiểm tra:**\n- **PostgreSQL, Redis, MongoDB** — Kết nối cơ sở dữ liệu\n- **Orchestrator instance** — Các instance đã load, trạng thái ready\n\n**Dùng để:** Chẩn đoán sự cố, xác minh tình trạng instance trước khi có traffic."
       }
     },
     "fields": {
       "displayName": {
         "title": "Tên hiển thị",
-        "description": "**Là gì:**\n\nTên công khai hiển thị trong UI và tích hợp. Dùng cho nhận diện thương hiệu, không dùng cho xác thực."
+        "description": "**Nó là gì:**\n\nTên công khai hiển thị trong UI và tích hợp.\n\n**Dùng để:** Branding, nhận diện người dùng, hiển thị liên hệ. Không dùng để xác thực."
       },
       "llmConfig": {
         "provider": {
           "title": "Nhà cung cấp",
-          "description": "**Là gì:**\n\nNhà cung cấp LLM (OpenAI, Anthropic, Google, v.v.). Xác định định dạng API và model có sẵn."
+          "description": "**Nó là gì:**\n\nNhà cung cấp LLM (OpenAI, Anthropic, Google, v.v.).\n\n**Ảnh hưởng:** Quyết định định dạng API và endpoint. Mỗi provider có model và chi phí khác nhau. Hãy chọn provider đang giữ API key của bạn."
         },
         "model": {
           "title": "Model",
-          "description": "**Là gì:**\n\nĐịnh danh model (vd. gpt-4o, gemini-2.0-flash). Phải được nhà cung cấp đã chọn hỗ trợ."
+          "description": "**Nó là gì:**\n\nMã định danh model (ví dụ: `gpt-4o`, `gemini-2.0-flash`).\n\n**Quy tắc:** Phải được provider đã chọn hỗ trợ. Xem docs của provider để biết model ID hợp lệ. Dùng catalog nếu model được nền tảng quản lý."
         },
         "apiKey": {
           "title": "API Key",
-          "description": "**Là gì:**\n\nAPI key của bạn cho nhà cung cấp. Lưu trữ mã hóa. Không bao giờ hiển thị trong log hoặc UI sau khi lưu."
+          "description": "**Nó là gì:**\n\nAPI key của bạn cho provider.\n\n**Bảo mật:** Được lưu mã hóa. Không bao giờ xuất hiện trong log hay UI sau khi lưu. Hãy xoay key nếu bị lộ."
         }
       },
       "centralPoint": {
         "endpoint": {
-          "title": "URL Endpoint",
-          "description": "**Là gì:**\n\nURL ổn định cho chat completion: POST /api/chat/completion. Header: X-ORG-ID, X-CENTRAL-ID, Authorization (cho private)."
+          "title": "URL endpoint",
+          "description": "**Nó là gì:**\n\nURL ổn định cho chat completion: `POST /api/chat/completion`\n\n**Header bắt buộc:**\n- `X-ORG-ID` — Organization ID\n- `X-CENTRAL-ID` — Central point ID\n- `Authorization: Bearer` — Với loại private (không bắt buộc với public)"
         },
         "apiKey": {
           "title": "API Key",
-          "description": "**Central point riêng tư:**\n\nMáy khách phải gửi Authorization: Bearer YOUR_TOKEN. **Public:** Không cần header auth."
+          "description": "**Central point private:**\n\nClient phải gửi `Authorization: Bearer YOUR_TOKEN` trong mọi request.\n\n**Public:** Không cần auth header. Dùng cho demo công khai hoặc công cụ nội bộ."
         }
       },
       "orchestrator": {
         "framework": {
           "title": "Framework",
-          "description": "**Là gì:**\n\nFramework điều phối: LangGraph, Google ADK, OpenAI Agents. Xác định cấu trúc graph, loại node và mô hình thực thi. Không đổi sau khi tạo."
+          "description": "**Nó là gì:**\n\nFramework điều phối:\n\n- **LangGraph** — Graph nhiều node, state machine\n- **Google ADK** — Agent Development Kit\n- **OpenAI Agents** — Framework agent của OpenAI\n\n**Ảnh hưởng:** Quyết định cấu trúc graph, loại node và mô hình thực thi. Không thể đổi sau khi tạo."
         },
         "llmConfig": {
           "title": "Cấu hình LLM",
-          "description": "**Là gì:**\n\nCấu hình LLM orchestrator sử dụng cho inference. Phải từ Cấu hình LLM của tổ chức (Settings → LLM Configs)."
+          "description": "**Nó là gì:**\n\nCấu hình LLM mà orchestrator này dùng để suy luận.\n\n**Nguồn:** Phải lấy từ phần LLM Configurations của org bạn (Settings → LLM Configs).\n\n**Chế độ Supervisor:** Có thể ghi đè theo từng node. Nếu không phải supervisor thì config này được dùng toàn cục."
         }
       }
     },
     "orchestratorSections": {
       "createBasic": {
         "title": "Cơ bản",
-        "description": "**Chức năng:**\n\nThiết lập cốt lõi cho orchestrator mới.\n\n**Trường:** Tên (10–55 ký tự), Framework (không đổi sau khi tạo), Mode, Tầng ban đầu (Hot/Warm/Cold)."
+        "description": "**Nó làm gì:**\n\nThiết lập danh tính và runtime cốt lõi cho orchestrator mới.\n\n**Trường:**\n- **Tên** — Mã định danh duy nhất (10–55 ký tự). Dùng trong URL và API.\n- **Framework** — LangGraph, Google ADK hoặc OpenAI Agents. **Không thể đổi sau khi tạo.**\n- **Mode** — Supervisor (multi-agent) hoặc mode khác. Tùy theo framework.\n- **Tầng ban đầu** — Hot (load ngay), Warm (làm nóng sẵn) hoặc Cold (theo yêu cầu). Ảnh hưởng tới bộ nhớ pool."
       },
       "createPlugins": {
         "title": "Plugin",
-        "description": "**Chức năng:**\n\nChọn plugin mở rộng khả năng orchestrator. Nhấn Thêm Plugin, tìm và thêm plugin (bắt buộc), cấu hình cài đặt bên dưới bảng."
+        "description": "**Nó làm gì:**\n\nChọn plugin để thêm khả năng cho orchestrator này.\n\n**Quy trình:**\n1. Bấm **Add Plugin** để mở bộ chọn\n2. Tìm và thêm một hoặc nhiều plugin (bắt buộc)\n3. Cấu hình từng plugin bên dưới bảng\n\n**Lưu ý:** Mỗi plugin có thể có trường bắt buộc. Hệ thống sẽ xác thực trước khi tạo. Bạn có thể gỡ plugin trước khi lưu."
       },
       "supervisorLlmConfig": {
         "title": "Cấu hình LLM (Supervisor)",
-        "description": "**Chức năng:**\n\nCài đặt LLM mặc định cho mọi node. Node Config cho phép ghi đè theo từng node."
+        "description": "**Nó làm gì:**\n\nThiết lập LLM mặc định cho mọi node trong graph supervisor.\n\n**Trường:**\n- **Cấu hình LLM mặc định** — Bắt buộc. Lấy từ phần LLM Configurations của org bạn.\n- **Model mặc định** — Model dùng cho mọi node trừ khi có override theo node.\n- **Temperature, max tokens, timeout** — Mặc định toàn cục.\n\n**Ghi đè:** Ở phần Node Config bạn có thể ghi đè các giá trị này cho từng node (Router, Planner, Synthesizer, v.v.)."
       },
       "nodeConfig": {
-        "title": "Cấu hình Node",
-        "description": "**Chức năng:**\n\nGhi đè cài đặt LLM theo từng node (Router, Planner, Synthesizer, v.v.). Để trống để dùng mặc định."
+        "title": "Cấu hình node",
+        "description": "**Nó làm gì:**\n\nGhi đè cài đặt LLM theo từng node trong graph supervisor.\n\n**Các node:**\n- **Router** — Phân loại tin nhắn đầu vào\n- **Planner** — Lên kế hoạch bước xử lý\n- **Synthesizer** — Tạo câu trả lời cuối cùng\n- **Clarifier, Responder, Validation, Error Handler** — Các node chuyên biệt\n\n**Theo từng node:** Có thể ghi đè LLM config, model, temperature, max tokens, timeout. Để trống nếu muốn dùng mặc định từ phần LLM Config bên trên."
       },
       "editBasic": {
         "title": "Cơ bản",
-        "description": "**Chức năng:**\n\nChỉnh sửa tên và tầng. Framework và mode không đổi. Supervisor: LLM config ở phần dưới. Không phải Supervisor: chọn LLM config ở đây."
+        "description": "**Nó làm gì:**\n\nChỉnh sửa metadata và tầng. Framework và mode **không thể đổi** sau khi tạo.\n\n**Có thể sửa:**\n- **Tên** — Tên hiển thị (10–200 ký tự)\n- **Tầng** — Hot, Warm hoặc Cold\n\n**Chỉ áp dụng với Supervisor:** Cấu hình LLM nằm ở phần Supervisor Settings bên dưới.\n\n**Không phải supervisor:** Chọn cấu hình LLM ở đây — cấu hình này sẽ được dùng cho toàn bộ quá trình suy luận."
       }
     }
   },
   "centralPoints": {
-    "selectOrgTitle": "Chọn tổ chức",
-    "selectOrgDescription": "Chọn một tổ chức từ menu phía trên để quản lý central points.",
-    "title": "Central Points",
-    "description": "Điểm cuối API ổn định cho orchestrator. Máy khách sử dụng ID central point; bạn có thể đổi orchestrator bất cứ lúc nào mà không cần cập nhật máy khách.",
-    "addCenterPoint": "Thêm Central Point",
-    "noCenterPoints": "Chưa có central point nào. Tạo một cái để bắt đầu.",
+    "selectOrgTitle": "Chọn một tổ chức",
+    "selectOrgDescription": "Chọn một tổ chức từ menu phía trên để quản lý central point.",
+    "title": "Central Point",
+    "description": "Endpoint API ổn định cho orchestrator. Client dùng central point ID; bạn có thể đổi orchestrator phía sau mà không cần sửa client.",
+    "addCenterPoint": "Thêm central point",
+    "noCenterPoints": "Chưa có central point nào. Tạo một cái để bắt đầu nhé.",
     "name": "Tên",
     "orchestrator": "Orchestrator",
     "visibility": "Hiển thị",
     "status": "Trạng thái",
     "created": "Đã tạo",
-    "deleteConfirm": "Xóa central point \"{name}\"?",
-    "createTitle": "Tạo Central Point",
-    "namePlaceholder": "vd. Production API",
-    "descriptionPlaceholder": "Mô tả tùy chọn",
-    "orchestratorRequired": "Orchestrator là bắt buộc",
+    "deleteConfirm": "Xóa central point \"{name}\" nhé?",
+    "createTitle": "Tạo central point",
+    "namePlaceholder": "ví dụ: Production API",
+    "descriptionPlaceholder": "Mô tả không bắt buộc",
+    "orchestratorRequired": "Bắt buộc phải chọn orchestrator",
     "selectOrchestrator": "Chọn orchestrator",
-    "visibilityPrivate": "Riêng tư (chỉ thành viên tổ chức)",
+    "visibilityPrivate": "Riêng tư (chỉ thành viên org)",
     "visibilityPublic": "Công khai (cho phép ẩn danh)",
-    "failedCreate": "Không thể tạo central point",
-    "failedLoad": "Không thể tải central points",
+    "failedCreate": "Không tạo được central point",
+    "failedLoad": "Không tải được central point",
     "createdSuccess": "Đã tạo central point",
     "deletedSuccess": "Đã xóa central point",
     "backToCenterPoints": "Quay lại Central Points",
-    "notFound": "Không tìm thấy central Point.",
+    "notFound": "Không tìm thấy central point.",
     "editSubtitle": "Chỉnh sửa cài đặt và xem hướng dẫn tích hợp API.",
     "basicInfo": "Thông tin cơ bản",
     "saveChanges": "Lưu thay đổi",
     "updatedSuccess": "Đã cập nhật central point",
-    "failedUpdate": "Không thể cập nhật central point",
+    "failedUpdate": "Không cập nhật được central point",
     "apiIntegration": "Tích hợp API",
-    "apiIntegrationDescription": "Sử dụng ID central point bên dưới để gửi yêu cầu chat. Điểm cuối ổn định — đổi orchestrator bất cứ lúc nào mà không cần cập nhật máy khách.",
-    "centerPointId": "ID Central Point",
-    "privateAuthRequired": "Riêng tư — yêu cầu xác thực",
-    "privateAuthDescription": "Central point này yêu cầu xác thực. Bao gồm header Authorization: Bearer token trong mọi yêu cầu.",
+    "apiIntegrationDescription": "Dùng central point ID bên dưới để gửi request chat. Endpoint này luôn ổn định — bạn có thể đổi orchestrator bất cứ lúc nào mà không cần cập nhật phía client.",
+    "centerPointId": "Central Point ID",
+    "privateAuthRequired": "Riêng tư — cần xác thực",
+    "privateAuthDescription": "Central point này yêu cầu xác thực. Hãy thêm header Authorization: Bearer token trong mọi request.",
     "publicNoAuth": "Công khai — không cần xác thực",
-    "publicNoAuthDescription": "Central point này có thể truy cập công khai. Không cần header xác thực.",
-    "endpoint": "Điểm cuối",
+    "publicNoAuthDescription": "Central point này truy cập công khai được. Không cần gửi auth header.",
+    "endpoint": "Endpoint",
     "codeExamples": "Ví dụ mã",
     "copiedToClipboard": "Đã sao chép vào clipboard",
-    "failedCopy": "Sao chép thất bại"
+    "failedCopy": "Không sao chép được"
   },
   "about": {
     "title": "Giới thiệu",
     "tabs": {
       "overview": "Tổng quan",
-      "orchestrator": "Orchestrator"
+      "orchestrator": "Orchestrator",
+      "frameworks": "Framework",
+      "modes": "Chế độ",
+      "plugins": "Plugin",
+      "chat": "Chat",
+      "llmConfigs": "Cấu hình LLM",
+      "centralPoints": "Central Point",
+      "orgs": "Tổ chức",
+      "roles": "Vai trò",
+      "admin": "Công cụ quản trị"
     },
     "overview": {
       "title": "Tổng quan",
-      "subtitle": "Giới thiệu ngắn gọn về Cadence.",
-      "intro": "Cadence là nền tảng AI cho phép các nhóm triển khai và quản lý trợ lý AI. Bạn tạo trợ lý (orchestrator), kết nối nhà cung cấp AI ưa thích, thêm công cụ qua plugin và trò chuyện theo thời gian thực — không cần lập trình.",
-      "bullet1": "Đa tenant: mỗi nhóm có không gian làm việc riêng với dữ liệu và cài đặt biệt lập",
-      "bullet2": "Mang theo khóa AI của bạn: dùng OpenAI, Google, Anthropic và các dịch vụ khác — khóa của bạn, kiểm soát của bạn",
-      "bullet3": "Điều phối không cần code: cấu hình trợ lý qua giao diện, không cần lập trình",
-      "bullet4": "Trò chuyện thời gian thực: xem phản hồi khi chúng được truyền tải, minh bạch hoạt động của trợ lý",
-      "bullet5": "Mở rộng: thêm công cụ tùy chỉnh qua plugin để tăng khả năng cho trợ lý"
+      "subtitle": "Giới thiệu nhanh về Cadence.",
+      "intro": "Cadence giúp team triển khai và quản lý trợ lý AI. Tạo assistant, thêm nhà cung cấp AI của bạn và chat — không cần viết code.",
+      "featuresTitle": "Tính năng nổi bật",
+      "feature1": "Đa tenant — mỗi team có workspace riêng với dữ liệu và cài đặt tách biệt",
+      "feature2": "Tự mang khóa AI của bạn — dùng OpenAI, Google, Anthropic và nhiều bên khác; khóa của bạn, bạn tự kiểm soát",
+      "feature3": "Thiết lập không code — cấu hình assistant ngay trên UI, không cần lập trình",
+      "feature4": "Chat thời gian thực — xem phản hồi stream về cùng với khả năng quan sát cách assistant hoạt động",
+      "feature5": "Mở rộng được — thêm tool tùy chỉnh qua plugin (web search, calendar, API và hơn thế nữa)",
+      "feature6": "Endpoint ổn định — kết nối app và tích hợp qua Central Point mà không cần hardcode ID",
+      "feature7": "Phân quyền theo vai trò — kiểm soát ai được quản lý assistant, cài đặt hoặc chỉ chat",
+      "learnMore": "Tìm hiểu thêm",
+      "sections": {
+        "orchestrator": "Trợ lý AI của bạn — tạo, cấu hình và quản lý.",
+        "chat": "Trò chuyện với assistant theo thời gian thực.",
+        "plugins": "Thêm tool như web search hoặc calendar vào assistant.",
+        "llmConfigs": "Khóa nhà cung cấp AI của bạn — OpenAI, Google, Anthropic và nhiều hơn nữa.",
+        "centralPoints": "Endpoint ổn định cho app và tích hợp.",
+        "orgs": "Team và workspace với dữ liệu tách biệt.",
+        "roles": "Ai làm được gì — admin, member và hơn thế.",
+        "frameworks": "Bộ máy thực thi kỹ thuật — LangGraph, Google ADK, OpenAI.",
+        "modes": "Cách assistant suy nghĩ và phản hồi.",
+        "admin": "Quản trị nền tảng cho system admin."
+      }
     },
     "orchestrator": {
       "title": "Orchestrator",
-      "subtitle": "Trợ lý AI của bạn — cấu hình một lần, sẵn sàng trò chuyện.",
-      "intro": "Một orchestrator là trợ lý AI của bạn. Bạn chọn khả năng (plugins), kết nối nhà cung cấp AI và bắt đầu trò chuyện. Mỗi trợ lý chạy độc lập và có thể được tải hoặc gỡ để quản lý tài nguyên.",
-      "bullet1": "Tạo trợ lý từ trang Orchestrators",
-      "bullet2": "Chọn Hot (nhanh nhất), Warm (nhanh) hoặc Cold (chi phí thấp hơn, khởi động chậm hơn) theo nhu cầu",
-      "bullet3": "Tải và gỡ trợ lý để quản lý bộ nhớ khi có nhiều instance",
-      "bullet4": "Sao chép trợ lý hiện có để tái sử dụng cấu hình",
-      "bullet5": "Kích hoạt hoặc vô hiệu hóa mà không mất thiết lập",
+      "subtitle": "Trợ lý AI của bạn — cấu hình một lần, sẵn sàng chat.",
+      "intro": "Orchestrator chính là trợ lý AI của bạn. Bạn chọn khả năng của nó (plugin), kết nối nhà cung cấp AI rồi bắt đầu chat. Mỗi assistant chạy độc lập và có thể được load hoặc unload để quản lý tài nguyên.",
+      "bullet1": "Tạo assistant ở trang Orchestrators",
+      "bullet2": "Chọn Hot (nhanh nhất), Warm (nhanh), hoặc Cold (rẻ hơn, khởi động chậm hơn) tùy nhu cầu",
+      "bullet3": "Load và unload assistant để quản lý bộ nhớ khi có nhiều instance",
+      "bullet4": "Nhân bản một assistant có sẵn để tái sử dụng cấu hình",
+      "bullet5": "Kích hoạt hoặc tắt kích hoạt mà không làm mất cấu hình",
       "faq1": {
         "question": "Orchestrator là gì?",
-        "answer": "Orchestrator là trợ lý AI đang chạy. Nó kết hợp engine thực thi, chế độ (cách nó suy luận) và bộ công cụ (plugins). Bạn cấu hình một lần, sau đó trò chuyện hoặc kết nối với ứng dụng của bạn."
+        "answer": "Orchestrator là một trợ lý AI đang chạy. Nó kết hợp bộ máy thực thi, mode (cách nó suy luận) và một tập tool (plugin). Bạn cấu hình một lần rồi có thể chat với nó hoặc kết nối nó vào app của bạn."
       },
       "faq2": {
         "question": "Hot, Warm và Cold nghĩa là gì?",
-        "answer": "Hot = đã tải trong bộ nhớ, sẵn sàng ngay. Warm = sẵn sàng cho khởi động nhanh. Cold = tải khi dùng lần đầu (khởi động chậm, chi phí thấp). Bạn có thể đổi tier bất cứ lúc nào."
+        "answer": "Hot = đã nằm trong bộ nhớ và phản hồi ngay. Warm = đã được làm nóng sẵn nên khởi động nhanh. Cold = load khi dùng lần đầu (khởi động chậm hơn nhưng tiết kiệm chi phí hơn). Bạn có thể đổi tier bất cứ lúc nào."
       },
       "faq3": {
-        "question": "Tôi có thể chạy nhiều trợ lý cùng lúc không?",
-        "answer": "Có. Bạn có thể có nhiều orchestrator. Nền tảng quản lý bộ nhớ cho tất cả. Gói đăng ký của tổ chức xác định bao nhiêu có thể được tải cùng lúc."
+        "question": "Mình có thể chạy nhiều assistant cùng lúc không?",
+        "answer": "Có. Bạn có thể có nhiều orchestrator. Nền tảng sẽ quản lý bộ nhớ cho tất cả. Gói thuê bao của tổ chức sẽ quyết định có thể load tối đa bao nhiêu cùng lúc."
+      },
+      "faq4": {
+        "question": "Plugin là gì?",
+        "answer": "Plugin là một capability được đóng gói sẵn — tức là một tập tool mà assistant của bạn có thể gọi. Ví dụ, plugin web search cho phép assistant tìm kiếm web; plugin calendar cho phép đọc sự kiện. Bạn chọn plugin cần gắn lúc tạo orchestrator."
+      },
+      "faq5": {
+        "question": "Sau khi tạo orchestrator thì có đổi plugin được không?",
+        "answer": "Có thể cập nhật cài đặt và phiên bản plugin bất cứ lúc nào từ trang chi tiết orchestrator. Tuy nhiên framework và mode là cố định sau khi tạo — nếu muốn đổi hai cái đó thì hãy clone orchestrator và làm lại từ đầu."
+      },
+      "faq6": {
+        "question": "Khi đổi một cài đặt thì chuyện gì xảy ra?",
+        "answer": "Orchestrator ở hot tier sẽ tự reload để nhận cài đặt mới. Orchestrator ở cold và warm sẽ áp dụng thay đổi ở lần load kế tiếp. Bạn sẽ thấy một khoảng gián đoạn ngắn với assistant hot-tier trong lúc reload."
+      },
+      "faq7": {
+        "question": "Mình nên chọn framework nào?",
+        "answer": "LangGraph phù hợp nhất cho workflow nhiều bước phức tạp cần kiểm soát chi tiết. Google ADK hợp nếu bạn đang dùng Google Cloud hoặc model Gemini. OpenAI Agents là cách nhanh nhất để bắt đầu nếu bạn đã dùng OpenAI API."
+      },
+      "crudSection": {
+        "title": "Quản lý Orchestrator",
+        "intro": "Mọi thứ bạn cần để tạo, cấu hình và quản lý assistant đều nằm ở trang Orchestrators.",
+        "create": "Tạo — đặt tên cho assistant, chọn framework và mode, chọn tier và gắn plugin. Framework và mode sẽ không đổi được sau khi tạo.",
+        "view": "Xem — theo dõi trạng thái, tier hiện tại, trạng thái load và plugin đã liên kết ngay từ danh sách hoặc trang chi tiết orchestrator.",
+        "edit": "Sửa — cập nhật tên hiển thị, đổi tier, thay cài đặt plugin hoặc chuyển sang phiên bản plugin mới hơn bất cứ lúc nào.",
+        "clone": "Nhân bản — sao chép toàn bộ cấu hình của một orchestrator hiện có để làm điểm bắt đầu cho cái mới.",
+        "delete": "Xóa — xóa vĩnh viễn orchestrator cùng toàn bộ lịch sử của nó. Không thể hoàn tác.",
+        "activate": "Kích hoạt / Tắt kích hoạt — tạm dừng orchestrator mà không cần xóa. Orchestrator đã tắt sẽ không nhận request chat."
+      },
+      "tiersSection": {
+        "title": "Load & Tầng hiệu năng",
+        "intro": "Mỗi orchestrator chạy ở một trong ba tầng để quyết định cách nó được giữ trong bộ nhớ và tốc độ phản hồi.",
+        "hot": {
+          "name": "Hot",
+          "desc": "Đã nằm trong bộ nhớ và phản hồi ngay. Phù hợp nhất cho assistant dùng thường xuyên, nơi tốc độ phản hồi là quan trọng."
+        },
+        "warm": {
+          "name": "Warm",
+          "desc": "Được làm nóng sẵn để khởi động nhanh. Lần phản hồi đầu sẽ chậm hơn Hot một chút nhưng dùng ít tài nguyên hơn khi rảnh."
+        },
+        "cold": {
+          "name": "Cold",
+          "desc": "Load khi dùng lần đầu. Khởi động chậm nhất nhưng dùng ít tài nguyên nhất — hợp với assistant chỉ dùng thỉnh thoảng."
+        },
+        "note": "Bạn có thể đổi tier của orchestrator bất cứ lúc nào. Bạn cũng có thể tự load hoặc unload một assistant hot-tier từ trang chi tiết mà không cần đổi tier."
+      },
+      "featuresSection": {
+        "title": "Bạn có thể làm gì",
+        "intro": "Khi orchestrator đã được load, đây là những gì bạn có thể làm:",
+        "bullet1": "Chat theo thời gian thực — gửi tin nhắn và xem phản hồi stream về cùng với toàn bộ bước suy luận",
+        "bullet2": "Kiểm tra các bước — mở rộng từng phản hồi để xem tool nào được gọi và assistant đã nghĩ gì",
+        "bullet3": "Kết nối với Central Point — gán một endpoint tên ổn định để client truy cập assistant mà không cần biết ID",
+        "bullet4": "Nhân bản và thử nghiệm — sao chép một assistant đang chạy tốt để thử plugin hoặc cài đặt mới an toàn",
+        "bullet5": "Chia sẻ trong org — mọi thành viên trong org đều có thể chat với bất kỳ orchestrator nào đang active"
+      },
+      "pluginLoadSection": {
+        "title": "Cách quá trình load plugin hoạt động",
+        "intro": "Khi orchestrator khởi động, mỗi plugin của nó sẽ đi qua một pipeline 9 bước trước khi bất kỳ tool nào sẵn sàng cho assistant dùng.",
+        "step1": {
+          "title": "Kiểm tra Pool",
+          "desc": "Khi có request chat tới, pool sẽ kiểm tra xem orchestrator đã nằm trong bộ nhớ chưa. Nếu chưa, nó sẽ lấy khóa rồi load từ database.",
+          "ref": "OrchestratorPool.get()"
+        },
+        "step2": {
+          "title": "Lấy cấu hình instance",
+          "desc": "Bản ghi DB của orchestrator được lấy ra. Nó chứa danh sách active_plugins (ví dụ: system:com.acme.search{'@'}1.0) và một map plugin_settings với các giá trị ghi đè theo từng plugin.",
+          "ref": "OrchestratorPool._load_from_db()"
+        },
+        "step3": {
+          "title": "Tạo Plugin Manager",
+          "desc": "Factory sẽ tạo một SDKPluginManager, truyền vào root filesystem, thư mục system plugins, kho plugin trên S3 (nếu có) và cache bundle.",
+          "ref": "OrchestratorFactory.create()"
+        },
+        "step4": {
+          "title": "Phân giải contract",
+          "desc": "Với mỗi plugin spec, manager sẽ kiểm tra registry trong bộ nhớ trước. Nếu không thấy thì nó tìm trong thư mục versioned trên disk. Nếu có cấu hình S3, nó sẽ tải và giải nén file zip plugin trước khi tiếp tục.",
+          "ref": "PluginLoaderMixin._resolve_contract()"
+        },
+        "step5": {
+          "title": "Load module",
+          "desc": "File plugin.py của plugin được quét bằng AST parser của Python để chặn các import nguy hiểm (os, subprocess, socket, v.v.). Nếu qua được bước này, file sẽ được load động bằng importlib và subclass của BasePlugin sẽ được trích xuất rồi đăng ký.",
+          "ref": "PluginLoaderMixin._load_plugin_module()"
+        },
+        "step6": {
+          "title": "Xác thực",
+          "desc": "SDK sẽ kiểm tra lớp plugin có đủ interface bắt buộc không (create_agent(), get_metadata()). Nếu class có validate_dependencies(), hàm đó cũng sẽ chạy. Nếu lỗi, hệ thống sẽ ném PluginValidationError và dừng load.",
+          "ref": "PluginBundleBuilderMixin._validate_plugin()"
+        },
+        "step7": {
+          "title": "Lắp bundle",
+          "desc": "Plugin agent được khởi tạo. Cài đặt được giải theo 3 lớp: mặc định từ schema → giá trị ghi đè của instance trong DB → giá trị cuối đã xác thực. Tool được trích ra, chuyển sang định dạng native của framework và gắn vào một model LLM riêng. Kết quả là một SDKPluginBundle.",
+          "ref": "PluginBundleBuilderMixin._create_bundle()"
+        },
+        "step8": {
+          "title": "Gom tool",
+          "desc": "Khi mọi bundle đã được tạo, một bộ gom tool sẽ gộp toàn bộ tool của plugin vào một danh sách duy nhất với mapping ngược (tên tool → plugin id) và các cờ metadata theo từng tool.",
+          "ref": "SupervisorToolCollector.collect_all_tools()"
+        },
+        "step9": {
+          "title": "Biên dịch graph",
+          "desc": "Orchestrator theo framework tương ứng (ví dụ: LangGraphSupervisor) nhận danh sách tool đầy đủ, bind vào model planner, dựng stateful execution graph rồi biên dịch. Lúc này orchestrator đã sẵn sàng xử lý request.",
+          "ref": "LangGraphSupervisor._build_resources()"
+        },
+        "securityNote": "Bảo mật: mọi file plugin đều được parse bằng AST của Python trước khi chạy. File nào import module bị chặn (os, subprocess, socket và nhiều module khác) sẽ bị từ chối trước khi code được thực thi.",
+        "cacheNote": "Hiệu năng: bundle plugin không trạng thái sẽ được cache theo pid + version + hash của settings. Một orchestrator khác dùng cùng phiên bản plugin sẽ tái sử dụng bundle đã cache thay vì load lại module."
+      },
+      "faqSection": {
+        "title": "Câu hỏi thường gặp"
+      }
+    },
+    "frameworks": {
+      "title": "Framework",
+      "subtitle": "LangGraph, Google ADK và OpenAI Agents SDK — mỗi loại có hỗ trợ provider và mô hình thực thi khác nhau.",
+      "intro": "Framework quyết định cách orchestrator chạy bên trong — topology của graph, cách handoff giữa agent, quản lý state và quy ước gọi tool. Mỗi framework tích hợp với các AI provider khác nhau và phù hợp với từng nhóm use case khác nhau.",
+      "bullet1": "LangGraph: state machine nhiều node với khả năng override chi tiết theo từng node",
+      "bullet2": "Google ADK: tích hợp với model Gemini và hệ công cụ của Google",
+      "bullet3": "OpenAI Agents SDK: handoff giữa agent có cấu trúc theo chuẩn OpenAI",
+      "bullet4": "Framework được chọn lúc tạo và không thể đổi",
+      "bullet5": "Mức độ tương thích provider thay đổi theo framework — nhớ kiểm tra docs trước khi chọn",
+      "faq1": {
+        "question": "LangGraph là gì?",
+        "answer": "LangGraph là framework điều phối dạng graph, trong đó node đại diện cho agent AI hoặc bước xử lý, còn edge xác định luồng điều khiển. Nó hỗ trợ state machine và phối hợp nhiều agent."
+      },
+      "faq2": {
+        "question": "Google ADK là gì?",
+        "answer": "Google Agent Development Kit (ADK) là framework của Google để xây dựng và triển khai AI agent. Nó tích hợp với model Gemini và hệ sinh thái công cụ của Google."
+      },
+      "faq3": {
+        "question": "OpenAI Agents SDK là gì?",
+        "answer": "OpenAI Agents SDK là framework của OpenAI để xây dựng hệ thống nhiều agent với handoff, dùng tool và các mẫu điều phối có cấu trúc."
+      },
+      "faqSection": {
+        "title": "Câu hỏi thường gặp"
+      },
+      "executionSection": {
+        "title": "Mỗi framework thực thi thế nào",
+        "intro": "Cadence ánh xạ từng framework sang một nhóm class chuyên biệt. Factory sẽ tra cặp (framework, mode) trong registry rồi lắp adapter, plugin manager và orchestrator trước khi trả về instance sẵn sàng chạy.",
+        "notImplemented": "(chưa được triển khai)",
+        "langgraph": {
+          "model": "Biên dịch một StateGraph có trạng thái với 8 node chuyên biệt: Router, Planner, Executor, Synthesizer, Clarifier, Responder, Validator và Error Handler. Các edge điều khiển luồng sẽ quyết định node nào chạy tiếp dựa trên structured output từ planner.",
+          "tools": "Tool của plugin được chuyển thành LangChain StructuredTool rồi bind vào planner thông qua model.bind_tools(). Một ToolNode sẽ xử lý việc thực thi thật và bọc kết quả thành ToolMessage để đưa ngược lại vào graph.",
+          "ref": "LangGraphSupervisor._build_resources()"
+        },
+        "adk": {
+          "model": "Tạo một LlmAgent riêng cho từng giai đoạn của pipeline. Planner agent nhận toàn bộ tool trực tiếp và tự xử lý vòng lặp function-call — không có executor node riêng. Một BaseAgent subclass tùy chỉnh sẽ bọc toàn bộ pipeline và điều khiển ADK runner.",
+          "tools": "Tool của plugin được chuyển thành ADK FunctionTool và truyền trực tiếp cho LlmAgent(tools=all_tools). Vòng lặp native của ADK sẽ xử lý function call và trả về structured event để pipeline thu thập lại.",
+          "ref": "GoogleADKSupervisor._build_resources()"
+        },
+        "openai": {
+          "model": "Chưa triển khai. Class đã tồn tại như một placeholder đã đăng ký, và sẽ ném UnsupportedOperationError khi dùng. Dự kiến sẽ được làm trong bản phát hành sau.",
+          "ref": "OpenAISupervisor (placeholder)"
+        }
+      },
+      "compatSection": {
+        "title": "Tương thích nhà cung cấp",
+        "intro": "Mỗi framework hoạt động với một tập nhà cung cấp LLM khác nhau. Provider được cấu hình trong LLM Config của bạn và phải tương thích với framework đã chọn."
+      }
+    },
+    "modes": {
+      "title": "Chế độ điều phối",
+      "subtitle": "Chế độ Supervisor đã được triển khai đầy đủ. Các chế độ khác (Coordinator, Handoff, Pipeline) đang ở mức preview.",
+      "intro": "Mode xác định topology agent ở mức cao — có bao nhiêu agent cùng chạy, chúng handoff công việc ra sao và câu trả lời cuối được tổng hợp như thế nào. Supervisor mode dùng kiến trúc planner-synthesizer, trong đó router phân loại tin nhắn đầu vào, planner chia nhỏ tác vụ, các agent gọi tool xử lý từng phần và synthesizer ghép thành câu trả lời cuối.",
+      "bullet1": "Supervisor: graph nhiều node với Router, Planner, Synthesizer và các tool agent",
+      "bullet2": "Có thể override AI config, model, temperature và timeout theo từng node trong chế độ Supervisor",
+      "bullet3": "Mode được chọn lúc tạo và không thể đổi sau đó",
+      "bullet4": "Các mode khác đang được lên kế hoạch: Coordinator, Handoff, Pipeline và nhiều nữa",
+      "faq1": {
+        "question": "Supervisor mode là gì?",
+        "answer": "Supervisor mode dùng kiến trúc nhiều node với các node chuyên biệt: Router, Planner, Synthesizer, Clarifier, Responder, Validation và Error Handler. Router phân loại từng tin nhắn, planner chia thành các bước và synthesizer ghép câu trả lời cuối."
+      },
+      "faq2": {
+        "question": "Có mode nào khác không?",
+        "answer": "Các mode khác (Coordinator, Handoff, Pipeline, v.v.) đang ở mức preview và được lên kế hoạch cho các bản phát hành tương lai. Việc mode nào khả dụng còn tùy framework đã chọn."
+      },
+      "faq3": {
+        "question": "Sau khi tạo có đổi mode được không?",
+        "answer": "Không. Framework và mode là bất biến sau khi orchestrator được tạo. Muốn đổi mode thì hãy clone orchestrator và chọn mode khác."
+      }
+    },
+    "plugins": {
+      "title": "Plugin",
+      "subtitle": "Tải gói ZIP lên để mở rộng khả năng orchestrator bằng các tool tùy chỉnh.",
+      "intro": "Plugin là các package Python cung cấp tool cho orchestrator. Chúng tuân theo quy ước của Cadence SDK — các định nghĩa hàm có annotation để orchestrator có thể gọi trong lúc hội thoại. System plugin dùng toàn nền tảng; org plugin chỉ áp dụng cho tổ chức đã tải lên.",
+      "bullet1": "Tải plugin lên dưới dạng file ZIP qua Plugins → Upload",
+      "bullet2": "System plugin do system admin quản lý và dùng được cho mọi tổ chức",
+      "bullet3": "Org plugin được tải lên riêng theo từng tổ chức và chỉ org đó dùng được",
+      "bullet4": "Plugin có thể khai báo cài đặt bắt buộc cần điền theo từng orchestrator",
+      "bullet5": "Có thể bật hoặc tắt từng phiên bản plugin một cách độc lập",
+      "faq1": {
+        "question": "Plugin có định dạng thế nào?",
+        "answer": "Plugin là package ZIP chứa một module hoặc package Python. Nó cung cấp tool qua Cadence SDK bằng các định nghĩa hàm tiêu chuẩn có type annotation."
+      },
+      "faq2": {
+        "question": "Khác nhau giữa system plugin và org plugin là gì?",
+        "answer": "System plugin do system admin tải lên và dùng được cho mọi tổ chức. Org plugin do org admin tải lên và chỉ dùng được trong tổ chức đó."
+      },
+      "faq3": {
+        "question": "Plugin có thể yêu cầu cấu hình không?",
+        "answer": "Có. Plugin có thể khai báo các cài đặt cấu hình (ví dụ: API key, threshold) cần được điền khi thêm plugin vào orchestrator. Nếu thiếu trường bắt buộc thì sẽ không tạo được orchestrator."
+      },
+      "faqSection": {
+        "title": "Câu hỏi thường gặp"
+      },
+      "anatomySection": {
+        "title": "Cấu trúc plugin",
+        "intro": "Một plugin gồm 3 class phối hợp với nhau trong cùng file plugin.py. Nền tảng sẽ tự động phát hiện BasePlugin subclass — không cần file đăng ký riêng.",
+        "basePlugin": {
+          "desc": "Factory class không trạng thái. Cung cấp metadata và tạo agent instance khi cần. Mọi method đều là static — BasePlugin sẽ không được khởi tạo trực tiếp.",
+          "method1": "get_metadata() → PluginMetadata  [bắt buộc] khai báo danh tính, phiên bản và khả năng",
+          "method2": "create_agent() → BaseAgent  [bắt buộc] trả về agent instance mới ở mỗi lần load",
+          "method3": "validate_dependencies() → List[str]  [không bắt buộc] trả về danh sách lỗi hoặc rỗng nếu ổn"
+        },
+        "baseAgent": {
+          "desc": "Giữ trạng thái runtime và cung cấp tool cho framework. initialize() sẽ được gọi với dict settings đã được resolve trước khi bất kỳ tool nào chạy.",
+          "method1": "get_tools() → List[UvTool]  [bắt buộc] trả về toàn bộ tool mà agent này cung cấp",
+          "method2": "get_system_prompt() → str  [bắt buộc] trả về system instruction của agent",
+          "method3": "initialize(config: Dict[str, Any])  [không bắt buộc] nhận settings đã resolve khi load",
+          "method4": "async cleanup()  [không bắt buộc] giải phóng tài nguyên khi orchestrator unload"
+        },
+        "metadata": {
+          "desc": "Descriptor bất biến trả về từ get_metadata(). Trường pid là danh tính cố định của plugin qua các lần nâng cấp phiên bản — đổi pid đồng nghĩa tạo plugin mới.",
+          "field1": "pid — ID duy nhất theo kiểu reverse-domain, ví dụ com.acme.my_plugin (không đổi sau khi đăng ký)",
+          "field2": "name, version, description — các trường hiển thị; version phải theo semver (ví dụ 1.2.0)",
+          "field3": "capabilities — danh sách capability tag hiển thị trong catalog plugin",
+          "field4": "dependencies — chuỗi pip requirement (ví dụ requests>=2.28) sẽ được cài khi load",
+          "field5": "stateless — đặt là False nếu agent giữ trạng thái xuyên request; ảnh hưởng tới hành vi cache"
+        }
+      },
+      "toolsSection": {
+        "title": "Định nghĩa tool",
+        "intro": "Mỗi tool là một instance UvTool, cách dễ nhất là tạo bằng decorator {'@'}uvtool trên một async function. Decorator sẽ suy ra name và description từ tên hàm và docstring nếu bạn không chỉ định.",
+        "field1": {
+          "desc": "Được truyền nguyên vẹn cho LLM planner. Mô tả rõ ràng, cụ thể là yếu tố quan trọng nhất để planner gọi tool đúng và truyền đúng tham số."
+        },
+        "field2": {
+          "desc": "Một Pydantic BaseModel subclass dùng để xác thực đối số mà planner gửi vào trước khi hàm chạy. Mô tả của từng field sẽ được gắn thêm vào prompt tool mà planner nhìn thấy."
+        },
+        "field3": {
+          "desc": "Khi đặt True, kết quả thô của tool sẽ được gửi ngay cho client trước khi synthesizer tạo phản hồi cuối. Hợp với kết quả tìm kiếm và bảng dữ liệu."
+        },
+        "field4": {
+          "desc": "Một callable áp dụng lên kết quả thô trước khi stream. Dùng để loại bỏ trường nội bộ, dữ liệu nhạy cảm hoặc blob quá lớn khỏi những gì client nhìn thấy, trong khi toàn bộ kết quả vẫn tiếp tục đi qua pipeline."
+        },
+        "field5": {
+          "desc": "Yêu cầu orchestrator chạy thêm một lượt xác thực đầu ra của tool bằng LLM trước khi đưa cho synthesizer. Tăng độ trễ nhưng giúp chặn lỗi tool trước khi tới người dùng."
+        }
+      },
+      "settingsSection": {
+        "title": "Khai báo cài đặt plugin",
+        "intro": "Áp dụng decorator {'@'}plugin_settings lên BasePlugin class để khai báo cấu hình mà chủ orchestrator cần điền. Giá trị sẽ được resolve qua cơ chế 3 tầng và truyền vào agent.initialize().",
+        "field1": {
+          "desc": "Định danh machine-readable. Nó sẽ trở thành key trong dict config truyền vào agent.initialize(config)."
+        },
+        "field2": {
+          "desc": "Kiểu giá trị — một trong các loại: str, int, float, bool, list, dict. Nền tảng sẽ type-check dữ liệu người dùng nhập theo kiểu này."
+        },
+        "field3": {
+          "desc": "Nếu là true, orchestrator sẽ không lưu được cho tới khi có giá trị này. Đây là chặn ngay lúc tạo, không chỉ là cảnh báo."
+        },
+        "field4": {
+          "desc": "Đánh dấu giá trị là bí mật — mã hóa khi lưu, ẩn trên UI và tự động che khỏi log. Dùng cho API key và mật khẩu."
+        },
+        "field5": {
+          "desc": "Giá trị fallback khi chủ orchestrator để trống trường đó. Phải khớp với kiểu đã khai báo."
+        }
+      },
+      "uploadSection": {
+        "title": "Pipeline tải lên & xác thực",
+        "intro": "Mọi plugin được tải lên đều đi qua pipeline 8 bước. Nếu lỗi ở bất kỳ bước nào, plugin sẽ bị từ chối và lỗi sẽ được trả lại cho người tải lên.",
+        "step1": {
+          "title": "Đóng gói",
+          "desc": "Đặt plugin.py và các module hỗ trợ vào một thư mục. Dùng build_plugin_zip() từ SDK hoặc tự zip thư mục. __pycache__ và *.pyc sẽ tự bị loại trừ.",
+          "ref": "cadence_sdk.build_plugin_zip()"
+        },
+        "step2": {
+          "title": "Tải lên",
+          "desc": "Vào Plugins → Upload. System admin sẽ thấy bộ chọn phạm vi (system hoặc org). Chọn file ZIP rồi gửi lên. Kích thước file bị giới hạn theo cấu hình.",
+          "ref": "Plugins → Upload"
+        },
+        "step3": {
+          "title": "Giải nén",
+          "desc": "Server sẽ giải nén file ZIP vào một thư mục versioned nằm dưới plugin root đã cấu hình. Tên thư mục được đặt theo pid và version trong metadata.",
+          "ref": "PluginStoreRepository.save_plugin()"
+        },
+        "step4": {
+          "title": "Tìm class",
+          "desc": "plugin.py được quét để tìm class kế thừa BasePlugin. Upload sẽ bị từ chối nếu không tìm thấy class nào, hoặc nếu trong file có hơn một BasePlugin subclass.",
+          "ref": "PluginLoaderMixin._load_plugin_module()"
+        },
+        "step5": {
+          "title": "Quét bảo mật bằng AST",
+          "desc": "plugin.py được parse bằng AST của Python trước khi bất kỳ đoạn code nào chạy. Nếu import module bị chặn (os, subprocess, socket, sys, shutil và nhiều module khác), upload sẽ bị từ chối ngay.",
+          "ref": "AST scanner (trước khi thực thi)"
+        },
+        "step6": {
+          "title": "Xác thực metadata",
+          "desc": "Hệ thống gọi get_metadata(). Sau đó kiểm tra pid có đúng dạng reverse-domain không, version có đúng semver không và toàn bộ trường bắt buộc có đầy đủ, đúng kiểu không.",
+          "ref": "PluginBundleBuilderMixin._validate_plugin()"
+        },
+        "step7": {
+          "title": "Kiểm tra dependency",
+          "desc": "Nếu plugin có validate_dependencies(), hàm đó sẽ được gọi. Mọi chuỗi lỗi trả về sẽ hiển thị cho người tải lên và việc đăng ký sẽ bị dừng. Trả về danh sách rỗng nghĩa là mọi thứ ổn.",
+          "ref": "BasePlugin.validate_dependencies()"
+        },
+        "step8": {
+          "title": "Đăng ký",
+          "desc": "Bản ghi plugin và bản ghi phiên bản sẽ được ghi vào database. Từ lúc này plugin sẽ xuất hiện trong catalog và có thể thêm vào orchestrator.",
+          "ref": "PluginRepository.create_plugin_version()"
+        }
+      }
+    },
+    "chat": {
+      "title": "Chat",
+      "subtitle": "Chat streaming theo thời gian thực với AI agent qua orchestrator hoặc Central Point.",
+      "intro": "Trang Chat là nơi tương tác để thử và dùng orchestrator. Tin nhắn được stream theo thời gian thực. Mỗi phản hồi đều hiển thị các bước nội bộ của agent — node nào đã chạy, tool nào đã được gọi và các đầu ra trung gian là gì — giúp bạn nhìn rõ toàn bộ quá trình suy luận.",
+      "bullet1": "Chọn một orchestrator đã load ở sidebar để bắt đầu chat",
+      "bullet2": "Phản hồi stream ra từng token theo thời gian thực",
+      "bullet3": "Mở rộng \"steps\" và \"sources\" cho từng tin nhắn để xem reasoning của agent",
+      "bullet4": "Phiên chat sẽ được giữ cho tới khi xóa — rất tiện cho hội thoại nhiều lượt",
+      "bullet5": "Cũng có thể truy cập qua Central Point để có endpoint ổn định",
+      "faq1": {
+        "question": "Streaming hoạt động thế nào?",
+        "answer": "Chat dùng Server-Sent Events để stream token từ orchestrator theo thời gian thực. Bạn sẽ thấy từng token xuất hiện ngay lúc được sinh ra thay vì phải chờ xong cả câu trả lời."
+      },
+      "faq2": {
+        "question": "\"Steps\" trong phản hồi chat là gì?",
+        "answer": "Steps cho thấy reasoning nội bộ của orchestrator — node nào đã chạy, tool nào đã được gọi và đầu ra trung gian là gì. Mở rộng chúng để debug hoặc hiểu rõ cách agent hoạt động."
+      },
+      "faq3": {
+        "question": "Central Point trong ngữ cảnh chat là gì?",
+        "answer": "Central Point là một endpoint tên ổn định mà bạn có thể gán cho orchestrator. Client gửi tin nhắn tới central point ID; bạn có thể thay orchestrator phía sau mà không cần sửa code phía client."
+      }
+    },
+    "llmConfigs": {
+      "title": "Cấu hình LLM (BYOK)",
+      "subtitle": "Thêm API key của riêng bạn cho OpenAI, Anthropic, Google, Azure, Groq và nhiều bên khác.",
+      "intro": "Cadence hoạt động theo kiểu Bring Your Own Key (BYOK). Bạn lưu API key của provider trong LLM Configs; orchestrator của bạn sẽ tham chiếu tới các config đó theo tên. Key được lưu mã hóa, không bao giờ bị log và cũng không bao giờ trả lại lên UI sau khi lưu. Mỗi tổ chức quản lý bộ config riêng, độc lập với nhau.",
+      "bullet1": "Hỗ trợ: OpenAI, Anthropic, Google, Azure OpenAI, Groq, LiteLLM, TensorZero và Bifrost",
+      "bullet2": "Mỗi config có tên, provider, API key và base URL tùy chọn",
+      "bullet3": "Azure cần thêm API version ngoài API key",
+      "bullet4": "Có thể tắt một config để ẩn nó mà không cần xóa — orchestrator đang chạy vẫn tiếp tục hoạt động",
+      "bullet5": "Config đang được orchestrator active dùng sẽ không thể xóa cho tới khi bỏ liên kết",
+      "faq1": {
+        "question": "Hỗ trợ những provider nào?",
+        "answer": "OpenAI, Anthropic, Google (Gemini), Groq, Azure OpenAI, LiteLLM, TensorZero và Bifrost. Mỗi bên cần API key và có thể kèm base URL nếu cần."
+      },
+      "faq2": {
+        "question": "API key có được lưu an toàn không?",
+        "answer": "Có. API key được lưu mã hóa và không bao giờ trả lại hoặc ghi vào log sau khi lưu. Nếu nghi bị lộ, hãy xoay key ở Settings → LLM Configs."
+      },
+      "faq3": {
+        "question": "Các orchestrator khác nhau có thể dùng config LLM khác nhau không?",
+        "answer": "Có. Mỗi orchestrator có thể chọn config LLM riêng. Trong chế độ Supervisor bạn còn có thể override config và model theo từng node để kiểm soát chi tiết hơn."
+      }
+    },
+    "centralPoints": {
+      "title": "Central Point",
+      "subtitle": "Endpoint ổn định có tên, giúp trừu tượng hóa orchestrator instance ID; hỗ trợ public hoặc private.",
+      "intro": "Central Point là một lớp trung gian giữa client và orchestrator. Thay vì gọi trực tiếp một orchestrator ID cụ thể, client sẽ gọi một Central Point ID ổn định. Bạn có thể đổi orchestrator đứng sau bất cứ lúc nào mà không phải sửa code phía client. Central point có thể là private (cần Bearer token) hoặc public (không cần auth).",
+      "bullet1": "Tạo central point trong Settings → Central Points",
+      "bullet2": "Gán một orchestrator để route traffic tới đó",
+      "bullet3": "Có thể đổi orchestrator phía sau bất cứ lúc nào mà client không phải thay đổi",
+      "bullet4": "Private: cần header Authorization Bearer; Public: cho phép truy cập ẩn danh",
+      "bullet5": "Dùng header X-CENTRAL-ID và X-ORG-ID khi gọi endpoint chat",
+      "faq1": {
+        "question": "Vì sao nên dùng Central Point thay vì gọi orchestrator trực tiếp?",
+        "answer": "Orchestrator ID sẽ thay đổi nếu bạn tạo lại instance. Central Point cho bạn một ID ổn định — có thể đổi orchestrator phía sau bất cứ lúc nào mà không phải sửa client hay tích hợp."
+      },
+      "faq2": {
+        "question": "Khác nhau giữa private và public là gì?",
+        "answer": "Central point private yêu cầu Bearer token trong mọi request. Central point public cho phép request ẩn danh — phù hợp cho demo, widget chat nhúng hoặc công cụ mở."
+      },
+      "faq3": {
+        "question": "Gọi Central Point từ app như thế nào?",
+        "answer": "Gửi POST tới /api/chat/completion với header X-ORG-ID và X-CENTRAL-ID. Nếu là loại private thì thêm cả Authorization: Bearer {token}. Body dùng định dạng messages array tiêu chuẩn."
+      },
+      "faqSection": {
+        "title": "Câu hỏi thường gặp"
+      },
+      "useCasesSection": {
+        "title": "Bạn có thể làm gì với Central Point",
+        "intro": "Central Point mở ra nhiều cách dùng mà nếu không có thì bạn sẽ phải đi sửa từng app hoặc tích hợp đang nói chuyện với assistant AI. Đây là những tình huống hay gặp nhất.",
+        "bluegreen": {
+          "title": "Nâng cấp an toàn — không downtime",
+          "scenario": "Bạn có một widget chat cho khách hàng đang gọi vào assistant. Bạn muốn nâng cấp assistant với plugin mới và model mới — nhưng không thể chấp nhận rủi ro làm hỏng hệ thống đang chạy. Vậy nên bạn dựng và test phiên bản mới song song với phiên bản cũ. Khi mọi thứ ổn, bạn chuyển Central Point sang phiên bản mới. Nếu có sự cố, chỉ cần chuyển lại lần nữa là quay về bản cũ ngay.",
+          "benefit": "Khách hàng của bạn không thấy downtime hay chat bị lỗi. URL của widget cũng không bao giờ phải đổi."
+        },
+        "rollback": {
+          "title": "Rollback ngay lập tức",
+          "scenario": "Bạn vừa phát hành một orchestrator mới và người dùng báo rằng chất lượng câu trả lời tệ hơn trước. Bạn vẫn còn phiên bản cũ đang nằm chờ. Chỉ trong vài giây, bạn có thể gán lại Central Point về phiên bản cũ — không cần deploy lại, không cần chờ pipeline build, cũng không phải sửa code.",
+          "benefit": "Rollback một AI assistant giờ nhanh như đổi một cài đặt."
+        },
+        "testing": {
+          "title": "Test trước khi chốt",
+          "scenario": "Bạn muốn thử một model LLM mới hoặc một plugin thử nghiệm mà không để người dùng thật thấy. Hãy tạo một Central Point private thứ hai trỏ tới orchestrator mới. Team QA sẽ test trên point private đó trong khi traffic production vẫn đi qua point ổn định cũ.",
+          "benefit": "Tha hồ thử nghiệm mà không làm ảnh hưởng người dùng đang dùng thật."
+        },
+        "public": {
+          "title": "Demo công khai hoặc widget nhúng",
+          "scenario": "Bạn muốn nhúng một AI assistant lên trang web công khai — khách truy cập không cần đăng nhập. Hãy đặt Central Point ở chế độ public. Bất kỳ ai có endpoint URL đều có thể chat với nó. Khi bạn cập nhật assistant, chỉ cần đổi Central Point; widget không phải sửa gì cả.",
+          "benefit": "Triển khai chatbot công khai mà không lộ orchestrator ID nội bộ hoặc phải quản lý token cho từng khách."
+        },
+        "multienv": {
+          "title": "Tách môi trường bằng cùng một codebase",
+          "scenario": "App của bạn đọc Central Point ID từ biến môi trường. Bạn tạo một Central Point cho mỗi môi trường (dev, staging, production), mỗi cái trỏ tới một orchestrator khác nhau. Code app giữ nguyên giữa các môi trường — chỉ biến môi trường là khác.",
+          "benefit": "Code nhất quán, hành vi AI theo từng môi trường, không cần hardcode orchestrator ID."
+        }
+      }
+    },
+    "orgs": {
+      "title": "Tổ chức & Thành viên",
+      "subtitle": "Workspace đa tenant; người dùng có thể thuộc nhiều org với vai trò khác nhau.",
+      "intro": "Cadence là hệ thống đa tenant. Mỗi tổ chức là một workspace tách biệt, có orchestrator, plugin, LLM config, central point và thành viên riêng. Một người dùng có thể thuộc nhiều tổ chức cùng lúc và chuyển đổi giữa các org bằng menu org. Mỗi org có gói thuê bao và quota riêng.",
+      "bullet1": "Org admin thêm thành viên bằng email, username hoặc user ID",
+      "bullet2": "Nâng thành viên lên org admin hoặc hạ về member",
+      "bullet3": "Gỡ thành viên khỏi org mà không xóa tài khoản của họ",
+      "bullet4": "Người dùng đổi org bằng menu org ở góc trên bên trái thanh bên",
+      "bullet5": "Gói thuê bao kiểm soát quota: số orchestrator, thành viên, tin nhắn, v.v.",
+      "faq1": {
+        "question": "Một người dùng có thể thuộc nhiều tổ chức không?",
+        "answer": "Có. Một người dùng có thể thuộc nhiều tổ chức cùng lúc, và vai trò ở mỗi tổ chức có thể khác nhau. Hãy chuyển giữa các org bằng menu org ở đầu sidebar."
+      },
+      "faq2": {
+        "question": "Ai có thể tạo tổ chức?",
+        "answer": "Chỉ system admin mới tạo được tổ chức. Org admin sẽ quản lý thành viên và cài đặt trong tổ chức của họ."
+      },
+      "faq3": {
+        "question": "Nếu mình ở trong org nhưng không phải admin thì sao?",
+        "answer": "Bạn sẽ có vai trò Member, nghĩa là chỉ được vào Chat. Các phần orchestrator, plugin, settings và công cụ admin sẽ không hiện."
+      }
+    },
+    "roles": {
+      "title": "Phân quyền theo vai trò",
+      "subtitle": "Ba vai trò: System Admin (toàn nền tảng), Org Admin (trong workspace), Member (chỉ chat).",
+      "intro": "Quyền truy cập trong Cadence được kiểm soát theo hai chiều vai trò độc lập: cấp hệ thống (System Admin hay người dùng thường) và cấp org (Org Admin hay Member). System Admin có toàn quyền nền tảng bất kể có thuộc org đó hay không. Org Admin kiểm soát mọi thứ trong tổ chức của mình. Member chỉ được dùng Chat.",
+      "bullet1": "System Admin: tạo org, quản lý user, plugin hệ thống, cài đặt toàn cục, pool, health",
+      "bullet2": "Org Admin: orchestrator, plugin, thành viên, LLM config, central point, cài đặt",
+      "bullet3": "Member: chỉ có trang Chat — không thấy settings, orchestrator hay plugin",
+      "bullet4": "Vai trò được áp dụng cả ở API lẫn UI",
+      "bullet5": "Một người có thể là Org Admin ở org này và Member ở org khác cùng lúc",
+      "faq1": {
+        "question": "System Admin làm được gì?",
+        "answer": "System admin có toàn quyền nền tảng: tạo org và user, quản lý plugin hệ thống, cấu hình cài đặt toàn cục, xem thống kê pool và kiểm tra tình trạng hệ thống."
+      },
+      "faq2": {
+        "question": "Org Admin làm được gì?",
+        "answer": "Org admin quản lý mọi thứ trong tổ chức của họ: orchestrator, plugin, thành viên, LLM config, central point và cài đặt của org."
+      },
+      "faq3": {
+        "question": "Member làm được gì?",
+        "answer": "Member chỉ có thể dùng trang Chat. Họ không thấy orchestrator, plugin hay settings. Họ chat qua các orchestrator hoặc central point đang hiển thị trong org."
+      }
+    },
+    "admin": {
+      "title": "Công cụ quản trị",
+      "subtitle": "Thống kê pool, theo dõi tình trạng, quota theo tier và cài đặt toàn cục — chỉ dành cho system admin.",
+      "intro": "System admin có quyền truy cập một khu vực System riêng ở sidebar với các công cụ vận hành nền tảng: thống kê pool theo thời gian thực, kiểm tra tình trạng dịch vụ, quản lý quota theo gói thuê bao, catalog model LLM toàn nền tảng và các cài đặt tính năng toàn cục áp dụng cho mọi tổ chức.",
+      "bullet1": "Pool: tổng số instance, chia theo tier, model dùng chung, ước tính bộ nhớ (tự refresh mỗi 30s)",
+      "bullet2": "Health: tình trạng PostgreSQL, Redis, MongoDB + trạng thái ready của từng orchestrator instance",
+      "bullet3": "Global Settings: quota theo gói thuê bao, catalog model LLM, feature flag",
+      "bullet4": "Organizations: tạo, sửa, đặt quota, quản lý thành viên trên toàn bộ org",
+      "bullet5": "Users: tạo, sửa, xóa user nền tảng; cấp hoặc gỡ quyền system admin",
+      "faq1": {
+        "question": "Trang Pool là gì?",
+        "answer": "Trang Pool hiển thị thống kê thời gian thực cho tất cả orchestrator instance trên toàn nền tảng: có bao nhiêu hot/warm/cold, số model dùng chung và ước tính bộ nhớ. Tự refresh mỗi 30 giây."
+      },
+      "faq2": {
+        "question": "Trang Health hiển thị gì?",
+        "answer": "Trang Health hiển thị tình trạng của các dịch vụ lõi (PostgreSQL, Redis, MongoDB) và từng orchestrator instance đã load cùng trạng thái ready của nó. Dùng để chẩn đoán sự cố hoặc xác minh instance trước khi đưa traffic vào."
+      },
+      "faq3": {
+        "question": "Global Settings là gì?",
+        "answer": "Global Settings là các mặc định toàn nền tảng: quota theo gói thuê bao, catalog model theo nhà cung cấp LLM và feature flag (hành vi pool, cache, giới hạn tốc độ, v.v.). Một số cài đặt có thể được org admin ghi đè theo từng tổ chức."
       }
     },
     "changelog": {
-      "title": "Lịch sử cập nhật",
-      "empty": "Chưa có bản phát hành nào."
+      "title": "Nhật ký thay đổi",
+      "empty": "Chưa có bản phát hành nào được công bố."
     }
   }
 }

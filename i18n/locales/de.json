@@ -824,12 +824,28 @@
     "overview": {
       "title": "Übersicht",
       "subtitle": "Eine kurze Einführung in Cadence.",
-      "intro": "Cadence ist eine KI-Plattform, mit der Teams KI-Assistenten bereitstellen und verwalten können. Sie erstellen Assistenten (Orchestratoren), verbinden Ihren bevorzugten KI-Anbieter, fügen Tools über Plugins hinzu und chatten in Echtzeit — keine Programmierung erforderlich.",
-      "bullet1": "Multi-Tenant: Jedes Team hat seinen eigenen Arbeitsbereich mit isolierten Daten und Einstellungen",
-      "bullet2": "Bringen Sie Ihre eigenen KI-Schlüssel mit: Nutzen Sie OpenAI, Google, Anthropic und andere — Ihre Schlüssel, Ihre Kontrolle",
-      "bullet3": "Orchestrierung ohne Code: Konfigurieren Sie Assistenten über die Benutzeroberfläche, keine Programmierung nötig",
-      "bullet4": "Echtzeit-Chat: Sehen Sie Antworten beim Streamen mit voller Transparenz über die Arbeitsweise des Assistenten",
-      "bullet5": "Erweiterbar: Fügen Sie benutzerdefinierte Tools über Plugins hinzu, um Ihren Assistenten neue Fähigkeiten zu geben"
+      "intro": "Cadence hilft Teams, KI-Assistenten bereitzustellen und zu verwalten. Erstellen Sie Assistenten, fügen Sie Ihren KI-Anbieter hinzu und chatten Sie — ohne Programmierung.",
+      "featuresTitle": "Hauptfunktionen",
+      "feature1": "Multi-Tenant — jedes Team hat seinen eigenen Arbeitsbereich mit isolierten Daten und Einstellungen",
+      "feature2": "Bringen Sie Ihre eigenen KI-Schlüssel mit — nutzen Sie OpenAI, Google, Anthropic und andere; Ihre Schlüssel, Ihre Kontrolle",
+      "feature3": "Einrichtung ohne Code — konfigurieren Sie Assistenten über die Benutzeroberfläche, keine Programmierung nötig",
+      "feature4": "Echtzeit-Chat — sehen Sie Antworten beim Streamen mit voller Transparenz über die Arbeitsweise des Assistenten",
+      "feature5": "Erweiterbar — fügen Sie benutzerdefinierte Tools über Plugins hinzu (Websuche, Kalender, APIs und mehr)",
+      "feature6": "Stabile Endpunkte — verbinden Sie Apps und Integrationen über Central Points ohne fest codierte IDs",
+      "feature7": "Rollenbasierter Zugriff — steuern Sie, wer Assistenten, Einstellungen verwalten oder nur chatten darf",
+      "learnMore": "Mehr erfahren",
+      "sections": {
+        "orchestrator": "Ihr KI-Assistent — erstellen, konfigurieren und verwalten.",
+        "chat": "Sprechen Sie in Echtzeit mit Ihren Assistenten.",
+        "plugins": "Fügen Sie Tools wie Websuche oder Kalender zu Ihren Assistenten hinzu.",
+        "llmConfigs": "Ihre KI-Anbieter-Schlüssel — OpenAI, Google, Anthropic und mehr.",
+        "centralPoints": "Stabile Endpunkte für Apps und Integrationen.",
+        "orgs": "Teams und Arbeitsbereiche mit isolierten Daten.",
+        "roles": "Wer darf was — Admin, Mitglied und mehr.",
+        "frameworks": "Technische Ausführungs-Engines — LangGraph, Google ADK, OpenAI.",
+        "modes": "Wie Assistenten denken und antworten.",
+        "admin": "Plattformverwaltung für System-Admins."
+      }
     },
     "orchestrator": {
       "title": "Orchestrator",
