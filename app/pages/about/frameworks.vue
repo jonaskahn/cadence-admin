@@ -32,7 +32,12 @@ const frameworkDetails = computed(() => [
 ])
 
 const providerCompat = [
-  { id: 'langgraph', name: 'LangGraph', color: 'primary' as const, providers: ['litellm', 'bifrost', 'tensorzero', 'openai', 'azure', 'gemini', 'claude', 'anthropic', 'groq'] },
+  {
+    id: 'langgraph',
+    name: 'LangGraph',
+    color: 'primary' as const,
+    providers: ['litellm', 'bifrost', 'tensorzero', 'openai', 'azure', 'gemini', 'claude', 'anthropic', 'groq']
+  },
   { id: 'adk', name: 'Google ADK', color: 'success' as const, providers: ['litellm', 'bifrost', 'claude', 'anthropic'] },
   { id: 'openai', name: 'OpenAI Agents', color: 'neutral' as const, providers: ['litellm', 'bifrost', 'openai'] }
 ]
@@ -55,14 +60,13 @@ const faqItems = computed(() => [
 
 <template>
   <section class="space-y-8">
-
     <!-- 1. Overview -->
     <div class="space-y-3">
       <div class="flex items-center gap-2">
         <UIcon name="i-lucide-layers" class="text-primary size-5" />
         <h2 class="text-lg font-semibold">{{ t('about.frameworks.title') }}</h2>
       </div>
-      <p class="text-sm text-muted">{{ t('about.frameworks.subtitle') }}</p>
+      <p class="text-xs text-dimmed">{{ t('about.frameworks.subtitle') }}</p>
       <p class="text-sm">{{ t('about.frameworks.intro') }}</p>
       <ul class="text-sm list-disc list-inside space-y-1">
         <li>{{ t('about.frameworks.bullet1') }}</li>
@@ -84,11 +88,11 @@ const faqItems = computed(() => [
         <div v-for="fw in frameworkDetails" :key="fw.id" class="rounded-lg border p-4 space-y-2">
           <div class="flex items-center gap-2">
             <UBadge :color="fw.color" variant="subtle">{{ fw.name }}</UBadge>
-            <span v-if="!fw.implemented" class="text-xs text-muted">{{ t('about.frameworks.executionSection.notImplemented') }}</span>
+            <span v-if="!fw.implemented" class="text-xs text-dimmed">{{ t('about.frameworks.executionSection.notImplemented') }}</span>
           </div>
           <p class="text-sm">{{ fw.model }}</p>
-          <p v-if="fw.tools" class="text-sm text-muted">{{ fw.tools }}</p>
-          <code class="text-xs font-mono text-muted">{{ fw.ref }}</code>
+          <p v-if="fw.tools" class="text-xs text-dimmed">{{ fw.tools }}</p>
+          <code class="text-xs font-mono text-dimmed">{{ fw.ref }}</code>
         </div>
       </div>
     </div>
@@ -118,6 +122,5 @@ const faqItems = computed(() => [
       </div>
       <UAccordion :items="faqItems" />
     </div>
-
   </section>
 </template>

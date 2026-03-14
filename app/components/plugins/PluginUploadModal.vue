@@ -8,10 +8,18 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{ close: [] }>()
+
+function handleClose() {
+  emit('close')
+}
 const toast = useToast()
 const fileInput = ref<HTMLInputElement>()
 const selectedFile = ref<File | null>(null)
 const uploading = ref(false)
+
+function triggerFileInput() {
+  fileInput.value?.click()
+}
 
 function onFileChange(e: Event) {
   const input = e.target as HTMLInputElement
@@ -52,7 +60,7 @@ async function onUpload() {
     <div class="flex flex-col gap-4">
       <div
         class="border-2 border-dashed border-default rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
-        @click="fileInput?.click()"
+        @click="triggerFileInput"
       >
         <UIcon class="size-10 mx-auto mb-2 text-dimmed" name="i-lucide-upload" />
         <p class="text-sm font-medium">
@@ -63,8 +71,16 @@ async function onUpload() {
       </div>
 
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="emit('close')" />
-        <UButton color="primary" variant="outline" :disabled="!selectedFile" :loading="uploading" icon="i-lucide-upload" :label="t('common.upload')" @click="onUpload" />
+        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="handleClose" />
+        <UButton
+          color="primary"
+          variant="outline"
+          :disabled="!selectedFile"
+          :loading="uploading"
+          icon="i-lucide-upload"
+          :label="t('common.upload')"
+          @click="onUpload"
+        />
       </div>
     </div>
   </UCard>

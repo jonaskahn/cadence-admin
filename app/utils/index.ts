@@ -23,7 +23,7 @@ export const PROVIDER_DISPLAY_LABELS: Record<string, string> = {
   azure: 'Azure OpenAI',
   litellm: 'LiteLLM',
   tensorzero: 'Tensorzero',
-  bifrost: 'Bifrost',
+  bifrost: 'Bifrost'
 }
 
 export function providerLabel(provider: string): string {

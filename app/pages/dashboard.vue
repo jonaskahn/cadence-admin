@@ -47,158 +47,164 @@ const tierCounts = computed(() => {
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel id="dashboard">
-    <template #header>
-      <UDashboardNavbar :title="t('dashboard.title')">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-        <template #right>
-          <InfoPopover title-key="info.pages.dashboard.title" description-key="info.pages.dashboard.description" />
-        </template>
-      </UDashboardNavbar>
-    </template>
+      <template #header>
+        <UDashboardNavbar :title="t('dashboard.title')">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+          <template #right>
+            <InfoPopover title-key="info.pages.dashboard.title" description-key="info.pages.dashboard.description" />
+          </template>
+        </UDashboardNavbar>
+      </template>
 
-    <template #body>
-      <div class="p-6 flex flex-col gap-8">
-        <template v-if="auth.isOrgAdmin.value">
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <UCard>
-              <div class="flex items-center gap-3">
-                <UIcon class="size-8 text-primary" name="i-lucide-cpu" />
-                <div>
-                  <p class="text-2xl font-bold">
-                    {{ tierCounts.total }}
-                  </p>
-                  <p class="text-dimmed text-sm">{{ t('dashboard.totalOrchestrators') }}</p>
+      <template #body>
+        <div class="p-6 flex flex-col gap-8">
+          <template v-if="auth.isOrgAdmin.value">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <UCard>
+                <div class="flex items-center gap-3">
+                  <UIcon class="size-8 text-primary" name="i-lucide-cpu" />
+                  <div>
+                    <p class="text-2xl font-bold">
+                      {{ tierCounts.total }}
+                    </p>
+                    <p class="text-dimmed text-sm">{{ t('dashboard.totalOrchestrators') }}</p>
+                  </div>
                 </div>
-              </div>
-            </UCard>
+              </UCard>
 
+              <UCard>
+                <div class="flex items-center gap-3">
+                  <UIcon class="size-8 text-error" name="i-lucide-flame" />
+                  <div>
+                    <p class="text-2xl font-bold">
+                      {{ tierCounts.hot }}
+                    </p>
+                    <p class="text-dimmed text-sm">{{ t('dashboard.hotTier') }}</p>
+                  </div>
+                </div>
+              </UCard>
+
+              <UCard>
+                <div class="flex items-center gap-3">
+                  <UIcon class="size-8 text-success" name="i-lucide-puzzle" />
+                  <div>
+                    <p class="text-2xl font-bold">
+                      {{ plugins?.length || 0 }}
+                    </p>
+                    <p class="text-dimmed text-sm">{{ t('dashboard.plugins') }}</p>
+                  </div>
+                </div>
+              </UCard>
+
+              <UCard v-if="auth.isSysAdmin.value && poolStats">
+                <div class="flex items-center gap-3">
+                  <UIcon class="size-8 text-warning" name="i-lucide-server" />
+                  <div>
+                    <p class="text-2xl font-bold">{{ poolStats.memory_estimate_mb.toFixed(0) }} MB</p>
+                    <p class="text-dimmed text-sm">{{ t('dashboard.poolMemory') }}</p>
+                  </div>
+                </div>
+              </UCard>
+
+              <UCard v-else>
+                <div class="flex items-center gap-3">
+                  <UIcon class="size-8 text-info" name="i-lucide-thermometer" />
+                  <div>
+                    <p class="text-2xl font-bold">
+                      {{ tierCounts.warm }}
+                    </p>
+                    <p class="text-dimmed text-sm">{{ t('dashboard.warmTier') }}</p>
+                  </div>
+                </div>
+              </UCard>
+            </div>
+          </template>
+
+          <template v-if="auth.isSysAdmin.value && poolStats">
             <UCard>
-              <div class="flex items-center gap-3">
-                <UIcon class="size-8 text-error" name="i-lucide-flame" />
+              <template #header>
+                <p class="font-semibold">{{ t('dashboard.poolStatistics') }}</p>
+              </template>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <p class="text-2xl font-bold">
-                    {{ tierCounts.hot }}
-                  </p>
                   <p class="text-dimmed text-sm">{{ t('dashboard.hotTier') }}</p>
-                </div>
-              </div>
-            </UCard>
-
-            <UCard>
-              <div class="flex items-center gap-3">
-                <UIcon class="size-8 text-success" name="i-lucide-puzzle" />
-                <div>
-                  <p class="text-2xl font-bold">
-                    {{ plugins?.length || 0 }}
+                  <p class="text-xl font-bold">
+                    {{ poolStats.hot_tier_count }}
                   </p>
-                  <p class="text-dimmed text-sm">{{ t('dashboard.plugins') }}</p>
                 </div>
-              </div>
-            </UCard>
-
-            <UCard v-if="auth.isSysAdmin.value && poolStats">
-              <div class="flex items-center gap-3">
-                <UIcon class="size-8 text-warning" name="i-lucide-server" />
                 <div>
-                  <p class="text-2xl font-bold">{{ poolStats.memory_estimate_mb.toFixed(0) }} MB</p>
-                  <p class="text-dimmed text-sm">{{ t('dashboard.poolMemory') }}</p>
-                </div>
-              </div>
-            </UCard>
-
-            <UCard v-else>
-              <div class="flex items-center gap-3">
-                <UIcon class="size-8 text-info" name="i-lucide-thermometer" />
-                <div>
-                  <p class="text-2xl font-bold">
-                    {{ tierCounts.warm }}
-                  </p>
                   <p class="text-dimmed text-sm">{{ t('dashboard.warmTier') }}</p>
+                  <p class="text-xl font-bold">
+                    {{ poolStats.warm_tier_count }}
+                  </p>
+                </div>
+                <div>
+                  <p class="text-dimmed text-sm">{{ t('dashboard.coldTier') }}</p>
+                  <p class="text-xl font-bold">
+                    {{ poolStats.cold_tier_count }}
+                  </p>
+                </div>
+                <div>
+                  <p class="text-dimmed text-sm">{{ t('dashboard.sharedModels') }}</p>
+                  <p class="text-xl font-bold">
+                    {{ poolStats.shared_model_count }}
+                  </p>
                 </div>
               </div>
             </UCard>
-          </div>
-        </template>
+          </template>
 
-        <template v-if="auth.isSysAdmin.value && poolStats">
           <UCard>
             <template #header>
-              <p class="font-semibold">{{ t('dashboard.poolStatistics') }}</p>
+              <p class="font-semibold">{{ t('dashboard.quickActions') }}</p>
             </template>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <p class="text-dimmed text-sm">{{ t('dashboard.hotTier') }}</p>
-                <p class="text-xl font-bold">
-                  {{ poolStats.hot_tier_count }}
-                </p>
-              </div>
-              <div>
-                <p class="text-dimmed text-sm">{{ t('dashboard.warmTier') }}</p>
-                <p class="text-xl font-bold">
-                  {{ poolStats.warm_tier_count }}
-                </p>
-              </div>
-              <div>
-                <p class="text-dimmed text-sm">{{ t('dashboard.coldTier') }}</p>
-                <p class="text-xl font-bold">
-                  {{ poolStats.cold_tier_count }}
-                </p>
-              </div>
-              <div>
-                <p class="text-dimmed text-sm">{{ t('dashboard.sharedModels') }}</p>
-                <p class="text-xl font-bold">
-                  {{ poolStats.shared_model_count }}
-                </p>
-              </div>
+            <div class="flex flex-wrap gap-3">
+              <UButton icon="i-lucide-message-square" :label="t('dashboard.startChat')" :to="localePath('/chat')" />
+              <UButton icon="i-lucide-cpu" :label="t('dashboard.viewOrchestrators')" :to="localePath('/orchestrators')" variant="outline" />
+              <UButton
+                v-if="auth.isOrgAdmin.value"
+                icon="i-lucide-puzzle"
+                :label="t('dashboard.managePlugins')"
+                :to="localePath('/plugins')"
+                variant="outline"
+              />
             </div>
           </UCard>
-        </template>
 
-        <UCard>
-          <template #header>
-            <p class="font-semibold">{{ t('dashboard.quickActions') }}</p>
-          </template>
-          <div class="flex flex-wrap gap-3">
-            <UButton icon="i-lucide-message-square" :label="t('dashboard.startChat')" :to="localePath('/chat')" />
-            <UButton icon="i-lucide-cpu" :label="t('dashboard.viewOrchestrators')" :to="localePath('/orchestrators')" variant="outline" />
-            <UButton v-if="auth.isOrgAdmin.value" icon="i-lucide-puzzle" :label="t('dashboard.managePlugins')" :to="localePath('/plugins')" variant="outline" />
-          </div>
-        </UCard>
-
-        <UCard>
-          <template #header>
-            <div class="flex items-center justify-between">
-              <p class="font-semibold">{{ t('dashboard.orchestrators') }}</p>
-              <UButton :label="t('common.viewAll')" size="sm" :to="localePath('/orchestrators')" variant="outline" />
-            </div>
-          </template>
-
-          <template v-if="orchestrators?.length">
-            <UTable :columns="orchestratorColumns" :data="orchestrators.slice(0, 5)">
-              <template #tier-cell="{ row }">
-                <UBadge :color="tierColor(row.original.tier)" size="sm" variant="subtle">
-                  {{ row?.original?.tier?.toUpperCase() }}
-                </UBadge>
-              </template>
-              <template #status-cell="{ row }">
-                <UBadge :color="statusColor(row.original.status)" size="sm" variant="subtle">
-                  {{ row.original.status }}
-                </UBadge>
-              </template>
-            </UTable>
-          </template>
-
-          <p v-else class="text-dimmed text-sm text-center py-4">
-            {{ t('dashboard.noOrchestrators') }}
-            <template v-if="auth.isOrgAdmin.value || auth.isSysAdmin.value">
-              <NuxtLink class="text-primary underline" :to="localePath('/orchestrators')"> {{ t('dashboard.create') }}</NuxtLink>
+          <UCard>
+            <template #header>
+              <div class="flex items-center justify-between">
+                <p class="font-semibold">{{ t('dashboard.orchestrators') }}</p>
+                <UButton :label="t('common.viewAll')" size="sm" :to="localePath('/orchestrators')" variant="outline" />
+              </div>
             </template>
-          </p>
-        </UCard>
-      </div>
-    </template>
+
+            <template v-if="orchestrators?.length">
+              <UTable :columns="orchestratorColumns" :data="orchestrators.slice(0, 5)">
+                <template #tier-cell="{ row }">
+                  <UBadge :color="tierColor(row.original.tier)" size="sm" variant="subtle">
+                    {{ row?.original?.tier?.toUpperCase() }}
+                  </UBadge>
+                </template>
+                <template #status-cell="{ row }">
+                  <UBadge :color="statusColor(row.original.status)" size="sm" variant="subtle">
+                    {{ row.original.status }}
+                  </UBadge>
+                </template>
+              </UTable>
+            </template>
+
+            <p v-else class="text-dimmed text-sm text-center py-4">
+              {{ t('dashboard.noOrchestrators') }}
+              <template v-if="auth.isOrgAdmin.value || auth.isSysAdmin.value">
+                <NuxtLink class="text-primary underline" :to="localePath('/orchestrators')"> {{ t('dashboard.create') }}</NuxtLink>
+              </template>
+            </p>
+          </UCard>
+        </div>
+      </template>
     </UDashboardPanel>
   </div>
 </template>

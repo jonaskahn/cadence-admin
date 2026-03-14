@@ -22,12 +22,12 @@ const sections = [
       <UIcon name="i-lucide-layout-panel-top" class="text-primary size-5" />
       <h2 class="text-lg font-semibold">{{ t('about.overview.title') }}</h2>
     </div>
-    <p class="text-sm text-muted">{{ t('about.overview.subtitle') }}</p>
+    <p class="text-xs text-dimmed">{{ t('about.overview.subtitle') }}</p>
     <p class="text-sm">{{ t('about.overview.intro') }}</p>
 
     <div class="space-y-2">
-      <h3 class="text-sm font-medium text-muted">{{ t('about.overview.featuresTitle') }}</h3>
-      <ul class="text-sm list-disc list-inside space-y-1 text-muted">
+      <h3 class="text-xs font-medium text-dimmed">{{ t('about.overview.featuresTitle') }}</h3>
+      <ul class="text-sm list-disc list-inside space-y-1 text-dimmed">
         <li>{{ t('about.overview.feature1') }}</li>
         <li>{{ t('about.overview.feature2') }}</li>
         <li>{{ t('about.overview.feature3') }}</li>
@@ -39,7 +39,7 @@ const sections = [
     </div>
 
     <div class="space-y-3 pt-2">
-      <h3 class="text-sm font-medium text-muted">{{ t('about.overview.learnMore') }}</h3>
+      <h3 class="text-xs font-medium text-dimmed">{{ t('about.overview.learnMore') }}</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <NuxtLink
           v-for="s in sections"
@@ -50,7 +50,7 @@ const sections = [
           <UIcon :name="s.icon" class="text-primary size-5 shrink-0 mt-0.5" />
           <div class="min-w-0">
             <p class="text-sm font-medium">{{ t(`about.tabs.${s.key}`) }}</p>
-            <p class="text-xs text-muted mt-0.5">{{ t(`about.overview.sections.${s.key}`) }}</p>
+            <p class="text-xs text-dimmed mt-0.5">{{ t(`about.overview.sections.${s.key}`) }}</p>
           </div>
         </NuxtLink>
       </div>

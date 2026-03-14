@@ -23,13 +23,15 @@ const { version } = require('../package.json')
 // Only fall back to git / package.json when running locally.
 const appVersion = process.env.NUXT_PUBLIC_APP_VERSION || version
 
-const gitHash = process.env.NUXT_PUBLIC_GIT_HASH || (() => {
-  try {
-    return execSync('git rev-parse --short HEAD', { encoding: 'utf-8', cwd: root }).trim()
-  } catch {
-    return 'unknown'
-  }
-})()
+const gitHash =
+  process.env.NUXT_PUBLIC_GIT_HASH ||
+  (() => {
+    try {
+      return execSync('git rev-parse --short HEAD', { encoding: 'utf-8', cwd: root }).trim()
+    } catch {
+      return 'unknown'
+    }
+  })()
 
 /** Upsert a single KEY=VALUE line in an .env file */
 function upsertEnvVar(key, value, file) {

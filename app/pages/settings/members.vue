@@ -1,22 +1,19 @@
 <script lang="ts" setup>
-import type {UserMembershipResponse} from '~/types'
+import type { UserMembershipResponse } from '~/types'
 
 const auth = useAuth()
 const toast = useToast()
-const {t} = useI18n()
+const { t } = useI18n()
 const orgId = computed(() => auth.currentOrgId.value || '')
 const showAdd = ref(false)
 
-const {
-  data: members,
-  refresh
-} = await useApiFetch<UserMembershipResponse[]>(() => `/api/orgs/${orgId.value}/users`, { watch: [orgId] })
+const { data: members, refresh } = await useApiFetch<UserMembershipResponse[]>(() => `/api/orgs/${orgId.value}/users`, { watch: [orgId] })
 
 async function withMemberAction(fn: () => Promise<void>, errorTitle: string): Promise<void> {
   try {
     await fn()
   } catch {
-    toast.add({title: errorTitle, color: 'error'})
+    toast.add({ title: errorTitle, color: 'error' })
   }
 }
 
@@ -26,19 +23,33 @@ async function toggleAdmin(member: UserMembershipResponse) {
     await withMemberAction(async () => {
       await $fetch(`/api/orgs/${orgId.value}/users/${member.user_id}/membership`, {
         method: 'PATCH',
-        body: {is_admin: !member.is_admin}
+        body: { is_admin: !member.is_admin }
       })
       await refresh()
-      toast.add({title: t('settings.roleUpdated'), icon: 'i-lucide-check'})
+      toast.add({ title: t('settings.roleUpdated'), icon: 'i-lucide-check' })
     }, t('settings.failedUpdateRole'))
   } finally {
     toggling.value = null
   }
 }
 
+function openAdd() {
+  showAdd.value = true
+}
+
 function handleAddClose() {
   showAdd.value = false
   refresh()
+}
+
+async function handleToggleConfirm(member: UserMembershipResponse, close: () => void) {
+  await toggleAdmin(member)
+  close()
+}
+
+async function handleRemoveConfirm(userId: string, close: () => void) {
+  await removeMember(userId)
+  close()
 }
 
 const removing = ref<string | null>(null)
@@ -48,9 +59,9 @@ async function removeMember(userId: string) {
   removing.value = userId
   try {
     await withMemberAction(async () => {
-      await $fetch(`/api/orgs/${orgId.value}/users/${userId}`, {method: 'DELETE'})
+      await $fetch(`/api/orgs/${orgId.value}/users/${userId}`, { method: 'DELETE' })
       await refresh()
-      toast.add({title: t('settings.memberRemoved'), icon: 'i-lucide-check'})
+      toast.add({ title: t('settings.memberRemoved'), icon: 'i-lucide-check' })
     }, t('settings.failedRemoveMember'))
   } finally {
     removing.value = null
@@ -89,14 +100,7 @@ const columns = computed(() => [
               </div>
               <p class="text-dimmed text-sm">{{ t('settings.membersDescription') }}</p>
             </div>
-            <UButton
-              v-if="auth.isAdmin.value"
-              color="primary"
-              variant="outline"
-              icon="i-lucide-user-plus"
-              :label="t('settings.addMember')"
-              @click="showAdd = true"
-            />
+            <UButton v-if="auth.isAdmin.value" color="primary" variant="outline" icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="openAdd" />
           </div>
         </template>
         <div v-if="!members" class="flex flex-col gap-2 p-4">
@@ -130,7 +134,7 @@ const columns = computed(() => [
                         variant="outline"
                         :label="row.original.is_admin ? t('settings.demote') : t('settings.promote')"
                         :loading="toggling === row.original.user_id"
-                        @click="async () => { await toggleAdmin(row.original); close() }"
+                        @click="handleToggleConfirm(row.original, close)"
                       />
                     </div>
                   </div>
@@ -147,7 +151,7 @@ const columns = computed(() => [
                         color="error"
                         :label="t('common.remove')"
                         :loading="removing === row.original.user_id"
-                        @click="async () => { await removeMember(row.original.user_id); close() }"
+                        @click="handleRemoveConfirm(row.original.user_id, close)"
                       />
                     </div>
                   </div>
@@ -162,7 +166,7 @@ const columns = computed(() => [
     <ClientOnly>
       <UModal v-model:open="showAdd">
         <template #content>
-          <AddMemberModal :org-id="orgId" @close="handleAddClose"/>
+          <AddMemberModal :org-id="orgId" @close="handleAddClose" />
         </template>
       </UModal>
     </ClientOnly>

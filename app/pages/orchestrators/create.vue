@@ -53,7 +53,7 @@ const schema = computed(() =>
     name: z
       .string()
       .min(5, { message: t('orchestrators.create.nameMinLength') })
-      .max(55),
+      .max(200),
     framework_type: z.string().min(1),
     mode: z.string().min(1),
     tier: z.enum(['hot', 'warm', 'cold'])
@@ -83,6 +83,10 @@ const monitoringConfig = ref<MonitoringConfig>({
 const selectedPlugins = ref<PluginMetadataResponse[]>([])
 const showPluginSelector = ref(false)
 const loading = ref(false)
+
+function openPluginSelector() {
+  showPluginSelector.value = true
+}
 const createFormRef = ref()
 const supervisorProviderRef = ref<{
   isValid: () => boolean
@@ -236,7 +240,7 @@ function removePlugin(index: number) {
 
 async function createOrchestrator(data: Schema) {
   const activePluginIds = selectedPlugins.value.map((p) => p.id)
-  const supervisorConfig = isSupervisor.value ? supervisorProviderRef.value?.getValue() : undefined
+  const supervisorConfig = supervisorProviderRef.value?.getValue()
   const config = { ...(supervisorConfig ?? {}), monitoring: monitoringConfig.value }
   return orchestrators.create({
     ...data,
@@ -256,7 +260,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     toast.add({ title: t('orchestrators.create.selectPluginRequired'), color: 'error' })
     return
   }
-  if (isSupervisor.value && !supervisorProviderRef.value?.isValid()) {
+  if (!supervisorProviderRef.value?.isValid()) {
     toast.add({ title: t('orchestrators.create.llmConfigRequired'), color: 'error' })
     return
   }
@@ -295,67 +299,126 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <div class="p-6 min-w-0 w-full">
           <UForm ref="createFormRef" :schema="schema" :state="state" @submit="onSubmit">
             <div class="flex flex-col gap-8 w-full">
-              <!-- Section 1: Basic -->
-              <UCard class="min-w-0 w-full">
-                <template #header>
-                  <div class="flex items-center gap-2">
-                    <p class="font-semibold">{{ t('orchestrators.create.basic') }}</p>
-                    <InfoPopover title-key="info.orchestratorSections.createBasic.title" description-key="info.orchestratorSections.createBasic.description" />
+              <LangGraphSupervisorProvider
+                ref="supervisorProviderRef"
+                :initial-value="supervisorInitialValue"
+                :org-id="orgId"
+                :supported-providers="supportedProviders"
+              >
+                <div class="flex flex-col gap-8 w-full">
+                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                    <!-- Section Basic -->
+                    <UCard class="min-w-0 h-full">
+                      <template #header>
+                        <div class="flex items-center gap-2">
+                          <p class="font-semibold">{{ t('orchestrators.create.basic') }}</p>
+                          <InfoPopover
+                            title-key="info.orchestratorSections.createBasic.title"
+                            description-key="info.orchestratorSections.createBasic.description"
+                          />
+                        </div>
+                      </template>
+                      <div class="flex flex-col gap-4">
+                        <UFormField :label="t('dashboard.name')" name="name" required>
+                          <UInput v-model="state.name" class="w-full" :placeholder="t('orchestrators.create.namePlaceholder')" />
+                        </UFormField>
+                        <UFormField :label="t('dashboard.framework')" name="framework_type" required>
+                          <USelect v-model="state.framework_type" :items="frameworkOptions" class="w-full" />
+                        </UFormField>
+                        <UFormField :label="t('dashboard.mode')" name="mode" required>
+                          <USelect v-model="state.mode" :items="modeOptions" class="w-full" />
+                        </UFormField>
+                        <UFormField :label="t('orchestrators.create.initialTier')" name="tier">
+                          <USelect v-model="state.tier" :items="tierOptions" class="w-full" />
+                        </UFormField>
+                      </div>
+                    </UCard>
+
+                    <UCard class="min-w-0 h-full">
+                      <template #header>
+                        <div class="flex items-center gap-2">
+                          <UIcon name="i-lucide-cpu" />
+                          <span class="font-semibold">{{ t('orchestrators.create.llmConfig') }}</span>
+                          <InfoPopover
+                            title-key="info.orchestratorSections.llmConfig.title"
+                            description-key="info.orchestratorSections.llmConfig.description"
+                          />
+                        </div>
+                      </template>
+                      <LangGraphDefaultLLMConfig />
+                    </UCard>
+
+                    <UCard class="min-w-0 h-full">
+                      <template #header>
+                        <div class="flex items-center gap-2">
+                          <UIcon name="i-lucide-sliders" />
+                          <span class="font-semibold">{{ t('orchestrators.additionalSettings') }}</span>
+                          <InfoPopover
+                            title-key="info.orchestratorSections.additionalSettings.title"
+                            description-key="info.orchestratorSections.additionalSettings.description"
+                          />
+                        </div>
+                      </template>
+
+                      <div class="flex flex-col gap-4">
+                        <LLMContextSettings />
+                        <OrchestratorMonitoringConfig v-model="monitoringConfig" />
+                      </div>
+                    </UCard>
                   </div>
-                </template>
-                <div class="flex flex-col gap-4">
-                  <UFormField :label="t('dashboard.name')" name="name" required>
-                    <UInput v-model="state.name" class="w-full" :placeholder="t('orchestrators.create.namePlaceholder')" />
-                  </UFormField>
-                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <UFormField :label="t('dashboard.framework')" name="framework_type" required>
-                      <USelect v-model="state.framework_type" :items="frameworkOptions" class="w-full" />
-                    </UFormField>
-                    <UFormField :label="t('dashboard.mode')" name="mode" required>
-                      <USelect v-model="state.mode" :items="modeOptions" class="w-full" />
-                    </UFormField>
-                    <UFormField :label="t('orchestrators.create.initialTier')" name="tier">
-                      <USelect v-model="state.tier" :items="tierOptions" class="w-full" />
-                    </UFormField>
-                  </div>
+
+                  <!-- Supervisor Config card (supervisor only, full width) -->
+                  <UCard v-if="isSupervisor && (cloneSource || orgDefaults !== null)" class="min-w-0 w-full">
+                    <template #header>
+                      <div class="flex items-center gap-2">
+                        <UIcon name="i-lucide-settings-2" />
+                        <p class="font-semibold">{{ t('orchestrators.create.supervisorSettings') }}</p>
+                        <InfoPopover
+                          title-key="info.orchestratorSections.supervisorLlmConfig.title"
+                          description-key="info.orchestratorSections.supervisorLlmConfig.description"
+                        />
+                      </div>
+                    </template>
+
+                    <div class="flex flex-col gap-4">
+                      <LangGraphSupervisorLLMConfig />
+                      <LangGraphSupervisorNodeConfig />
+                    </div>
+                  </UCard>
                 </div>
-              </UCard>
+              </LangGraphSupervisorProvider>
 
-              <!-- Section 2: Monitoring -->
-              <UCard class="min-w-0 w-full">
-                <template #header>
-                  <div class="flex items-center gap-2">
-                    <UIcon name="i-lucide-activity" />
-                    <span class="font-semibold">{{ t('orchestrators.monitoring') }}</span>
-                  </div>
-                </template>
-                <OrchestratorMonitoringConfig v-model="monitoringConfig" />
-              </UCard>
-
-              <!-- Section 3: Plugins -->
+              <!-- Section Plugins -->
               <UCard class="min-w-0 w-full">
                 <template #header>
                   <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                       <UIcon name="i-lucide-plug" />
                       <span class="font-semibold">{{ t('orchestrators.plugins') }}</span>
-                      <InfoPopover title-key="info.orchestratorSections.createPlugins.title" description-key="info.orchestratorSections.createPlugins.description" />
+                      <InfoPopover
+                        title-key="info.orchestratorSections.createPlugins.title"
+                        description-key="info.orchestratorSections.createPlugins.description"
+                      />
                     </div>
-                    <UButton icon="i-lucide-plus" :label="t('orchestrators.create.addPlugin')" size="sm" color="primary" variant="outline" @click="showPluginSelector = true" />
+                    <UButton
+                      icon="i-lucide-plus"
+                      :label="t('orchestrators.create.addPlugin')"
+                      size="sm"
+                      color="primary"
+                      variant="outline"
+                      @click="openPluginSelector"
+                    />
                   </div>
                 </template>
 
                 <!-- Empty state -->
-                <div
-                  v-if="selectedPlugins.length === 0"
-                  class="flex flex-col items-center justify-center py-12 gap-3 text-center"
-                >
+                <div v-if="selectedPlugins.length === 0" class="flex flex-col items-center justify-center py-12 gap-3 text-center">
                   <UIcon name="i-lucide-plug-2" class="text-4xl text-dimmed" />
                   <div>
                     <p class="font-medium">{{ t('orchestrators.create.pluginsEmpty') }}</p>
                     <p class="text-sm text-dimmed">{{ t('orchestrators.create.pluginsEmptyDesc') }}</p>
                   </div>
-                  <UButton :label="t('orchestrators.create.addFirstPlugin')" @click="showPluginSelector = true" />
+                  <UButton :label="t('orchestrators.create.addFirstPlugin')" @click="openPluginSelector" />
                 </div>
 
                 <!-- Plugin grid -->
@@ -364,14 +427,21 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     <OrchestratorPluginCard
                       v-for="(plugin, index) in selectedPlugins"
                       :key="toPluginUniquenessKey(plugin.source as string, plugin.pid, plugin.version)"
-                      :plugin="{ id: plugin.id, name: plugin.name, pid: plugin.pid, source: plugin.source as 'system' | 'org', logo: plugin.logo_image, version: plugin.version }"
+                      :plugin="{
+                        id: plugin.id,
+                        name: plugin.name,
+                        pid: plugin.pid,
+                        source: plugin.source as 'system' | 'org',
+                        logo: plugin.logo_image,
+                        version: plugin.version
+                      }"
                       :interactive="true"
                       @remove="removePlugin(index)"
                     />
                     <!-- Ghost card: browse more -->
                     <div
                       class="flex flex-col items-center justify-center gap-2 min-h-[120px] border border-dashed border-default rounded-lg text-dimmed hover:text-default cursor-pointer transition-colors"
-                      @click="showPluginSelector = true"
+                      @click="openPluginSelector"
                     >
                       <UIcon name="i-lucide-plus-circle" class="text-2xl" />
                       <span class="text-sm">{{ t('orchestrators.create.browsePlugins') }}</span>
@@ -380,56 +450,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
                   <!-- Plugin settings accordion -->
                   <USeparator :label="t('orchestrators.create.pluginSettings')" class="mt-6 mb-2" />
-                  <OrchestratorPluginSettings
-                    ref="pluginSettingsRef"
-                    :initial-value="pluginSettingsInitialValue"
-                    :org-id="orgId"
-                  />
+                  <OrchestratorPluginSettings ref="pluginSettingsRef" :initial-value="pluginSettingsInitialValue" :org-id="orgId" />
                 </template>
               </UCard>
-
-              <!-- Section 4 & 5: Supervisor Settings (when supervisor) -->
-              <template v-if="isSupervisor && (cloneSource || orgDefaults !== null)">
-                <LangGraphSupervisorProvider
-                  ref="supervisorProviderRef"
-                  :initial-value="supervisorInitialValue"
-                  :org-id="orgId"
-                  :supported-providers="supportedProviders"
-                >
-                  <UCard class="min-w-0 w-full">
-                    <template #header>
-                      <div class="flex items-center gap-2">
-                        <UIcon name="i-lucide-settings-2" />
-                        <p class="font-semibold">{{ t('orchestrators.create.supervisorSettings') }}</p>
-                        <InfoPopover title-key="info.orchestratorSections.supervisorLlmConfig.title" description-key="info.orchestratorSections.supervisorLlmConfig.description" />
-                      </div>
-                    </template>
-
-                    <div class="flex flex-col gap-4">
-                      <!-- LLM Settings sub-panel -->
-                      <div class="border border-default rounded-lg overflow-hidden">
-                        <div class="px-4 py-3 bg-elevated/50">
-                          <span class="font-medium text-sm">{{ t('orchestrators.create.llmConfig') }}</span>
-                        </div>
-                        <div class="p-4">
-                          <LangGraphSupervisorLLMConfig />
-                        </div>
-                      </div>
-
-                      <!-- Node Overrides sub-panel -->
-                      <div class="border border-default rounded-lg overflow-hidden">
-                        <div class="px-4 py-3 bg-elevated/50 flex items-center gap-2">
-                          <span class="font-medium text-sm">{{ t('orchestrators.create.nodeConfig') }}</span>
-                          <InfoPopover title-key="info.orchestratorSections.nodeConfig.title" description-key="info.orchestratorSections.nodeConfig.description" />
-                        </div>
-                        <div class="p-4">
-                          <LangGraphSupervisorNodeConfig />
-                        </div>
-                      </div>
-                    </div>
-                  </UCard>
-                </LangGraphSupervisorProvider>
-              </template>
             </div>
 
             <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">

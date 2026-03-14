@@ -132,123 +132,123 @@ const tabs = computed(() => [
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel id="admin-settings">
-    <template #header>
-      <UDashboardNavbar :title="t('admin.globalSettings')">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-        <template #right>
-          <InfoPopover title-key="info.admin.globalSettings.title" description-key="info.admin.globalSettings.description" />
-        </template>
-      </UDashboardNavbar>
-    </template>
+      <template #header>
+        <UDashboardNavbar :title="t('admin.globalSettings')">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+          <template #right>
+            <InfoPopover title-key="info.admin.globalSettings.title" description-key="info.admin.globalSettings.description" />
+          </template>
+        </UDashboardNavbar>
+      </template>
 
-    <template #body>
-      <div class="p-6 flex flex-col gap-6">
-        <UTabs :items="tabs" variant="link">
-          <template #settings>
-            <div class="flex flex-col gap-6 pt-4">
-              <UAlert color="info" icon="i-lucide-radio" :title="t('admin.platformDefaults')" variant="subtle" />
+      <template #body>
+        <div class="p-6 flex flex-col gap-6">
+          <UTabs :items="tabs" variant="link">
+            <template #settings>
+              <div class="flex flex-col gap-6 pt-4">
+                <UAlert color="info" icon="i-lucide-radio" :title="t('admin.platformDefaults')" variant="subtle" />
 
-              <UCard v-for="group in allGroups" :key="group.label">
-                <template #header>
-                  <p class="font-semibold text-sm">{{ group.label }}</p>
-                </template>
-                <div class="flex flex-col divide-y divide-default">
-                  <div v-for="setting in group.items" :key="setting.key" class="py-4 flex items-start gap-4">
-                    <div class="flex-1">
-                      <p class="font-medium text-sm">{{ setting.description }}</p>
-                      <p class="text-dimmed text-xs font-mono mt-0.5">{{ setting.key }}</p>
-                      <UBadge class="mt-1" size="xs" variant="subtle">{{ setting.value_type }}</UBadge>
-                    </div>
-                    <div class="flex items-center gap-4">
-                      <div v-if="!NON_OVERRIDABLE_SETTING_KEYS.has(setting.key)" class="flex items-center gap-1.5">
-                        <UToggle v-model="overridableValues[setting.key]" size="sm" />
-                        <span class="text-xs text-dimmed">{{ t('admin.overridable') }}</span>
+                <UCard v-for="group in allGroups" :key="group.label">
+                  <template #header>
+                    <p class="font-semibold text-sm">{{ group.label }}</p>
+                  </template>
+                  <div class="flex flex-col divide-y divide-default">
+                    <div v-for="setting in group.items" :key="setting.key" class="py-4 flex items-start gap-4">
+                      <div class="flex-1">
+                        <p class="font-medium text-sm">{{ setting.description }}</p>
+                        <p class="text-dimmed text-xs font-mono mt-0.5">{{ setting.key }}</p>
+                        <UBadge class="mt-1" size="xs" variant="subtle">{{ setting.value_type }}</UBadge>
                       </div>
-                      <div class="flex items-center gap-2 min-w-56">
-                        <UInput v-model="editValues[setting.key]" class="flex-1" size="sm" />
+                      <div class="flex items-center gap-4">
+                        <div v-if="!NON_OVERRIDABLE_SETTING_KEYS.has(setting.key)" class="flex items-center gap-1.5">
+                          <UToggle v-model="overridableValues[setting.key]" size="sm" />
+                          <span class="text-xs text-dimmed">{{ t('admin.overridable') }}</span>
+                        </div>
+                        <div class="flex items-center gap-2 min-w-56">
+                          <UInput v-model="editValues[setting.key]" class="flex-1" size="sm" />
+                          <ConfirmActionPopover
+                            label-key="common.save"
+                            size="sm"
+                            confirm-title-key="common.saveConfirmTitle"
+                            confirm-message-key="common.saveConfirmMessage"
+                            confirm-label-key="common.saveConfirmFriendly"
+                            :loading="saving[setting.key]"
+                            :on-confirm="() => saveSetting(setting.key)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </UCard>
+
+                <p v-if="!settings?.length" class="text-dimmed text-sm text-center py-4">{{ t('admin.noGlobalSettings') }}</p>
+              </div>
+            </template>
+
+            <template #tiers>
+              <div class="flex flex-col gap-6 pt-4">
+                <UAlert
+                  color="info"
+                  icon="i-lucide-layers"
+                  :title="t('admin.subscriptionTiers')"
+                  :description="t('admin.tierQuotasDescription')"
+                  variant="subtle"
+                />
+
+                <div v-if="tiers?.length" class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                  <UCard v-for="tier in tiers" :key="tier.tier_name">
+                    <template #header>
+                      <div class="flex items-center gap-2">
+                        <UBadge :color="subscriptionTierColor(tier.tier_name)" :label="tier.tier_name?.toUpperCase()" variant="subtle" />
+                        <p class="font-semibold text-sm capitalize">{{ tier.quota.description || tier.tier_name }}</p>
+                      </div>
+                    </template>
+
+                    <div v-if="draftQuotas[tier.tier_name]" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <UFormField v-for="field in QUOTA_FIELDS" :key="field.key" :label="field.label" :description="field.hint">
+                        <div class="relative w-full">
+                          <UInput v-model.number="draftQuotas[tier.tier_name][field.key]" type="number" class="w-full" />
+                          <span
+                            v-if="draftQuotas[tier.tier_name][field.key] === -1"
+                            class="absolute right-8 top-1/2 -translate-y-1/2 text-xs text-success pointer-events-none"
+                          >
+                            {{ t('common.unlimited') }}
+                          </span>
+                        </div>
+                      </UFormField>
+                    </div>
+
+                    <template #footer>
+                      <div class="flex justify-end">
                         <ConfirmActionPopover
                           label-key="common.save"
+                          icon="i-lucide-save"
                           size="sm"
                           confirm-title-key="common.saveConfirmTitle"
                           confirm-message-key="common.saveConfirmMessage"
                           confirm-label-key="common.saveConfirmFriendly"
-                          :loading="saving[setting.key]"
-                          :on-confirm="() => saveSetting(setting.key)"
+                          :loading="tierSaving[tier.tier_name]"
+                          :on-confirm="() => saveTier(tier.tier_name)"
                         />
                       </div>
-                    </div>
-                  </div>
+                    </template>
+                  </UCard>
                 </div>
-              </UCard>
 
-              <p v-if="!settings?.length" class="text-dimmed text-sm text-center py-4">{{ t('admin.noGlobalSettings') }}</p>
-            </div>
-          </template>
-
-          <template #tiers>
-            <div class="flex flex-col gap-6 pt-4">
-              <UAlert
-                color="info"
-                icon="i-lucide-layers"
-                :title="t('admin.subscriptionTiers')"
-                :description="t('admin.tierQuotasDescription')"
-                variant="subtle"
-              />
-
-              <div v-if="tiers?.length" class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                <UCard v-for="tier in tiers" :key="tier.tier_name">
-                  <template #header>
-                    <div class="flex items-center gap-2">
-                      <UBadge :color="subscriptionTierColor(tier.tier_name)" :label="tier.tier_name?.toUpperCase()" variant="subtle" />
-                      <p class="font-semibold text-sm capitalize">{{ tier.quota.description || tier.tier_name }}</p>
-                    </div>
-                  </template>
-
-                  <div v-if="draftQuotas[tier.tier_name]" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <UFormField v-for="field in QUOTA_FIELDS" :key="field.key" :label="field.label" :description="field.hint">
-                      <div class="relative w-full">
-                        <UInput v-model.number="draftQuotas[tier.tier_name][field.key]" type="number" class="w-full" />
-                        <span
-                          v-if="draftQuotas[tier.tier_name][field.key] === -1"
-                          class="absolute right-8 top-1/2 -translate-y-1/2 text-xs text-success pointer-events-none"
-                        >
-                          {{ t('common.unlimited') }}
-                        </span>
-                      </div>
-                    </UFormField>
-                  </div>
-
-                  <template #footer>
-                    <div class="flex justify-end">
-                      <ConfirmActionPopover
-                        label-key="common.save"
-                        icon="i-lucide-save"
-                        size="sm"
-                        confirm-title-key="common.saveConfirmTitle"
-                        confirm-message-key="common.saveConfirmMessage"
-                        confirm-label-key="common.saveConfirmFriendly"
-                        :loading="tierSaving[tier.tier_name]"
-                        :on-confirm="() => saveTier(tier.tier_name)"
-                      />
-                    </div>
-                  </template>
-                </UCard>
+                <p v-else class="text-dimmed text-sm text-center py-4">{{ t('admin.noTierDefinitions') }}</p>
               </div>
+            </template>
 
-              <p v-else class="text-dimmed text-sm text-center py-4">{{ t('admin.noTierDefinitions') }}</p>
-            </div>
-          </template>
-
-          <template #llm-providers>
-            <div class="pt-4">
-              <LLMProviderCatalog />
-            </div>
-          </template>
-        </UTabs>
-      </div>
-    </template>
+            <template #llm-providers>
+              <div class="pt-4">
+                <LLMProviderCatalog />
+              </div>
+            </template>
+          </UTabs>
+        </div>
+      </template>
     </UDashboardPanel>
   </div>
 </template>

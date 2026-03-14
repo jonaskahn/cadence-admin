@@ -142,6 +142,7 @@ export interface PluginSettingsEntry {
   name: string
   active: boolean
   source?: 'system' | 'org'
+  logo_image?: string | null
   settings: PluginSetting[]
   /** Schema from plugin metadata; used for correct labels, types, and validation */
   settings_schema?: PluginSettingSchema[]

@@ -73,170 +73,189 @@ async function onPurge(row: OrchestratorResponse) {
     purging.value = null
   }
 }
+
+async function handleLoadConfirm(row: OrchestratorResponse, close: () => void) {
+  await onLoad(row)
+  close()
+}
+
+async function handleUnloadConfirm(row: OrchestratorResponse, close: () => void) {
+  await onUnload(row)
+  close()
+}
+
+async function handleDeactivateConfirm(row: OrchestratorResponse, close: () => void) {
+  await onDeactivate(row)
+  close()
+}
+
+async function handleActivateConfirm(row: OrchestratorResponse, close: () => void) {
+  await onActivate(row)
+  close()
+}
+
+async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) {
+  await onPurge(row)
+  close()
+}
 </script>
 
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel id="orchestrators" :ui="{ body: 'min-w-0' }">
-    <template #header>
-      <UDashboardNavbar :title="t('orchestrators.title')">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-        <template #right>
-          <div class="flex items-center gap-2">
-            <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
-            <UButton v-if="auth.isAdmin.value" icon="i-lucide-plus" :label="t('dashboard.create')" :to="localePath('/orchestrators/create')" />
-          </div>
-        </template>
-      </UDashboardNavbar>
-    </template>
+      <template #header>
+        <UDashboardNavbar :title="t('orchestrators.title')">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+          <template #right>
+            <div class="flex items-center gap-2">
+              <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
+              <UButton v-if="auth.isAdmin.value" icon="i-lucide-plus" :label="t('dashboard.create')" :to="localePath('/orchestrators/create')" />
+            </div>
+          </template>
+        </UDashboardNavbar>
+      </template>
 
-    <template #body>
-      <div class="p-6 min-w-0 w-full">
-        <UCard>
-          <UTable
-            :columns="columns"
-            :data="orchestrators.orchestrators.value"
-            :loading="orchestrators.loading.value"
-            :meta="{ class: { tr: (row) => (row?.original?.is_deleted ? 'opacity-60' : '') } }"
-          >
-            <template #tier-cell="{ row }">
-              <UBadge :color="tierColor(row.original.tier)" size="sm" variant="subtle">
-                {{ row?.original?.tier?.toUpperCase() }}
-              </UBadge>
-            </template>
-
-            <template #status-cell="{ row }">
-              <div class="flex items-center gap-1.5">
-                <UBadge :color="statusColor(row.original.status)" size="sm" variant="subtle">
-                  {{ row.original.status }}
+      <template #body>
+        <div class="p-6 min-w-0 w-full">
+          <UCard>
+            <UTable
+              :columns="columns"
+              :data="orchestrators.orchestrators.value"
+              :loading="orchestrators.loading.value"
+              :meta="{ class: { tr: (row) => (row?.original?.is_deleted ? 'opacity-60' : '') } }"
+            >
+              <template #tier-cell="{ row }">
+                <UBadge :color="tierColor(row.original.tier)" size="sm" variant="subtle">
+                  {{ row?.original?.tier?.toUpperCase() }}
                 </UBadge>
-                <UBadge v-if="row.original.is_deleted" color="neutral" size="sm" variant="subtle">
-                  {{ t('common.deleted') }}
-                </UBadge>
-              </div>
-            </template>
+              </template>
 
-            <template #ready-cell="{ row }">
-              <UIcon v-if="row.original.is_ready" class="text-success size-4" name="i-lucide-circle-check" />
-              <UIcon v-else class="text-muted size-4" name="i-lucide-circle-x" />
-            </template>
+              <template #status-cell="{ row }">
+                <div class="flex items-center gap-1.5">
+                  <UBadge :color="statusColor(row.original.status)" size="sm" variant="subtle">
+                    {{ row.original.status }}
+                  </UBadge>
+                  <UBadge v-if="row.original.is_deleted" color="neutral" size="sm" variant="subtle">
+                    {{ t('common.deleted') }}
+                  </UBadge>
+                </div>
+              </template>
 
-            <template #actions-cell="{ row }">
-              <div class="flex items-center gap-1">
-                <UButton :to="localePath(`/orchestrators/${row.original.instance_id}`)" icon="i-lucide-info" :label="t('common.view')" size="xs" variant="outline" />
-                <template v-if="auth.isAdmin.value">
-                  <UButton icon="i-lucide-copy" :label="t('orchestrators.clone')" size="xs" variant="outline" @click="onClone(row.original)" />
-                  <template v-if="row.original.status === 'active'">
-                    <UPopover>
-                      <UButton icon="i-lucide-play" :label="t('orchestrators.load')" size="xs" variant="outline" />
-                      <template #content="{ close }">
-                        <div class="p-4 min-w-48">
-                          <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.loadConfirm', { name: row.original.name }) }}</p>
-                          <div class="flex justify-end gap-2">
-                            <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                            <UButton
-                              variant="outline"
-                              :label="t('orchestrators.load')"
-                              :loading="loadingId === row.original.instance_id"
-                              @click="async () => { await onLoad(row.original); close() }"
-                            />
+              <template #ready-cell="{ row }">
+                <UIcon v-if="row.original.is_ready" class="text-success size-4" name="i-lucide-circle-check" />
+                <UIcon v-else class="text-dimmed size-4" name="i-lucide-circle-x" />
+              </template>
+
+              <template #actions-cell="{ row }">
+                <div class="flex items-center gap-1">
+                  <UButton
+                    :to="localePath(`/orchestrators/${row.original.instance_id}`)"
+                    icon="i-lucide-info"
+                    :label="t('common.view')"
+                    size="xs"
+                    variant="outline"
+                  />
+                  <template v-if="auth.isAdmin.value">
+                    <UButton icon="i-lucide-copy" :label="t('orchestrators.clone')" size="xs" variant="outline" @click="onClone(row.original)" />
+                    <template v-if="row.original.status === 'active'">
+                      <UPopover>
+                        <UButton icon="i-lucide-play" :label="t('orchestrators.load')" size="xs" variant="outline" />
+                        <template #content="{ close }">
+                          <div class="p-4 min-w-48">
+                            <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.loadConfirm', { name: row.original.name }) }}</p>
+                            <div class="flex justify-end gap-2">
+                              <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
+                              <UButton
+                                variant="outline"
+                                :label="t('orchestrators.load')"
+                                :loading="loadingId === row.original.instance_id"
+                                @click="handleLoadConfirm(row.original, close)"
+                              />
+                            </div>
                           </div>
-                        </div>
-                      </template>
-                    </UPopover>
-                    <UPopover>
-                      <UButton icon="i-lucide-square" :label="t('orchestrators.unload')" size="xs" variant="outline" />
-                      <template #content="{ close }">
-                        <div class="p-4 min-w-48">
-                          <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.unloadConfirm', { name: row.original.name }) }}</p>
-                          <div class="flex justify-end gap-2">
-                            <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                            <UButton
-                              variant="outline"
-                              :label="t('orchestrators.unload')"
-                              :loading="unloading === row.original.instance_id"
-                              @click="async () => { await onUnload(row.original); close() }"
-                            />
+                        </template>
+                      </UPopover>
+                      <UPopover>
+                        <UButton icon="i-lucide-square" :label="t('orchestrators.unload')" size="xs" variant="outline" />
+                        <template #content="{ close }">
+                          <div class="p-4 min-w-48">
+                            <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.unloadConfirm', { name: row.original.name }) }}</p>
+                            <div class="flex justify-end gap-2">
+                              <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
+                              <UButton
+                                variant="outline"
+                                :label="t('orchestrators.unload')"
+                                :loading="unloading === row.original.instance_id"
+                                @click="handleUnloadConfirm(row.original, close)"
+                              />
+                            </div>
                           </div>
-                        </div>
-                      </template>
-                    </UPopover>
-                    <UPopover>
-                      <UButton
-                        color="error"
-                        icon="i-lucide-route-off"
-                        :label="t('orchestrators.deactivate')"
-                        size="xs"
-                        variant="outline"
-                      />
+                        </template>
+                      </UPopover>
+                      <UPopover>
+                        <UButton color="error" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="xs" variant="outline" />
+                        <template #content="{ close }">
+                          <div class="p-4 min-w-48">
+                            <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: row.original.name }) }}</p>
+                            <div class="flex justify-end gap-2">
+                              <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
+                              <UButton
+                                variant="outline"
+                                color="primary"
+                                :label="t('orchestrators.deactivate')"
+                                :loading="deactivating === row.original.instance_id"
+                                @click="handleDeactivateConfirm(row.original, close)"
+                              />
+                            </div>
+                          </div>
+                        </template>
+                      </UPopover>
+                    </template>
+                    <UPopover v-else>
+                      <UButton color="success" icon="i-lucide-route" :label="t('orchestrators.activate')" size="xs" variant="outline" />
                       <template #content="{ close }">
                         <div class="p-4 min-w-48">
-                          <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: row.original.name }) }}</p>
+                          <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.activateConfirm', { name: row.original.name }) }}</p>
                           <div class="flex justify-end gap-2">
                             <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                             <UButton
                               variant="outline"
-                              color="primary"
-                              :label="t('orchestrators.deactivate')"
-                              :loading="deactivating === row.original.instance_id"
-                              @click="async () => { await onDeactivate(row.original); close() }"
+                              color="success"
+                              :label="t('orchestrators.activate')"
+                              :loading="activating === row.original.instance_id"
+                              @click="handleActivateConfirm(row.original, close)"
                             />
                           </div>
                         </div>
                       </template>
                     </UPopover>
                   </template>
-                  <UPopover v-else>
-                    <UButton
-                      color="success"
-                      icon="i-lucide-route"
-                      :label="t('orchestrators.activate')"
-                      size="xs"
-                      variant="outline"
-                    />
+                  <UPopover v-if="auth.isSysAdmin.value && row.original.is_deleted">
+                    <UButton color="neutral" icon="i-lucide-shredder" size="xs" />
                     <template #content="{ close }">
                       <div class="p-4 min-w-48">
-                        <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.activateConfirm', { name: row.original.name }) }}</p>
+                        <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton
                             variant="outline"
-                            color="success"
-                            :label="t('orchestrators.activate')"
-                            :loading="activating === row.original.instance_id"
-                            @click="async () => { await onActivate(row.original); close() }"
+                            color="error"
+                            :label="t('common.purge')"
+                            :loading="purging === row.original.instance_id"
+                            @click="handlePurgeConfirm(row.original, close)"
                           />
                         </div>
                       </div>
                     </template>
                   </UPopover>
-                </template>
-                <UPopover v-if="auth.isSysAdmin.value && row.original.is_deleted">
-                  <UButton color="neutral" icon="i-lucide-shredder" size="xs" />
-                  <template #content="{ close }">
-                    <div class="p-4 min-w-48">
-                      <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
-                      <div class="flex justify-end gap-2">
-                        <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                        <UButton
-                          variant="outline"
-                          color="error"
-                          :label="t('common.purge')"
-                          :loading="purging === row.original.instance_id"
-                          @click="async () => { await onPurge(row.original); close() }"
-                        />
-                      </div>
-                    </div>
-                  </template>
-                </UPopover>
-              </div>
-            </template>
-          </UTable>
-        </UCard>
-      </div>
-    </template>
+                </div>
+              </template>
+            </UTable>
+          </UCard>
+        </div>
+      </template>
     </UDashboardPanel>
   </div>
 </template>

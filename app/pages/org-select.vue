@@ -13,6 +13,18 @@ function roleLabelKey(role: string): string {
   return 'roles.member'
 }
 
+function selectOrg(orgId: string) {
+  auth.selectOrg(orgId)
+}
+
+function loadOrgs() {
+  auth.loadOrgs()
+}
+
+function logout() {
+  auth.logout()
+}
+
 if (!auth.isAuthenticated.value) {
   await navigateTo(localePath('/login'))
 }
@@ -33,12 +45,7 @@ onMounted(async () => {
     </div>
 
     <div class="flex flex-col gap-3">
-      <UCard
-        v-for="org in auth.orgList.value"
-        :key="org.org_id"
-        class="cursor-pointer hover:bg-elevated/50 transition-colors"
-        @click="auth.selectOrg(org.org_id)"
-      >
+      <UCard v-for="org in auth.orgList.value" :key="org.org_id" class="cursor-pointer hover:bg-elevated/50 transition-colors" @click="selectOrg(org.org_id)">
         <div class="flex items-center justify-between">
           <div>
             <p class="font-medium">
@@ -56,12 +63,12 @@ onMounted(async () => {
 
       <UCard v-if="auth.orgList.value.length === 0" class="text-center py-8">
         <p class="text-dimmed">{{ t('auth.noOrgsAvailable') }}</p>
-        <UButton class="mt-2" :label="t('common.refresh')" size="sm" variant="outline" @click="auth.loadOrgs()" />
+        <UButton class="mt-2" :label="t('common.refresh')" size="sm" variant="outline" @click="loadOrgs" />
       </UCard>
     </div>
 
     <div class="text-center">
-      <UButton color="neutral" :label="t('auth.signOut')" size="sm" variant="outline" @click="auth.logout()" />
+      <UButton color="neutral" :label="t('auth.signOut')" size="sm" variant="outline" @click="logout" />
     </div>
   </div>
 </template>

@@ -9,6 +9,11 @@ const props = defineProps<{
   initialValue?: LLMConfigResponse // present → edit mode
 }>()
 const emit = defineEmits<{ close: [] }>()
+
+function handleClose() {
+  emit('close')
+}
+
 const toast = useToast()
 const { t } = useI18n()
 const loading = ref(false)
@@ -95,7 +100,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <UFormField :label="t('llmConfig.provider')" name="provider">
-        <div v-if="isEdit" class="text-sm py-1.5 text-muted">
+        <div v-if="isEdit" class="text-xs py-1.5 text-dimmed">
           {{ providerLabel(provider) }}
         </div>
         <USelect v-else v-model="state.provider" :items="providerOptions" class="w-full" value-key="value" label-key="label" />
@@ -114,7 +119,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="emit('close')" />
+        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="handleClose" />
         <ConfirmActionPopover
           :label-key="isEdit ? 'common.save' : 'settings.addConfig'"
           :confirm-title-key="isEdit ? 'common.saveConfirmTitle' : 'settings.addConfigTitle'"

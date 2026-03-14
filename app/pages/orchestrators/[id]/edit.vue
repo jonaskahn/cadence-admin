@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
-import type { FrameworkSupportedProvidersResponse, LLMConfigResponse, OrchestratorResponse } from '~/types'
-import { providerLabel } from '~/utils'
+import type { FrameworkSupportedProvidersResponse, OrchestratorResponse } from '~/types'
 import type { MonitoringConfig } from '~/components/orchestrators/OrchestratorMonitoringConfig.vue'
 
 const route = useRoute()
@@ -56,10 +55,6 @@ const tierOptions = computed(() => [
   { label: t('orchestrators.edit.tierHot'), value: 'hot' }
 ])
 
-const { data: llmConfigs } = useFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, { watch: [orgId] })
-
-const defaultLlmConfigId = ref<string | undefined>(undefined)
-
 const { data: frameworkCapabilities } = await useFetch<FrameworkSupportedProvidersResponse>(
   () => `/api/frameworks/${orchestrator.value?.framework_type ?? 'langgraph'}/supported-providers`,
   { watch: [() => orchestrator.value?.framework_type] }
@@ -69,24 +64,12 @@ const supportedProviders = computed(() => (frameworkCapabilities.value?.supports
 const supportedModes = computed(() => frameworkCapabilities.value?.supported_modes ?? [])
 const isSupervisor = computed(() => orchestrator.value?.mode === 'supervisor' && supportedModes.value.includes('supervisor'))
 
-const llmConfigOptions = computed(() => {
-  const configs = llmConfigs.value ?? []
-  const currentId = orchestrator.value?.config?.default_llm_config_id
-  return configs
-    .filter((c) => !c.is_deleted && (c.is_enabled !== false || c.id === currentId))
-    .map((c) => ({
-      label: c.is_enabled === false ? `${c.name} (${providerLabel(c.provider)}) — ${t('common.disabled')}` : `${c.name} (${providerLabel(c.provider)})`,
-      value: c.id
-    }))
-})
-
 watch(
   orchestrator,
   (o) => {
     if (!o) return
     name.value = o.name
     tier.value = o.tier as 'hot' | 'warm' | 'cold'
-    defaultLlmConfigId.value = o.config?.default_llm_config_id != null ? String(o.config.default_llm_config_id) : undefined
     const existing = (o.config as Record<string, unknown> | undefined)?.monitoring as MonitoringConfig | undefined
     if (existing) {
       monitoringConfig.value = {
@@ -112,7 +95,7 @@ async function patchConfig(config: Record<string, unknown>) {
 }
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  if (isSupervisor.value && !supervisorProviderRef.value?.isValid()) {
+  if (!supervisorProviderRef.value?.isValid()) {
     toast.add({ title: t('orchestrators.edit.llmConfigRequired'), color: 'error' })
     return
   }
@@ -120,19 +103,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   try {
     await patchMetadata({ name: event.data.name, tier: event.data.tier })
-
-    if (isSupervisor.value && supervisorProviderRef.value) {
-      const supervisorConfig = supervisorProviderRef.value.getValue()
-      await patchConfig({ ...supervisorConfig, monitoring: monitoringConfig.value })
-    } else if (!isSupervisor.value && defaultLlmConfigId.value !== undefined) {
-      await orchestrators.updateMetadata(instanceId, {
-        default_llm_config_id: defaultLlmConfigId.value || null
-      })
-      await patchConfig({ monitoring: monitoringConfig.value })
-    } else {
-      await patchConfig({ monitoring: monitoringConfig.value })
-    }
-
+    const supervisorConfig = supervisorProviderRef.value?.getValue()
+    await patchConfig({ ...(supervisorConfig ?? {}), monitoring: monitoringConfig.value })
     await router.push(localePath(`/orchestrators/${instanceId}`))
   } finally {
     loading.value = false
@@ -143,113 +115,149 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel :id="`orchestrator-edit-${instanceId}`" :ui="{ body: 'min-w-0' }">
-    <template #header>
-      <UDashboardNavbar :title="orchestrator?.name ?? t('orchestrators.edit.title')">
-        <template #leading>
-          <UButton icon="i-lucide-arrow-left" :to="localePath(`/orchestrators/${instanceId}`)" variant="outline" />
-        </template>
-        <template #right>
-          <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
-        </template>
-      </UDashboardNavbar>
-    </template>
+      <template #header>
+        <UDashboardNavbar :title="orchestrator?.name ?? t('orchestrators.edit.title')">
+          <template #leading>
+            <UButton icon="i-lucide-arrow-left" :to="localePath(`/orchestrators/${instanceId}`)" variant="outline" />
+          </template>
+          <template #right>
+            <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
+          </template>
+        </UDashboardNavbar>
+      </template>
 
-    <template #body>
-      <div v-if="status === 'pending'" class="p-6 w-full">
-        <div class="flex flex-col gap-4">
-          <USkeleton class="h-10 w-full" />
-          <USkeleton class="h-10 w-full" />
-          <USkeleton class="h-32 w-full" />
+      <template #body>
+        <div v-if="status === 'pending'" class="p-6 w-full">
+          <div class="flex flex-col gap-4">
+            <USkeleton class="h-10 w-full" />
+            <USkeleton class="h-10 w-full" />
+            <USkeleton class="h-32 w-full" />
+          </div>
         </div>
-      </div>
 
-      <UAlert v-else-if="error" color="error" :description="error.message" :title="t('orchestrators.edit.failedLoad')" class="m-6" />
+        <UAlert v-else-if="error" color="error" :description="error.message" :title="t('orchestrators.edit.failedLoad')" class="m-6" />
 
-      <div v-else-if="orchestrator" class="p-6 min-w-0 w-full">
-        <UForm ref="orchestratorEditFormRef" :schema="schema" :state="{ name, tier }" @submit="onSubmit">
-          <div class="flex flex-col gap-8 w-full">
-            <UCard class="min-w-0 w-full">
-              <template #header>
-                <div class="flex items-center gap-2">
-                  <p class="font-semibold">{{ t('orchestrators.edit.basic') }}</p>
-                  <InfoPopover title-key="info.orchestratorSections.editBasic.title" description-key="info.orchestratorSections.editBasic.description" />
-                </div>
-              </template>
-              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <UFormField :label="t('dashboard.name')" name="name" required>
-                  <UInput v-model="name" class="w-full" :placeholder="t('orchestrators.edit.namePlaceholder')" />
-                </UFormField>
-                <UFormField :label="t('dashboard.tier')" name="tier">
-                  <USelect v-model="tier" :items="tierOptions" class="w-full" />
-                </UFormField>
-                <UFormField :description="t('orchestrators.edit.immutableAfterCreation')" :label="t('dashboard.framework')">
-                  <UInput :model-value="orchestrator.framework_type" class="w-full" disabled />
-                </UFormField>
-                <UFormField :description="t('orchestrators.edit.immutableAfterCreation')" :label="t('dashboard.mode')">
-                  <UInput :model-value="orchestrator.mode" class="w-full" disabled />
-                </UFormField>
-                <UFormField
-                  v-if="!isSupervisor"
-                  :description="t('orchestrators.edit.llmConfigForOrchestrator')"
-                  :label="t('settings.defaultLlmConfig')"
-                  class="sm:col-span-2"
-                >
-                  <USelect
-                    v-model="defaultLlmConfigId"
-                    :items="llmConfigOptions"
-                    class="w-full"
-                    :placeholder="t('orchestrators.edit.placeholderSelectConfig')"
-                  />
-                </UFormField>
-              </div>
-              <USeparator class="my-4" />
-              <OrchestratorMonitoringConfig v-model="monitoringConfig" />
-            </UCard>
-
-            <template v-if="isSupervisor">
-              <USeparator :label="t('orchestrators.create.supervisorSettings')" />
+        <div v-else-if="orchestrator" class="p-6 min-w-0 w-full">
+          <UForm ref="orchestratorEditFormRef" :schema="schema" :state="{ name, tier }" @submit="onSubmit">
+            <div class="flex flex-col gap-8 w-full">
+              <!-- Provider wraps Basic + Additional Settings + LLM Config + Supervisor Config -->
               <LangGraphSupervisorProvider
                 ref="supervisorProviderRef"
                 :initial-value="orchestrator.config"
                 :org-id="orgId"
                 :supported-providers="supportedProviders"
               >
-                <UCard class="min-w-0 w-full">
-                  <template #header>
-                    <div class="flex items-center gap-2">
-                      <p class="font-semibold">{{ t('orchestrators.create.llmConfig') }}</p>
-                      <InfoPopover title-key="info.orchestratorSections.supervisorLlmConfig.title" description-key="info.orchestratorSections.supervisorLlmConfig.description" />
-                    </div>
-                  </template>
-                  <LangGraphSupervisorLLMConfig />
-                </UCard>
-                <UCard class="min-w-0 w-full">
-                  <template #header>
-                    <div class="flex items-center gap-2">
-                      <p class="font-semibold">{{ t('orchestrators.create.nodeConfig') }}</p>
-                      <InfoPopover title-key="info.orchestratorSections.nodeConfig.title" description-key="info.orchestratorSections.nodeConfig.description" />
-                    </div>
-                  </template>
-                  <LangGraphSupervisorNodeConfig />
-                </UCard>
-              </LangGraphSupervisorProvider>
-            </template>
-          </div>
+                <div class="flex flex-col gap-8 w-full">
+                  <!-- 3-column grid: Basic, Additional Settings, LLM Config -->
+                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                    <!-- Section Basic -->
+                    <UCard class="min-w-0 h-full">
+                      <template #header>
+                        <div class="flex items-center gap-2">
+                          <p class="font-semibold">{{ t('orchestrators.edit.basic') }}</p>
+                          <InfoPopover
+                            title-key="info.orchestratorSections.editBasic.title"
+                            description-key="info.orchestratorSections.editBasic.description"
+                          />
+                        </div>
+                      </template>
+                      <div class="flex flex-col gap-4">
+                        <UFormField :label="t('dashboard.name')" name="name" required>
+                          <UInput v-model="name" class="w-full" :placeholder="t('orchestrators.edit.namePlaceholder')" />
+                        </UFormField>
+                        <UFormField :label="t('dashboard.tier')" name="tier">
+                          <USelect v-model="tier" :items="tierOptions" class="w-full" />
+                        </UFormField>
+                        <UFormField :description="t('orchestrators.edit.immutableAfterCreation')">
+                          <template #label>
+                            <div class="flex items-center gap-1">
+                              <span>{{ t('dashboard.framework') }}</span>
+                              <UIcon name="i-lucide-lock" class="text-xs text-dimmed" />
+                            </div>
+                          </template>
+                          <UInput :model-value="orchestrator.framework_type" class="w-full" disabled />
+                        </UFormField>
+                        <UFormField :description="t('orchestrators.edit.immutableAfterCreation')">
+                          <template #label>
+                            <div class="flex items-center gap-1">
+                              <span>{{ t('dashboard.mode') }}</span>
+                              <UIcon name="i-lucide-lock" class="text-xs text-dimmed" />
+                            </div>
+                          </template>
+                          <UInput :model-value="orchestrator.mode" class="w-full" disabled />
+                        </UFormField>
+                      </div>
+                    </UCard>
 
-          <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">
-            <UButton color="neutral" :label="t('common.cancel')" :to="localePath(`/orchestrators/${instanceId}`)" variant="outline" />
-            <ConfirmActionPopover
-              label-key="common.save"
-              confirm-title-key="common.saveConfirmTitle"
-              confirm-message-key="common.saveConfirmMessage"
-              confirm-label-key="common.saveConfirmFriendly"
-              :loading="loading"
-              :on-confirm="() => orchestratorEditFormRef?.$el?.requestSubmit?.()"
-            />
-          </div>
-        </UForm>
-      </div>
-    </template>
+                    <UCard class="min-w-0 h-full">
+                      <template #header>
+                        <div class="flex items-center gap-2">
+                          <UIcon name="i-lucide-cpu" />
+                          <span class="font-semibold">{{ t('orchestrators.create.llmConfig') }}</span>
+                          <InfoPopover
+                            title-key="info.orchestratorSections.llmConfig.title"
+                            description-key="info.orchestratorSections.llmConfig.description"
+                          />
+                        </div>
+                      </template>
+                      <LangGraphDefaultLLMConfig />
+                    </UCard>
+
+                    <UCard class="min-w-0 h-full">
+                      <template #header>
+                        <div class="flex items-center gap-2">
+                          <UIcon name="i-lucide-sliders" />
+                          <span class="font-semibold">{{ t('orchestrators.additionalSettings') }}</span>
+                          <InfoPopover
+                            title-key="info.orchestratorSections.additionalSettings.title"
+                            description-key="info.orchestratorSections.additionalSettings.description"
+                          />
+                        </div>
+                      </template>
+
+                      <div class="flex flex-col gap-4">
+                        <LLMContextSettings />
+                        <OrchestratorMonitoringConfig v-model="monitoringConfig" />
+                      </div>
+                    </UCard>
+                  </div>
+
+                  <!-- Supervisor Config card (supervisor only, full width) -->
+                  <UCard v-if="isSupervisor" class="min-w-0 w-full">
+                    <template #header>
+                      <div class="flex items-center gap-2">
+                        <UIcon name="i-lucide-settings-2" />
+                        <p class="font-semibold">{{ t('orchestrators.create.supervisorSettings') }}</p>
+                        <InfoPopover
+                          title-key="info.orchestratorSections.supervisorLlmConfig.title"
+                          description-key="info.orchestratorSections.supervisorLlmConfig.description"
+                        />
+                      </div>
+                    </template>
+
+                    <div class="flex flex-col gap-4">
+                      <LangGraphSupervisorLLMConfig />
+                      <LangGraphSupervisorNodeConfig />
+                    </div>
+                  </UCard>
+                </div>
+              </LangGraphSupervisorProvider>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">
+              <UButton color="neutral" :label="t('common.cancel')" :to="localePath(`/orchestrators/${instanceId}`)" variant="outline" />
+              <ConfirmActionPopover
+                label-key="common.save"
+                confirm-title-key="common.saveConfirmTitle"
+                confirm-message-key="common.saveConfirmMessage"
+                confirm-label-key="common.saveConfirmFriendly"
+                :loading="loading"
+                :on-confirm="() => orchestratorEditFormRef?.$el?.requestSubmit?.()"
+              />
+            </div>
+          </UForm>
+        </div>
+      </template>
     </UDashboardPanel>
   </div>
 </template>

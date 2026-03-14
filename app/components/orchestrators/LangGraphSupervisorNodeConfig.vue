@@ -15,6 +15,19 @@ function nodeLabel(key: NodeKey): string {
 function modelDescription(key: NodeKey): string {
   return supervisor.nodeConfigs[key].llm_config_id ? t('langGraphSupervisor.modelNodeConfigDescription') : t('langGraphSupervisor.modelOverrideDescription')
 }
+
+function toggleNodeModelManual(key: NodeKey) {
+  supervisor.nodeModelManual[key] = !supervisor.nodeModelManual[key]
+  supervisor.nodeConfigs[key].model_name = ''
+}
+
+function handleToggleNode(key: NodeKey) {
+  supervisor.toggleNode(key)
+}
+
+function handleToggleShowDefault(key: NodeKey) {
+  supervisor.toggleShowDefault(key)
+}
 </script>
 
 <template>
@@ -23,7 +36,7 @@ function modelDescription(key: NodeKey): string {
       <button
         class="w-full px-4 py-2.5 flex items-center justify-between text-sm bg-elevated/30 hover:bg-elevated/60 transition-colors"
         type="button"
-        @click="supervisor.toggleNode(key)"
+        @click="handleToggleNode(key)"
       >
         <span class="font-medium">{{ nodeLabel(key) }}</span>
         <div class="flex items-center gap-2">
@@ -67,7 +80,7 @@ function modelDescription(key: NodeKey): string {
                 color="neutral"
                 size="sm"
                 variant="outline"
-                @click="supervisor.nodeModelManual[key] = !supervisor.nodeModelManual[key]; supervisor.nodeConfigs[key].model_name = ''"
+                @click="toggleNodeModelManual(key)"
               />
             </div>
           </UFormField>
@@ -114,7 +127,7 @@ function modelDescription(key: NodeKey): string {
                 :placeholder="t('langGraphSupervisor.placeholderEmptyPrompt')"
               />
               <div class="mt-2">
-                <button class="text-xs text-dimmed underline" type="button" @click="supervisor.toggleShowDefault(key)">
+                <button class="text-xs text-dimmed underline" type="button" @click="handleToggleShowDefault(key)">
                   {{ supervisor.showDefault[key] ? t('langGraphSupervisor.hideDefaultPrompt') : t('langGraphSupervisor.viewDefaultPrompt') }}
                 </button>
                 <pre v-if="supervisor.showDefault[key]" class="text-xs font-mono bg-elevated/40 rounded p-3 mt-1 whitespace-pre-wrap">{{

@@ -53,71 +53,75 @@ function onDrawerClosed() {
   selectedPlugin.value = null
   refresh()
 }
+
+function openUpload() {
+  showUpload.value = true
+}
 </script>
 
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel id="admin-plugins">
-    <template #header>
-      <UDashboardNavbar :title="t('plugins.title')">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-        <template #right>
-          <div class="flex items-center gap-2">
-            <InfoPopover title-key="info.admin.systemPlugins.title" description-key="info.admin.systemPlugins.description" />
-            <UFieldGroup>
-              <UButton color="neutral" variant="subtle" :label="activeTab === 'system' ? t('plugins.system') : t('plugins.org')" />
-              <UDropdownMenu :items="tabDropdownItems">
-                <UButton color="neutral" variant="outline" icon="i-lucide-chevron-down" />
-              </UDropdownMenu>
-            </UFieldGroup>
-            <USelect
-              v-if="activeTab === 'org'"
-              v-model="selectedOrgId"
-              :items="orgOptions"
-              value-key="value"
-              label-key="label"
-              class="w-56"
-              :placeholder="t('common.selectOrg')"
-            />
-            <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" :aria-label="t('common.refresh')" @click="refresh()" />
-            <UButton v-if="activeTab === 'system'" icon="i-lucide-upload" :label="t('admin.uploadPlugin')" @click="showUpload = true" />
-          </div>
-        </template>
-      </UDashboardNavbar>
-    </template>
+      <template #header>
+        <UDashboardNavbar :title="t('admin.pluginsPageTitle')">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+          <template #right>
+            <div class="flex items-center gap-2">
+              <InfoPopover title-key="info.admin.systemPlugins.title" description-key="info.admin.systemPlugins.description" />
+              <UFieldGroup>
+                <UButton color="neutral" variant="subtle" :label="activeTab === 'system' ? t('plugins.system') : t('plugins.org')" />
+                <UDropdownMenu :items="tabDropdownItems">
+                  <UButton color="neutral" variant="outline" icon="i-lucide-chevron-down" />
+                </UDropdownMenu>
+              </UFieldGroup>
+              <USelect
+                v-if="activeTab === 'org'"
+                v-model="selectedOrgId"
+                :items="orgOptions"
+                value-key="value"
+                label-key="label"
+                class="w-56"
+                :placeholder="t('common.selectOrg')"
+              />
+              <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" :aria-label="t('common.refresh')" @click="refresh()" />
+              <UButton v-if="activeTab === 'system'" icon="i-lucide-upload" :label="t('admin.uploadPlugin')" @click="openUpload" />
+            </div>
+          </template>
+        </UDashboardNavbar>
+      </template>
 
-    <template #body>
-      <div class="p-6">
-        <div v-if="activeTab === 'org' && !selectedOrgId" class="py-8 text-center text-dimmed">
-          {{ t('admin.selectOrgToView') }}
+      <template #body>
+        <div class="p-6">
+          <div v-if="activeTab === 'org' && !selectedOrgId" class="py-8 text-center text-dimmed">
+            {{ t('admin.selectOrgToView') }}
+          </div>
+          <div v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <PluginCard v-for="plugin in plugins" :key="plugin.id" :plugin="plugin" :source="activeTab" @select="onPluginSelect" />
+          </div>
+          <p v-if="activeTab === 'system' && plugins.length === 0" class="py-8 text-center text-dimmed">{{ t('admin.noPluginsYet') }}</p>
+          <p v-else-if="activeTab === 'org' && selectedOrgId && plugins.length === 0" class="py-8 text-center text-dimmed">{{ t('admin.noOrgPlugins') }}</p>
         </div>
-        <div v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          <PluginCard v-for="plugin in plugins" :key="plugin.id" :plugin="plugin" :source="activeTab" @select="onPluginSelect" />
-        </div>
-        <p v-if="activeTab === 'system' && plugins.length === 0" class="py-8 text-center text-dimmed">{{ t('admin.noPluginsYet') }}</p>
-        <p v-else-if="activeTab === 'org' && selectedOrgId && plugins.length === 0" class="py-8 text-center text-dimmed">{{ t('admin.noOrgPlugins') }}</p>
-      </div>
-    </template>
+      </template>
     </UDashboardPanel>
 
     <PluginDetailDrawer
-    v-if="selectedPlugin"
-    v-model:open="drawerOpen"
-    :allow-disable="true"
-    :is-admin-context="true"
-    :org-id="activeTab === 'org' && selectedOrgId ? selectedOrgId : orgId"
-    :pid="selectedPlugin.pid"
-    :source="activeTab"
-    @close="onDrawerClose"
-    @closed="onDrawerClosed"
+      v-if="selectedPlugin"
+      v-model:open="drawerOpen"
+      :allow-disable="true"
+      :is-admin-context="true"
+      :org-id="activeTab === 'org' && selectedOrgId ? selectedOrgId : orgId"
+      :pid="selectedPlugin.pid"
+      :source="activeTab"
+      @close="onDrawerClose"
+      @closed="onDrawerClosed"
     />
 
     <UModal v-model:open="showUpload">
-    <template #content>
-      <PluginUploadModal :is-admin="true" :org-id="orgId" @close="handleUploadClose" />
-    </template>
+      <template #content>
+        <PluginUploadModal :is-admin="true" :org-id="orgId" @close="handleUploadClose" />
+      </template>
     </UModal>
   </div>
 </template>

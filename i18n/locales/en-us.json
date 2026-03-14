@@ -91,8 +91,8 @@
     "system": "System",
     "organizations": "Organizations",
     "users": "Users",
-    "systemPlugins": "System Plugins",
-    "globalSettings": "Global Settings",
+    "systemPlugins": "Store",
+    "globalSettings": "Global",
     "pool": "Pool",
     "health": "Health",
     "about": "About"
@@ -287,7 +287,7 @@
   "plugins": {
     "title": "Plugins",
     "all": "All",
-    "system": "System",
+    "system": "Official",
     "org": "Org",
     "enabled": "Enabled",
     "disabled": "Disabled",
@@ -298,6 +298,7 @@
     "title": "Orchestrators",
     "ready": "Ready",
     "monitoring": "Monitoring",
+    "additionalSettings": "Additional Settings",
     "plugins": "Plugins",
     "overviewSection": "Overview",
     "details": "Details",
@@ -355,6 +356,7 @@
       "noPluginsMatch": "No plugins match the filter.",
       "version": "Version",
       "add": "Add",
+      "added": "Added",
       "addPlugin": "Add plugin",
       "failedLoadVersions": "Failed to load versions"
     },
@@ -444,7 +446,8 @@
     "notReady": "not ready",
     "noInstances": "No instances loaded.",
     "orchestratorInstanceHealth": "Orchestrator Instance Health",
-    "systemPlugins": "System Plugins",
+    "systemPlugins": "Store",
+    "pluginsPageTitle": "Store",
     "uploadPlugin": "Upload Plugin",
     "selectOrgToView": "Select an organization to view and manage its plugins.",
     "noPluginsYet": "No plugins yet. Upload one to get started.",
@@ -597,8 +600,8 @@
     "defaultTemperatureDescription": "Default for all nodes (0.0–2.0)",
     "defaultMaxTokens": "Default Max Tokens",
     "defaultMaxTokensDescription": "Default max output tokens for all nodes (Min/Max: 1k/4k)",
-    "nodeExecutionTimeout": "Node Execution Timeout (s)",
-    "nodeExecutionTimeoutDescription": "Default timeout in seconds for all node LLM/tool calls (answer nodes use 2×)",
+    "nodeExecutionTimeout": "LLM Call Timeout (s)",
+    "nodeExecutionTimeoutDescription": "Default timeout in seconds for LLM/tool calls per node (answer nodes use 2×)",
     "maxAgentHops": "Max Agent Hops",
     "maxAgentHopsDescription": "Max planner iterations before synthesizing (Min/Max: 5/50)",
     "maxMessageContextWindow": "Max Message Context Window",
@@ -608,7 +611,7 @@
     "parallelToolCalls": "Parallel Tool Calls",
     "enableToolResultCache": "Enable Tool Result Cache",
     "useLlmValidation": "Use LLM Validation",
-    "autoCompactMessages": "Auto Compact Messages",
+    "autoCompactMessages": "Compact Messages",
     "autocompactLlmConfig": "LLM Config",
     "autocompactLlmConfigDescription": "Config used LLM for message compaction",
     "autocompactModel": "Default Model",
@@ -668,7 +671,7 @@
       },
       "plugins": {
         "title": "Plugins",
-        "description": "**What it does:**\n\nBrowse and manage plugins that extend orchestrator capabilities.\n\n**Plugin types:**\n- **System** — Platform-wide, available to all orgs\n- **Org** — Per-organization, uploaded by org admins\n\n**Actions:** Enable/disable, view details, configure settings. Plugins provide tools and capabilities that orchestrators use during conversations."
+        "description": "**What it does:**\n\nBrowse and manage plugins that extend orchestrator capabilities.\n\n**Plugin types:**\n- **Store (system plugins)** — Platform-wide, available to all orgs\n- **Org** — Per-organization, uploaded by org admins\n\n**Actions:** Enable/disable, view details, configure settings. Plugins provide tools and capabilities that orchestrators use during conversations."
       },
       "profile": {
         "title": "Profile",
@@ -715,8 +718,8 @@
         "description": "**What it does:**\n\nPlatform user management (sys admin only).\n\n**Actions:**\n- Create users (username, email, optional password)\n- Edit username, email, system admin flag\n- Delete users (removes all org memberships)\n\n**System admin** — Full platform access. Users can belong to multiple organizations with different roles."
       },
       "systemPlugins": {
-        "title": "System Plugins",
-        "description": "**What it does:**\n\nManage plugins available to **all** organizations (sys admin only).\n\n**Tabs:** System (platform-wide) | Org (per-organization)\n\n**Actions:**\n- Upload plugin (ZIP)\n- Enable/disable versions\n- View plugin details and config\n\nOrg admins enable system plugins for their org. Org plugins are uploaded per-org in Settings."
+        "title": "Store",
+        "description": "**What it does:**\n\nManage plugins available to **all** organizations (sys admin only).\n\n**Tabs:** Store (system plugins) | Org (per-organization)\n\n**Actions:**\n- Upload plugin (ZIP)\n- Enable/disable versions\n- View plugin details and config\n\nOrg admins enable Store (system plugins) for their org. Org plugins are uploaded per-org in Settings."
       },
       "globalSettings": {
         "title": "Global Settings",
@@ -781,8 +784,8 @@
         "description": "**What it does:**\n\nSelect plugins that add capabilities to this orchestrator.\n\n**Flow:**\n1. Click **Add Plugin** to open the selector\n2. Search and add one or more plugins (required)\n3. Configure each plugin's settings below the table\n\n**Note:** Each plugin can have required fields. Validation runs before create. You can remove plugins before saving."
       },
       "supervisorLlmConfig": {
-        "title": "LLM Config (Supervisor)",
-        "description": "**What it does:**\n\nDefault LLM settings for all nodes in the supervisor graph.\n\n**Fields:**\n- **Default LLM config** — Required. Config from your org's LLM Configurations.\n- **Default model** — Model used by all nodes unless overridden per-node.\n- **Temperature, max tokens, timeout** — Global defaults.\n\n**Override:** Node Config section lets you override these per node (Router, Planner, Synthesizer, etc.)."
+        "title": "Supervisor Node Settings",
+        "description": "**What it does:**\n\nOverride LLM settings per node in the supervisor graph.\n\n**Nodes:**\n- **Router** — Classifies incoming messages\n- **Planner** — Plans steps\n- **Synthesizer** — Final response\n- **Clarifier, Responder, Validation, Error Handler** — Specialized nodes\n\n**Per node:** Override LLM config, model, temperature, max tokens, timeout. Leave empty to use the default from the LLM Config card."
       },
       "nodeConfig": {
         "title": "Node Config",
@@ -791,6 +794,14 @@
       "editBasic": {
         "title": "Basic",
         "description": "**What it does:**\n\nEdit metadata and tier. Framework and mode are **immutable** after creation.\n\n**Editable:**\n- **Name** — Display name (10–200 chars)\n- **Tier** — Hot, Warm, or Cold\n\n**Supervisor only:** LLM config is in the Supervisor Settings section below.\n\n**Non-supervisor:** Select LLM config here — it's used for all inference."
+      },
+      "additionalSettings": {
+        "title": "Additional Settings",
+        "description": "**What it does:**\n\nControls LLM call behavior and monitoring for this orchestrator.\n\n**Fields:**\n- **Max Message Context Window** — Max messages kept in context per turn (Min/Max: 5/50).\n- **Max Token Context Window** — Token budget for context (Min/Max: 4096/32000).\n- **LLM Call Timeout** — Timeout in seconds per LLM/tool call (answer nodes use 2×).\n- **Auto-compact Messages** — Automatically summarize old messages when context is full.\n- **Monitoring** — Langfuse integration for tracing LLM calls."
+      },
+      "llmConfig": {
+        "title": "LLM Config",
+        "description": "**What it does:**\n\nSets the default LLM used by all nodes in this orchestrator.\n\n**Fields:**\n- **Default LLM config** — Required. Select the provider + credential config from your org.\n- **Default model** — Model used by all nodes unless overridden per-node.\n- **Temperature** — Controls output randomness (0.0–2.0).\n- **Max tokens** — Max output tokens per response (Min/Max: 1k/4k).\n\n**Note:** These defaults can be overridden per-node in the Supervisor Node Settings card."
       }
     }
   },
@@ -1078,9 +1089,9 @@
     "plugins": {
       "title": "Plugins",
       "subtitle": "Upload ZIP packages to extend orchestrator capabilities with custom tools.",
-      "intro": "Plugins are Python packages that expose tools to orchestrators. They follow the Cadence SDK conventions — annotated function definitions that the orchestrator can invoke during a conversation. System plugins are available platform-wide; org plugins are scoped to the uploading organization.",
+      "intro": "Plugins are Python packages that expose tools to orchestrators. They follow the Cadence SDK conventions — annotated function definitions that the orchestrator can invoke during a conversation. Store (system plugins) are available platform-wide; org plugins are scoped to the uploading organization.",
       "bullet1": "Upload plugins as ZIP packages via Plugins → Upload",
-      "bullet2": "System plugins are managed by system admins and available to all orgs",
+      "bullet2": "Store (system plugins) are managed by system admins and available to all orgs",
       "bullet3": "Org plugins are uploaded per-organization and private to that org",
       "bullet4": "Plugins can declare required configuration settings filled per-orchestrator",
       "bullet5": "Enable or disable specific plugin versions independently",
@@ -1089,8 +1100,8 @@
         "answer": "Plugins are ZIP packages containing a Python module or package. They expose tools via the Cadence SDK using standard function definitions with type annotations."
       },
       "faq2": {
-        "question": "What is the difference between system and org plugins?",
-        "answer": "System plugins are uploaded by system admins and available to all organizations. Org plugins are uploaded by org admins and available only within that organization."
+        "question": "What is the difference between Store (system plugins) and org plugins?",
+        "answer": "Store (system plugins) are uploaded by system admins and available to all organizations. Org plugins are uploaded by org admins and available only within that organization."
       },
       "faq3": {
         "question": "Can a plugin require configuration?",
@@ -1331,14 +1342,14 @@
       "title": "Role-Based Access",
       "subtitle": "Three roles: System Admin (platform), Org Admin (workspace), Member (chat only).",
       "intro": "Access in Cadence is controlled by two orthogonal role dimensions: system-level (System Admin vs. regular user) and org-level (Org Admin vs. Member). A System Admin has full platform access regardless of org membership. An Org Admin controls everything within their organization. A Member can only use Chat.",
-      "bullet1": "System Admin: create orgs, manage users, system plugins, global settings, pool, health",
+      "bullet1": "System Admin: create orgs, manage users, Store (system plugins), global settings, pool, health",
       "bullet2": "Org Admin: orchestrators, plugins, members, LLM configs, central points, settings",
       "bullet3": "Member: Chat page only — cannot see settings, orchestrators, or plugins",
       "bullet4": "Roles are enforced at both the API and UI layers",
       "bullet5": "A user can be Org Admin in one org and Member in another simultaneously",
       "faq1": {
         "question": "What can a System Admin do?",
-        "answer": "System admins have full platform access: create orgs and users, manage system plugins, configure global settings, view pool stats, and check system health."
+        "answer": "System admins have full platform access: create orgs and users, manage Store (system plugins), configure global settings, view pool stats, and check system health."
       },
       "faq2": {
         "question": "What can an Org Admin do?",

@@ -12,7 +12,9 @@ function providerLabel(provider: string): string {
   return val !== key ? val : provider
 }
 
-const { data: llmConfigs, pending: llmConfigsLoading } = await useApiFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, { watch: [orgId] })
+const { data: llmConfigs, pending: llmConfigsLoading } = await useApiFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, {
+  watch: [orgId]
+})
 
 const { data: defaults, refresh } = await useApiFetch<OrchestratorDefaults>(() => `/api/orgs/${orgId.value}/orchestrator-defaults`, { watch: [orgId] })
 
@@ -115,6 +117,11 @@ watch(defaults, async (val) => {
 
 const saving = ref(false)
 
+function toggleModelManual() {
+  modelManual.value = !modelManual.value
+  form.default_model_name = null
+}
+
 async function save() {
   saving.value = true
   try {
@@ -189,7 +196,7 @@ async function save() {
               color="neutral"
               size="sm"
               variant="outline"
-              @click="modelManual = !modelManual; form.default_model_name = null"
+              @click="toggleModelManual"
             />
           </div>
         </UFormField>

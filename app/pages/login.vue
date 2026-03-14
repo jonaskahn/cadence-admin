@@ -68,31 +68,31 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 <template>
   <div>
     <UCard class="w-md">
-    <template #header>
-      <div class="flex flex-col items-center gap-2 py-2">
-        <h1 class="text-2xl font-bold">{{ appName }}</h1>
-        <p class="text-dimmed text-sm">{{ appTagline }}</p>
-      </div>
-    </template>
+      <template #header>
+        <div class="flex flex-col items-center gap-2 py-2">
+          <h1 class="text-2xl font-bold">{{ appName }}</h1>
+          <p class="text-dimmed text-sm">{{ appTagline }}</p>
+        </div>
+      </template>
 
-    <UForm :schema="schema" :state="state" class="flex flex-col gap-4" method="post" @submit="onSubmit">
-      <UFormField :label="t('auth.username')" name="username">
-        <UInput v-model="state.username" autocomplete="username" class="w-full" :placeholder="t('auth.enterUsername')" />
-      </UFormField>
+      <UForm :schema="schema" :state="state" class="flex flex-col gap-4" method="post" @submit="onSubmit">
+        <UFormField :label="t('auth.username')" name="username">
+          <UInput v-model="state.username" autocomplete="username" class="w-full" :placeholder="t('auth.enterUsername')" />
+        </UFormField>
 
-      <UFormField :label="t('auth.password')" name="password">
-        <UInput v-model="state.password" autocomplete="current-password" class="w-full" :placeholder="t('auth.enterPassword')" type="password" />
-      </UFormField>
+        <UFormField :label="t('auth.password')" name="password">
+          <UInput v-model="state.password" autocomplete="current-password" class="w-full" :placeholder="t('auth.enterPassword')" type="password" />
+        </UFormField>
 
-      <UButton :loading="loading" block :label="t('auth.signIn')" type="submit" />
-    </UForm>
-    <template #footer>
-      <div class="flex justify-end">
-        <UDropdownMenu :items="[localeItems]">
-          <UButton color="neutral" variant="outline" size="sm" icon="i-lucide-languages" :label="currentLocaleName" />
-        </UDropdownMenu>
-      </div>
-    </template>
+        <UButton :loading="loading" block :label="t('auth.signIn')" type="submit" />
+      </UForm>
+      <template #footer>
+        <div class="flex justify-end">
+          <UDropdownMenu :items="[localeItems]">
+            <UButton color="neutral" variant="outline" size="sm" icon="i-lucide-languages" :label="currentLocaleName" />
+          </UDropdownMenu>
+        </div>
+      </template>
     </UCard>
   </div>
 </template>

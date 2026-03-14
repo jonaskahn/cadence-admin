@@ -23,7 +23,7 @@ const faqItems = computed(() => [
       <UIcon name="i-lucide-shield-check" class="text-primary size-5" />
       <h2 class="text-lg font-semibold">{{ t('about.roles.title') }}</h2>
     </div>
-    <p class="text-sm text-muted">{{ t('about.roles.subtitle') }}</p>
+    <p class="text-xs text-dimmed">{{ t('about.roles.subtitle') }}</p>
     <p class="text-sm">{{ t('about.roles.intro') }}</p>
     <ul class="text-sm list-disc list-inside space-y-1 mb-4">
       <li>{{ t('about.roles.bullet1') }}</li>

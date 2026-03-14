@@ -16,8 +16,8 @@ withDefaults(
     size?: ButtonSize
   }>(),
   {
-    size: 'xs',
-  },
+    size: 'xs'
+  }
 )
 
 const { t } = useI18n()

@@ -47,8 +47,8 @@ const props = withDefaults(
     confirmLabelKey: undefined,
     variant: 'outline',
     confirmVariant: 'outline',
-    type: 'button',
-  },
+    type: 'button'
+  }
 )
 
 const emit = defineEmits<{
@@ -60,11 +60,7 @@ const { t } = useI18n()
 const triggerLabel = computed(() => props.label ?? t(props.labelKey))
 const confirmLabel = computed(() => t(props.confirmLabelKey ?? props.labelKey))
 const confirmTitle = computed(() => t(props.confirmTitleKey))
-const confirmMessage = computed(() =>
-  props.confirmMessageParams
-    ? t(props.confirmMessageKey, props.confirmMessageParams)
-    : t(props.confirmMessageKey),
-)
+const confirmMessage = computed(() => (props.confirmMessageParams ? t(props.confirmMessageKey, props.confirmMessageParams) : t(props.confirmMessageKey)))
 
 async function handleConfirm(close: () => void) {
   const fn = props.onConfirm
@@ -81,14 +77,7 @@ async function handleConfirm(close: () => void) {
 
 <template>
   <UPopover>
-    <UButton
-      :type="type"
-      :icon="icon"
-      :color="color"
-      :variant="variant"
-      :size="size"
-      :label="triggerLabel"
-    />
+    <UButton :type="type" :icon="icon" :color="color" :variant="variant" :size="size" :label="triggerLabel" />
     <template #content="{ close }">
       <div class="flex flex-col gap-3 p-4 min-w-56">
         <!-- Row 1: Title -->

@@ -38,10 +38,7 @@ export function useLangGraphSupervisor(
   supportedProviders: Ref<string[] | null | undefined>,
   _disabled: Ref<boolean> = ref(false)
 ) {
-  const { data: llmConfigs, pending: llmConfigsLoading } = useApiFetch<LLMConfigResponse[]>(
-    () => `/api/orgs/${orgId.value}/llm-configs`,
-    { watch: [orgId] }
-  )
+  const { data: llmConfigs, pending: llmConfigsLoading } = useApiFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, { watch: [orgId] })
 
   const llmConfigOptions = computed(() =>
     (llmConfigs.value ?? [])
@@ -154,7 +151,6 @@ export function useLangGraphSupervisor(
   )
 
   const modeConfig = reactive({
-    max_agent_hops: 5,
     node_execution_timeout: 60,
     message_context_window: 5,
     max_context_window: 16000,
@@ -166,7 +162,6 @@ export function useLangGraphSupervisor(
   watch(
     modeConfigSource,
     (src) => {
-      modeConfig.max_agent_hops = Number(src.max_agent_hops ?? 5)
       modeConfig.node_execution_timeout = Number(src.node_execution_timeout ?? src.supervisor_timeout ?? src.invoke_timeout ?? 60)
       modeConfig.message_context_window = Number(src.message_context_window ?? src.classifier_context_window ?? 5)
       modeConfig.max_context_window = Number(src.max_context_window ?? 16000)
@@ -327,7 +322,8 @@ export function useLangGraphSupervisor(
   }
 
   function isValid(): boolean {
-    return !!defaultLlmConfigId.value && !!defaultModelName.value
+    if (!defaultLlmConfigId.value) return true
+    return !!defaultModelName.value
   }
 
   function getValue(): Record<string, unknown> {
@@ -337,7 +333,6 @@ export function useLangGraphSupervisor(
       default_temperature: defaultTemperature.value,
       default_max_tokens: defaultMaxTokens.value,
       mode_config: {
-        max_agent_hops: modeConfig.max_agent_hops,
         node_execution_timeout: modeConfig.node_execution_timeout,
         message_context_window: modeConfig.message_context_window,
         max_context_window: modeConfig.max_context_window,

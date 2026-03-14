@@ -17,10 +17,24 @@ function providerLabel(provider: string): string {
   return val !== key ? val : provider
 }
 
+function openAdd() {
+  showAdd.value = true
+}
+
 function handleModalClose() {
   showAdd.value = false
   editingConfig.value = null
   refresh()
+}
+
+async function handleDeleteConfirm(configId: string, close: () => void) {
+  await deleteConfig(configId)
+  close()
+}
+
+async function handlePurgeConfirm(configId: string, close: () => void) {
+  await purgeConfig(configId)
+  close()
 }
 
 function startEdit(config: LLMConfigResponse) {
@@ -118,93 +132,86 @@ const columns = computed(() => [
               </div>
               <p class="text-dimmed text-sm">{{ t('settings.llmConfigsDescription') }}</p>
             </div>
-            <UButton
-              v-if="auth.isAdmin.value"
-              color="primary"
-              variant="outline"
-              icon="i-lucide-plus"
-              :label="t('settings.addConfig')"
-              @click="showAdd = true"
-            />
+            <UButton v-if="auth.isAdmin.value" color="primary" variant="outline" icon="i-lucide-plus" :label="t('settings.addConfig')" @click="openAdd" />
           </div>
         </template>
         <div v-if="!configs" class="flex flex-col gap-2 p-4">
           <USkeleton v-for="n in 5" :key="n" class="h-10 w-full" />
         </div>
         <UTable v-else :columns="columns" :data="configs" :empty-state="{ icon: 'i-lucide-cable', label: t('settings.noConfigs') }" class="w-full">
-        <template #provider-cell="{ row }">
-          <span :class="{ 'opacity-60': row?.original?.is_enabled === false }">{{ providerLabel(row.original.provider) }}</span>
-        </template>
+          <template #provider-cell="{ row }">
+            <span :class="{ 'opacity-60': row?.original?.is_enabled === false }">{{ providerLabel(row.original.provider) }}</span>
+          </template>
 
-        <template #is_enabled-cell="{ row }">
-          <div class="flex items-center gap-1.5">
-            <UBadge :color="row?.original?.is_enabled ? 'success' : 'neutral'" size="sm" variant="subtle">
-              {{ row?.original?.is_enabled ? t('common.enabled') : t('common.disabled') }}
-            </UBadge>
-            <UBadge v-if="row?.original?.is_deleted" color="error" size="sm" variant="subtle">
-              {{ t('common.deleted') }}
-            </UBadge>
-          </div>
-        </template>
+          <template #is_enabled-cell="{ row }">
+            <div class="flex items-center gap-1.5">
+              <UBadge :color="row?.original?.is_enabled ? 'success' : 'neutral'" size="sm" variant="subtle">
+                {{ row?.original?.is_enabled ? t('common.enabled') : t('common.disabled') }}
+              </UBadge>
+              <UBadge v-if="row?.original?.is_deleted" color="error" size="sm" variant="subtle">
+                {{ t('common.deleted') }}
+              </UBadge>
+            </div>
+          </template>
 
-        <template #base_url-cell="{ row }">
-          <span class="text-dimmed">{{ row.original.base_url || t('common.empty') }}</span>
-        </template>
+          <template #base_url-cell="{ row }">
+            <span class="text-dimmed">{{ row.original.base_url || t('common.empty') }}</span>
+          </template>
 
-        <template #created_at-cell="{ row }">
-          <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
-        </template>
+          <template #created_at-cell="{ row }">
+            <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
+          </template>
 
-        <template #actions-cell="{ row }">
-          <div class="flex items-center gap-1">
-            <template v-if="auth.isAdmin.value">
-              <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="startEdit(row.original)" />
-              <UButton
-                color="primary"
-                :icon="row?.original?.is_enabled ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                :label="row?.original?.is_enabled ? t('settings.disableConfig') : t('settings.enableConfig')"
-                :loading="toggling === row?.original?.id"
-                size="xs"
-                variant="outline"
-                @click="toggleEnabled(row.original)"
-              />
-            </template>
-            <UPopover v-if="auth.isAdmin.value && !row?.original?.is_deleted">
-              <UButton color="error" icon="i-lucide-trash-2" size="xs" />
-              <template #content="{ close }">
-                <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">{{ t('settings.deleteConfigConfirm', { name: row.original.name }) }}</p>
-                  <div class="flex justify-end gap-2">
-                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                    <UButton
-                      color="error"
-                      :label="t('common.delete')"
-                      :loading="deleting === row?.original?.id"
-                      @click="async () => { await deleteConfig(row?.original?.id); close() }"
-                    />
-                  </div>
-                </div>
+          <template #actions-cell="{ row }">
+            <div class="flex items-center gap-1">
+              <template v-if="auth.isAdmin.value">
+                <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="startEdit(row.original)" />
+                <UButton
+                  color="primary"
+                  :icon="row?.original?.is_enabled ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                  :label="row?.original?.is_enabled ? t('settings.disableConfig') : t('settings.enableConfig')"
+                  :loading="toggling === row?.original?.id"
+                  size="xs"
+                  variant="outline"
+                  @click="toggleEnabled(row.original)"
+                />
               </template>
-            </UPopover>
-            <UPopover v-else-if="auth.isSysAdmin.value && row?.original?.is_deleted">
-              <UButton color="error" icon="i-lucide-shredder" size="xs" />
-              <template #content="{ close }">
-                <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
-                  <div class="flex justify-end gap-2">
-                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                    <UButton
-                      color="error"
-                      :label="t('common.purge')"
-                      :loading="purging === row?.original?.id"
-                      @click="async () => { await purgeConfig(row?.original?.id); close() }"
-                    />
+              <UPopover v-if="auth.isAdmin.value && !row?.original?.is_deleted">
+                <UButton color="error" icon="i-lucide-trash-2" size="xs" />
+                <template #content="{ close }">
+                  <div class="p-4 min-w-48">
+                    <p class="text-sm text-dimmed mb-3">{{ t('settings.deleteConfigConfirm', { name: row.original.name }) }}</p>
+                    <div class="flex justify-end gap-2">
+                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                      <UButton
+                        color="error"
+                        :label="t('common.delete')"
+                        :loading="deleting === row?.original?.id"
+                        @click="handleDeleteConfirm(row?.original?.id ?? '', close)"
+                      />
+                    </div>
                   </div>
-                </div>
-              </template>
-            </UPopover>
-          </div>
-        </template>
+                </template>
+              </UPopover>
+              <UPopover v-else-if="auth.isSysAdmin.value && row?.original?.is_deleted">
+                <UButton color="error" icon="i-lucide-shredder" size="xs" />
+                <template #content="{ close }">
+                  <div class="p-4 min-w-48">
+                    <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
+                    <div class="flex justify-end gap-2">
+                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                      <UButton
+                        color="error"
+                        :label="t('common.purge')"
+                        :loading="purging === row?.original?.id"
+                        @click="handlePurgeConfirm(row?.original?.id ?? '', close)"
+                      />
+                    </div>
+                  </div>
+                </template>
+              </UPopover>
+            </div>
+          </template>
         </UTable>
       </UCard>
     </div>

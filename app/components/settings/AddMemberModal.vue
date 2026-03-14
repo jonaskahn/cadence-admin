@@ -5,6 +5,11 @@ import { getApiErrorMessage } from '~/utils'
 
 const props = defineProps<{ orgId: string }>()
 const emit = defineEmits<{ close: [] }>()
+
+function handleClose() {
+  emit('close')
+}
+
 const toast = useToast()
 const { t } = useI18n()
 const { findUser } = useUserSearch()
@@ -65,7 +70,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="emit('close')" />
+        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="handleClose" />
         <UButton color="primary" variant="outline" :loading="loading" :label="t('auth.addMember')" type="submit" />
       </div>
     </UForm>

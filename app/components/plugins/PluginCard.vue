@@ -60,12 +60,12 @@ function onCardClick() {
           {{ plugin.tag }}
         </UBadge>
         <UBadge
-          v-if="source === 'org' && 'source' in plugin && plugin.source"
-          :color="plugin.source === 'system' ? 'info' : 'success'"
+          v-if="(source === 'org' && 'source' in plugin && plugin.source) || source === 'system'"
+          :color="source === 'system' || plugin.source === 'system' ? 'info' : 'success'"
           size="xs"
           variant="subtle"
         >
-          {{ plugin.source === 'system' ? t('plugins.system') : t('plugins.org') }}
+          {{ source === 'system' || plugin.source === 'system' ? t('plugins.system') : t('plugins.org') }}
         </UBadge>
       </div>
 

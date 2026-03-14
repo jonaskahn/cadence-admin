@@ -39,6 +39,20 @@ const pluginSettingsRef = ref<{
   validate?: () => { valid: boolean; message?: string }
 } | null>(null)
 
+const activePlugins = computed(() => {
+  if (!orchestrator.value?.plugin_settings) return []
+  return Object.values(orchestrator.value.plugin_settings)
+    .filter((entry) => entry.active)
+    .map((entry) => ({
+      id: entry.id,
+      name: entry.name,
+      pid: entry.id,
+      source: (entry.source ?? 'org') as 'system' | 'org',
+      logo: entry.logo_image ?? null,
+      version: entry.version
+    }))
+})
+
 const loadingId = ref(false)
 const unloadingId = ref(false)
 const activating = ref(false)
@@ -101,156 +115,216 @@ async function onDeactivate() {
     deactivating.value = false
   }
 }
+
+async function handleLoadConfirm(close: () => void) {
+  await onLoad()
+  close()
+}
+
+async function handleUnloadConfirm(close: () => void) {
+  await onUnload()
+  close()
+}
+
+async function handleDeactivateConfirm(close: () => void) {
+  await onDeactivate()
+  close()
+}
+
+async function handleActivateConfirm(close: () => void) {
+  await onActivate()
+  close()
+}
 </script>
 
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel :id="`orchestrator-${instanceId}`" :ui="{ body: 'min-w-0' }">
-    <template #header>
-      <UDashboardNavbar :title="orchestrator?.name ?? t('orchestrators.title')">
-        <template #leading>
-          <UButton icon="i-lucide-arrow-left" :to="localePath('/orchestrators')" variant="outline" />
-        </template>
-        <template #right>
-          <div class="flex items-center gap-2">
-            <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
-            <template v-if="auth.isAdmin.value && orchestrator">
-            <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="sm" :to="localePath(`/orchestrators/${instanceId}/edit`)" />
-            <template v-if="orchestrator.status === 'active'">
-              <UPopover>
-                <UButton color="primary" variant="outline" icon="i-lucide-play" :label="t('orchestrators.load')" size="sm" />
-                <template #content="{ close }">
-                  <div class="p-4 min-w-48">
-                    <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.loadConfirm', { name: orchestrator.name }) }}</p>
-                    <div class="flex justify-end gap-2">
-                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                      <UButton color="primary" variant="outline" :label="t('orchestrators.load')" :loading="loadingId" @click="async () => { await onLoad(); close() }" />
-                    </div>
-                  </div>
+      <template #header>
+        <UDashboardNavbar :title="orchestrator?.name ?? t('orchestrators.title')">
+          <template #leading>
+            <UButton icon="i-lucide-arrow-left" :to="localePath('/orchestrators')" variant="outline" />
+          </template>
+          <template #right>
+            <div class="flex items-center gap-2">
+              <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
+              <template v-if="auth.isAdmin.value && orchestrator">
+                <UButton
+                  color="primary"
+                  variant="outline"
+                  icon="i-lucide-pencil"
+                  :label="t('common.edit')"
+                  size="sm"
+                  :to="localePath(`/orchestrators/${instanceId}/edit`)"
+                />
+                <template v-if="orchestrator.status === 'active'">
+                  <UPopover>
+                    <UButton color="primary" variant="outline" icon="i-lucide-play" :label="t('orchestrators.load')" size="sm" />
+                    <template #content="{ close }">
+                      <div class="p-4 min-w-48">
+                        <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.loadConfirm', { name: orchestrator.name }) }}</p>
+                        <div class="flex justify-end gap-2">
+                          <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                          <UButton color="primary" variant="outline" :label="t('orchestrators.load')" :loading="loadingId" @click="handleLoadConfirm(close)" />
+                        </div>
+                      </div>
+                    </template>
+                  </UPopover>
+                  <UPopover>
+                    <UButton color="primary" variant="outline" icon="i-lucide-square" :label="t('orchestrators.unload')" size="sm" />
+                    <template #content="{ close }">
+                      <div class="p-4 min-w-48">
+                        <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.unloadConfirm', { name: orchestrator.name }) }}</p>
+                        <div class="flex justify-end gap-2">
+                          <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                          <UButton
+                            color="primary"
+                            variant="outline"
+                            :label="t('orchestrators.unload')"
+                            :loading="unloadingId"
+                            @click="handleUnloadConfirm(close)"
+                          />
+                        </div>
+                      </div>
+                    </template>
+                  </UPopover>
+                  <UPopover>
+                    <UButton color="primary" variant="outline" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="sm" />
+                    <template #content="{ close }">
+                      <div class="p-4 min-w-48">
+                        <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: orchestrator.name }) }}</p>
+                        <div class="flex justify-end gap-2">
+                          <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                          <UButton
+                            color="primary"
+                            variant="outline"
+                            :label="t('orchestrators.deactivate')"
+                            :loading="deactivating"
+                            @click="handleDeactivateConfirm(close)"
+                          />
+                        </div>
+                      </div>
+                    </template>
+                  </UPopover>
                 </template>
-              </UPopover>
-              <UPopover>
-                <UButton color="primary" variant="outline" icon="i-lucide-square" :label="t('orchestrators.unload')" size="sm" />
-                <template #content="{ close }">
-                  <div class="p-4 min-w-48">
-                    <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.unloadConfirm', { name: orchestrator.name }) }}</p>
-                    <div class="flex justify-end gap-2">
-                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                      <UButton color="primary" variant="outline" :label="t('orchestrators.unload')" :loading="unloadingId" @click="async () => { await onUnload(); close() }" />
+                <UPopover v-else>
+                  <UButton color="primary" variant="outline" icon="i-lucide-route" :label="t('orchestrators.activate')" size="sm" />
+                  <template #content="{ close }">
+                    <div class="p-4 min-w-48">
+                      <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.activateConfirm', { name: orchestrator.name }) }}</p>
+                      <div class="flex justify-end gap-2">
+                        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                        <UButton
+                          color="primary"
+                          variant="outline"
+                          :label="t('orchestrators.activate')"
+                          :loading="activating"
+                          @click="handleActivateConfirm(close)"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </UPopover>
-              <UPopover>
-                <UButton color="primary" variant="outline" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="sm" />
-                <template #content="{ close }">
-                  <div class="p-4 min-w-48">
-                    <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: orchestrator.name }) }}</p>
-                    <div class="flex justify-end gap-2">
-                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                      <UButton color="primary" variant="outline" :label="t('orchestrators.deactivate')" :loading="deactivating" @click="async () => { await onDeactivate(); close() }" />
-                    </div>
-                  </div>
-                </template>
-              </UPopover>
-            </template>
-            <UPopover v-else>
-              <UButton color="primary" variant="outline" icon="i-lucide-route" :label="t('orchestrators.activate')" size="sm" />
-              <template #content="{ close }">
-                <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.activateConfirm', { name: orchestrator.name }) }}</p>
-                  <div class="flex justify-end gap-2">
-                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                    <UButton color="primary" variant="outline" :label="t('orchestrators.activate')" :loading="activating" @click="async () => { await onActivate(); close() }" />
-                  </div>
-                </div>
+                  </template>
+                </UPopover>
               </template>
-            </UPopover>
-            </template>
-          </div>
-        </template>
-      </UDashboardNavbar>
-    </template>
+            </div>
+          </template>
+        </UDashboardNavbar>
+      </template>
 
-    <template #body>
-      <div v-if="orchestrator" class="p-6 min-w-0 w-full">
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <template #body>
+        <div v-if="orchestrator" class="p-6 min-w-0 w-full flex flex-col gap-6">
+          <!-- Overview card: Details + Graph -->
           <UCard class="min-w-0">
             <template #header>
-              <p class="font-semibold">Details</p>
+              <span class="font-semibold">{{ t('orchestrators.overviewSection') }}</span>
             </template>
-            <dl class="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              <div>
-                <dt class="text-dimmed text-sm">Instance ID</dt>
-                <dd class="font-mono text-sm mt-1 break-all">{{ orchestrator.instance_id }}</dd>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+              <!-- Details inner panel -->
+              <div class="border border-default rounded-lg p-4">
+                <p class="font-medium text-sm mb-4">{{ t('orchestrators.details') }}</p>
+                <dl class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                  <div>
+                    <dt class="text-dimmed text-sm">Instance ID</dt>
+                    <dd class="font-mono text-sm mt-1 break-all">{{ orchestrator.instance_id }}</dd>
+                  </div>
+                  <div>
+                    <dt class="text-dimmed text-sm">Framework</dt>
+                    <dd class="mt-1">{{ orchestrator.framework_type }}</dd>
+                  </div>
+                  <div>
+                    <dt class="text-dimmed text-sm">Mode</dt>
+                    <dd class="mt-1">{{ orchestrator.mode }}</dd>
+                  </div>
+                  <div>
+                    <dt class="text-dimmed text-sm">Tier</dt>
+                    <dd class="mt-1">
+                      <UBadge :color="tierColor(orchestrator.tier)" size="sm" variant="subtle">
+                        {{ orchestrator?.tier?.toUpperCase() }}
+                      </UBadge>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="text-dimmed text-sm">Status</dt>
+                    <dd class="mt-1">
+                      <UBadge :color="statusColor(orchestrator.status)" size="sm" variant="subtle">
+                        {{ orchestrator.status }}
+                      </UBadge>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="text-dimmed text-sm">Config Hash</dt>
+                    <dd class="font-mono text-xs mt-1 break-all">{{ orchestrator.config_hash || '—' }}</dd>
+                  </div>
+                </dl>
               </div>
-              <div>
-                <dt class="text-dimmed text-sm">Framework</dt>
-                <dd class="mt-1">{{ orchestrator.framework_type }}</dd>
+
+              <!-- Graph inner panel -->
+              <div class="border border-default rounded-lg p-4">
+                <p class="font-medium text-sm mb-4">{{ t('orchestrators.graph') }}</p>
+                <OrchestratorGraph :instance-id="instanceId" :org-id="orgId" />
               </div>
-              <div>
-                <dt class="text-dimmed text-sm">Mode</dt>
-                <dd class="mt-1">{{ orchestrator.mode }}</dd>
-              </div>
-              <div>
-                <dt class="text-dimmed text-sm">Tier</dt>
-                <dd class="mt-1">
-                  <UBadge :color="tierColor(orchestrator.tier)" size="sm" variant="subtle">
-                    {{ orchestrator?.tier?.toUpperCase() }}
-                  </UBadge>
-                </dd>
-              </div>
-              <div>
-                <dt class="text-dimmed text-sm">Status</dt>
-                <dd class="mt-1">
-                  <UBadge :color="statusColor(orchestrator.status)" size="sm" variant="subtle">
-                    {{ orchestrator.status }}
-                  </UBadge>
-                </dd>
-              </div>
-              <div>
-                <dt class="text-dimmed text-sm">Config Hash</dt>
-                <dd class="font-mono text-xs mt-1 break-all">{{ orchestrator.config_hash || '—' }}</dd>
-              </div>
-            </dl>
+            </div>
           </UCard>
 
+          <!-- Plugin Configuration card -->
           <UCard class="min-w-0">
             <template #header>
-              <p class="font-semibold">Graph</p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <UIcon name="i-lucide-plug" />
+                  <span class="font-semibold">{{ t('orchestrators.create.pluginConfiguration') }}</span>
+                </div>
+                <ConfirmActionPopover
+                  v-if="auth.isAdmin.value"
+                  label-key="common.save"
+                  size="sm"
+                  confirm-title-key="common.saveConfirmTitle"
+                  confirm-message-key="common.saveConfirmMessage"
+                  confirm-label-key="common.saveConfirmFriendly"
+                  :loading="savingPluginSettings"
+                  :on-confirm="savePluginSettings"
+                />
+              </div>
             </template>
-            <OrchestratorGraph :instance-id="instanceId" :org-id="orgId" />
+
+            <!-- Plugin status mini-cards -->
+            <div v-if="activePlugins.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+              <OrchestratorPluginCard v-for="plugin in activePlugins" :key="plugin.id + plugin.version" :plugin="plugin" :interactive="false" />
+            </div>
+
+            <USeparator v-if="activePlugins.length > 0" :label="t('orchestrators.create.pluginSettings')" class="mb-4" />
+
+            <p class="text-dimmed text-xs mb-4">{{ t('orchestrators.create.pluginConfigurationDesc') }}</p>
+
+            <OrchestratorPluginSettings ref="pluginSettingsRef" :disabled="!auth.isAdmin.value" :initial-value="orchestrator.plugin_settings" :org-id="orgId" />
           </UCard>
         </div>
 
-        <div class="mt-6 flex flex-col gap-4 min-w-0">
-          <div class="flex items-center gap-3">
-            <USeparator label="Plugin Settings" class="flex-1" />
-            <ConfirmActionPopover
-              v-if="auth.isAdmin.value"
-              label-key="common.save"
-              size="sm"
-              confirm-title-key="common.saveConfirmTitle"
-              confirm-message-key="common.saveConfirmMessage"
-              confirm-label-key="common.saveConfirmFriendly"
-              :loading="savingPluginSettings"
-              :on-confirm="savePluginSettings"
-            />
-          </div>
-          <p class="text-dimmed text-xs">Configure settings for each active plugin. Activate a version to switch.</p>
-          <OrchestratorPluginSettings
-            ref="pluginSettingsRef"
-            :disabled="!auth.isAdmin.value"
-            :initial-value="orchestrator.plugin_settings"
-            :org-id="orgId"
-          />
+        <div v-else class="flex items-center justify-center p-12">
+          <UIcon class="size-8 animate-spin" name="i-lucide-loader" />
         </div>
-      </div>
-
-      <div v-else class="flex items-center justify-center p-12">
-        <UIcon class="size-8 animate-spin" name="i-lucide-loader" />
-      </div>
-    </template>
+      </template>
     </UDashboardPanel>
   </div>
 </template>

@@ -50,27 +50,35 @@ const host = computed({
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 mt-4">
+  <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-1">
       <UCheckbox v-model="enabled" :label="t('orchestrators.edit.enableMonitoring')" class="mt-1" />
     </div>
 
     <template v-if="enabled">
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <UFormField :label="t('orchestrators.edit.monitoringProvider')" class="sm:col-span-2">
-          <USelect v-model="provider" :items="providerOptions" class="w-full" />
-        </UFormField>
+      <div v-auto-animate="{ duration: 100 }" class="grid grid-cols-1 gap-4">
+        <div>
+          <UFormField :label="t('orchestrators.edit.monitoringProvider')" class="sm:col-span-2">
+            <USelect v-model="provider" :items="providerOptions" class="w-full" />
+          </UFormField>
+        </div>
 
         <template v-if="provider === 'langfuse'">
-          <UFormField :label="t('orchestrators.edit.langfuseSecretKey')" class="sm:col-span-2">
-            <UInput v-model="secretKey" type="password" class="w-full" :placeholder="t('orchestrators.edit.langfuseSecretKeyPlaceholder')" />
-          </UFormField>
-          <UFormField :label="t('orchestrators.edit.langfusePublicKey')">
-            <UInput v-model="publicKey" class="w-full" :placeholder="t('orchestrators.edit.langfusePublicKeyPlaceholder')" />
-          </UFormField>
-          <UFormField :label="t('orchestrators.edit.langfuseHost')">
-            <UInput v-model="host" class="w-full" :placeholder="t('orchestrators.edit.langfuseHostPlaceholder')" />
-          </UFormField>
+          <div>
+            <UFormField :label="t('orchestrators.edit.langfuseSecretKey')" class="sm:col-span-2" required>
+              <UInput v-model="secretKey" type="password" class="w-full" :placeholder="t('orchestrators.edit.langfuseSecretKeyPlaceholder')" />
+            </UFormField>
+          </div>
+          <div>
+            <UFormField :label="t('orchestrators.edit.langfusePublicKey')" required>
+              <UInput v-model="publicKey" class="w-full" :placeholder="t('orchestrators.edit.langfusePublicKeyPlaceholder')" />
+            </UFormField>
+          </div>
+          <div>
+            <UFormField :label="t('orchestrators.edit.langfuseHost')" required>
+              <UInput v-model="host" class="w-full" :placeholder="t('orchestrators.edit.langfuseHostPlaceholder')" />
+            </UFormField>
+          </div>
         </template>
       </div>
     </template>

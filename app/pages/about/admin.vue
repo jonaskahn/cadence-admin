@@ -23,7 +23,7 @@ const faqItems = computed(() => [
       <UIcon name="i-lucide-sliders" class="text-primary size-5" />
       <h2 class="text-lg font-semibold">{{ t('about.admin.title') }}</h2>
     </div>
-    <p class="text-sm text-muted">{{ t('about.admin.subtitle') }}</p>
+    <p class="text-xs text-dimmed">{{ t('about.admin.subtitle') }}</p>
     <p class="text-sm">{{ t('about.admin.intro') }}</p>
     <ul class="text-sm list-disc list-inside space-y-1 mb-4">
       <li>{{ t('about.admin.bullet1') }}</li>

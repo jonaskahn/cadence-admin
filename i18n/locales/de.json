@@ -91,8 +91,8 @@
     "system": "System",
     "organizations": "Organisationen",
     "users": "Benutzer",
-    "systemPlugins": "System-Plugins",
-    "globalSettings": "Globale Einstellungen",
+    "systemPlugins": "Store",
+    "globalSettings": "Globale",
     "pool": "Pool",
     "health": "Status",
     "about": "Über"
@@ -287,7 +287,7 @@
   "plugins": {
     "title": "Plugins",
     "all": "Alle",
-    "system": "System",
+    "system": "Offiziell",
     "org": "Org",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
@@ -422,7 +422,8 @@
     "notReady": "nicht bereit",
     "noInstances": "Keine Instanzen geladen.",
     "orchestratorInstanceHealth": "Orchestrator-Instanz-Status",
-    "systemPlugins": "System-Plugins",
+    "systemPlugins": "Store",
+    "pluginsPageTitle": "Store",
     "uploadPlugin": "Plugin hochladen",
     "selectOrgToView": "Wählen Sie eine Organisation zum Anzeigen und Verwalten ihrer Plugins.",
     "noPluginsYet": "Noch keine Plugins. Laden Sie eines hoch, um zu starten.",
@@ -646,7 +647,7 @@
       },
       "plugins": {
         "title": "Plugins",
-        "description": "**Funktion:**\n\nPlugins durchsuchen und verwalten, die Orchestrator-Funktionen erweitern.\n\n**Typen:** System (plattformweit) | Org (pro Organisation). Aktionen: Aktivieren/Deaktivieren, Details anzeigen, konfigurieren."
+        "description": "**Funktion:**\n\nPlugins durchsuchen und verwalten, die Orchestrator-Funktionen erweitern.\n\n**Typen:** Store (System-Plugins) — plattformweit | Org — pro Organisation. Aktionen: Aktivieren/Deaktivieren, Details anzeigen, konfigurieren."
       },
       "profile": {
         "title": "Profil",
@@ -693,8 +694,8 @@
         "description": "**Funktion:**\n\nPlattform-Benutzerverwaltung (nur Sys-Admin). Benutzer erstellen, bearbeiten, löschen. System-Admin-Rolle zuweisen. Benutzer können mehreren Organisationen angehören."
       },
       "systemPlugins": {
-        "title": "System-Plugins",
-        "description": "**Funktion:**\n\nPlugins verwalten, die für **alle** Organisationen verfügbar sind (nur Sys-Admin). Tabs: System | Org. Hochladen, Aktivieren/Deaktivieren, Details anzeigen."
+        "title": "Store",
+        "description": "**Funktion:**\n\nPlugins verwalten, die für **alle** Organisationen verfügbar sind (nur Sys-Admin). Tabs: Store (System-Plugins) | Org. Hochladen, Aktivieren/Deaktivieren, Details anzeigen."
       },
       "globalSettings": {
         "title": "Globale Einstellungen",

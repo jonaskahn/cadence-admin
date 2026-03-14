@@ -114,7 +114,7 @@ const systemLinks = computed<NavigationMenuItem[]>(() => {
         },
         {
           label: t('nav.systemPlugins'),
-          icon: 'i-lucide-package',
+          icon: 'i-lucide-shopping-bag',
           to: localePath('/admin/plugins'),
           onSelect: closeMenu
         },

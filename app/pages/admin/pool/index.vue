@@ -52,57 +52,57 @@ const statCards = computed(() => {
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel id="admin-pool">
-    <template #header>
-      <UDashboardNavbar :title="t('admin.pool')">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-        <template #right>
-          <div class="flex items-center gap-2">
-            <InfoPopover title-key="info.admin.pool.title" description-key="info.admin.pool.description" />
-            <UButton icon="i-lucide-refresh-cw" :label="t('common.refresh')" size="sm" variant="outline" @click="refresh()" />
-          </div>
-        </template>
-      </UDashboardNavbar>
-    </template>
+      <template #header>
+        <UDashboardNavbar :title="t('admin.pool')">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+          <template #right>
+            <div class="flex items-center gap-2">
+              <InfoPopover title-key="info.admin.pool.title" description-key="info.admin.pool.description" />
+              <UButton icon="i-lucide-refresh-cw" :label="t('common.refresh')" size="sm" variant="outline" @click="refresh()" />
+            </div>
+          </template>
+        </UDashboardNavbar>
+      </template>
 
-    <template #body>
-      <div class="p-6 flex flex-col gap-6">
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <UCard v-for="card in statCards" :key="card.label">
-            <div class="flex items-center gap-3">
-              <UIcon :class="['size-8', STAT_ICON_COLOR[card.color ?? ''] ?? 'text-primary']" :name="card.icon" />
+      <template #body>
+        <div class="p-6 flex flex-col gap-6">
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <UCard v-for="card in statCards" :key="card.label">
+              <div class="flex items-center gap-3">
+                <UIcon :class="['size-8', STAT_ICON_COLOR[card.color ?? ''] ?? 'text-primary']" :name="card.icon" />
+                <div>
+                  <p class="text-2xl font-bold">
+                    {{ card.value }}
+                  </p>
+                  <p class="text-dimmed text-sm">
+                    {{ card.label }}
+                  </p>
+                </div>
+              </div>
+            </UCard>
+          </div>
+
+          <UCard v-if="stats">
+            <template #header>
+              <p class="font-semibold">{{ t('admin.memoryEstimate') }}</p>
+            </template>
+            <div class="flex items-center gap-4">
+              <UIcon class="size-10 text-primary" name="i-lucide-memory-stick" />
               <div>
-                <p class="text-2xl font-bold">
-                  {{ card.value }}
+                <p class="text-3xl font-bold">
+                  {{ stats.memory_estimate_mb.toFixed(1) }}
+                  <span class="text-lg text-dimmed">{{ t('common.memoryUnitMB') }}</span>
                 </p>
-                <p class="text-dimmed text-sm">
-                  {{ card.label }}
-                </p>
+                <p class="text-dimmed text-sm">{{ t('admin.memoryEstimateDescription') }}</p>
               </div>
             </div>
           </UCard>
+
+          <p class="text-xs text-dimmed text-center">{{ t('admin.autoRefresh') }}</p>
         </div>
-
-        <UCard v-if="stats">
-          <template #header>
-            <p class="font-semibold">{{ t('admin.memoryEstimate') }}</p>
-          </template>
-          <div class="flex items-center gap-4">
-            <UIcon class="size-10 text-primary" name="i-lucide-memory-stick" />
-            <div>
-              <p class="text-3xl font-bold">
-                {{ stats.memory_estimate_mb.toFixed(1) }}
-                <span class="text-lg text-dimmed">{{ t('common.memoryUnitMB') }}</span>
-              </p>
-              <p class="text-dimmed text-sm">{{ t('admin.memoryEstimateDescription') }}</p>
-            </div>
-          </div>
-        </UCard>
-
-        <p class="text-xs text-dimmed text-center">{{ t('admin.autoRefresh') }}</p>
-      </div>
-    </template>
+      </template>
     </UDashboardPanel>
   </div>
 </template>

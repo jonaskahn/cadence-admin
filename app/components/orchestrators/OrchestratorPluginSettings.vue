@@ -90,6 +90,10 @@ function togglePlugin(groupKey: string) {
   expandedPlugins.value = { ...expandedPlugins.value, [groupKey]: !expandedPlugins.value[groupKey] }
 }
 
+function selectVersion(groupKey: string, specKey: string) {
+  selectedVersionKey[groupKey] = specKey
+}
+
 function sortVersionsByActivity(versions: VersionEntry[]): VersionEntry[] {
   return [...versions].sort((a, b) => {
     if (a.entry.active && !b.entry.active) return -1
@@ -274,7 +278,7 @@ defineExpose({
             "
             class="px-4 py-2 text-sm flex items-center gap-2 shrink-0 border-b-2 transition-colors"
             type="button"
-            @click="selectedVersionKey[group.groupKey] = v.specKey"
+            @click="selectVersion(group.groupKey, v.specKey)"
           >
             v{{ v.entry.version }}
             <UBadge v-if="v.entry.active" color="success" size="xs" variant="subtle">{{ t('orchestratorPlugin.active') }}</UBadge>

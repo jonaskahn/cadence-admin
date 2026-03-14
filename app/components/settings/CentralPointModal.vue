@@ -11,6 +11,10 @@ const props = defineProps<{
 
 const emit = defineEmits<{ close: [] }>()
 
+function handleClose() {
+  emit('close')
+}
+
 const toast = useToast()
 const { t } = useI18n()
 const { create } = useCentralPoints(computed(() => props.orgId))
@@ -40,9 +44,7 @@ const state = reactive<Partial<Schema>>({
 })
 
 const orchestratorOptions = computed(() =>
-  (props.orchestrators || [])
-    .filter((o) => o.status === 'active' && !o.is_deleted)
-    .map((o) => ({ label: o.name, value: o.instance_id }))
+  (props.orchestrators || []).filter((o) => o.status === 'active' && !o.is_deleted).map((o) => ({ label: o.name, value: o.instance_id }))
 )
 
 const visibilityItems = computed(() => [
@@ -96,7 +98,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <USelect v-model="state.visibility" :items="visibilityItems" class="w-full" label-key="label" value-key="value" />
       </UFormField>
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="emit('close')" />
+        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="handleClose" />
         <UButton color="primary" variant="outline" :loading="loading" :label="t('common.create')" type="submit" />
       </div>
     </UForm>

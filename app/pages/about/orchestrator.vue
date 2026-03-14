@@ -8,15 +8,60 @@ const tierCards = computed(() => [
 ])
 
 const pipelineSteps = computed(() => [
-  { n: 1, title: t('about.orchestrator.pluginLoadSection.step1.title'), desc: t('about.orchestrator.pluginLoadSection.step1.desc'), ref: t('about.orchestrator.pluginLoadSection.step1.ref') },
-  { n: 2, title: t('about.orchestrator.pluginLoadSection.step2.title'), desc: t('about.orchestrator.pluginLoadSection.step2.desc'), ref: t('about.orchestrator.pluginLoadSection.step2.ref') },
-  { n: 3, title: t('about.orchestrator.pluginLoadSection.step3.title'), desc: t('about.orchestrator.pluginLoadSection.step3.desc'), ref: t('about.orchestrator.pluginLoadSection.step3.ref') },
-  { n: 4, title: t('about.orchestrator.pluginLoadSection.step4.title'), desc: t('about.orchestrator.pluginLoadSection.step4.desc'), ref: t('about.orchestrator.pluginLoadSection.step4.ref') },
-  { n: 5, title: t('about.orchestrator.pluginLoadSection.step5.title'), desc: t('about.orchestrator.pluginLoadSection.step5.desc'), ref: t('about.orchestrator.pluginLoadSection.step5.ref') },
-  { n: 6, title: t('about.orchestrator.pluginLoadSection.step6.title'), desc: t('about.orchestrator.pluginLoadSection.step6.desc'), ref: t('about.orchestrator.pluginLoadSection.step6.ref') },
-  { n: 7, title: t('about.orchestrator.pluginLoadSection.step7.title'), desc: t('about.orchestrator.pluginLoadSection.step7.desc'), ref: t('about.orchestrator.pluginLoadSection.step7.ref') },
-  { n: 8, title: t('about.orchestrator.pluginLoadSection.step8.title'), desc: t('about.orchestrator.pluginLoadSection.step8.desc'), ref: t('about.orchestrator.pluginLoadSection.step8.ref') },
-  { n: 9, title: t('about.orchestrator.pluginLoadSection.step9.title'), desc: t('about.orchestrator.pluginLoadSection.step9.desc'), ref: t('about.orchestrator.pluginLoadSection.step9.ref') }
+  {
+    n: 1,
+    title: t('about.orchestrator.pluginLoadSection.step1.title'),
+    desc: t('about.orchestrator.pluginLoadSection.step1.desc'),
+    ref: t('about.orchestrator.pluginLoadSection.step1.ref')
+  },
+  {
+    n: 2,
+    title: t('about.orchestrator.pluginLoadSection.step2.title'),
+    desc: t('about.orchestrator.pluginLoadSection.step2.desc'),
+    ref: t('about.orchestrator.pluginLoadSection.step2.ref')
+  },
+  {
+    n: 3,
+    title: t('about.orchestrator.pluginLoadSection.step3.title'),
+    desc: t('about.orchestrator.pluginLoadSection.step3.desc'),
+    ref: t('about.orchestrator.pluginLoadSection.step3.ref')
+  },
+  {
+    n: 4,
+    title: t('about.orchestrator.pluginLoadSection.step4.title'),
+    desc: t('about.orchestrator.pluginLoadSection.step4.desc'),
+    ref: t('about.orchestrator.pluginLoadSection.step4.ref')
+  },
+  {
+    n: 5,
+    title: t('about.orchestrator.pluginLoadSection.step5.title'),
+    desc: t('about.orchestrator.pluginLoadSection.step5.desc'),
+    ref: t('about.orchestrator.pluginLoadSection.step5.ref')
+  },
+  {
+    n: 6,
+    title: t('about.orchestrator.pluginLoadSection.step6.title'),
+    desc: t('about.orchestrator.pluginLoadSection.step6.desc'),
+    ref: t('about.orchestrator.pluginLoadSection.step6.ref')
+  },
+  {
+    n: 7,
+    title: t('about.orchestrator.pluginLoadSection.step7.title'),
+    desc: t('about.orchestrator.pluginLoadSection.step7.desc'),
+    ref: t('about.orchestrator.pluginLoadSection.step7.ref')
+  },
+  {
+    n: 8,
+    title: t('about.orchestrator.pluginLoadSection.step8.title'),
+    desc: t('about.orchestrator.pluginLoadSection.step8.desc'),
+    ref: t('about.orchestrator.pluginLoadSection.step8.ref')
+  },
+  {
+    n: 9,
+    title: t('about.orchestrator.pluginLoadSection.step9.title'),
+    desc: t('about.orchestrator.pluginLoadSection.step9.desc'),
+    ref: t('about.orchestrator.pluginLoadSection.step9.ref')
+  }
 ])
 
 const faqItems = computed(() => [
@@ -32,14 +77,13 @@ const faqItems = computed(() => [
 
 <template>
   <section class="space-y-8">
-
     <!-- 1. Overview -->
     <div class="space-y-3">
       <div class="flex items-center gap-2">
         <UIcon name="i-lucide-cpu" class="text-primary size-5" />
         <h2 class="text-lg font-semibold">{{ t('about.orchestrator.title') }}</h2>
       </div>
-      <p class="text-sm text-muted">{{ t('about.orchestrator.subtitle') }}</p>
+      <p class="text-xs text-dimmed">{{ t('about.orchestrator.subtitle') }}</p>
       <p class="text-sm">{{ t('about.orchestrator.intro') }}</p>
       <ul class="text-sm list-disc list-inside space-y-1">
         <li>{{ t('about.orchestrator.bullet1') }}</li>
@@ -75,16 +119,12 @@ const faqItems = computed(() => [
       </div>
       <p class="text-sm">{{ t('about.orchestrator.tiersSection.intro') }}</p>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div
-          v-for="card in tierCards"
-          :key="card.name"
-          class="rounded-lg border p-3 space-y-2"
-        >
+        <div v-for="card in tierCards" :key="card.name" class="rounded-lg border p-3 space-y-2">
           <UBadge :color="card.color" variant="subtle" size="sm">{{ card.name }}</UBadge>
-          <p class="text-xs text-muted">{{ card.desc }}</p>
+          <p class="text-xs text-dimmed">{{ card.desc }}</p>
         </div>
       </div>
-      <p class="text-xs text-muted">{{ t('about.orchestrator.tiersSection.note') }}</p>
+      <p class="text-xs text-dimmed">{{ t('about.orchestrator.tiersSection.note') }}</p>
     </div>
 
     <!-- 4. What You Can Do -->
@@ -115,13 +155,13 @@ const faqItems = computed(() => [
           <UBadge color="primary" variant="subtle" class="shrink-0 mt-0.5">{{ step.n }}</UBadge>
           <div class="space-y-0.5">
             <p class="text-sm font-medium">{{ step.title }}</p>
-            <p class="text-sm text-muted">{{ step.desc }}</p>
-            <code class="text-xs text-muted font-mono">{{ step.ref }}</code>
+            <p class="text-xs text-dimmed">{{ step.desc }}</p>
+            <code class="text-xs text-dimmed font-mono">{{ step.ref }}</code>
           </div>
         </li>
       </ol>
-      <p class="text-xs text-muted">{{ t('about.orchestrator.pluginLoadSection.securityNote') }}</p>
-      <p class="text-xs text-muted">{{ t('about.orchestrator.pluginLoadSection.cacheNote') }}</p>
+      <p class="text-xs text-dimmed">{{ t('about.orchestrator.pluginLoadSection.securityNote') }}</p>
+      <p class="text-xs text-dimmed">{{ t('about.orchestrator.pluginLoadSection.cacheNote') }}</p>
     </div>
 
     <!-- 6. FAQ -->
@@ -132,6 +172,5 @@ const faqItems = computed(() => [
       </div>
       <UAccordion :items="faqItems" />
     </div>
-
   </section>
 </template>

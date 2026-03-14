@@ -4,7 +4,7 @@
 // They can also be set manually or injected by CI at runtime.
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@vueuse/nuxt', '@nuxtjs/mdc', '@nuxtjs/i18n'],
+  modules: ['@nuxt/eslint', '@nuxt/ui', '@vueuse/nuxt', '@nuxtjs/mdc', '@nuxtjs/i18n', '@formkit/auto-animate/nuxt'],
 
   components: [
     {
@@ -57,5 +57,5 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: false
     }
-  },
+  }
 })

@@ -8,6 +8,10 @@ const localePath = useLocalePath()
 
 const showChangelog = ref(false)
 
+function openChangelog() {
+  showChangelog.value = true
+}
+
 const localeItems = computed(() =>
   (locales.value as { code: string; name: string }[]).map((loc) => ({
     label: loc.name,
@@ -51,7 +55,7 @@ const links = computed<NavigationMenuItem[][]>(() => [
             <UDropdownMenu :items="[localeItems]">
               <UButton icon="i-lucide-languages" variant="outline" color="neutral" :label="currentLocaleName" />
             </UDropdownMenu>
-            <UButton icon="i-lucide-history" variant="outline" color="neutral" @click="showChangelog = true" />
+            <UButton icon="i-lucide-history" variant="outline" color="neutral" @click="openChangelog" />
             <UButton icon="i-lucide-house" to="/" external />
           </div>
         </div>
@@ -72,7 +76,7 @@ const links = computed<NavigationMenuItem[][]>(() => [
             <template #header>
               <span class="font-semibold">{{ t('about.changelog.title') }}</span>
             </template>
-            <div class="flex flex-col items-center justify-center gap-3 py-16 text-center text-muted">
+            <div class="flex flex-col items-center justify-center gap-3 py-16 text-center text-dimmed">
               <UIcon name="i-lucide-package-open" class="size-10 opacity-40" />
               <p class="text-sm">{{ t('about.changelog.empty') }}</p>
             </div>

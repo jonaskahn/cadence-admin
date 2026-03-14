@@ -63,6 +63,11 @@ async function onToggleActive(model: ProviderModelCatalogEntry) {
     toggling.value = null
   }
 }
+
+async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () => void) {
+  await onToggleActive(model)
+  close()
+}
 </script>
 
 <template>
@@ -142,7 +147,7 @@ async function onToggleActive(model: ProviderModelCatalogEntry) {
                       :color="row.original.enabled ? 'neutral' : 'success'"
                       :label="row.original.enabled ? t('admin.disable') : t('admin.enable')"
                       :loading="toggling === `${row.original.provider}:${row.original.model_id}`"
-                      @click="async () => { await onToggleActive(row.original); close() }"
+                      @click="handleToggleConfirm(row.original, close)"
                     />
                   </div>
                 </div>

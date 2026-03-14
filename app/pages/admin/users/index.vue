@@ -21,6 +21,18 @@ const { data: users, refresh } = await useApiFetch<UserMembershipResponse[]>('/a
 const showCreate = ref(false)
 const createLoading = ref(false)
 
+function openCreate() {
+  showCreate.value = true
+}
+
+function closeCreate() {
+  showCreate.value = false
+}
+
+function closeEdit() {
+  editTarget.value = null
+}
+
 const createSchema = z.object({
   username: z.string().min(1, () => t('common.required')),
   email: z
@@ -120,6 +132,16 @@ async function onDelete(user: UserMembershipResponse) {
   }
 }
 
+async function handleDeleteConfirm(user: UserMembershipResponse, close: () => void) {
+  await onDelete(user)
+  close()
+}
+
+async function handlePurgeConfirm(user: UserMembershipResponse, close: () => void) {
+  await onPurge(user)
+  close()
+}
+
 async function onPurge(user: UserMembershipResponse) {
   purging.value = user.user_id
   try {
@@ -150,137 +172,137 @@ const columns = computed(() => [
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel id="admin-users">
-    <template #header>
-      <UDashboardNavbar :title="t('admin.users')">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-        <template #right>
-          <div class="flex items-center gap-2">
-            <InfoPopover title-key="info.admin.users.title" description-key="info.admin.users.description" />
-            <UButton color="primary" variant="outline" icon="i-lucide-plus" :label="t('admin.newUser')" @click="showCreate = true" />
-          </div>
-        </template>
-      </UDashboardNavbar>
-    </template>
+      <template #header>
+        <UDashboardNavbar :title="t('admin.users')">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+          <template #right>
+            <div class="flex items-center gap-2">
+              <InfoPopover title-key="info.admin.users.title" description-key="info.admin.users.description" />
+              <UButton color="primary" variant="outline" icon="i-lucide-plus" :label="t('admin.newUser')" @click="openCreate" />
+            </div>
+          </template>
+        </UDashboardNavbar>
+      </template>
 
-    <template #body>
-      <div class="p-6">
-        <UCard>
-          <UTable :columns="columns" :data="users || []">
-            <template #is_sys_admin-cell="{ row }">
-              <div class="flex items-center gap-1.5">
-                <UBadge :color="row.original.is_sys_admin ? 'error' : 'neutral'" size="sm" variant="subtle">
-                  {{ row.original.is_sys_admin ? t('roles.sysAdmin') : t('common.user') }}
-                </UBadge>
-                <UBadge v-if="row.original.is_deleted" color="error" size="sm" variant="subtle">
-                  {{ t('common.deleted') }}
-                </UBadge>
-              </div>
-            </template>
-            <template #created_at-cell="{ row }">
-              <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
-            </template>
-            <template #actions-cell="{ row }">
-              <div class="flex items-center gap-1">
-                <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
-                <UPopover v-if="!row.original.is_deleted">
-                  <UButton color="error" icon="i-lucide-trash-2" size="xs" />
-                  <template #content="{ close }">
-                    <div class="p-4 min-w-48">
-                      <p class="text-sm text-dimmed mb-3">{{ t('admin.deleteUserConfirm', { username: row.original.username }) }}</p>
-                      <div class="flex justify-end gap-2">
-                        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                        <UButton
-                          color="error"
-                          :label="t('common.delete')"
-                          :loading="deleting === row.original.user_id"
-                          @click="async () => { await onDelete(row.original); close() }"
-                        />
+      <template #body>
+        <div class="p-6">
+          <UCard>
+            <UTable :columns="columns" :data="users || []">
+              <template #is_sys_admin-cell="{ row }">
+                <div class="flex items-center gap-1.5">
+                  <UBadge :color="row.original.is_sys_admin ? 'error' : 'neutral'" size="sm" variant="subtle">
+                    {{ row.original.is_sys_admin ? t('roles.sysAdmin') : t('common.user') }}
+                  </UBadge>
+                  <UBadge v-if="row.original.is_deleted" color="error" size="sm" variant="subtle">
+                    {{ t('common.deleted') }}
+                  </UBadge>
+                </div>
+              </template>
+              <template #created_at-cell="{ row }">
+                <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
+              </template>
+              <template #actions-cell="{ row }">
+                <div class="flex items-center gap-1">
+                  <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
+                  <UPopover v-if="!row.original.is_deleted">
+                    <UButton color="error" icon="i-lucide-trash-2" size="xs" />
+                    <template #content="{ close }">
+                      <div class="p-4 min-w-48">
+                        <p class="text-sm text-dimmed mb-3">{{ t('admin.deleteUserConfirm', { username: row.original.username }) }}</p>
+                        <div class="flex justify-end gap-2">
+                          <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                          <UButton
+                            color="error"
+                            :label="t('common.delete')"
+                            :loading="deleting === row.original.user_id"
+                            @click="handleDeleteConfirm(row.original, close)"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </template>
-                </UPopover>
-                <UPopover v-else-if="row.original.is_deleted">
-                  <UButton color="error" icon="i-lucide-shredder" size="xs"/>
-                  <template #content="{ close }">
-                    <div class="p-4 min-w-48">
-                      <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
-                      <div class="flex justify-end gap-2">
-                        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                        <UButton
-                          color="error"
-                          :label="t('common.purge')"
-                          :loading="purging === row.original.user_id"
-                          @click="async () => { await onPurge(row.original); close() }"
-                        />
+                    </template>
+                  </UPopover>
+                  <UPopover v-else-if="row.original.is_deleted">
+                    <UButton color="error" icon="i-lucide-shredder" size="xs" />
+                    <template #content="{ close }">
+                      <div class="p-4 min-w-48">
+                        <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
+                        <div class="flex justify-end gap-2">
+                          <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                          <UButton
+                            color="error"
+                            :label="t('common.purge')"
+                            :loading="purging === row.original.user_id"
+                            @click="handlePurgeConfirm(row.original, close)"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </template>
-                </UPopover>
-              </div>
-            </template>
-          </UTable>
-        </UCard>
-      </div>
-    </template>
+                    </template>
+                  </UPopover>
+                </div>
+              </template>
+            </UTable>
+          </UCard>
+        </div>
+      </template>
     </UDashboardPanel>
 
     <UModal v-model:open="showCreate">
-    <template #content>
-      <UCard class="w-full">
-        <template #header>
-          <p class="font-semibold">{{ t('admin.newUser') }}</p>
-        </template>
-        <UForm :schema="createSchema" :state="createState" class="flex flex-col gap-4" @submit="onCreate">
-          <UFormField :label="t('auth.username')" name="username" required>
-            <UInput v-model="createState.username" class="w-full" :placeholder="t('admin.placeholderUsername')" />
-          </UFormField>
-          <UFormField :label="t('profile.email')" name="email">
-            <UInput v-model="createState.email" class="w-full" :placeholder="t('admin.placeholderEmail')" type="email" />
-          </UFormField>
-          <UFormField :description="t('admin.passwordOptional')" :label="t('auth.password')" name="password">
-            <UInput v-model="createState.password" class="w-full" type="password" />
-          </UFormField>
-          <div class="flex justify-end gap-2">
-            <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="showCreate = false" />
-            <UButton color="primary" variant="outline" :loading="createLoading" :label="t('common.create')" type="submit" />
-          </div>
-        </UForm>
-      </UCard>
-    </template>
+      <template #content>
+        <UCard class="w-full">
+          <template #header>
+            <p class="font-semibold">{{ t('admin.newUser') }}</p>
+          </template>
+          <UForm :schema="createSchema" :state="createState" class="flex flex-col gap-4" @submit="onCreate">
+            <UFormField :label="t('auth.username')" name="username" required>
+              <UInput v-model="createState.username" class="w-full" :placeholder="t('admin.placeholderUsername')" />
+            </UFormField>
+            <UFormField :label="t('profile.email')" name="email">
+              <UInput v-model="createState.email" class="w-full" :placeholder="t('admin.placeholderEmail')" type="email" />
+            </UFormField>
+            <UFormField :description="t('admin.passwordOptional')" :label="t('auth.password')" name="password">
+              <UInput v-model="createState.password" class="w-full" type="password" />
+            </UFormField>
+            <div class="flex justify-end gap-2">
+              <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="closeCreate" />
+              <UButton color="primary" variant="outline" :loading="createLoading" :label="t('common.create')" type="submit" />
+            </div>
+          </UForm>
+        </UCard>
+      </template>
     </UModal>
 
     <UModal :open="!!editTarget" @update:open="editTarget = null">
-    <template #content>
-      <UCard class="w-full">
-        <template #header>
-          <p class="font-semibold">{{ t('admin.editUser') }}</p>
-        </template>
-        <UForm ref="editUserFormRef" :schema="editSchema" :state="editState" class="flex flex-col gap-4" @submit="onEdit">
-          <UFormField :label="t('auth.username')" name="username" required>
-            <UInput v-model="editState.username" class="w-full" />
-          </UFormField>
-          <UFormField :label="t('profile.email')" name="email">
-            <UInput v-model="editState.email" class="w-full" type="email" />
-          </UFormField>
-          <UFormField name="is_sys_admin">
-            <UCheckbox v-model="editState.is_sys_admin" :label="t('admin.systemAdmin')" />
-          </UFormField>
-          <div class="flex justify-end gap-2">
-            <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="editTarget = null" />
-            <ConfirmActionPopover
-              label-key="common.save"
-              confirm-title-key="common.saveConfirmTitle"
-              confirm-message-key="common.saveConfirmMessage"
-              confirm-label-key="common.saveConfirmFriendly"
-              :loading="editLoading"
-              :on-confirm="() => editUserFormRef?.$el?.requestSubmit?.()"
-            />
-          </div>
-        </UForm>
-      </UCard>
-    </template>
+      <template #content>
+        <UCard class="w-full">
+          <template #header>
+            <p class="font-semibold">{{ t('admin.editUser') }}</p>
+          </template>
+          <UForm ref="editUserFormRef" :schema="editSchema" :state="editState" class="flex flex-col gap-4" @submit="onEdit">
+            <UFormField :label="t('auth.username')" name="username" required>
+              <UInput v-model="editState.username" class="w-full" />
+            </UFormField>
+            <UFormField :label="t('profile.email')" name="email">
+              <UInput v-model="editState.email" class="w-full" type="email" />
+            </UFormField>
+            <UFormField name="is_sys_admin">
+              <UCheckbox v-model="editState.is_sys_admin" :label="t('admin.systemAdmin')" />
+            </UFormField>
+            <div class="flex justify-end gap-2">
+              <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="closeEdit" />
+              <ConfirmActionPopover
+                label-key="common.save"
+                confirm-title-key="common.saveConfirmTitle"
+                confirm-message-key="common.saveConfirmMessage"
+                confirm-label-key="common.saveConfirmFriendly"
+                :loading="editLoading"
+                :on-confirm="() => editUserFormRef?.$el?.requestSubmit?.()"
+              />
+            </div>
+          </UForm>
+        </UCard>
+      </template>
     </UModal>
   </div>
 </template>

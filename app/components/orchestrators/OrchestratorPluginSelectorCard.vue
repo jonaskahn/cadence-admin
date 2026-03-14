@@ -106,7 +106,10 @@ watch(
           value-key="value"
           class="w-24"
         />
-        <UButton :disabled="isAlreadyAdded" icon="i-lucide-plus" size="xs" :title="t('orchestrators.pluginSelector.addPlugin')" @click="onAdd">
+        <UBadge v-if="isAlreadyAdded" color="success" variant="subtle">
+          {{ t('orchestrators.pluginSelector.added') }}
+        </UBadge>
+        <UButton v-else icon="i-lucide-plus" size="xs" :title="t('orchestrators.pluginSelector.addPlugin')" @click="onAdd">
           {{ t('orchestrators.pluginSelector.add') }}
         </UButton>
       </div>

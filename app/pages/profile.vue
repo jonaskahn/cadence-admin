@@ -86,95 +86,95 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel id="profile">
-    <template #header>
-      <UDashboardNavbar :title="t('profile.title')">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-        <template #right>
-          <InfoPopover title-key="info.pages.profile.title" description-key="info.pages.profile.description" />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
-    <template #body>
-      <div class="flex flex-col gap-6 p-6 lg:max-w-2xl mx-auto w-full">
-        <!-- Read-only account info -->
-        <UCard>
-          <template #header>
-            <p class="font-semibold">{{ t('profile.account') }}</p>
+      <template #header>
+        <UDashboardNavbar :title="t('profile.title')">
+          <template #leading>
+            <UDashboardSidebarCollapse />
           </template>
-          <dl class="grid grid-cols-2 gap-4">
-            <div>
-              <dt class="text-dimmed text-sm">{{ t('auth.username') }}</dt>
-              <dd class="font-medium mt-1">{{ me?.username || t('common.empty') }}</dd>
-            </div>
-            <div>
-              <dt class="text-dimmed text-sm">{{ t('profile.userId') }}</dt>
-              <dd class="font-mono text-sm mt-1">{{ me?.user_id || t('common.empty') }}</dd>
-            </div>
-            <div>
-              <dt class="text-dimmed text-sm">{{ t('profile.role') }}</dt>
-              <dd class="mt-1">
-                <UBadge :color="me?.is_sys_admin ? 'error' : 'neutral'" size="sm" variant="subtle">
-                  {{ me?.is_sys_admin ? t('profile.roleSysAdmin') : t('profile.roleUser') }}
-                </UBadge>
-              </dd>
-            </div>
-          </dl>
-        </UCard>
-
-        <!-- Editable profile fields -->
-        <UCard>
-          <template #header>
-            <p class="font-semibold">{{ t('profile.profile') }}</p>
+          <template #right>
+            <InfoPopover title-key="info.pages.profile.title" description-key="info.pages.profile.description" />
           </template>
-          <UForm ref="profileFormRef" :schema="profileSchema" :state="profileState" class="flex flex-col gap-4" @submit="onProfileSubmit">
-            <UFormField :label="t('profile.displayName')" name="display_name">
-              <UInput v-model="profileState.display_name" class="w-full" :placeholder="t('profile.yourName')" />
-            </UFormField>
-            <UFormField :label="t('profile.email')" name="email">
-              <UInput v-model="profileState.email" class="w-full" :placeholder="t('profile.emailPlaceholder')" type="email" />
-            </UFormField>
-            <div class="flex justify-end">
-              <ConfirmActionPopover
-                label-key="common.update"
-                confirm-title-key="common.updateConfirmTitle"
-                confirm-message-key="common.updateConfirmMessage"
-                confirm-label-key="common.updateConfirmFriendly"
-                :loading="savingProfile"
-                :on-confirm="() => profileFormRef?.$el?.requestSubmit?.()"
-              />
-            </div>
-          </UForm>
-        </UCard>
+        </UDashboardNavbar>
+      </template>
 
-        <!-- Change password -->
-        <UCard>
-          <template #header>
-            <p class="font-semibold">{{ t('profile.changePassword') }}</p>
-          </template>
-          <UForm ref="passwordFormRef" :schema="passwordSchema" :state="passwordState" class="flex flex-col gap-4" @submit="onPasswordSubmit">
-            <UFormField :label="t('profile.currentPassword')" name="current_password">
-              <UInput v-model="passwordState.current_password" class="w-full" type="password" />
-            </UFormField>
-            <UFormField :label="t('profile.newPassword')" name="new_password">
-              <UInput v-model="passwordState.new_password" class="w-full" type="password" />
-            </UFormField>
-            <div class="flex justify-end">
-              <ConfirmActionPopover
-                label-key="common.update"
-                confirm-title-key="common.updateConfirmTitle"
-                confirm-message-key="common.updateConfirmMessage"
-                confirm-label-key="common.updateConfirmFriendly"
-                :loading="changingPassword"
-                :on-confirm="() => passwordFormRef?.$el?.requestSubmit?.()"
-              />
-            </div>
-          </UForm>
-        </UCard>
-      </div>
-    </template>
+      <template #body>
+        <div class="flex flex-col gap-6 p-6 lg:max-w-2xl mx-auto w-full">
+          <!-- Read-only account info -->
+          <UCard>
+            <template #header>
+              <p class="font-semibold">{{ t('profile.account') }}</p>
+            </template>
+            <dl class="grid grid-cols-2 gap-4">
+              <div>
+                <dt class="text-dimmed text-sm">{{ t('auth.username') }}</dt>
+                <dd class="font-medium mt-1">{{ me?.username || t('common.empty') }}</dd>
+              </div>
+              <div>
+                <dt class="text-dimmed text-sm">{{ t('profile.userId') }}</dt>
+                <dd class="font-mono text-sm mt-1">{{ me?.user_id || t('common.empty') }}</dd>
+              </div>
+              <div>
+                <dt class="text-dimmed text-sm">{{ t('profile.role') }}</dt>
+                <dd class="mt-1">
+                  <UBadge :color="me?.is_sys_admin ? 'error' : 'neutral'" size="sm" variant="subtle">
+                    {{ me?.is_sys_admin ? t('profile.roleSysAdmin') : t('profile.roleUser') }}
+                  </UBadge>
+                </dd>
+              </div>
+            </dl>
+          </UCard>
+
+          <!-- Editable profile fields -->
+          <UCard>
+            <template #header>
+              <p class="font-semibold">{{ t('profile.profile') }}</p>
+            </template>
+            <UForm ref="profileFormRef" :schema="profileSchema" :state="profileState" class="flex flex-col gap-4" @submit="onProfileSubmit">
+              <UFormField :label="t('profile.displayName')" name="display_name">
+                <UInput v-model="profileState.display_name" class="w-full" :placeholder="t('profile.yourName')" />
+              </UFormField>
+              <UFormField :label="t('profile.email')" name="email">
+                <UInput v-model="profileState.email" class="w-full" :placeholder="t('profile.emailPlaceholder')" type="email" />
+              </UFormField>
+              <div class="flex justify-end">
+                <ConfirmActionPopover
+                  label-key="common.update"
+                  confirm-title-key="common.updateConfirmTitle"
+                  confirm-message-key="common.updateConfirmMessage"
+                  confirm-label-key="common.updateConfirmFriendly"
+                  :loading="savingProfile"
+                  :on-confirm="() => profileFormRef?.$el?.requestSubmit?.()"
+                />
+              </div>
+            </UForm>
+          </UCard>
+
+          <!-- Change password -->
+          <UCard>
+            <template #header>
+              <p class="font-semibold">{{ t('profile.changePassword') }}</p>
+            </template>
+            <UForm ref="passwordFormRef" :schema="passwordSchema" :state="passwordState" class="flex flex-col gap-4" @submit="onPasswordSubmit">
+              <UFormField :label="t('profile.currentPassword')" name="current_password">
+                <UInput v-model="passwordState.current_password" class="w-full" type="password" />
+              </UFormField>
+              <UFormField :label="t('profile.newPassword')" name="new_password">
+                <UInput v-model="passwordState.new_password" class="w-full" type="password" />
+              </UFormField>
+              <div class="flex justify-end">
+                <ConfirmActionPopover
+                  label-key="common.update"
+                  confirm-title-key="common.updateConfirmTitle"
+                  confirm-message-key="common.updateConfirmMessage"
+                  confirm-label-key="common.updateConfirmFriendly"
+                  :loading="changingPassword"
+                  :on-confirm="() => passwordFormRef?.$el?.requestSubmit?.()"
+                />
+              </div>
+            </UForm>
+          </UCard>
+        </div>
+      </template>
     </UDashboardPanel>
   </div>
 </template>

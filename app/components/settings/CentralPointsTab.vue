@@ -12,11 +12,7 @@ defineExpose({ fetchAll })
 
 const { data: org } = await useFetch<{ tier?: string }>(() => `/api/orgs/${props.orgId}`, { watch: [() => props.orgId] })
 const canUseCentralPoints = computed(
-  () =>
-    injected?.value ??
-    (props.orgId &&
-      org.value?.tier &&
-      (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase()))
+  () => injected?.value ?? (props.orgId && org.value?.tier && (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase()))
 )
 
 const auth = useAuth()
@@ -64,6 +60,24 @@ const orchestratorLabel = (orchestratorId: string) => {
   return o ? o.name : orchestratorId
 }
 
+function handleOpenModal() {
+  emit('openModal')
+}
+
+function goToDetail(id: string) {
+  router.push(localePath(`/settings/central-points/${id}`))
+}
+
+async function handleDeleteConfirm(cp: CentralPointResponse, close: () => void) {
+  await onDelete(cp)
+  close()
+}
+
+async function handlePurgeConfirm(cp: CentralPointResponse, close: () => void) {
+  await onPurge(cp)
+  close()
+}
+
 const columns = computed(() => [
   { accessorKey: 'name', header: t('centralPoints.name') },
   { accessorKey: 'orchestrator_id', header: t('centralPoints.orchestrator') },
@@ -91,7 +105,7 @@ const columns = computed(() => [
             variant="outline"
             icon="i-lucide-plus"
             :label="t('centralPoints.addCenterPoint')"
-            @click="emit('openModal')"
+            @click="handleOpenModal"
           />
         </div>
       </template>
@@ -129,7 +143,7 @@ const columns = computed(() => [
               icon="i-lucide-pencil"
               :label="t('common.edit')"
               size="xs"
-              @click="router.push(localePath(`/settings/central-points/${row.original.id}`))"
+              @click="goToDetail(row.original.id)"
             />
             <UPopover v-if="!row.original.is_deleted && auth.isAdmin.value">
               <UButton color="error" icon="i-lucide-trash-2" size="xs" />
@@ -142,25 +156,20 @@ const columns = computed(() => [
                       color="error"
                       :label="t('common.delete')"
                       :loading="deleting === row.original.id"
-                      @click="async () => { await onDelete(row.original); close() }"
+                      @click="handleDeleteConfirm(row.original, close)"
                     />
                   </div>
                 </div>
               </template>
             </UPopover>
             <UPopover v-else-if="auth.isSysAdmin.value && row.original.is_deleted">
-              <UButton color="error" icon="i-lucide-shredder" size="xs"/>
+              <UButton color="error" icon="i-lucide-shredder" size="xs" />
               <template #content="{ close }">
                 <div class="p-4 min-w-48">
                   <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
                   <div class="flex justify-end gap-2">
                     <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                    <UButton
-                      color="error"
-                      :label="t('common.purge')"
-                      :loading="purging === row.original.id"
-                      @click="async () => { await onPurge(row.original); close() }"
-                    />
+                    <UButton color="error" :label="t('common.purge')" :loading="purging === row.original.id" @click="handlePurgeConfirm(row.original, close)" />
                   </div>
                 </div>
               </template>

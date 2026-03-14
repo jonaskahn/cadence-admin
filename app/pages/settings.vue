@@ -14,9 +14,7 @@ const { data: org } = await useFetch<{ tier: string }>(() => `/api/orgs/${orgId.
   watch: [orgId]
 })
 
-const canUseCentralPoints = computed(() =>
-  orgId.value && org.value?.tier && (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase())
-)
+const canUseCentralPoints = computed(() => orgId.value && org.value?.tier && (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase()))
 
 provide('canUseCentralPoints', canUseCentralPoints)
 
@@ -35,23 +33,23 @@ const links = computed<NavigationMenuItem[][]>(() => {
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel id="settings" :ui="{ body: 'lg:py-12' }">
-    <template #header>
-      <UDashboardNavbar :title="t('settings.title')">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
-      </UDashboardNavbar>
+      <template #header>
+        <UDashboardNavbar :title="t('settings.title')">
+          <template #leading>
+            <UDashboardSidebarCollapse />
+          </template>
+        </UDashboardNavbar>
 
-      <UDashboardToolbar>
-        <UNavigationMenu :items="links" class="-mx-1 flex-1" highlight />
-      </UDashboardToolbar>
-    </template>
+        <UDashboardToolbar>
+          <UNavigationMenu :items="links" class="-mx-1 flex-1" highlight />
+        </UDashboardToolbar>
+      </template>
 
-    <template #body>
-      <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 w-full max-w-6xl mx-auto">
-        <NuxtPage />
-      </div>
-    </template>
+      <template #body>
+        <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 w-full max-w-6xl mx-auto">
+          <NuxtPage />
+        </div>
+      </template>
     </UDashboardPanel>
   </div>
 </template>

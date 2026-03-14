@@ -181,6 +181,16 @@ async function enablePlugin() {
 
 const canManage = computed(() => props.allowDisable)
 const isDisabled = computed(() => selectedVersion.value && 'enabled' in selectedVersion.value && selectedVersion.value.enabled === false)
+
+async function handleEnableConfirm(close: () => void) {
+  await enablePlugin()
+  close()
+}
+
+async function handleDisableConfirm(close: () => void) {
+  await disablePlugin()
+  close()
+}
 </script>
 
 <template>
@@ -303,13 +313,7 @@ const isDisabled = computed(() => selectedVersion.value && 'enabled' in selected
                 <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.enableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
                   <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                  <UButton
-                    variant="outline"
-                    color="primary"
-                    :label="t('pluginDetail.enable')"
-                    :loading="enabling"
-                    @click="async () => { await enablePlugin(); close() }"
-                  />
+                  <UButton variant="outline" color="primary" :label="t('pluginDetail.enable')" :loading="enabling" @click="handleEnableConfirm(close)" />
                 </div>
               </div>
             </template>
@@ -323,13 +327,7 @@ const isDisabled = computed(() => selectedVersion.value && 'enabled' in selected
                 <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.disableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
                   <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                  <UButton
-                    variant="outline"
-                    color="error"
-                    :label="t('pluginDetail.disable')"
-                    :loading="disabling"
-                    @click="async () => { await disablePlugin(); close() }"
-                  />
+                  <UButton variant="outline" color="error" :label="t('pluginDetail.disable')" :loading="disabling" @click="handleDisableConfirm(close)" />
                 </div>
               </div>
             </template>

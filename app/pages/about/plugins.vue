@@ -10,9 +10,9 @@ const pluginComponents = computed(() => [
     methods: [
       t('about.plugins.anatomySection.basePlugin.method1'),
       t('about.plugins.anatomySection.basePlugin.method2'),
-      t('about.plugins.anatomySection.basePlugin.method3'),
+      t('about.plugins.anatomySection.basePlugin.method3')
     ],
-    ref: 'cadence_sdk.BasePlugin',
+    ref: 'cadence_sdk.BasePlugin'
   },
   {
     id: 'agent',
@@ -23,9 +23,9 @@ const pluginComponents = computed(() => [
       t('about.plugins.anatomySection.baseAgent.method1'),
       t('about.plugins.anatomySection.baseAgent.method2'),
       t('about.plugins.anatomySection.baseAgent.method3'),
-      t('about.plugins.anatomySection.baseAgent.method4'),
+      t('about.plugins.anatomySection.baseAgent.method4')
     ],
-    ref: 'cadence_sdk.BaseAgent',
+    ref: 'cadence_sdk.BaseAgent'
   },
   {
     id: 'metadata',
@@ -37,10 +37,10 @@ const pluginComponents = computed(() => [
       t('about.plugins.anatomySection.metadata.field2'),
       t('about.plugins.anatomySection.metadata.field3'),
       t('about.plugins.anatomySection.metadata.field4'),
-      t('about.plugins.anatomySection.metadata.field5'),
+      t('about.plugins.anatomySection.metadata.field5')
     ],
-    ref: 'cadence_sdk.PluginMetadata',
-  },
+    ref: 'cadence_sdk.PluginMetadata'
+  }
 ])
 
 const toolFields = computed(() => [
@@ -48,7 +48,7 @@ const toolFields = computed(() => [
   { key: 'args_schema', desc: t('about.plugins.toolsSection.field2.desc') },
   { key: 'stream=True', desc: t('about.plugins.toolsSection.field3.desc') },
   { key: 'stream_filter', desc: t('about.plugins.toolsSection.field4.desc') },
-  { key: 'validate=True', desc: t('about.plugins.toolsSection.field5.desc') },
+  { key: 'validate=True', desc: t('about.plugins.toolsSection.field5.desc') }
 ])
 
 const settingFields = computed(() => [
@@ -56,37 +56,76 @@ const settingFields = computed(() => [
   { key: 'type', desc: t('about.plugins.settingsSection.field2.desc') },
   { key: 'required', desc: t('about.plugins.settingsSection.field3.desc') },
   { key: 'sensitive', desc: t('about.plugins.settingsSection.field4.desc') },
-  { key: 'default', desc: t('about.plugins.settingsSection.field5.desc') },
+  { key: 'default', desc: t('about.plugins.settingsSection.field5.desc') }
 ])
 
 const uploadSteps = computed(() => [
-  { n: 1, title: t('about.plugins.uploadSection.step1.title'), desc: t('about.plugins.uploadSection.step1.desc'), ref: t('about.plugins.uploadSection.step1.ref') },
-  { n: 2, title: t('about.plugins.uploadSection.step2.title'), desc: t('about.plugins.uploadSection.step2.desc'), ref: t('about.plugins.uploadSection.step2.ref') },
-  { n: 3, title: t('about.plugins.uploadSection.step3.title'), desc: t('about.plugins.uploadSection.step3.desc'), ref: t('about.plugins.uploadSection.step3.ref') },
-  { n: 4, title: t('about.plugins.uploadSection.step4.title'), desc: t('about.plugins.uploadSection.step4.desc'), ref: t('about.plugins.uploadSection.step4.ref') },
-  { n: 5, title: t('about.plugins.uploadSection.step5.title'), desc: t('about.plugins.uploadSection.step5.desc'), ref: t('about.plugins.uploadSection.step5.ref') },
-  { n: 6, title: t('about.plugins.uploadSection.step6.title'), desc: t('about.plugins.uploadSection.step6.desc'), ref: t('about.plugins.uploadSection.step6.ref') },
-  { n: 7, title: t('about.plugins.uploadSection.step7.title'), desc: t('about.plugins.uploadSection.step7.desc'), ref: t('about.plugins.uploadSection.step7.ref') },
-  { n: 8, title: t('about.plugins.uploadSection.step8.title'), desc: t('about.plugins.uploadSection.step8.desc'), ref: t('about.plugins.uploadSection.step8.ref') },
+  {
+    n: 1,
+    title: t('about.plugins.uploadSection.step1.title'),
+    desc: t('about.plugins.uploadSection.step1.desc'),
+    ref: t('about.plugins.uploadSection.step1.ref')
+  },
+  {
+    n: 2,
+    title: t('about.plugins.uploadSection.step2.title'),
+    desc: t('about.plugins.uploadSection.step2.desc'),
+    ref: t('about.plugins.uploadSection.step2.ref')
+  },
+  {
+    n: 3,
+    title: t('about.plugins.uploadSection.step3.title'),
+    desc: t('about.plugins.uploadSection.step3.desc'),
+    ref: t('about.plugins.uploadSection.step3.ref')
+  },
+  {
+    n: 4,
+    title: t('about.plugins.uploadSection.step4.title'),
+    desc: t('about.plugins.uploadSection.step4.desc'),
+    ref: t('about.plugins.uploadSection.step4.ref')
+  },
+  {
+    n: 5,
+    title: t('about.plugins.uploadSection.step5.title'),
+    desc: t('about.plugins.uploadSection.step5.desc'),
+    ref: t('about.plugins.uploadSection.step5.ref')
+  },
+  {
+    n: 6,
+    title: t('about.plugins.uploadSection.step6.title'),
+    desc: t('about.plugins.uploadSection.step6.desc'),
+    ref: t('about.plugins.uploadSection.step6.ref')
+  },
+  {
+    n: 7,
+    title: t('about.plugins.uploadSection.step7.title'),
+    desc: t('about.plugins.uploadSection.step7.desc'),
+    ref: t('about.plugins.uploadSection.step7.ref')
+  },
+  {
+    n: 8,
+    title: t('about.plugins.uploadSection.step8.title'),
+    desc: t('about.plugins.uploadSection.step8.desc'),
+    ref: t('about.plugins.uploadSection.step8.ref')
+  }
 ])
 
 const faqItems = computed(() => [
   { label: t('about.plugins.faq1.question'), content: t('about.plugins.faq1.answer') },
   { label: t('about.plugins.faq2.question'), content: t('about.plugins.faq2.answer') },
-  { label: t('about.plugins.faq3.question'), content: t('about.plugins.faq3.answer') },
+  { label: t('about.plugins.faq3.question'), content: t('about.plugins.faq3.answer') }
 ])
 </script>
 
 <template>
   <section class="space-y-8">
-
     <!-- 1. Overview -->
     <div class="space-y-3">
       <div class="flex items-center gap-2">
         <UIcon name="i-lucide-puzzle" class="text-primary size-5" />
         <h2 class="text-lg font-semibold">{{ t('about.plugins.title') }}</h2>
       </div>
-      <p class="text-sm text-muted">{{ t('about.plugins.subtitle') }}</p>
+      <p class="text-xs text-dimmed">{{ t('about.plugins.subtitle') }}</p>
       <p class="text-sm">{{ t('about.plugins.intro') }}</p>
       <ul class="text-sm list-disc list-inside space-y-1">
         <li>{{ t('about.plugins.bullet1') }}</li>
@@ -109,9 +148,9 @@ const faqItems = computed(() => [
           <UBadge :color="c.color" variant="subtle">{{ c.name }}</UBadge>
           <p class="text-sm">{{ c.desc }}</p>
           <ul class="space-y-1">
-            <li v-for="(m, i) in c.methods" :key="i" class="text-xs text-muted font-mono">{{ m }}</li>
+            <li v-for="(m, i) in c.methods" :key="i" class="text-xs text-dimmed font-mono">{{ m }}</li>
           </ul>
-          <code class="text-xs font-mono text-muted">{{ c.ref }}</code>
+          <code class="text-xs font-mono text-dimmed">{{ c.ref }}</code>
         </div>
       </div>
     </div>
@@ -126,7 +165,7 @@ const faqItems = computed(() => [
       <ul class="space-y-2">
         <li v-for="f in toolFields" :key="f.key" class="flex gap-3">
           <code class="text-xs font-mono text-primary shrink-0 mt-0.5 w-36">{{ f.key }}</code>
-          <p class="text-sm text-muted">{{ f.desc }}</p>
+          <p class="text-xs text-dimmed">{{ f.desc }}</p>
         </li>
       </ul>
     </div>
@@ -141,7 +180,7 @@ const faqItems = computed(() => [
       <ul class="space-y-2">
         <li v-for="f in settingFields" :key="f.key" class="flex gap-3">
           <code class="text-xs font-mono text-primary shrink-0 mt-0.5 w-20">{{ f.key }}</code>
-          <p class="text-sm text-muted">{{ f.desc }}</p>
+          <p class="text-xs text-dimmed">{{ f.desc }}</p>
         </li>
       </ul>
     </div>
@@ -158,8 +197,8 @@ const faqItems = computed(() => [
           <UBadge color="primary" variant="subtle" class="shrink-0 mt-0.5">{{ step.n }}</UBadge>
           <div class="space-y-0.5">
             <p class="text-sm font-medium">{{ step.title }}</p>
-            <p class="text-sm text-muted">{{ step.desc }}</p>
-            <code class="text-xs text-muted font-mono">{{ step.ref }}</code>
+            <p class="text-xs text-dimmed">{{ step.desc }}</p>
+            <code class="text-xs text-dimmed font-mono">{{ step.ref }}</code>
           </div>
         </li>
       </ol>
@@ -173,6 +212,5 @@ const faqItems = computed(() => [
       </div>
       <UAccordion :items="faqItems" />
     </div>
-
   </section>
 </template>

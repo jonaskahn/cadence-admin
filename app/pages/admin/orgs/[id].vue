@@ -71,6 +71,10 @@ async function saveOrg(event?: FormSubmitEvent<EditSchema>) {
   }
 }
 
+function openAdd() {
+  showAdd.value = true
+}
+
 function handleAddClose() {
   showAdd.value = false
   refreshMembers()
@@ -89,6 +93,11 @@ async function removeMember(userId: string) {
   } finally {
     removing.value = null
   }
+}
+
+async function handleRemoveConfirm(userId: string, close: () => void) {
+  await removeMember(userId)
+  close()
 }
 
 const memberColumns = computed(() => [
@@ -141,166 +150,166 @@ const quotaRows = computed(() => {
 <template>
   <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
     <UDashboardPanel :id="`admin-org-${orgId}`">
-    <template #header>
-      <UDashboardNavbar :title="org?.display_name || org?.name || orgId">
-        <template #leading>
-          <UButton icon="i-lucide-arrow-left" :to="localePath('/admin/orgs')" variant="outline" />
-        </template>
-        <template #right>
-          <div class="flex items-center gap-2">
-            <InfoPopover title-key="info.admin.orgDetail.title" description-key="info.admin.orgDetail.description" />
-            <UButton color="primary" variant="outline" icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="showAdd = true" />
-          </div>
-        </template>
-      </UDashboardNavbar>
-    </template>
-
-    <template #body>
-      <div class="p-6 flex flex-col gap-6">
-        <!-- Identity card -->
-        <UCard v-if="org">
-          <template #header>
-            <p class="font-semibold">{{ t('admin.details') }}</p>
+      <template #header>
+        <UDashboardNavbar :title="org?.display_name || org?.name || orgId">
+          <template #leading>
+            <UButton icon="i-lucide-arrow-left" :to="localePath('/admin/orgs')" variant="outline" />
           </template>
-          <dl class="grid grid-cols-2 gap-4">
-            <div>
-              <dt class="text-dimmed text-sm">{{ t('admin.orgId') }}</dt>
-              <dd class="font-mono text-sm mt-1">{{ org.org_id }}</dd>
-            </div>
-            <div>
-              <dt class="text-dimmed text-sm">{{ t('dashboard.status') }}</dt>
-              <dd class="mt-1">
-                <UBadge :color="org.status === 'active' ? 'success' : 'neutral'" size="sm" variant="subtle">
-                  {{ org.status }}
-                </UBadge>
-              </dd>
-            </div>
-            <div>
-              <dt class="text-dimmed text-sm">{{ t('admin.slugName') }}</dt>
-              <dd class="font-mono text-sm mt-1">{{ org.name }}</dd>
-            </div>
-            <div>
-              <dt class="text-dimmed text-sm">{{ t('settings.domain') }}</dt>
-              <dd class="font-mono text-sm mt-1">{{ org.domain || t('common.empty') }}</dd>
-            </div>
-            <div>
-              <dt class="text-dimmed text-sm">{{ t('settings.subscriptionTier') }}</dt>
-              <dd class="mt-1">
-                <UBadge :color="subscriptionTierColor(org.tier)" size="sm" variant="subtle">
-                  {{ org?.tier?.toUpperCase() }}
-                </UBadge>
-              </dd>
-            </div>
-          </dl>
-        </UCard>
-
-        <!-- Edit form -->
-        <UCard>
-          <template #header>
-            <p class="font-semibold">{{ t('admin.editOrganization') }}</p>
-          </template>
-          <UForm ref="orgFormRef" :schema="editSchema" :state="form" class="flex flex-col gap-4" @submit="saveOrg">
-            <div class="grid grid-cols-2 gap-4">
-              <UFormField :label="t('settings.displayName')" name="display_name">
-                <UInput v-model="form.display_name" class="w-full" :placeholder="t('settings.acmePlaceholder')" />
-              </UFormField>
-              <UFormField :label="t('settings.domain')" name="domain">
-                <UInput v-model="form.domain" class="w-full" :placeholder="t('admin.domainPlaceholder')" />
-              </UFormField>
-              <UFormField :label="t('settings.subscriptionTier')" name="tier">
-                <USelect v-model="form.tier" :items="tierOptions" class="w-full" />
-              </UFormField>
-              <UFormField :label="t('settings.contactEmail')" name="contact_email">
-                <UInput v-model="form.contact_email" class="w-full" :placeholder="t('settings.adminEmailPlaceholder')" type="email" />
-              </UFormField>
-              <UFormField :label="t('settings.website')" name="website">
-                <UInput v-model="form.website" class="w-full" :placeholder="t('settings.websitePlaceholder')" />
-              </UFormField>
-              <UFormField :label="t('settings.country')" name="country">
-                <UInput v-model="form.country" class="w-full" :placeholder="t('settings.countryPlaceholder')" />
-              </UFormField>
-              <UFormField :label="t('settings.timezone')" name="timezone">
-                <UInput v-model="form.timezone" class="w-full" :placeholder="t('settings.timezonePlaceholder')" />
-              </UFormField>
-              <UFormField :label="t('settings.logoUrl')" name="logo_url">
-                <UInput v-model="form.logo_url" class="w-full" :placeholder="t('settings.logoPlaceholder')" />
-              </UFormField>
-              <UFormField class="col-span-2" :label="t('settings.description')" name="description">
-                <UTextarea v-model="form.description" class="w-full" :placeholder="t('settings.briefDescription')" />
-              </UFormField>
-            </div>
-            <div class="flex justify-end mt-2">
-              <ConfirmActionPopover
-                label-key="common.save"
-                icon="i-lucide-save"
-                confirm-title-key="common.saveConfirmTitle"
-                confirm-message-key="common.saveConfirmMessage"
-                confirm-label-key="common.saveConfirmFriendly"
-                :loading="saving"
-                :on-confirm="() => orgFormRef?.$el?.requestSubmit?.()"
-              />
-            </div>
-          </UForm>
-        </UCard>
-
-        <!-- Quota card -->
-        <UCard v-if="displayQuota">
-          <template #header>
+          <template #right>
             <div class="flex items-center gap-2">
-              <p class="font-semibold">{{ t('admin.tierQuota') }}</p>
-              <UBadge v-if="isPreviewingTier" :color="subscriptionTierColor(form.tier ?? '')" size="sm" variant="soft">
-                {{ t('admin.preview') }}: {{ form.tier?.toUpperCase() }}
-              </UBadge>
+              <InfoPopover title-key="info.admin.orgDetail.title" description-key="info.admin.orgDetail.description" />
+              <UButton color="primary" variant="outline" icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="openAdd" />
             </div>
           </template>
-          <dl class="grid grid-cols-2 gap-4">
-            <div v-for="row in quotaRows" :key="row.label">
-              <dt class="text-dimmed text-sm">{{ row.label }}</dt>
-              <dd class="font-mono text-sm mt-1">{{ row.value }}</dd>
-            </div>
-          </dl>
-        </UCard>
+        </UDashboardNavbar>
+      </template>
 
-        <!-- Members table -->
-        <UCard>
-          <template #header>
-            <p class="font-semibold">{{ t('settings.members') }}</p>
-          </template>
-          <UTable :columns="memberColumns" :data="members || []">
-            <template #is_admin-cell="{ row }">
-              <UBadge :color="row.original.is_admin ? 'warning' : 'neutral'" size="sm" variant="subtle">
-                {{ row.original.is_admin ? t('roles.orgAdmin') : t('roles.member') }}
-              </UBadge>
+      <template #body>
+        <div class="p-6 flex flex-col gap-6">
+          <!-- Identity card -->
+          <UCard v-if="org">
+            <template #header>
+              <p class="font-semibold">{{ t('admin.details') }}</p>
             </template>
-            <template #actions-cell="{ row }">
-              <UPopover>
-                <UButton color="error" icon="i-lucide-trash" size="xs" />
-                <template #content="{ close }">
-                  <div class="p-4 min-w-48">
-                    <p class="text-sm text-dimmed mb-3">{{ t('admin.removeMemberConfirm') }}</p>
-                    <div class="flex justify-end gap-2">
-                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
-                      <UButton
-                        color="error"
-                        :label="t('common.remove')"
-                        :loading="removing === row.original.user_id"
-                        @click="async () => { await removeMember(row.original.user_id); close() }"
-                      />
+            <dl class="grid grid-cols-2 gap-4">
+              <div>
+                <dt class="text-dimmed text-sm">{{ t('admin.orgId') }}</dt>
+                <dd class="font-mono text-sm mt-1">{{ org.org_id }}</dd>
+              </div>
+              <div>
+                <dt class="text-dimmed text-sm">{{ t('dashboard.status') }}</dt>
+                <dd class="mt-1">
+                  <UBadge :color="org.status === 'active' ? 'success' : 'neutral'" size="sm" variant="subtle">
+                    {{ org.status }}
+                  </UBadge>
+                </dd>
+              </div>
+              <div>
+                <dt class="text-dimmed text-sm">{{ t('admin.slugName') }}</dt>
+                <dd class="font-mono text-sm mt-1">{{ org.name }}</dd>
+              </div>
+              <div>
+                <dt class="text-dimmed text-sm">{{ t('settings.domain') }}</dt>
+                <dd class="font-mono text-sm mt-1">{{ org.domain || t('common.empty') }}</dd>
+              </div>
+              <div>
+                <dt class="text-dimmed text-sm">{{ t('settings.subscriptionTier') }}</dt>
+                <dd class="mt-1">
+                  <UBadge :color="subscriptionTierColor(org.tier)" size="sm" variant="subtle">
+                    {{ org?.tier?.toUpperCase() }}
+                  </UBadge>
+                </dd>
+              </div>
+            </dl>
+          </UCard>
+
+          <!-- Edit form -->
+          <UCard>
+            <template #header>
+              <p class="font-semibold">{{ t('admin.editOrganization') }}</p>
+            </template>
+            <UForm ref="orgFormRef" :schema="editSchema" :state="form" class="flex flex-col gap-4" @submit="saveOrg">
+              <div class="grid grid-cols-2 gap-4">
+                <UFormField :label="t('settings.displayName')" name="display_name">
+                  <UInput v-model="form.display_name" class="w-full" :placeholder="t('settings.acmePlaceholder')" />
+                </UFormField>
+                <UFormField :label="t('settings.domain')" name="domain">
+                  <UInput v-model="form.domain" class="w-full" :placeholder="t('admin.domainPlaceholder')" />
+                </UFormField>
+                <UFormField :label="t('settings.subscriptionTier')" name="tier">
+                  <USelect v-model="form.tier" :items="tierOptions" class="w-full" />
+                </UFormField>
+                <UFormField :label="t('settings.contactEmail')" name="contact_email">
+                  <UInput v-model="form.contact_email" class="w-full" :placeholder="t('settings.adminEmailPlaceholder')" type="email" />
+                </UFormField>
+                <UFormField :label="t('settings.website')" name="website">
+                  <UInput v-model="form.website" class="w-full" :placeholder="t('settings.websitePlaceholder')" />
+                </UFormField>
+                <UFormField :label="t('settings.country')" name="country">
+                  <UInput v-model="form.country" class="w-full" :placeholder="t('settings.countryPlaceholder')" />
+                </UFormField>
+                <UFormField :label="t('settings.timezone')" name="timezone">
+                  <UInput v-model="form.timezone" class="w-full" :placeholder="t('settings.timezonePlaceholder')" />
+                </UFormField>
+                <UFormField :label="t('settings.logoUrl')" name="logo_url">
+                  <UInput v-model="form.logo_url" class="w-full" :placeholder="t('settings.logoPlaceholder')" />
+                </UFormField>
+                <UFormField class="col-span-2" :label="t('settings.description')" name="description">
+                  <UTextarea v-model="form.description" class="w-full" :placeholder="t('settings.briefDescription')" />
+                </UFormField>
+              </div>
+              <div class="flex justify-end mt-2">
+                <ConfirmActionPopover
+                  label-key="common.save"
+                  icon="i-lucide-save"
+                  confirm-title-key="common.saveConfirmTitle"
+                  confirm-message-key="common.saveConfirmMessage"
+                  confirm-label-key="common.saveConfirmFriendly"
+                  :loading="saving"
+                  :on-confirm="() => orgFormRef?.$el?.requestSubmit?.()"
+                />
+              </div>
+            </UForm>
+          </UCard>
+
+          <!-- Quota card -->
+          <UCard v-if="displayQuota">
+            <template #header>
+              <div class="flex items-center gap-2">
+                <p class="font-semibold">{{ t('admin.tierQuota') }}</p>
+                <UBadge v-if="isPreviewingTier" :color="subscriptionTierColor(form.tier ?? '')" size="sm" variant="soft">
+                  {{ t('admin.preview') }}: {{ form.tier?.toUpperCase() }}
+                </UBadge>
+              </div>
+            </template>
+            <dl class="grid grid-cols-2 gap-4">
+              <div v-for="row in quotaRows" :key="row.label">
+                <dt class="text-dimmed text-sm">{{ row.label }}</dt>
+                <dd class="font-mono text-sm mt-1">{{ row.value }}</dd>
+              </div>
+            </dl>
+          </UCard>
+
+          <!-- Members table -->
+          <UCard>
+            <template #header>
+              <p class="font-semibold">{{ t('settings.members') }}</p>
+            </template>
+            <UTable :columns="memberColumns" :data="members || []">
+              <template #is_admin-cell="{ row }">
+                <UBadge :color="row.original.is_admin ? 'warning' : 'neutral'" size="sm" variant="subtle">
+                  {{ row.original.is_admin ? t('roles.orgAdmin') : t('roles.member') }}
+                </UBadge>
+              </template>
+              <template #actions-cell="{ row }">
+                <UPopover>
+                  <UButton color="error" icon="i-lucide-trash" size="xs" />
+                  <template #content="{ close }">
+                    <div class="p-4 min-w-48">
+                      <p class="text-sm text-dimmed mb-3">{{ t('admin.removeMemberConfirm') }}</p>
+                      <div class="flex justify-end gap-2">
+                        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                        <UButton
+                          color="error"
+                          :label="t('common.remove')"
+                          :loading="removing === row.original.user_id"
+                          @click="handleRemoveConfirm(row.original.user_id, close)"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </UPopover>
-            </template>
-          </UTable>
-        </UCard>
-      </div>
-    </template>
+                  </template>
+                </UPopover>
+              </template>
+            </UTable>
+          </UCard>
+        </div>
+      </template>
     </UDashboardPanel>
 
     <UModal v-model:open="showAdd">
-    <template #content>
-      <AddMemberModal :org-id="orgId" @close="handleAddClose" />
-    </template>
+      <template #content>
+        <AddMemberModal :org-id="orgId" @close="handleAddClose" />
+      </template>
     </UModal>
   </div>
 </template>

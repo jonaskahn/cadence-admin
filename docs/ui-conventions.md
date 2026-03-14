@@ -52,17 +52,20 @@ For form submit triggers:
 ### i18n Keys
 
 **Title (distinct from button label):**
+
 - `common.saveConfirmTitle`: "Save changes"
 - `common.updateConfirmTitle`: "Update changes"
 - `common.deleteConfirmTitle`: "Confirm delete"
 - `common.addConfirmTitle`: "Confirm add"
 
 **Description (explanation, no duplication of title):**
+
 - `common.saveConfirmMessage`: "Your changes will be applied immediately."
 - `common.updateConfirmMessage`: "Changes will take effect."
 - `common.deleteConfirmMessage`: "This cannot be undone."
 
 **Confirm button (friendly label):**
+
 - `common.saveConfirmFriendly`: "Let's save it"
 - `common.updateConfirmFriendly`: "Let's update it now"
 - `common.deleteConfirmFriendly`: "Let's delete it"

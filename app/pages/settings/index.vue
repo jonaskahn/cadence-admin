@@ -148,11 +148,11 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
         <div class="flex justify-end pt-2">
           <ConfirmActionPopover
             label-key="common.save"
-          confirm-title-key="common.saveConfirmTitle"
-          confirm-message-key="common.saveConfirmMessage"
-          confirm-label-key="common.saveConfirmFriendly"
-          :loading="savingProfile"
-          :on-confirm="() => settingsProfileFormRef?.$el?.requestSubmit?.()"
+            confirm-title-key="common.saveConfirmTitle"
+            confirm-message-key="common.saveConfirmMessage"
+            confirm-label-key="common.saveConfirmFriendly"
+            :loading="savingProfile"
+            :on-confirm="() => settingsProfileFormRef?.$el?.requestSubmit?.()"
           />
         </div>
       </UForm>

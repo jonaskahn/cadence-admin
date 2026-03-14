@@ -91,7 +91,7 @@
     "system": "Hệ thống",
     "organizations": "Tổ chức",
     "users": "Người dùng",
-    "systemPlugins": "Plugin hệ thống",
+    "systemPlugins": "Cửa hàng",
     "globalSettings": "Cài đặt toàn cục",
     "pool": "Pool",
     "health": "Tình trạng",
@@ -287,7 +287,7 @@
   "plugins": {
     "title": "Plugin",
     "all": "Tất cả",
-    "system": "Hệ thống",
+    "system": "Chính thức",
     "org": "Org",
     "enabled": "Đang bật",
     "disabled": "Đang tắt",
@@ -432,7 +432,8 @@
     "notReady": "chưa sẵn sàng",
     "noInstances": "Không có instance nào được load.",
     "orchestratorInstanceHealth": "Tình trạng instance orchestrator",
-    "systemPlugins": "Plugin hệ thống",
+    "systemPlugins": "Cửa hàng",
+    "pluginsPageTitle": "Cửa hàng",
     "uploadPlugin": "Tải plugin lên",
     "selectOrgToView": "Chọn một tổ chức để xem và quản lý plugin của org đó.",
     "noPluginsYet": "Chưa có plugin nào. Tải một plugin lên để bắt đầu.",
@@ -596,7 +597,7 @@
     "parallelToolCalls": "Gọi tool song song",
     "enableToolResultCache": "Bật cache kết quả tool",
     "useLlmValidation": "Dùng LLM để xác thực",
-    "autoCompactMessages": "Tự động rút gọn tin nhắn",
+    "autoCompactMessages": "Rút gọn tin nhắn",
     "autocompactLlmConfig": "Cấu hình LLM",
     "autocompactLlmConfigDescription": "Cấu hình dùng LLM để rút gọn tin nhắn",
     "autocompactModel": "Model mặc định",
@@ -656,7 +657,7 @@
       },
       "plugins": {
         "title": "Plugin",
-        "description": "**Nó làm gì:**\n\nDuyệt và quản lý plugin để mở rộng khả năng của orchestrator.\n\n**Loại plugin:**\n- **System** — Toàn nền tảng, dùng được cho mọi org\n- **Org** — Theo từng tổ chức, do org admin tải lên\n\n**Hành động:** Bật/tắt, xem chi tiết, cấu hình cài đặt. Plugin cung cấp tool và capability mà orchestrator dùng trong lúc hội thoại."
+        "description": "**Nó làm gì:**\n\nDuyệt và quản lý plugin để mở rộng khả năng của orchestrator.\n\n**Loại plugin:**\n- **Cửa hàng (plugin hệ thống)** — Toàn nền tảng, dùng được cho mọi org\n- **Org** — Theo từng tổ chức, do org admin tải lên\n\n**Hành động:** Bật/tắt, xem chi tiết, cấu hình cài đặt. Plugin cung cấp tool và capability mà orchestrator dùng trong lúc hội thoại."
       },
       "profile": {
         "title": "Hồ sơ",
@@ -703,8 +704,8 @@
         "description": "**Nó làm gì:**\n\nQuản lý người dùng toàn nền tảng (chỉ sys admin).\n\n**Hành động:**\n- Tạo người dùng (username, email, mật khẩu tùy chọn)\n- Chỉnh sửa username, email, cờ system admin\n- Xóa người dùng (gỡ họ khỏi tất cả org)\n\n**System admin** — Toàn quyền nền tảng. Người dùng có thể thuộc nhiều tổ chức với vai trò khác nhau."
       },
       "systemPlugins": {
-        "title": "Plugin hệ thống",
-        "description": "**Nó làm gì:**\n\nQuản lý plugin dùng được cho **mọi** tổ chức (chỉ sys admin).\n\n**Tab:** System (toàn nền tảng) | Org (theo từng tổ chức)\n\n**Hành động:**\n- Tải plugin lên (ZIP)\n- Bật/tắt từng phiên bản\n- Xem chi tiết plugin và cấu hình\n\nOrg admin có thể bật system plugin cho org của họ. Org plugin được tải lên riêng theo từng org trong Settings."
+        "title": "Cửa hàng",
+        "description": "**Nó làm gì:**\n\nQuản lý plugin dùng được cho **mọi** tổ chức (chỉ sys admin).\n\n**Tab:** Cửa hàng (plugin hệ thống) | Org (theo từng tổ chức)\n\n**Hành động:**\n- Tải plugin lên (ZIP)\n- Bật/tắt từng phiên bản\n- Xem chi tiết plugin và cấu hình\n\nOrg admin có thể bật Cửa hàng (plugin hệ thống) cho org của họ. Org plugin được tải lên riêng theo từng org trong Settings."
       },
       "globalSettings": {
         "title": "Cài đặt toàn cục",
@@ -1066,9 +1067,9 @@
     "plugins": {
       "title": "Plugin",
       "subtitle": "Tải gói ZIP lên để mở rộng khả năng orchestrator bằng các tool tùy chỉnh.",
-      "intro": "Plugin là các package Python cung cấp tool cho orchestrator. Chúng tuân theo quy ước của Cadence SDK — các định nghĩa hàm có annotation để orchestrator có thể gọi trong lúc hội thoại. System plugin dùng toàn nền tảng; org plugin chỉ áp dụng cho tổ chức đã tải lên.",
+      "intro": "Plugin là các package Python cung cấp tool cho orchestrator. Chúng tuân theo quy ước của Cadence SDK — các định nghĩa hàm có annotation để orchestrator có thể gọi trong lúc hội thoại. Cửa hàng (plugin hệ thống) dùng toàn nền tảng; org plugin chỉ áp dụng cho tổ chức đã tải lên.",
       "bullet1": "Tải plugin lên dưới dạng file ZIP qua Plugins → Upload",
-      "bullet2": "System plugin do system admin quản lý và dùng được cho mọi tổ chức",
+      "bullet2": "Cửa hàng (plugin hệ thống) do system admin quản lý và dùng được cho mọi tổ chức",
       "bullet3": "Org plugin được tải lên riêng theo từng tổ chức và chỉ org đó dùng được",
       "bullet4": "Plugin có thể khai báo cài đặt bắt buộc cần điền theo từng orchestrator",
       "bullet5": "Có thể bật hoặc tắt từng phiên bản plugin một cách độc lập",
@@ -1077,8 +1078,8 @@
         "answer": "Plugin là package ZIP chứa một module hoặc package Python. Nó cung cấp tool qua Cadence SDK bằng các định nghĩa hàm tiêu chuẩn có type annotation."
       },
       "faq2": {
-        "question": "Khác nhau giữa system plugin và org plugin là gì?",
-        "answer": "System plugin do system admin tải lên và dùng được cho mọi tổ chức. Org plugin do org admin tải lên và chỉ dùng được trong tổ chức đó."
+        "question": "Khác nhau giữa Cửa hàng (plugin hệ thống) và org plugin là gì?",
+        "answer": "Cửa hàng (plugin hệ thống) do system admin tải lên và dùng được cho mọi tổ chức. Org plugin do org admin tải lên và chỉ dùng được trong tổ chức đó."
       },
       "faq3": {
         "question": "Plugin có thể yêu cầu cấu hình không?",
@@ -1319,14 +1320,14 @@
       "title": "Phân quyền theo vai trò",
       "subtitle": "Ba vai trò: System Admin (toàn nền tảng), Org Admin (trong workspace), Member (chỉ chat).",
       "intro": "Quyền truy cập trong Cadence được kiểm soát theo hai chiều vai trò độc lập: cấp hệ thống (System Admin hay người dùng thường) và cấp org (Org Admin hay Member). System Admin có toàn quyền nền tảng bất kể có thuộc org đó hay không. Org Admin kiểm soát mọi thứ trong tổ chức của mình. Member chỉ được dùng Chat.",
-      "bullet1": "System Admin: tạo org, quản lý user, plugin hệ thống, cài đặt toàn cục, pool, health",
+      "bullet1": "System Admin: tạo org, quản lý user, Cửa hàng (plugin hệ thống), cài đặt toàn cục, pool, health",
       "bullet2": "Org Admin: orchestrator, plugin, thành viên, LLM config, central point, cài đặt",
       "bullet3": "Member: chỉ có trang Chat — không thấy settings, orchestrator hay plugin",
       "bullet4": "Vai trò được áp dụng cả ở API lẫn UI",
       "bullet5": "Một người có thể là Org Admin ở org này và Member ở org khác cùng lúc",
       "faq1": {
         "question": "System Admin làm được gì?",
-        "answer": "System admin có toàn quyền nền tảng: tạo org và user, quản lý plugin hệ thống, cấu hình cài đặt toàn cục, xem thống kê pool và kiểm tra tình trạng hệ thống."
+        "answer": "System admin có toàn quyền nền tảng: tạo org và user, quản lý Cửa hàng (plugin hệ thống), cấu hình cài đặt toàn cục, xem thống kê pool và kiểm tra tình trạng hệ thống."
       },
       "faq2": {
         "question": "Org Admin làm được gì?",

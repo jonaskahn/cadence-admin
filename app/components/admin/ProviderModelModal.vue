@@ -12,6 +12,10 @@ const emit = defineEmits<{
   close: []
 }>()
 
+function handleClose() {
+  emit('close')
+}
+
 const toast = useToast()
 const { t } = useI18n()
 const loading = ref(false)
@@ -97,7 +101,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>): Promise<void> {
 
     <UForm ref="providerModelFormRef" :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
       <UFormField :label="t('admin.provider')" name="provider" required>
-        <div v-if="isEdit" class="text-sm py-1.5 text-muted">
+        <div v-if="isEdit" class="text-xs py-1.5 text-dimmed">
           {{ providerLabel(state.provider) }}
         </div>
         <USelect v-else v-model="state.provider" :items="providerItems" value-key="value" label-key="label" class="w-full" />
@@ -116,7 +120,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>): Promise<void> {
       </UFormField>
 
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="emit('close')" />
+        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="handleClose" />
         <ConfirmActionPopover
           :label-key="isEdit ? 'common.save' : 'admin.addModel'"
           :confirm-title-key="isEdit ? 'common.saveConfirmTitle' : 'admin.addModelTitle'"
