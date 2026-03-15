@@ -145,7 +145,8 @@
     "enterToSend": "Nhấn Enter để gửi · Shift+Enter để xuống dòng",
     "selectOrchestratorFirst": "Chọn orchestrator trước đã",
     "chatError": "Lỗi chat",
-    "selectAndStart": "Chọn orchestrator rồi bắt đầu chat"
+    "selectAndStart": "Chọn orchestrator rồi bắt đầu chat",
+    "suggestedQuestions": "Câu hỏi gợi ý"
   },
   "profile": {
     "title": "Hồ sơ",
@@ -598,6 +599,7 @@
     "parallelToolCalls": "Gọi tool song song",
     "enableToolResultCache": "Bật cache kết quả tool",
     "useLlmValidation": "Dùng LLM để xác thực",
+    "enabledSuggestion": "Bật câu hỏi gợi ý",
     "autoCompactMessages": "Rút gọn tin nhắn",
     "autocompactLlmConfig": "Cấu hình LLM",
     "autocompactLlmConfigDescription": "Cấu hình dùng LLM để rút gọn tin nhắn",

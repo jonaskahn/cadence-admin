@@ -1,3 +1,18 @@
+export function orgDisplayName(
+  org:
+    | {
+        display_name?: string | null
+        org_name?: string
+        name?: string
+        domain?: string | null
+      }
+    | null
+    | undefined
+): string {
+  if (!org) return ''
+  return org.display_name ?? org.org_name ?? org.name ?? org.domain ?? ''
+}
+
 export const LLM_PROVIDERS = ['openai', 'anthropic', 'google', 'groq', 'azure', 'litellm', 'tensorzero', 'bifrost']
 
 export const SUBSCRIPTION_TIERS = ['free', 'plus', 'pro', 'premium', 'business', 'enterprise'] as const

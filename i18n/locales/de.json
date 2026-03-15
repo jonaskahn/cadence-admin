@@ -145,7 +145,8 @@
     "enterToSend": "Eingabe zum Senden · Umschalt+Eingabe für Zeilenumbruch",
     "selectOrchestratorFirst": "Wählen Sie zuerst einen Orchestrator",
     "chatError": "Chat-Fehler",
-    "selectAndStart": "Wählen Sie einen Orchestrator und starten Sie den Chat"
+    "selectAndStart": "Wählen Sie einen Orchestrator und starten Sie den Chat",
+    "suggestedQuestions": "Vorgeschlagene Fragen"
   },
   "profile": {
     "title": "Profil",
@@ -588,6 +589,7 @@
     "parallelToolCalls": "Parallele Tool-Aufrufe",
     "enableToolResultCache": "Tool-Ergebnis-Cache aktivieren",
     "useLlmValidation": "LLM-Validierung nutzen",
+    "enabledSuggestion": "Vorschlagsfragen aktivieren",
     "autoCompactMessages": "Nachrichten automatisch komprimieren",
     "autocompactLlmConfig": "LLM-Konfiguration",
     "autocompactLlmConfigDescription": "LLM-Konfiguration für Nachrichtenkomprimierung",

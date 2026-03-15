@@ -42,7 +42,7 @@ export function useLangGraphSupervisor(
 
   const llmConfigOptions = computed(() =>
     (llmConfigs.value ?? [])
-      .filter((c) => !c.is_deleted && c.is_enabled !== false)
+      .filter((c) => !c.is_deleted && c?.is_enabled !== false)
       .filter((c) => !supportedProviders.value || supportedProviders.value.includes(c.provider))
       .map((c) => ({
         label: `${c.name} (${providerLabel(c.provider)})`,
@@ -156,7 +156,8 @@ export function useLangGraphSupervisor(
     max_context_window: 16000,
     enabled_parallel_tool_calls: true,
     enabled_llm_validation: false,
-    enabled_auto_compact: false
+    enabled_auto_compact: false,
+    enabled_suggestion: true
   })
 
   watch(
@@ -168,6 +169,7 @@ export function useLangGraphSupervisor(
       modeConfig.enabled_parallel_tool_calls = resolveBoolean(src, 'enabled_parallel_tool_calls', 'parallel_tool_calls', true)
       modeConfig.enabled_llm_validation = resolveBoolean(src, 'enabled_llm_validation', 'use_llm_validation', false)
       modeConfig.enabled_auto_compact = resolveBoolean(src, 'enabled_auto_compact', 'autocompact_enabled', false)
+      modeConfig.enabled_suggestion = resolveBoolean(src, 'enabled_suggestion', 'enabled_suggestion', true)
     },
     { immediate: true }
   )
@@ -339,6 +341,7 @@ export function useLangGraphSupervisor(
         enabled_parallel_tool_calls: modeConfig.enabled_parallel_tool_calls,
         enabled_llm_validation: modeConfig.enabled_llm_validation,
         enabled_auto_compact: modeConfig.enabled_auto_compact,
+        enabled_suggestion: modeConfig.enabled_suggestion,
         autocompact: modeConfig.enabled_auto_compact
           ? {
               llm_config_id: autocompactNode.llm_config_id ? String(autocompactNode.llm_config_id) : null,

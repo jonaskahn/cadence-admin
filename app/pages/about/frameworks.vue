@@ -36,7 +36,7 @@ const providerCompat = [
     id: 'langgraph',
     name: 'LangGraph',
     color: 'primary' as const,
-    providers: ['litellm', 'bifrost', 'tensorzero', 'openai', 'azure', 'gemini', 'claude', 'anthropic', 'groq']
+    providers: ['litellm', 'bifrost', 'tensorzero', 'openai', 'azure', "google", 'gemini', 'claude', 'anthropic', 'groq']
   },
   { id: 'adk', name: 'Google ADK', color: 'success' as const, providers: ['litellm', 'bifrost', 'claude', 'anthropic'] },
   { id: 'openai', name: 'OpenAI Agents', color: 'neutral' as const, providers: ['litellm', 'bifrost', 'openai'] }

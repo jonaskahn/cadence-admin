@@ -180,6 +180,7 @@ function buildPluginSettingsFromSelected(plugins: PluginMetadataResponse[]): Rec
       name: p.name,
       active: true,
       source,
+      logo_image: p.logo_image ?? undefined,
       settings: buildSettingsFromPlugin(p),
       settings_schema: p.settings_schema ?? undefined
     }

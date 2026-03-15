@@ -1,6 +1,19 @@
 <script lang="ts" setup>
-import type { FrameworkSupportedProvidersResponse, OrchestratorResponse } from '~/types'
+import type {
+  FrameworkSupportedProvidersResponse,
+  OrchestratorResponse,
+  PluginMetadataResponse
+} from '~/types'
 import { statusColor, tierColor } from '~/utils'
+
+type PluginCardItem = {
+  id: string
+  name: string
+  pid: string
+  source: 'system' | 'org'
+  logo: string | null
+  version: string
+}
 
 const route = useRoute()
 const auth = useAuth()
@@ -39,7 +52,7 @@ const pluginSettingsRef = ref<{
   validate?: () => { valid: boolean; message?: string }
 } | null>(null)
 
-const activePlugins = computed(() => {
+const baseActivePlugins = computed<PluginCardItem[]>(() => {
   if (!orchestrator.value?.plugin_settings) return []
   return Object.values(orchestrator.value.plugin_settings)
     .filter((entry) => entry.active)
@@ -52,6 +65,47 @@ const activePlugins = computed(() => {
       version: entry.version
     }))
 })
+
+const displayPlugins = ref<PluginCardItem[]>([])
+
+watch(
+  [baseActivePlugins, orgId],
+  async () => {
+    const base = baseActivePlugins.value
+    if (base.length === 0) {
+      displayPlugins.value = []
+      return
+    }
+    displayPlugins.value = base
+    const needsLogo = base.filter((p) => !p.logo)
+    if (needsLogo.length === 0) return
+    const orgIdVal = orgId.value
+    if (!orgIdVal) return
+    try {
+      const logos = await Promise.all(
+        needsLogo.map(async (p) => {
+          try {
+            const res = await $fetch<PluginMetadataResponse[]>(
+              `/api/orgs/${orgIdVal}/plugins/${p.id}/versions?source=${p.source}`
+            )
+            const match = res.find((v) => v.version === p.version)
+            return match?.logo_image ?? null
+          } catch {
+            return null
+          }
+        })
+      )
+      const logoByKey = new Map(needsLogo.map((p, i) => [`${p.id}@${p.version}`, logos[i]]))
+      displayPlugins.value = base.map((p) => ({
+        ...p,
+        logo: p.logo ?? logoByKey.get(`${p.id}@${p.version}`) ?? null
+      }))
+    } catch {
+      /* keep displayPlugins as base with fallback avatars */
+    }
+  },
+  { immediate: true }
+)
 
 const loadingId = ref(false)
 const unloadingId = ref(false)
@@ -309,11 +363,11 @@ async function handleActivateConfirm(close: () => void) {
             </template>
 
             <!-- Plugin status mini-cards -->
-            <div v-if="activePlugins.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-              <OrchestratorPluginCard v-for="plugin in activePlugins" :key="plugin.id + plugin.version" :plugin="plugin" :interactive="false" />
+            <div v-if="displayPlugins.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+              <OrchestratorPluginCard v-for="plugin in displayPlugins" :key="plugin.id + plugin.version" :plugin="plugin" :interactive="false" />
             </div>
 
-            <USeparator v-if="activePlugins.length > 0" :label="t('orchestrators.create.pluginSettings')" class="mb-4" />
+            <USeparator v-if="displayPlugins.length > 0" :label="t('orchestrators.create.pluginSettings')" class="mb-4" />
 
             <p class="text-dimmed text-xs mb-4">{{ t('orchestrators.create.pluginConfigurationDesc') }}</p>
 

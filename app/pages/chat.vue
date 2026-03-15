@@ -110,41 +110,54 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
           <div class="flex-1 flex flex-col overflow-hidden">
             <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
               <div v-for="(msg, idx) in chat.messages.value" :key="idx" :class="msg.role === 'user' ? 'justify-end' : 'justify-start'" class="flex">
-                <div :class="msg.role === 'user' ? 'bg-primary text-white' : 'bg-elevated'" class="max-w-[70%] rounded-2xl px-4 py-2">
-                  <MDC v-if="msg.role === 'assistant'" :value="msg.content" class="prose prose-sm dark:prose-invert max-w-none [&_*]:text-sm" tag="article" />
-                  <p v-else class="text-sm">{{ msg.content }}</p>
+                <div class="max-w-[70%] flex flex-col">
+                  <div :class="msg.role === 'user' ? 'bg-primary text-white' : 'bg-elevated'" class="rounded-2xl px-4 py-2">
+                    <MDC v-if="msg.role === 'assistant'" :value="msg.content" class="prose prose-sm dark:prose-invert max-w-none [&_*]:text-sm" tag="article" />
+                    <p v-else class="text-sm">{{ msg.content }}</p>
 
-                  <details
-                    v-if="msg.role === 'assistant' && (agentStepsOf(msg.events).length || toolResultsOf(msg.events).length)"
-                    class="mt-2 pt-2 border-t border-default/40"
-                  >
-                    <summary class="text-xs text-dimmed cursor-pointer select-none">
-                      <span v-if="agentStepsOf(msg.events).length">{{ agentStepsOf(msg.events).length }} {{ t('chat.steps') }}</span>
-                      <span v-if="agentStepsOf(msg.events).length && toolResultsOf(msg.events).length"> · </span>
-                      <span v-if="toolResultsOf(msg.events).length">{{ toolResultsOf(msg.events).length }} {{ t('chat.sources') }}</span>
-                    </summary>
-                    <div class="mt-1.5 flex flex-col gap-1">
-                      <div v-for="step in agentStepsOf(msg.events)" :key="step.key" class="flex items-center gap-1.5 text-xs text-dimmed">
-                        <UIcon class="size-3 shrink-0 text-success-400" name="i-lucide-check" />
-                        <span>{{ step.fallback }}</span>
+                    <details
+                      v-if="msg.role === 'assistant' && (agentStepsOf(msg.events).length || toolResultsOf(msg.events).length)"
+                      class="mt-2 pt-2 border-t border-default/40"
+                    >
+                      <summary class="text-xs text-dimmed cursor-pointer select-none">
+                        <span v-if="agentStepsOf(msg.events).length">{{ agentStepsOf(msg.events).length }} {{ t('chat.steps') }}</span>
+                        <span v-if="agentStepsOf(msg.events).length && toolResultsOf(msg.events).length"> · </span>
+                        <span v-if="toolResultsOf(msg.events).length">{{ toolResultsOf(msg.events).length }} {{ t('chat.sources') }}</span>
+                      </summary>
+                      <div class="mt-1.5 flex flex-col gap-1">
+                        <div v-for="step in agentStepsOf(msg.events)" :key="step.key" class="flex items-center gap-1.5 text-xs text-dimmed">
+                          <UIcon class="size-3 shrink-0 text-success-400" name="i-lucide-check" />
+                          <span>{{ step.fallback }}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div v-if="toolResultsOf(msg.events).length" class="mt-1.5 flex flex-col gap-1">
-                      <p v-if="agentStepsOf(msg.events).length" class="h-px bg-default/40 my-1" />
-                      <p class="text-xs font-medium text-dimmed">{{ t('chat.sources') }}</p>
-                      <template v-for="result in toolResultsOf(msg.events)">
-                        <a
-                          v-for="(item, i) in linkItemsOf(result)"
-                          :key="`${result.tool_name}-${i}`"
-                          :href="item.url"
-                          class="text-xs text-primary truncate hover:underline"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          >{{ item.title || item.url }}</a
-                        >
-                      </template>
-                    </div>
-                  </details>
+                      <div v-if="toolResultsOf(msg.events).length" class="mt-1.5 flex flex-col gap-1">
+                        <p v-if="agentStepsOf(msg.events).length" class="h-px bg-default/40 my-1" />
+                        <p class="text-xs font-medium text-dimmed">{{ t('chat.sources') }}</p>
+                        <template v-for="result in toolResultsOf(msg.events)">
+                          <a
+                            v-for="(item, i) in linkItemsOf(result)"
+                            :key="`${result.tool_name}-${i}`"
+                            :href="item.url"
+                            class="text-xs text-primary truncate hover:underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >{{ item.title || item.url }}</a
+                          >
+                        </template>
+                      </div>
+                    </details>
+                  </div>
+                  <div v-if="msg.role === 'assistant' && msg.suggestions?.length" class="flex flex-wrap gap-2 mt-2">
+                    <UButton
+                      v-for="(suggestion, si) in msg.suggestions"
+                      :key="si"
+                      size="xs"
+                      variant="soft"
+                      color="neutral"
+                      :label="suggestion"
+                      @click="inputText = suggestion"
+                    />
+                  </div>
                 </div>
               </div>
 

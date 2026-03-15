@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem } from '@nuxt/ui'
+import { orgDisplayName, subscriptionTierColor } from '~/utils'
 
 defineProps<{
   collapsed?: boolean
@@ -11,8 +12,10 @@ const localePath = useLocalePath()
 
 const items = computed<DropdownMenuItem[][]>(() => {
   const orgItems = auth.orgList.value.map((org) => ({
-    label: org.org_name,
+    label: orgDisplayName(org),
     icon: org.org_id === auth.currentOrgId.value ? 'i-lucide-check' : 'i-lucide-building',
+    slot: 'org' as const,
+    org,
     onSelect() {
       auth.selectOrg(org.org_id)
     }
@@ -30,7 +33,7 @@ const items = computed<DropdownMenuItem[][]>(() => {
   ]
 })
 
-const currentOrgName = computed(() => auth.currentOrg.value?.org_name || t('common.selectOrgShort'))
+const currentOrgName = computed(() => orgDisplayName(auth.currentOrg.value) || t('common.selectOrgShort'))
 </script>
 
 <template>
@@ -39,9 +42,14 @@ const currentOrgName = computed(() => auth.currentOrg.value?.org_name || t('comm
     :items="items"
     :ui="{ content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)' }"
   >
+    <template #org-trailing="{ item }">
+      <UBadge v-if="item.org?.tier" :color="subscriptionTierColor(item.org.tier)" size="sm" variant="subtle">
+        {{ item.org.tier.toUpperCase() }}
+      </UBadge>
+    </template>
     <UButton
       :class="[!collapsed && 'py-2']"
-      :label="collapsed ? undefined : currentOrgName"
+      :label="collapsed ? undefined : undefined"
       :square="collapsed"
       :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-up-down'"
       :ui="{ trailingIcon: 'text-dimmed' }"
@@ -50,6 +58,15 @@ const currentOrgName = computed(() => auth.currentOrg.value?.org_name || t('comm
       color="neutral"
       leading-icon="i-lucide-building"
       variant="ghost"
-    />
+    >
+      <template v-if="!collapsed" #default>
+        <div class="flex items-center gap-2 min-w-0 flex-1">
+          <span class="truncate">{{ currentOrgName }}</span>
+          <UBadge v-if="auth.currentOrg.value?.tier" :color="subscriptionTierColor(auth.currentOrg.value.tier)" size="sm" variant="subtle">
+            {{ auth.currentOrg.value.tier.toUpperCase() }}
+          </UBadge>
+        </div>
+      </template>
+    </UButton>
   </UDropdownMenu>
 </template>

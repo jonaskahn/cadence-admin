@@ -145,7 +145,8 @@
     "enterToSend": "Enter to send · Shift+Enter for newline",
     "selectOrchestratorFirst": "Select an orchestrator first",
     "chatError": "Chat error",
-    "selectAndStart": "Select an orchestrator and start chatting"
+    "selectAndStart": "Select an orchestrator and start chatting",
+    "suggestedQuestions": "Suggested questions"
   },
   "profile": {
     "title": "Profile",
@@ -612,6 +613,7 @@
     "parallelToolCalls": "Parallel Tool Calls",
     "enableToolResultCache": "Enable Tool Result Cache",
     "useLlmValidation": "Use LLM Validation",
+    "enabledSuggestion": "Enable suggestion questions",
     "autoCompactMessages": "Compact Messages",
     "autocompactLlmConfig": "LLM Config",
     "autocompactLlmConfigDescription": "Config used LLM for message compaction",

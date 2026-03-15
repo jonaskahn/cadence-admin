@@ -5,6 +5,7 @@ interface ChatMessage {
   content: string
   timestamp: Date
   events?: ChatEvent[]
+  suggestions?: string[]
 }
 
 interface ChatEvent {
@@ -89,6 +90,7 @@ export function useChat() {
   const enableStream = ref(true)
   const streaming = ref(false)
   const currentStreamContent = ref('')
+  const currentSuggestionContent = ref('')
   const currentEvents = ref<ChatEvent[]>([])
   const currentAgentStep = ref<AgentStep | null>(null)
   const currentToolResults = ref<ToolResultEvent[]>([])
@@ -101,6 +103,7 @@ export function useChat() {
   function resetStreamState(): void {
     streaming.value = false
     currentStreamContent.value = ''
+    currentSuggestionContent.value = ''
     currentEvents.value = []
     currentAgentStep.value = null
     currentToolResults.value = []
@@ -120,6 +123,7 @@ export function useChat() {
     messages.value.push({ role: 'user', content: message, timestamp: new Date() })
     streaming.value = true
     currentStreamContent.value = ''
+    currentSuggestionContent.value = ''
     currentEvents.value = []
     currentAgentStep.value = null
 
@@ -157,17 +161,27 @@ export function useChat() {
           currentEvents.value.push(event)
           if (event.type === 'agent') currentAgentStep.value = event.data as AgentStep
           if (event.type === 'tool') currentToolResults.value.push(event.data as ToolResultEvent)
+          if (event.type === 'suggestion') {
+            const data = event.data as { content?: string }
+            currentSuggestionContent.value += data?.content ?? ''
+          }
         },
         onSessionId: (id) => {
           conversationId.value = id
         }
       })
 
+      const suggestions = currentSuggestionContent.value
+        .split('\n')
+        .map((s) => s.replace(/^[-\d.]+\s*/, '').trim())
+        .filter(Boolean)
+
       messages.value.push({
         role: 'assistant',
         content: currentStreamContent.value,
         timestamp: new Date(),
-        events: [...currentEvents.value]
+        events: [...currentEvents.value],
+        suggestions: suggestions.length ? suggestions : undefined
       })
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Stream error'
@@ -190,6 +204,7 @@ export function useChat() {
     enableStream,
     streaming,
     currentStreamContent,
+    currentSuggestionContent,
     currentEvents,
     currentAgentStep,
     currentToolResults,

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { roleColor } from '~/utils'
+import { orgDisplayName, roleColor, subscriptionTierColor } from '~/utils'
 
 definePageMeta({ layout: 'auth' })
 
@@ -49,15 +49,20 @@ onMounted(async () => {
         <div class="flex items-center justify-between">
           <div>
             <p class="font-medium">
-              {{ org.org_name }}
+              {{ orgDisplayName(org) }}
             </p>
             <p class="text-dimmed text-xs mt-0.5">
               {{ org.org_id }}
             </p>
           </div>
-          <UBadge :color="roleColor(org.role)" size="sm" variant="subtle">
-            {{ t(roleLabelKey(org.role)) }}
-          </UBadge>
+          <div class="flex items-center gap-2">
+            <UBadge v-if="org.tier" :color="subscriptionTierColor(org.tier)" size="sm" variant="subtle">
+              {{ org.tier.toUpperCase() }}
+            </UBadge>
+            <UBadge :color="roleColor(org.role)" size="sm" variant="subtle">
+              {{ t(roleLabelKey(org.role)) }}
+            </UBadge>
+          </div>
         </div>
       </UCard>
 

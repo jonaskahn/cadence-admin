@@ -21,6 +21,9 @@ export interface OrgAccessResponse {
   org_id: string
   org_name: string
   role: 'org_admin' | 'user' | 'sys_admin'
+  display_name?: string | null
+  domain?: string | null
+  tier?: string | null
 }
 
 export interface OrgWithRoleResponse {
@@ -29,6 +32,9 @@ export interface OrgWithRoleResponse {
   status: string
   created_at: string
   role: string
+  display_name?: string | null
+  domain?: string | null
+  tier?: string | null
 }
 
 export interface CentralPointResponse {
@@ -297,7 +303,7 @@ export interface LLMConfigResponse {
   provider: string
   base_url: string | null
   additional_config: Record<string, unknown> | null
-  is_enabled: boolean
+  is_enabled?: boolean
   created_at: string
   is_deleted?: boolean
 }

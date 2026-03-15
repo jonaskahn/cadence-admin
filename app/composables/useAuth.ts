@@ -2,7 +2,14 @@ import type { AuthUser, OrgAccessResponse, OrgWithRoleResponse } from '~/types'
 import { COOKIE_SESSION_CONTEXT } from '~/constants'
 
 function mapOrgWithRoleToOrgAccess(org: OrgWithRoleResponse): OrgAccessResponse {
-  return { org_id: org.org_id, org_name: org.name, role: org.role as OrgAccessResponse['role'] }
+  return {
+    org_id: org.org_id,
+    org_name: org.name,
+    role: org.role as OrgAccessResponse['role'],
+    display_name: org.display_name,
+    domain: org.domain,
+    tier: org.tier
+  }
 }
 
 // useRequestFetch is required for cookie-forwarding during SSR
