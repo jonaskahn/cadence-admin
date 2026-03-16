@@ -35,8 +35,6 @@ useSeoMeta({
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-
-    <AppVersionFooter />
   </UApp>
 </template>
 

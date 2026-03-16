@@ -43,15 +43,15 @@ const currentOrgName = computed(() => orgDisplayName(auth.currentOrg.value) || t
     :ui="{ content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)' }"
   >
     <template #org-trailing="{ item }">
-      <UBadge v-if="item.org?.tier" :color="subscriptionTierColor(item.org.tier)" size="sm" variant="subtle">
-        {{ item.org.tier.toUpperCase() }}
+      <UBadge v-if="item?.org?.tier" :color="subscriptionTierColor(item.org.tier)" size="sm" variant="subtle">
+        {{ item?.org.tier.toUpperCase() }}
       </UBadge>
     </template>
     <UButton
       :class="[!collapsed && 'py-2']"
       :label="collapsed ? undefined : undefined"
       :square="collapsed"
-      :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-up-down'"
+      :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-down'"
       :ui="{ trailingIcon: 'text-dimmed' }"
       block
       class="data-[state=open]:bg-elevated"

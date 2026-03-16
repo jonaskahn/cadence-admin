@@ -78,6 +78,11 @@
     "userPlaceholder": "email, username, or user ID",
     "userDescription": "Enter the user's email, username, or user ID"
   },
+  "footer": {
+    "copied": "Copied to clipboard",
+    "failedCopy": "Failed to copy",
+    "copyVersion": "Copy version and build"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "chat": "Chat",
@@ -129,7 +134,14 @@
     "framework": "Framework",
     "mode": "Mode",
     "tier": "Tier",
-    "status": "Status"
+    "status": "Status",
+    "usersOverTime": "Users Over Time",
+    "tokenConsumption": "Token Consumption",
+    "orchestratorByTier": "Orchestrators by Tier",
+    "chatsPerDay": "Chats per Day",
+    "llmCostOverTime": "LLM Cost Over Time",
+    "modelUsage": "Model Usage",
+    "costByProvider": "Cost by Provider"
   },
   "chat": {
     "title": "Chat",

@@ -157,23 +157,27 @@ const mainLinks = computed(() => {
 </script>
 
 <template>
-  <UDashboardGroup unit="rem">
-    <UDashboardSidebar id="default" v-model:open="open" :ui="{ footer: 'lg:border-t lg:border-default' }" class="bg-elevated/25" collapsible resizable>
-      <template #header="{ collapsed }">
-        <OrgMenu :collapsed="collapsed" />
-      </template>
+  <div class="flex flex-col min-h-screen">
+    <UDashboardGroup unit="rem" class="flex-1 min-h-0">
+      <UDashboardSidebar id="default" v-model:open="open" :ui="{ footer: 'lg:border-t lg:border-default' }" class="bg-elevated" collapsible resizable>
+        <template #header="{ collapsed }">
+          <OrgMenu :collapsed="collapsed" />
+        </template>
 
-      <template #default="{ collapsed }">
-        <USeparator type="dashed" />
+        <template #default="{ collapsed }">
+          <UNavigationMenu :collapsed="collapsed" :items="mainLinks" class="flex-1" orientation="vertical" popover tooltip />
+        </template>
 
-        <UNavigationMenu :collapsed="collapsed" :items="mainLinks" class="flex-1" orientation="vertical" popover tooltip />
-      </template>
-
-      <template #footer="{ collapsed }">
-        <UserMenu :collapsed="collapsed" />
-      </template>
-    </UDashboardSidebar>
-
-    <slot />
-  </UDashboardGroup>
+        <template #footer="{ collapsed }">
+          <div class="flex w-full items-center gap-1.5">
+            <div class="min-w-0 flex-1">
+              <UserMenu :collapsed="collapsed" />
+            </div>
+            <AppVersionInfo v-if="!collapsed" :collapsed="collapsed" class="shrink-0" />
+          </div>
+        </template>
+      </UDashboardSidebar>
+      <slot />
+    </UDashboardGroup>
+  </div>
 </template>

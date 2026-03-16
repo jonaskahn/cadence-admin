@@ -132,18 +132,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
     :items="items"
     :ui="{ content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)' }"
   >
-    <UButton
-      :label="collapsed ? undefined : displayName"
-      :square="collapsed"
-      :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-up-down'"
-      :ui="{ trailingIcon: 'text-dimmed' }"
-      block
-      class="data-[state=open]:bg-elevated"
-      color="neutral"
-      leading-icon="i-lucide-user-circle"
-      variant="ghost"
-    />
-
     <template #chip-leading="{ item }">
       <div class="inline-flex items-center justify-center shrink-0 size-5">
         <span
@@ -155,5 +143,23 @@ const items = computed<DropdownMenuItem[][]>(() => [
         />
       </div>
     </template>
+    <UButton
+      :class="[!collapsed && 'py-2']"
+      :label="collapsed ? undefined : undefined"
+      :square="collapsed"
+      :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-down'"
+      :ui="{ trailingIcon: 'text-dimmed' }"
+      block
+      class="data-[state=open]:bg-elevated"
+      color="neutral"
+      leading-icon="i-lucide-user-circle"
+      variant="ghost"
+    >
+      <template v-if="!collapsed" #default>
+        <div class="flex items-center gap-2 min-w-0 flex-1">
+          <span class="truncate">{{ displayName }}</span>
+        </div>
+      </template>
+    </UButton>
   </UDropdownMenu>
 </template>

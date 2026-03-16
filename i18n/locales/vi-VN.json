@@ -78,6 +78,11 @@
     "userPlaceholder": "email, username hoặc user ID",
     "userDescription": "Nhập email, username hoặc user ID của người dùng"
   },
+  "footer": {
+    "copied": "Đã sao chép vào clipboard",
+    "failedCopy": "Sao chép thất bại",
+    "copyVersion": "Sao chép phiên bản và bản dựng"
+  },
   "nav": {
     "dashboard": "Tổng quan",
     "chat": "Chat",
@@ -129,7 +134,14 @@
     "framework": "Framework",
     "mode": "Chế độ",
     "tier": "Tầng",
-    "status": "Trạng thái"
+    "status": "Trạng thái",
+    "usersOverTime": "Người dùng theo thời gian",
+    "tokenConsumption": "Tiêu thụ token",
+    "orchestratorByTier": "Orchestrator theo tầng",
+    "chatsPerDay": "Chat mỗi ngày",
+    "llmCostOverTime": "Chi phí LLM theo thời gian",
+    "modelUsage": "Sử dụng mô hình",
+    "costByProvider": "Chi phí theo nhà cung cấp"
   },
   "chat": {
     "title": "Chat",

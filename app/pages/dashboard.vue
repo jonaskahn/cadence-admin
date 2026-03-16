@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { OrchestratorResponse, PluginMetadataResponse, PoolStatsResponse } from '~/types'
 import { statusColor, tierColor } from '~/utils'
+import { Bar, Doughnut, Line } from 'vue-chartjs'
 
 const auth = useAuth()
 const { t } = useI18n()
@@ -42,6 +43,98 @@ const tierCounts = computed(() => {
     total: list.length
   }
 })
+
+// Fake chart data for demo
+const chartOptions = { responsive: true, maintainAspectRatio: false }
+
+const usersChartData = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+  datasets: [
+    {
+      label: 'Active Users',
+      data: [42, 58, 71, 89, 102, 124],
+      backgroundColor: 'rgba(0, 193, 106, 0.6)',
+      borderColor: 'rgb(0, 193, 106)',
+      borderWidth: 1
+    }
+  ]
+}
+
+const tokensChartData = {
+  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  datasets: [
+    {
+      label: 'Tokens (K)',
+      data: [120, 190, 280, 210, 340, 95, 180],
+      fill: true,
+      borderColor: 'rgb(99, 102, 241)',
+      backgroundColor: 'rgba(99, 102, 241, 0.2)',
+      tension: 0.3
+    }
+  ]
+}
+
+const orchestratorTierChartData = computed(() => ({
+  labels: ['Hot', 'Warm', 'Cold'],
+  datasets: [
+    {
+      data: [tierCounts.value.hot || 2, tierCounts.value.warm || 3, tierCounts.value.cold || 1],
+      backgroundColor: ['rgba(239, 68, 68, 0.7)', 'rgba(34, 197, 94, 0.7)', 'rgba(59, 130, 246, 0.7)'],
+      borderWidth: 0
+    }
+  ]
+}))
+
+const chatsChartData = {
+  labels: ['6am', '9am', '12pm', '3pm', '6pm', '9pm'],
+  datasets: [
+    {
+      label: 'Chats',
+      data: [12, 45, 78, 52, 91, 38],
+      backgroundColor: 'rgba(168, 85, 247, 0.6)',
+      borderColor: 'rgb(168, 85, 247)',
+      borderWidth: 1
+    }
+  ]
+}
+
+const llmCostChartData = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+  datasets: [
+    {
+      label: 'LLM Cost ($)',
+      data: [124, 189, 256, 312, 278, 341],
+      fill: true,
+      borderColor: 'rgb(234, 179, 8)',
+      backgroundColor: 'rgba(234, 179, 8, 0.15)',
+      tension: 0.3
+    }
+  ]
+}
+
+const modelUsageChartData = {
+  labels: ['GPT-4o', 'Claude 3.5', 'Gemini Pro', 'Llama 3', 'Mistral'],
+  datasets: [
+    {
+      data: [38, 28, 18, 10, 6],
+      backgroundColor: ['rgba(16, 185, 129, 0.8)', 'rgba(99, 102, 241, 0.8)', 'rgba(251, 146, 60, 0.8)', 'rgba(236, 72, 153, 0.8)', 'rgba(34, 211, 238, 0.8)'],
+      borderWidth: 0
+    }
+  ]
+}
+
+const costByProviderChartData = {
+  labels: ['OpenAI', 'Anthropic', 'Google', 'Other'],
+  datasets: [
+    {
+      label: 'Cost ($)',
+      data: [420, 285, 156, 89],
+      backgroundColor: ['rgba(16, 185, 129, 0.6)', 'rgba(99, 102, 241, 0.6)', 'rgba(251, 146, 60, 0.6)', 'rgba(156, 163, 175, 0.6)'],
+      borderColor: ['rgb(16, 185, 129)', 'rgb(99, 102, 241)', 'rgb(251, 146, 60)', 'rgb(156, 163, 175)'],
+      borderWidth: 1
+    }
+  ]
+}
 </script>
 
 <template>
@@ -155,6 +248,110 @@ const tierCounts = computed(() => {
               </div>
             </UCard>
           </template>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <UCard>
+              <template #header>
+                <p class="font-semibold">{{ t('dashboard.usersOverTime') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-64">
+                  <Bar :data="usersChartData" :options="chartOptions" />
+                </div>
+                <template #fallback>
+                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+
+            <UCard>
+              <template #header>
+                <p class="font-semibold">{{ t('dashboard.tokenConsumption') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-64">
+                  <Line :data="tokensChartData" :options="chartOptions" />
+                </div>
+                <template #fallback>
+                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+
+            <UCard>
+              <template #header>
+                <p class="font-semibold">{{ t('dashboard.orchestratorByTier') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-64 flex items-center justify-center">
+                  <div class="size-48">
+                    <Doughnut :data="orchestratorTierChartData" :options="chartOptions" />
+                  </div>
+                </div>
+                <template #fallback>
+                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+
+            <UCard>
+              <template #header>
+                <p class="font-semibold">{{ t('dashboard.chatsPerDay') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-64">
+                  <Bar :data="chatsChartData" :options="chartOptions" />
+                </div>
+                <template #fallback>
+                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+
+            <UCard>
+              <template #header>
+                <p class="font-semibold">{{ t('dashboard.llmCostOverTime') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-64">
+                  <Line :data="llmCostChartData" :options="chartOptions" />
+                </div>
+                <template #fallback>
+                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+
+            <UCard>
+              <template #header>
+                <p class="font-semibold">{{ t('dashboard.modelUsage') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-64 flex items-center justify-center">
+                  <div class="size-48">
+                    <Doughnut :data="modelUsageChartData" :options="chartOptions" />
+                  </div>
+                </div>
+                <template #fallback>
+                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+
+            <UCard>
+              <template #header>
+                <p class="font-semibold">{{ t('dashboard.costByProvider') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-64">
+                  <Bar :data="costByProviderChartData" :options="chartOptions" />
+                </div>
+                <template #fallback>
+                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+          </div>
 
           <UCard>
             <template #header>

@@ -78,6 +78,11 @@
     "userPlaceholder": "E-Mail, Benutzername oder Benutzer-ID",
     "userDescription": "E-Mail, Benutzername oder Benutzer-ID des Benutzers eingeben"
   },
+  "footer": {
+    "copied": "In Zwischenablage kopiert",
+    "failedCopy": "Kopieren fehlgeschlagen",
+    "copyVersion": "Version und Build kopieren"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "chat": "Chat",
@@ -129,7 +134,14 @@
     "framework": "Framework",
     "mode": "Modus",
     "tier": "Tier",
-    "status": "Status"
+    "status": "Status",
+    "usersOverTime": "Benutzer im Zeitverlauf",
+    "tokenConsumption": "Token-Verbrauch",
+    "orchestratorByTier": "Orchestratoren nach Tier",
+    "chatsPerDay": "Chats pro Tag",
+    "llmCostOverTime": "LLM-Kosten im Zeitverlauf",
+    "modelUsage": "Modellnutzung",
+    "costByProvider": "Kosten nach Anbieter"
   },
   "chat": {
     "title": "Chat",
