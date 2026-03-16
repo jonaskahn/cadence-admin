@@ -114,6 +114,6 @@ export function toPluginRefKey(source: string, pid: string, version: string): st
   return `${source}:${pid}@${version}`
 }
 
-export function toPluginUniquenessKey(source: string, pid: string, version: string): string {
-  return `${source}::${pid}::${version}`
+export function toPluginUniquenessKey(source: string, pid: string): string {
+  return `${source}::${pid}`
 }

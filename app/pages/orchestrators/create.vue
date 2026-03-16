@@ -128,7 +128,7 @@ const tierOptions = computed(() => [
   { label: t('orchestrators.create.tierHot'), value: 'hot' }
 ])
 
-const alreadyAddedKeys = computed(() => selectedPlugins.value.map((p) => toPluginUniquenessKey((p.source as string) ?? 'org', p.pid, p.version)))
+const alreadyAddedKeys = computed(() => selectedPlugins.value.map((p) => toPluginUniquenessKey((p.source as string) ?? 'org', p.pid)))
 
 const pluginSettingsInitialValue = ref<Record<string, PluginSettingsEntry>>({})
 
@@ -231,7 +231,7 @@ watch(
 )
 
 function onPluginAdded(plugin: PluginMetadataResponse) {
-  const key = toPluginUniquenessKey((plugin.source as string) ?? 'org', plugin.pid, plugin.version)
+  const key = toPluginUniquenessKey((plugin.source as string) ?? 'org', plugin.pid)
   if (alreadyAddedKeys.value.includes(key)) return
   selectedPlugins.value = [...selectedPlugins.value, plugin]
 }
@@ -433,7 +433,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     <OrchestratorPluginCard
                       v-for="(plugin, index) in selectedPlugins"
-                      :key="toPluginUniquenessKey(plugin.source as string, plugin.pid, plugin.version)"
+                      :key="toPluginUniquenessKey(plugin.source as string, plugin.pid)"
                       :plugin="{
                         id: plugin.id,
                         name: plugin.name,

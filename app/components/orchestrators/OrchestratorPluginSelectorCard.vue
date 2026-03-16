@@ -53,7 +53,7 @@ const displayPlugin = computed(() => {
 
 function pluginKey(plugin: PluginVersionItem): string {
   const s = 'source' in plugin && plugin.source ? plugin.source : props.plugin.source
-  return `${s}::${plugin.pid}::${plugin.version}`
+  return `${s}::${plugin.pid}`
 }
 
 const isAlreadyAdded = computed(() => {

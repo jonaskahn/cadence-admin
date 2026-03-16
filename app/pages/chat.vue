@@ -141,7 +141,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                             class="text-xs text-primary truncate hover:underline"
                             target="_blank"
                             rel="noopener noreferrer"
-                            >{{ item.title || item.url }}</a
+                            >{{ item?.title || item?.url }}</a
                           >
                         </template>
                       </div>
