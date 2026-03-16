@@ -92,7 +92,7 @@ function openUpload() {
       @closed="onDrawerClosed"
     />
 
-    <UModal v-model:open="showUpload">
+    <UModal v-model:open="showUpload" :title="t('pluginUpload.title')" :description="t('pluginUpload.description')">
       <template #content>
         <PluginUploadModal :org-id="orgId" @close="handleUploadClose" />
       </template>

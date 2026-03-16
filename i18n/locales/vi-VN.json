@@ -538,6 +538,7 @@
   },
   "pluginUpload": {
     "title": "Tải plugin lên",
+    "description": "Tải lên gói plugin dưới dạng tệp ZIP",
     "uploaded": "Đã tải plugin lên",
     "uploadFailed": "Tải lên thất bại",
     "clickToSelect": "Bấm để chọn plugin (.zip)",

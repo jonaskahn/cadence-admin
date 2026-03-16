@@ -528,6 +528,7 @@
   },
   "pluginUpload": {
     "title": "Plugin hochladen",
+    "description": "Laden Sie ein Plugin-Paket als ZIP-Datei hoch",
     "uploaded": "Plugin hochgeladen",
     "uploadFailed": "Hochladen fehlgeschlagen",
     "clickToSelect": "Klicken, um Plugin (.zip) auszuwählen",

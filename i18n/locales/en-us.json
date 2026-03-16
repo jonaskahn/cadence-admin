@@ -552,6 +552,7 @@
   },
   "pluginUpload": {
     "title": "Upload Plugin",
+    "description": "Upload a plugin package as a ZIP file",
     "uploaded": "Plugin uploaded",
     "uploadFailed": "Upload failed",
     "clickToSelect": "Click to select plugin (.zip)",
