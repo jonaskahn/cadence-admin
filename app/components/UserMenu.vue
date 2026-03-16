@@ -147,7 +147,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
       :class="[!collapsed && 'py-2']"
       :label="collapsed ? undefined : undefined"
       :square="collapsed"
-      :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-down'"
+      :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-up'"
       :ui="{ trailingIcon: 'text-dimmed' }"
       block
       class="data-[state=open]:bg-elevated"
