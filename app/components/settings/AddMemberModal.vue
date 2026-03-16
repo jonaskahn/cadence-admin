@@ -13,6 +13,7 @@ function handleClose() {
 const toast = useToast()
 const { t } = useI18n()
 const { findUser } = useUserSearch()
+const { withOverlay } = useLoadingOverlay()
 const loading = ref(false)
 
 const schema = z.object({
@@ -39,12 +40,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       })
       return
     }
-    await $fetch(`/api/orgs/${props.orgId}/users`, {
-      method: 'POST',
-      body: { user_id: user.user_id, is_admin: event.data.is_admin }
+    await withOverlay(async () => {
+      await $fetch(`/api/orgs/${props.orgId}/users`, {
+        method: 'POST',
+        body: { user_id: user.user_id, is_admin: event.data.is_admin }
+      })
+      toast.add({ title: t('addMember.memberAdded'), icon: 'i-lucide-check', color: 'success' })
+      emit('close')
     })
-    toast.add({ title: t('addMember.memberAdded'), icon: 'i-lucide-check', color: 'success' })
-    emit('close')
   } catch (err: unknown) {
     const msg = getApiErrorMessage(err, 'Failed to add member')
     toast.add({ title: t('errors.error'), description: msg, color: 'error' })

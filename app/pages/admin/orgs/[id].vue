@@ -7,6 +7,7 @@ import { getApiErrorMessage, SUBSCRIPTION_TIERS, subscriptionTierColor } from '~
 const route = useRoute()
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 const localePath = useLocalePath()
 const orgId = route.params.id as string
 const showAdd = ref(false)
@@ -57,14 +58,16 @@ const form = reactive<UpdateOrganizationRequest>({
 async function saveOrg(event?: FormSubmitEvent<EditSchema>) {
   saving.value = true
   try {
-    await $fetch(`/api/admin/orgs/${orgId}`, {
-      method: 'PATCH',
-      body: event?.data ?? form
+    await withOverlay(async () => {
+      await $fetch(`/api/admin/orgs/${orgId}`, {
+        method: 'PATCH',
+        body: event?.data ?? form
+      })
+      await refreshOrg()
+      await refreshQuota()
+      toast.add({ title: t('admin.organizationUpdated'), icon: 'i-lucide-check' })
     })
-    await refreshOrg()
-    await refreshQuota()
-    toast.add({ title: t('admin.organizationUpdated'), icon: 'i-lucide-check' })
-  } catch (err) {
+  } catch (err: unknown) {
     toast.add({ title: t('errors.error'), description: getApiErrorMessage(err, t('admin.failedSaveOrg')), color: 'error' })
   } finally {
     saving.value = false
@@ -85,10 +88,12 @@ const removing = ref<string | null>(null)
 async function removeMember(userId: string) {
   removing.value = userId
   try {
-    await $fetch(`/api/orgs/${orgId}/users/${userId}`, { method: 'DELETE' })
-    await refreshMembers()
-    toast.add({ title: t('settings.memberRemoved'), icon: 'i-lucide-check' })
-  } catch (err) {
+    await withOverlay(async () => {
+      await $fetch(`/api/orgs/${orgId}/users/${userId}`, { method: 'DELETE' })
+      await refreshMembers()
+      toast.add({ title: t('settings.memberRemoved'), icon: 'i-lucide-check' })
+    })
+  } catch (err: unknown) {
     toast.add({ title: t('errors.error'), description: getApiErrorMessage(err, t('settings.failedRemoveMember')), color: 'error' })
   } finally {
     removing.value = null

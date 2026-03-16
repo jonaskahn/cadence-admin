@@ -10,6 +10,7 @@ const localePath = useLocalePath()
 const auth = useAuth()
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 
 const centerPointId = route.params.id as string
 const orgId = computed(() => auth.currentOrgId.value || '')
@@ -72,17 +73,19 @@ const basicInfoFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(nu
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   saving.value = true
   try {
-    await $fetch(`/api/orgs/${orgId.value}/central-points/${centerPointId}`, {
-      method: 'PATCH',
-      body: {
-        name: event.data.name,
-        description: event.data.description ?? null,
-        orchestrator_id: event.data.orchestrator_id,
-        visibility: event.data.visibility
-      }
+    await withOverlay(async () => {
+      await $fetch(`/api/orgs/${orgId.value}/central-points/${centerPointId}`, {
+        method: 'PATCH',
+        body: {
+          name: event.data.name,
+          description: event.data.description ?? null,
+          orchestrator_id: event.data.orchestrator_id,
+          visibility: event.data.visibility
+        }
+      })
+      await refresh()
+      toast.add({ title: t('centralPoints.updatedSuccess'), icon: 'i-lucide-check', color: 'success' })
     })
-    await refresh()
-    toast.add({ title: t('centralPoints.updatedSuccess'), icon: 'i-lucide-check', color: 'success' })
   } catch (err: unknown) {
     const msg = getApiErrorMessage(err, t('centralPoints.failedUpdate'))
     toast.add({ title: t('errors.error'), description: msg, color: 'error' })

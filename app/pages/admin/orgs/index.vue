@@ -7,6 +7,7 @@ import { formatDate, getApiErrorMessage, SUBSCRIPTION_TIERS, subscriptionTierCol
 const auth = useAuth()
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 const showCreate = ref(false)
 
 function openCreate() {
@@ -56,35 +57,37 @@ const tierOptions = SUBSCRIPTION_TIERS.map((t) => ({ label: t, value: t }))
 async function onCreate(event: FormSubmitEvent<Schema>) {
   creating.value = true
   try {
-    const payload = {
-      name: event.data.name,
-      display_name: event.data.display_name || null,
-      domain: event.data.domain,
-      tier: event.data.tier || null,
-      description: event.data.description || null,
-      contact_email: event.data.contact_email || null,
-      website: event.data.website || null,
-      logo_url: event.data.logo_url || null,
-      country: event.data.country || null,
-      timezone: event.data.timezone || null
-    }
-    await $fetch('/api/admin/orgs', { method: 'POST', body: payload })
-    Object.assign(state, {
-      name: '',
-      display_name: '',
-      domain: '',
-      tier: 'free',
-      description: '',
-      contact_email: '',
-      website: '',
-      logo_url: '',
-      country: '',
-      timezone: ''
+    await withOverlay(async () => {
+      const payload = {
+        name: event.data.name,
+        display_name: event.data.display_name || null,
+        domain: event.data.domain,
+        tier: event.data.tier || null,
+        description: event.data.description || null,
+        contact_email: event.data.contact_email || null,
+        website: event.data.website || null,
+        logo_url: event.data.logo_url || null,
+        country: event.data.country || null,
+        timezone: event.data.timezone || null
+      }
+      await $fetch('/api/admin/orgs', { method: 'POST', body: payload })
+      Object.assign(state, {
+        name: '',
+        display_name: '',
+        domain: '',
+        tier: 'free',
+        description: '',
+        contact_email: '',
+        website: '',
+        logo_url: '',
+        country: '',
+        timezone: ''
+      })
+      showCreate.value = false
+      await Promise.all([refresh(), auth.loadOrgs()])
+      toast.add({ title: t('admin.organizationCreated'), icon: 'i-lucide-check', color: 'success' })
     })
-    showCreate.value = false
-    await Promise.all([refresh(), auth.loadOrgs()])
-    toast.add({ title: t('admin.organizationCreated'), icon: 'i-lucide-check', color: 'success' })
-  } catch (err) {
+  } catch (err: unknown) {
     toast.add({ title: t('errors.error'), description: getApiErrorMessage(err, t('admin.failedCreateOrg')), color: 'error' })
   } finally {
     creating.value = false

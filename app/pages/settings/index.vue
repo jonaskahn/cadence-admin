@@ -7,6 +7,7 @@ import { subscriptionTierColor } from '~/utils'
 const auth = useAuth()
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 const orgId = computed(() => auth.currentOrgId.value || '')
 const isOrgAdmin = computed(() => auth.currentOrg.value?.role === 'org_admin' || auth.currentOrg.value?.role === 'sys_admin')
 
@@ -44,12 +45,14 @@ const settingsProfileFormRef = ref<{ $el?: { requestSubmit?: () => void } } | nu
 async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
   savingProfile.value = true
   try {
-    await $fetch(`/api/orgs/${orgId.value}/profile`, {
-      method: 'PATCH',
-      body: event.data
+    await withOverlay(async () => {
+      await $fetch(`/api/orgs/${orgId.value}/profile`, {
+        method: 'PATCH',
+        body: event.data
+      })
+      await refreshOrg()
+      toast.add({ title: t('settings.organizationUpdated'), icon: 'i-lucide-check', color: 'success' })
     })
-    await refreshOrg()
-    toast.add({ title: t('settings.organizationUpdated'), icon: 'i-lucide-check', color: 'success' })
   } catch {
     toast.add({ title: t('settings.failedUpdateOrg'), color: 'error' })
   } finally {

@@ -11,6 +11,7 @@ const localePath = useLocalePath()
 const auth = useAuth()
 const orchestrators = useOrchestrators()
 const toast = useToast()
+const { withOverlay } = useLoadingOverlay()
 const orgId = computed(() => auth.currentOrgId.value || '')
 const instanceId = route.params.id as string
 if (!auth.isAdmin.value) {
@@ -108,10 +109,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
   loading.value = true
   try {
-    await patchMetadata({ name: event.data.name, tier: event.data.tier })
-    const supervisorConfig = supervisorProviderRef.value?.getValue()
-    await patchConfig({ ...(supervisorConfig ?? {}), monitoring: monitoringConfig.value })
-    await router.push(localePath(`/orchestrators/${instanceId}`))
+    await withOverlay(async () => {
+      await patchMetadata({ name: event.data.name, tier: event.data.tier })
+      const supervisorConfig = supervisorProviderRef.value?.getValue()
+      await patchConfig({ ...(supervisorConfig ?? {}), monitoring: monitoringConfig.value })
+      await router.push(localePath(`/orchestrators/${instanceId}`))
+    })
   } finally {
     loading.value = false
   }

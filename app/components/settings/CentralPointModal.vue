@@ -18,6 +18,7 @@ function handleClose() {
 const toast = useToast()
 const { t } = useI18n()
 const { create } = useCentralPoints(computed(() => props.orgId))
+const { withOverlay } = useLoadingOverlay()
 const loading = ref(false)
 
 const schema = computed(() =>
@@ -55,13 +56,15 @@ const visibilityItems = computed(() => [
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   try {
-    await create({
-      name: event.data.name,
-      description: event.data.description ?? null,
-      orchestrator_id: event.data.orchestrator_id,
-      visibility: event.data.visibility
+    await withOverlay(async () => {
+      await create({
+        name: event.data.name,
+        description: event.data.description ?? null,
+        orchestrator_id: event.data.orchestrator_id,
+        visibility: event.data.visibility
+      })
+      emit('close')
     })
-    emit('close')
   } catch (err: unknown) {
     const msg = getApiErrorMessage(err, t('centralPoints.failedCreate'))
     toast.add({ title: t('errors.error'), description: msg, color: 'error' })

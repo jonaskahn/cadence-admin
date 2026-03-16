@@ -4,6 +4,7 @@ import type { LLMConfigResponse, OrchestratorDefaults, ProviderModelResponse } f
 const auth = useAuth()
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 const orgId = computed(() => auth.currentOrgId.value || '')
 
 function providerLabel(provider: string): string {
@@ -125,17 +126,19 @@ function toggleModelManual() {
 async function save() {
   saving.value = true
   try {
-    await $fetch(`/api/orgs/${orgId.value}/orchestrator-defaults`, {
-      method: 'PUT',
-      body: {
-        default_llm_config_id: form.default_llm_config_id ? String(form.default_llm_config_id) : null,
-        default_model_name: form.default_model_name || null,
-        default_max_tokens: form.default_max_tokens || null,
-        default_timeout: form.default_timeout || null
-      }
+    await withOverlay(async () => {
+      await $fetch(`/api/orgs/${orgId.value}/orchestrator-defaults`, {
+        method: 'PUT',
+        body: {
+          default_llm_config_id: form.default_llm_config_id ? String(form.default_llm_config_id) : null,
+          default_model_name: form.default_model_name || null,
+          default_max_tokens: form.default_max_tokens || null,
+          default_timeout: form.default_timeout || null
+        }
+      })
+      await refresh()
+      toast.add({ title: t('settings.defaultsSaved'), icon: 'i-lucide-check', color: 'success' })
     })
-    await refresh()
-    toast.add({ title: t('settings.defaultsSaved'), icon: 'i-lucide-check', color: 'success' })
   } catch {
     toast.add({ title: t('settings.failedSaveDefaults'), color: 'error' })
   } finally {

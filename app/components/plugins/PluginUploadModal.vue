@@ -13,6 +13,7 @@ function handleClose() {
   emit('close')
 }
 const toast = useToast()
+const { withOverlay } = useLoadingOverlay()
 const fileInput = ref<HTMLInputElement>()
 const selectedFile = ref<File | null>(null)
 const uploading = ref(false)
@@ -34,14 +35,16 @@ async function onUpload() {
   formData.append('file', selectedFile.value)
 
   try {
-    const url = props.isAdmin ? '/api/admin/plugins/upload' : `/api/orgs/${props.orgId}/plugins/upload`
+    await withOverlay(async () => {
+      const url = props.isAdmin ? '/api/admin/plugins/upload' : `/api/orgs/${props.orgId}/plugins/upload`
 
-    await $fetch(url, {
-      method: 'POST',
-      body: formData
+      await $fetch(url, {
+        method: 'POST',
+        body: formData
+      })
+      toast.add({ title: t('pluginUpload.uploaded'), icon: 'i-lucide-check', color: 'success' })
+      emit('close')
     })
-    toast.add({ title: t('pluginUpload.uploaded'), icon: 'i-lucide-check', color: 'success' })
-    emit('close')
   } catch (err: unknown) {
     const msg = getApiErrorMessage(err, t('pluginUpload.uploadFailed'))
     toast.add({ title: t('pluginUpload.uploadFailed'), description: msg, color: 'error' })

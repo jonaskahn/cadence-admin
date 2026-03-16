@@ -6,6 +6,7 @@ import { formatDate, getApiErrorMessage } from '~/utils'
 
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 
 async function withUserActionError<T>(fn: () => Promise<T>, errorMsg: string): Promise<T> {
   try {
@@ -52,18 +53,22 @@ const createState = reactive<Partial<CreateSchema>>({ username: '', email: '', p
 async function onCreate(event: FormSubmitEvent<CreateSchema>) {
   createLoading.value = true
   try {
-    await withUserActionError(async () => {
-      await $fetch('/api/admin/users', {
-        method: 'POST',
-        body: { username: event.data.username, email: event.data.email || null, password: event.data.password || null }
-      })
-      toast.add({ title: t('admin.userCreated'), icon: 'i-lucide-check', color: 'success' })
-      showCreate.value = false
-      createState.username = ''
-      createState.email = ''
-      createState.password = ''
-      await refresh()
-    }, t('admin.failedCreateUser'))
+    await withUserActionError(
+      async () =>
+        withOverlay(async () => {
+          await $fetch('/api/admin/users', {
+            method: 'POST',
+            body: { username: event.data.username, email: event.data.email || null, password: event.data.password || null }
+          })
+          toast.add({ title: t('admin.userCreated'), icon: 'i-lucide-check', color: 'success' })
+          showCreate.value = false
+          createState.username = ''
+          createState.email = ''
+          createState.password = ''
+          await refresh()
+        }),
+      t('admin.failedCreateUser')
+    )
   } catch {
     /* withUserActionError handles toast */
   } finally {
@@ -98,15 +103,19 @@ async function onEdit(event: FormSubmitEvent<EditSchema>) {
   if (!editTarget.value) return
   editLoading.value = true
   try {
-    await withUserActionError(async () => {
-      await $fetch(`/api/admin/users/${editTarget.value!.user_id}`, {
-        method: 'PATCH',
-        body: { username: event.data.username, email: event.data.email || null, is_sys_admin: event.data.is_sys_admin }
-      })
-      toast.add({ title: t('admin.userUpdated'), icon: 'i-lucide-check', color: 'success' })
-      editTarget.value = null
-      await refresh()
-    }, t('admin.failedUpdateUser'))
+    await withUserActionError(
+      async () =>
+        withOverlay(async () => {
+          await $fetch(`/api/admin/users/${editTarget.value!.user_id}`, {
+            method: 'PATCH',
+            body: { username: event.data.username, email: event.data.email || null, is_sys_admin: event.data.is_sys_admin }
+          })
+          toast.add({ title: t('admin.userUpdated'), icon: 'i-lucide-check', color: 'success' })
+          editTarget.value = null
+          await refresh()
+        }),
+      t('admin.failedUpdateUser')
+    )
   } catch {
     /* withUserActionError handles toast */
   } finally {

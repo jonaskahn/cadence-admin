@@ -5,6 +5,7 @@ import type { AboutMeResponse } from '~/types'
 
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 
 const { data: me, refresh: refreshMe } = await useApiFetch<AboutMeResponse>('/api/me')
 
@@ -29,15 +30,17 @@ const savingProfile = ref(false)
 async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
   savingProfile.value = true
   try {
-    await $fetch('/api/me/profile', {
-      method: 'PATCH',
-      body: {
-        display_name: event.data.display_name || null,
-        email: event.data.email || null
-      }
+    await withOverlay(async () => {
+      await $fetch('/api/me/profile', {
+        method: 'PATCH',
+        body: {
+          display_name: event.data.display_name || null,
+          email: event.data.email || null
+        }
+      })
+      await refreshMe()
+      toast.add({ title: t('profile.profileUpdated'), icon: 'i-lucide-check', color: 'success' })
     })
-    await refreshMe()
-    toast.add({ title: t('profile.profileUpdated'), icon: 'i-lucide-check', color: 'success' })
   } catch (err: unknown) {
     const msg = (err as { data?: { detail?: string } })?.data?.detail || t('profile.failedSaveProfile')
     toast.add({ title: msg, color: 'error' })
@@ -65,16 +68,18 @@ const passwordFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(nul
 async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
   changingPassword.value = true
   try {
-    await $fetch('/api/me/profile', {
-      method: 'PATCH',
-      body: {
-        current_password: event.data.current_password,
-        new_password: event.data.new_password
-      }
+    await withOverlay(async () => {
+      await $fetch('/api/me/profile', {
+        method: 'PATCH',
+        body: {
+          current_password: event.data.current_password,
+          new_password: event.data.new_password
+        }
+      })
+      passwordState.current_password = ''
+      passwordState.new_password = ''
+      toast.add({ title: t('profile.passwordUpdated'), icon: 'i-lucide-check', color: 'success' })
     })
-    passwordState.current_password = ''
-    passwordState.new_password = ''
-    toast.add({ title: t('profile.passwordUpdated'), icon: 'i-lucide-check', color: 'success' })
   } catch {
     toast.add({ title: t('profile.failedUpdatePassword'), description: t('profile.checkCurrentPassword'), color: 'error' })
   } finally {

@@ -24,6 +24,7 @@ const emit = defineEmits<{
 const { t } = useI18n()
 const auth = useAuth()
 const toast = useToast()
+const { withOverlay } = useLoadingOverlay()
 const orgId = computed(() => props.orgId || auth.currentOrgId.value || '')
 
 const pidRef = computed(() => props.pid)
@@ -138,15 +139,17 @@ async function disablePlugin() {
   const id = selectedVersion.value.id
   disabling.value = true
   try {
-    if (props.source === 'system') {
-      await $fetch(`/api/admin/plugins/${id}`, { method: 'DELETE' })
-    } else {
-      await $fetch(`/api/orgs/${orgId.value}/plugins/${id}`, {
-        method: 'DELETE'
-      })
-    }
-    toast.add({ title: t('pluginDetail.pluginDisabled'), icon: 'i-lucide-check' })
-    closeDrawer()
+    await withOverlay(async () => {
+      if (props.source === 'system') {
+        await $fetch(`/api/admin/plugins/${id}`, { method: 'DELETE' })
+      } else {
+        await $fetch(`/api/orgs/${orgId.value}/plugins/${id}`, {
+          method: 'DELETE'
+        })
+      }
+      toast.add({ title: t('pluginDetail.pluginDisabled'), icon: 'i-lucide-check' })
+      closeDrawer()
+    })
   } catch {
     toast.add({ title: t('pluginDetail.failedDisable'), color: 'error' })
   } finally {
@@ -159,19 +162,21 @@ async function enablePlugin() {
   const id = selectedVersion.value.id
   enabling.value = true
   try {
-    if (props.source === 'system') {
-      await $fetch(`/api/admin/plugins/${id}`, {
-        method: 'PATCH',
-        body: { enabled: true }
-      })
-    } else {
-      await $fetch(`/api/orgs/${orgId.value}/plugins/${id}`, {
-        method: 'PATCH',
-        body: { enabled: true }
-      })
-    }
-    toast.add({ title: t('pluginDetail.pluginEnabled'), icon: 'i-lucide-check' })
-    closeDrawer()
+    await withOverlay(async () => {
+      if (props.source === 'system') {
+        await $fetch(`/api/admin/plugins/${id}`, {
+          method: 'PATCH',
+          body: { enabled: true }
+        })
+      } else {
+        await $fetch(`/api/orgs/${orgId.value}/plugins/${id}`, {
+          method: 'PATCH',
+          body: { enabled: true }
+        })
+      }
+      toast.add({ title: t('pluginDetail.pluginEnabled'), icon: 'i-lucide-check' })
+      closeDrawer()
+    })
   } catch {
     toast.add({ title: t('pluginDetail.failedEnable'), color: 'error' })
   } finally {

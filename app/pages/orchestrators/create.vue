@@ -22,6 +22,7 @@ if (!auth.isAdmin.value) {
 }
 const orchestrators = useOrchestrators()
 const toast = useToast()
+const { withOverlay } = useLoadingOverlay()
 const orgId = computed(() => auth.currentOrgId.value || '')
 
 const cloneId = computed(() => route.query.clone as string | undefined)
@@ -279,9 +280,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
   loading.value = true
   try {
-    const orchestrator = await createOrchestrator(event.data as Schema)
-    await saveInitialPluginSettings(orchestrator.instance_id)
-    await router.push(localePath(`/orchestrators/${orchestrator.instance_id}`))
+    await withOverlay(async () => {
+      const orchestrator = await createOrchestrator(event.data as Schema)
+      await saveInitialPluginSettings(orchestrator.instance_id)
+      await router.push(localePath(`/orchestrators/${orchestrator.instance_id}`))
+    })
   } finally {
     loading.value = false
   }

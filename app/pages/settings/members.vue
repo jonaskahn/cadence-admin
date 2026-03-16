@@ -4,6 +4,7 @@ import type { UserMembershipResponse } from '~/types'
 const auth = useAuth()
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 const orgId = computed(() => auth.currentOrgId.value || '')
 const showAdd = ref(false)
 
@@ -20,14 +21,18 @@ async function withMemberAction(fn: () => Promise<void>, errorTitle: string): Pr
 async function toggleAdmin(member: UserMembershipResponse) {
   toggling.value = member.user_id
   try {
-    await withMemberAction(async () => {
-      await $fetch(`/api/orgs/${orgId.value}/users/${member.user_id}/membership`, {
-        method: 'PATCH',
-        body: { is_admin: !member.is_admin }
-      })
-      await refresh()
-      toast.add({ title: t('settings.roleUpdated'), icon: 'i-lucide-check' })
-    }, t('settings.failedUpdateRole'))
+    await withMemberAction(
+      async () =>
+        withOverlay(async () => {
+          await $fetch(`/api/orgs/${orgId.value}/users/${member.user_id}/membership`, {
+            method: 'PATCH',
+            body: { is_admin: !member.is_admin }
+          })
+          await refresh()
+          toast.add({ title: t('settings.roleUpdated'), icon: 'i-lucide-check' })
+        }),
+      t('settings.failedUpdateRole')
+    )
   } finally {
     toggling.value = null
   }
@@ -58,11 +63,15 @@ const toggling = ref<string | null>(null)
 async function removeMember(userId: string) {
   removing.value = userId
   try {
-    await withMemberAction(async () => {
-      await $fetch(`/api/orgs/${orgId.value}/users/${userId}`, { method: 'DELETE' })
-      await refresh()
-      toast.add({ title: t('settings.memberRemoved'), icon: 'i-lucide-check' })
-    }, t('settings.failedRemoveMember'))
+    await withMemberAction(
+      async () =>
+        withOverlay(async () => {
+          await $fetch(`/api/orgs/${orgId.value}/users/${userId}`, { method: 'DELETE' })
+          await refresh()
+          toast.add({ title: t('settings.memberRemoved'), icon: 'i-lucide-check' })
+        }),
+      t('settings.failedRemoveMember')
+    )
   } finally {
     removing.value = null
   }

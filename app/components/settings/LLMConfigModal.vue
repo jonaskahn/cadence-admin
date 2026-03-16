@@ -17,6 +17,7 @@ function handleClose() {
 const toast = useToast()
 const { t } = useI18n()
 const loading = ref(false)
+const { withOverlay } = useLoadingOverlay()
 const llmConfigFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 function providerLabel(provider: string): string {
@@ -74,9 +75,11 @@ async function submitCreate(data: Schema): Promise<void> {
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   try {
-    if (isEdit.value) await submitEdit(event.data)
-    else await submitCreate(event.data)
-    emit('close')
+    await withOverlay(async () => {
+      if (isEdit.value) await submitEdit(event.data)
+      else await submitCreate(event.data)
+      emit('close')
+    })
   } catch (err: unknown) {
     const msg = getApiErrorMessage(err, isEdit.value ? t('llmConfig.failedUpdateConfig') : t('llmConfig.failedAddConfig'))
     toast.add({ title: t('errors.error'), description: msg, color: 'error' })

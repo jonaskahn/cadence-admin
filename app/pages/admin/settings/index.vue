@@ -5,6 +5,7 @@ import { getApiErrorMessage, subscriptionTierColor } from '~/utils'
 
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 
 const SETTINGS_GROUP_KEYS: Record<string, string> = {
   LLM: 'settingsGroups.llm',
@@ -42,12 +43,14 @@ watch(
 async function saveSetting(key: string) {
   saving.value[key] = true
   try {
-    await $fetch(`/api/admin/settings/${key}`, {
-      method: 'PATCH',
-      body: { value: editValues.value[key], overridable: overridableValues.value[key] }
+    await withOverlay(async () => {
+      await $fetch(`/api/admin/settings/${key}`, {
+        method: 'PATCH',
+        body: { value: editValues.value[key], overridable: overridableValues.value[key] }
+      })
+      await refreshSettings()
+      toast.add({ title: t('admin.settingUpdated'), icon: 'i-lucide-check' })
     })
-    await refreshSettings()
-    toast.add({ title: t('admin.settingUpdated'), icon: 'i-lucide-check' })
   } catch {
     toast.add({ title: t('admin.failedUpdateSetting'), color: 'error' })
   } finally {
@@ -96,12 +99,14 @@ watch(
 async function saveTier(tierName: string) {
   tierSaving.value[tierName] = true
   try {
-    await $fetch(`/api/admin/tiers/${tierName}`, {
-      method: 'PATCH',
-      body: draftQuotas.value[tierName]
+    await withOverlay(async () => {
+      await $fetch(`/api/admin/tiers/${tierName}`, {
+        method: 'PATCH',
+        body: draftQuotas.value[tierName]
+      })
+      await refreshTiers()
+      toast.add({ title: t('admin.tierUpdated'), description: t('admin.quotaSaved'), icon: 'i-lucide-check', color: 'success' })
     })
-    await refreshTiers()
-    toast.add({ title: t('admin.tierUpdated'), description: t('admin.quotaSaved'), icon: 'i-lucide-check', color: 'success' })
   } catch (err: unknown) {
     const msg = getApiErrorMessage(err, t('admin.failedSaveTier'))
     toast.add({ title: t('admin.saveFailed'), description: msg, color: 'error' })

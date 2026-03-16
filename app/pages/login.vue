@@ -27,6 +27,7 @@ const currentLocaleName = computed(
 const { appName, appTagline } = useAppBranding()
 const localePath = useLocalePath()
 const loading = ref(false)
+const { withOverlay } = useLoadingOverlay()
 
 const schema = z.object({
   username: z.string().min(1, { error: () => t('auth.usernameRequired') }),
@@ -43,14 +44,16 @@ const state = reactive<Partial<Schema>>({
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   try {
-    const ok = await auth.login(event.data.username, event.data.password)
-    if (!ok) {
-      toast.add({ title: t('auth.loginFailed'), color: 'error', icon: 'i-lucide-x-circle' })
-    } else if (auth.isSysAdmin.value && auth.orgList.value.length === 0) {
-      await navigateTo(localePath('/admin/orgs'))
-    } else {
-      await navigateTo(localePath('/org-select'))
-    }
+    await withOverlay(async () => {
+      const ok = await auth.login(event.data.username, event.data.password)
+      if (!ok) {
+        toast.add({ title: t('auth.loginFailed'), color: 'error', icon: 'i-lucide-x-circle' })
+      } else if (auth.isSysAdmin.value && auth.orgList.value.length === 0) {
+        await navigateTo(localePath('/admin/orgs'))
+      } else {
+        await navigateTo(localePath('/org-select'))
+      }
+    })
   } catch (err: unknown) {
     const msg = getApiErrorMessage(err, t('auth.invalidCredentials'))
     toast.add({

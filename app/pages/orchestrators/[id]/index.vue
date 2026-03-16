@@ -43,6 +43,7 @@ watch(
 
 const savingPluginSettings = ref(false)
 const toast = useToast()
+const { withOverlay } = useLoadingOverlay()
 const pluginSettingsRef = ref<{
   getValue: () => Record<string, import('~/types').PluginSettingsEntry>
   validate?: () => { valid: boolean; message?: string }
@@ -107,16 +108,19 @@ const activating = ref(false)
 const deactivating = ref(false)
 
 async function savePluginSettings() {
-  if (!pluginSettingsRef.value) return
-  const validation = pluginSettingsRef.value.validate?.()
+  const ref = pluginSettingsRef.value
+  if (!ref) return
+  const validation = ref.validate?.()
   if (validation && !validation.valid) {
     toast.add({ title: validation.message ?? 'Plugin settings validation failed', color: 'error' })
     return
   }
   savingPluginSettings.value = true
   try {
-    await orchestrators.updatePluginSettings(instanceId, pluginSettingsRef.value.getValue())
-    await refresh()
+    await withOverlay(async () => {
+      await orchestrators.updatePluginSettings(instanceId, ref.getValue())
+      await refresh()
+    })
   } catch {
     /* toast handled by orchestrators */
   } finally {

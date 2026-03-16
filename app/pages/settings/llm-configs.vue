@@ -5,6 +5,7 @@ import { formatDate } from '~/utils'
 const auth = useAuth()
 const toast = useToast()
 const { t } = useI18n()
+const { withOverlay } = useLoadingOverlay()
 const orgId = computed(() => auth.currentOrgId.value || '')
 const showAdd = ref(false)
 const editingConfig = ref<LLMConfigResponse | null>(null)
@@ -50,9 +51,11 @@ const deleting = ref<string | null>(null)
 async function deleteConfig(configId: string) {
   deleting.value = configId
   try {
-    await $fetch(`/api/orgs/${orgId.value}/llm-configs/${configId}`, { method: 'DELETE' })
-    await refresh()
-    toast.add({ title: t('settings.configDeleted'), icon: 'i-lucide-check' })
+    await withOverlay(async () => {
+      await $fetch(`/api/orgs/${orgId.value}/llm-configs/${configId}`, { method: 'DELETE' })
+      await refresh()
+      toast.add({ title: t('settings.configDeleted'), icon: 'i-lucide-check' })
+    })
   } catch (err: unknown) {
     const status = (err as { status?: number })?.status
     if (status === 409) {
@@ -74,9 +77,11 @@ const purging = ref<string | null>(null)
 async function purgeConfig(configId: string) {
   purging.value = configId
   try {
-    await $fetch(`/api/orgs/${orgId.value}/llm-configs/${configId}/purge`, { method: 'DELETE' })
-    await refresh()
-    toast.add({ title: t('settings.configDeleted'), icon: 'i-lucide-check' })
+    await withOverlay(async () => {
+      await $fetch(`/api/orgs/${orgId.value}/llm-configs/${configId}/purge`, { method: 'DELETE' })
+      await refresh()
+      toast.add({ title: t('settings.configDeleted'), icon: 'i-lucide-check' })
+    })
   } catch (err: unknown) {
     const status = (err as { status?: number })?.status
     if (status === 409) {
@@ -94,13 +99,15 @@ const toggling = ref<string | null>(null)
 async function toggleEnabled(config: LLMConfigResponse) {
   toggling.value = config.id
   try {
-    await $fetch(`/api/orgs/${orgId.value}/llm-configs/${config.id}/status`, {
-      method: 'PATCH'
-    })
-    await refresh()
-    toast.add({
-      title: config.is_enabled ? t('settings.configDisabled') : t('settings.configEnabled'),
-      icon: 'i-lucide-check'
+    await withOverlay(async () => {
+      await $fetch(`/api/orgs/${orgId.value}/llm-configs/${config.id}/status`, {
+        method: 'PATCH'
+      })
+      await refresh()
+      toast.add({
+        title: config.is_enabled ? t('settings.configDisabled') : t('settings.configEnabled'),
+        icon: 'i-lucide-check'
+      })
     })
   } catch {
     toast.add({ title: t('settings.failedToggleConfig'), color: 'error' })
