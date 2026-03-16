@@ -19,8 +19,6 @@ const envFile = resolve(root, '.env')
 const require = createRequire(import.meta.url)
 const { version } = require('../package.json')
 
-// Respect pre-set env vars first (e.g. Docker build args, CI injection).
-// Only fall back to git / package.json when running locally.
 const appVersion = process.env.NUXT_PUBLIC_APP_VERSION || version
 
 const gitHash =
@@ -33,7 +31,6 @@ const gitHash =
     }
   })()
 
-/** Upsert a single KEY=VALUE line in an .env file */
 function upsertEnvVar(key, value, file) {
   const line = `${key}=${value}`
   if (!existsSync(file)) {

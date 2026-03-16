@@ -44,7 +44,7 @@ const orgAdminLinks = computed<NavigationMenuItem[]>(() => {
   return [
     {
       label: t('nav.plugins'),
-      icon: 'i-lucide-puzzle',
+      icon: 'i-lucide-shopping-cart',
       to: localePath('/plugins'),
       onSelect: closeMenu
     },

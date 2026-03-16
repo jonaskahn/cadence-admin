@@ -82,7 +82,7 @@
     "dashboard": "Dashboard",
     "chat": "Chat",
     "orchestrators": "Orchestrators",
-    "plugins": "Plugins",
+    "plugins": "My Store",
     "settings": "Settings",
     "general": "General",
     "members": "Members",
@@ -286,7 +286,7 @@
     "configAdded": "LLM config added"
   },
   "plugins": {
-    "title": "Plugins",
+    "title": "My Store",
     "all": "All",
     "system": "Official",
     "org": "Org",
@@ -858,7 +858,7 @@
       "orchestrator": "Orchestrator",
       "frameworks": "Frameworks",
       "modes": "Modes",
-      "plugins": "Plugins",
+      "plugins": "My store",
       "chat": "Chat",
       "llmConfigs": "LLM Configs",
       "centralPoints": "Central Points",

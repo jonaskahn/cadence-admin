@@ -82,7 +82,7 @@
     "dashboard": "Dashboard",
     "chat": "Chat",
     "orchestrators": "Orchestratoren",
-    "plugins": "Plugins",
+    "plugins": "Mein Shop",
     "settings": "Einstellungen",
     "general": "Allgemein",
     "members": "Mitglieder",
@@ -91,7 +91,7 @@
     "system": "System",
     "organizations": "Organisationen",
     "users": "Benutzer",
-    "systemPlugins": "Store",
+    "systemPlugins": "Shop",
     "globalSettings": "Globale",
     "pool": "Pool",
     "health": "Status",
@@ -114,7 +114,7 @@
     "hotTier": "Hot-Tier",
     "warmTier": "Warm-Tier",
     "coldTier": "Cold-Tier",
-    "plugins": "Plugins",
+    "plugins": "Mein shop",
     "poolMemory": "Pool-Speicher",
     "poolStatistics": "Pool-Statistiken",
     "sharedModels": "Geteilte Modelle",
@@ -286,7 +286,7 @@
     "configAdded": "LLM-Konfiguration hinzugefügt"
   },
   "plugins": {
-    "title": "Plugins",
+    "title": "Mein Shop",
     "all": "Alle",
     "system": "Offiziell",
     "org": "Org",
@@ -310,7 +310,7 @@
     "create": {
       "title": "Orchestrator erstellen",
       "basic": "Grundlagen",
-      "plugins": "Plugins",
+      "plugins": "Shop",
       "addPlugin": "Plugin hinzufügen",
       "addPluginHint": "Mindestens ein Plugin hinzufügen, um zu konfigurieren.",
       "supervisorSettings": "Supervisor-Einstellungen",
@@ -419,13 +419,13 @@
     "health": "Systemstatus",
     "systemStatus": "Systemstatus",
     "instanceId": "Instanz-ID",
-    "plugins": "Plugins",
+    "plugins": "Shop",
     "ready": "bereit",
     "notReady": "nicht bereit",
     "noInstances": "Keine Instanzen geladen.",
     "orchestratorInstanceHealth": "Orchestrator-Instanz-Status",
-    "systemPlugins": "Store",
-    "pluginsPageTitle": "Store",
+    "systemPlugins": "Shop",
+    "pluginsPageTitle": "Mein Shop",
     "uploadPlugin": "Plugin hochladen",
     "selectOrgToView": "Wählen Sie eine Organisation zum Anzeigen und Verwalten ihrer Plugins.",
     "noPluginsYet": "Noch keine Plugins. Laden Sie eines hoch, um zu starten.",
@@ -649,7 +649,7 @@
         "description": "**Funktion:**\n\nAI-Orchestrator-Instanzen erstellen und verwalten, die Ihre Plugins ausführen.\n\n**Aktionen:** Load, Unload, Activate, Deactivate, Clone. Spalten: Name, Framework, Mode, Tier, Status, Ready."
       },
       "plugins": {
-        "title": "Plugins",
+        "title": "Mein Shop",
         "description": "**Funktion:**\n\nPlugins durchsuchen und verwalten, die Orchestrator-Funktionen erweitern.\n\n**Typen:** Store (System-Plugins) — plattformweit | Org — pro Organisation. Aktionen: Aktivieren/Deaktivieren, Details anzeigen, konfigurieren."
       },
       "profile": {
@@ -759,7 +759,7 @@
         "description": "**Funktion:**\n\nZentrale Einstellungen für den neuen Orchestrator.\n\n**Felder:**\n- **Name** — Eindeutige Kennung (10–55 Zeichen). Wird in URLs und API verwendet.\n- **Framework** — LangGraph, Google ADK oder OpenAI Agents. **Nach Erstellung unveränderlich.**\n- **Mode** — Supervisor (Multi-Agent) oder andere Modi. Abhängig vom Framework.\n- **Initial tier** — Hot (sofort laden), Warm (vorgewärmt), Cold (on-demand). Beeinflusst Pool-Speicher."
       },
       "createPlugins": {
-        "title": "Plugins",
+        "title": "Mien shop",
         "description": "**Funktion:**\n\nPlugins auswählen, die diesem Orchestrator Funktionen hinzufügen.\n\n**Ablauf:**\n1. **Add Plugin** klicken, um die Auswahl zu öffnen\n2. Ein oder mehrere Plugins suchen und hinzufügen (erforderlich)\n3. Einstellungen jedes Plugins unter der Tabelle konfigurieren\n\n**Hinweis:** Jedes Plugin kann Pflichtfelder haben. Validierung vor dem Erstellen."
       },
       "supervisorLlmConfig": {

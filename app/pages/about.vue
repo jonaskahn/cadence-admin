@@ -34,7 +34,7 @@ const links = computed<NavigationMenuItem[][]>(() => [
     { label: t('about.tabs.orchestrator'), icon: 'i-lucide-cpu', to: localePath('/about/orchestrator') },
     { label: t('about.tabs.modes'), icon: 'i-lucide-git-branch', to: localePath('/about/modes') },
     { label: t('about.tabs.frameworks'), icon: 'i-lucide-layers', to: localePath('/about/frameworks') },
-    { label: t('about.tabs.plugins'), icon: 'i-lucide-puzzle', to: localePath('/about/plugins') },
+    { label: t('about.tabs.plugins'), icon: 'i-lucide-shopping-cart', to: localePath('/about/plugins') },
     { label: t('about.tabs.chat'), icon: 'i-lucide-message-square', to: localePath('/about/chat') },
     { label: t('about.tabs.llmConfigs'), icon: 'i-lucide-cable', to: localePath('/about/llm-configs') },
     { label: t('about.tabs.centralPoints'), icon: 'i-lucide-radio', to: localePath('/about/central-points') },

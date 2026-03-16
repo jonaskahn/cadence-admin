@@ -1,30 +1,9 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem } from '@nuxt/ui'
+import { NEUTRAL_COLORS, PRIMARY_COLORS } from '~/constants/theme'
 
 const { t, locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
-
-const PRIMARY_COLORS = [
-  'red',
-  'orange',
-  'amber',
-  'yellow',
-  'lime',
-  'green',
-  'emerald',
-  'teal',
-  'cyan',
-  'sky',
-  'blue',
-  'indigo',
-  'violet',
-  'purple',
-  'fuchsia',
-  'pink',
-  'rose'
-] as const
-
-const NEUTRAL_COLORS = ['slate', 'gray', 'zinc', 'neutral', 'stone'] as const
 
 defineProps<{
   collapsed?: boolean
@@ -33,6 +12,7 @@ defineProps<{
 const auth = useAuth()
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
+const { persistTheme } = useThemeStorage()
 
 const displayName = computed(() => auth.authUser.value?.display_name || auth.authUser.value?.username || 'User')
 
@@ -63,6 +43,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
             onSelect: (e: Event) => {
               e.preventDefault()
               appConfig.ui.colors.primary = color
+              persistTheme()
             }
           }))
         },
@@ -80,6 +61,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
             onSelect: (e: Event) => {
               e.preventDefault()
               appConfig.ui.colors.neutral = color
+              persistTheme()
             }
           }))
         }

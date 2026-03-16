@@ -1,9 +1,5 @@
 <script lang="ts" setup>
-import type {
-  FrameworkSupportedProvidersResponse,
-  OrchestratorResponse,
-  PluginMetadataResponse
-} from '~/types'
+import type { FrameworkSupportedProvidersResponse, OrchestratorResponse, PluginMetadataResponse } from '~/types'
 import { statusColor, tierColor } from '~/utils'
 
 type PluginCardItem = {
@@ -85,9 +81,7 @@ watch(
       const logos = await Promise.all(
         needsLogo.map(async (p) => {
           try {
-            const res = await $fetch<PluginMetadataResponse[]>(
-              `/api/orgs/${orgIdVal}/plugins/${p.id}/versions?source=${p.source}`
-            )
+            const res = await $fetch<PluginMetadataResponse[]>(`/api/orgs/${orgIdVal}/plugins/${p.id}/versions?source=${p.source}`)
             const match = res.find((v) => v.version === p.version)
             return match?.logo_image ?? null
           } catch {

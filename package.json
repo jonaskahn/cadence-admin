@@ -1,6 +1,6 @@
 {
   "name": "cadence-admin",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Admin web interface for the Cadence AI Orchestration Platform",
   "author": "Jonas Kahn",
   "license": "MIT",
