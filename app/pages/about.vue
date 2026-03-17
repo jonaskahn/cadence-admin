@@ -48,7 +48,7 @@ const links = computed<NavigationMenuItem[][]>(() => [
 <template>
   <div>
     <UApp>
-      <div class="min-h-screen bg-default flex flex-col">
+      <div class="min-h-[100dvh] bg-default flex flex-col">
         <div class="h-16 border-b border-default flex items-center justify-between px-6 shrink-0">
           <h1 class="text-base font-semibold">{{ t('about.title') }}</h1>
           <div class="flex items-center gap-2">

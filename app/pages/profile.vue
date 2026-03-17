@@ -103,7 +103,7 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
       </template>
 
       <template #body>
-        <div class="flex flex-col gap-6 p-6 lg:max-w-2xl mx-auto w-full">
+        <div class="flex flex-col gap-8 p-6 lg:max-w-2xl mx-auto w-full">
           <!-- Read-only account info -->
           <UCard>
             <template #header>

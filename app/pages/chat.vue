@@ -81,10 +81,10 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                   :key="orch.instance_id"
                   :class="[
                     chat.selectedInstanceId.value === orch.instance_id
-                      ? 'border-primary bg-primary/5 cursor-pointer'
-                      : 'border-default cursor-pointer hover:bg-elevated/50'
+                      ? 'border-primary bg-primary/5'
+                      : 'border-default hover:bg-elevated/50 hover:-translate-y-px'
                   ]"
-                  class="p-2 rounded border transition-colors"
+                  class="p-2.5 rounded-lg border cursor-pointer transition-all duration-200"
                   @click="selectOrchestrator(orch.instance_id)"
                 >
                   <div class="flex items-center gap-1.5">
@@ -111,7 +111,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
             <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
               <div v-for="(msg, idx) in chat.messages.value" :key="idx" :class="msg.role === 'user' ? 'justify-end' : 'justify-start'" class="flex">
                 <div class="max-w-[70%] flex flex-col">
-                  <div :class="msg.role === 'user' ? 'bg-primary text-white' : 'bg-elevated'" class="rounded-2xl px-4 py-2">
+                  <div :class="msg.role === 'user' ? 'bg-primary text-white' : 'bg-elevated'" class="rounded-2xl px-4 py-2.5">
                     <MDC v-if="msg.role === 'assistant'" :value="msg.content" class="prose prose-sm dark:prose-invert max-w-none [&_*]:text-sm" tag="article" />
                     <p v-else class="text-sm">{{ msg.content }}</p>
 

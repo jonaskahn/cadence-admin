@@ -45,7 +45,12 @@ onMounted(async () => {
     </div>
 
     <div class="flex flex-col gap-3">
-      <UCard v-for="org in auth.orgList.value" :key="org.org_id" class="cursor-pointer hover:bg-elevated/50 transition-colors" @click="selectOrg(org.org_id)">
+      <UCard
+        v-for="org in auth.orgList.value"
+        :key="org.org_id"
+        class="cursor-pointer border-l-3 border-l-primary/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/5 transition-all duration-200"
+        @click="selectOrg(org.org_id)"
+      >
         <div class="flex items-center justify-between">
           <div>
             <p class="font-medium">

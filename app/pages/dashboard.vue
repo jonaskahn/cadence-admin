@@ -152,228 +152,192 @@ const costByProviderChartData = {
       </template>
 
       <template #body>
-        <div class="p-6 flex flex-col gap-8">
+        <div class="p-6 flex flex-col gap-10">
           <template v-if="auth.isOrgAdmin.value">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <UCard>
-                <div class="flex items-center gap-3">
-                  <UIcon class="size-8 text-primary" name="i-lucide-cpu" />
-                  <div>
-                    <p class="text-2xl font-bold">
-                      {{ tierCounts.total }}
-                    </p>
-                    <p class="text-dimmed text-sm">{{ t('dashboard.totalOrchestrators') }}</p>
-                  </div>
-                </div>
-              </UCard>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div class="border-l-2 border-primary pl-4 py-1">
+                <p class="text-3xl font-bold tracking-tight">{{ tierCounts.total }}</p>
+                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.totalOrchestrators') }}</p>
+              </div>
 
-              <UCard>
-                <div class="flex items-center gap-3">
-                  <UIcon class="size-8 text-error" name="i-lucide-flame" />
-                  <div>
-                    <p class="text-2xl font-bold">
-                      {{ tierCounts.hot }}
-                    </p>
-                    <p class="text-dimmed text-sm">{{ t('dashboard.hotTier') }}</p>
-                  </div>
-                </div>
-              </UCard>
+              <div class="border-l-2 border-error pl-4 py-1">
+                <p class="text-3xl font-bold tracking-tight">{{ tierCounts.hot }}</p>
+                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.hotTier') }}</p>
+              </div>
 
-              <UCard>
-                <div class="flex items-center gap-3">
-                  <UIcon class="size-8 text-success" name="i-lucide-puzzle" />
-                  <div>
-                    <p class="text-2xl font-bold">
-                      {{ plugins?.length || 0 }}
-                    </p>
-                    <p class="text-dimmed text-sm">{{ t('dashboard.plugins') }}</p>
-                  </div>
-                </div>
-              </UCard>
+              <div class="border-l-2 border-success pl-4 py-1">
+                <p class="text-3xl font-bold tracking-tight">{{ plugins?.length || 0 }}</p>
+                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.plugins') }}</p>
+              </div>
 
-              <UCard v-if="auth.isSysAdmin.value && poolStats">
-                <div class="flex items-center gap-3">
-                  <UIcon class="size-8 text-warning" name="i-lucide-server" />
-                  <div>
-                    <p class="text-2xl font-bold">{{ poolStats.memory_estimate_mb.toFixed(0) }} MB</p>
-                    <p class="text-dimmed text-sm">{{ t('dashboard.poolMemory') }}</p>
-                  </div>
-                </div>
-              </UCard>
+              <div v-if="auth.isSysAdmin.value && poolStats" class="border-l-2 border-warning pl-4 py-1">
+                <p class="text-3xl font-bold tracking-tight">{{ poolStats.memory_estimate_mb.toFixed(0) }} MB</p>
+                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.poolMemory') }}</p>
+              </div>
 
-              <UCard v-else>
-                <div class="flex items-center gap-3">
-                  <UIcon class="size-8 text-info" name="i-lucide-thermometer" />
-                  <div>
-                    <p class="text-2xl font-bold">
-                      {{ tierCounts.warm }}
-                    </p>
-                    <p class="text-dimmed text-sm">{{ t('dashboard.warmTier') }}</p>
-                  </div>
-                </div>
-              </UCard>
+              <div v-else class="border-l-2 border-info pl-4 py-1">
+                <p class="text-3xl font-bold tracking-tight">{{ tierCounts.warm }}</p>
+                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.warmTier') }}</p>
+              </div>
             </div>
           </template>
 
           <template v-if="auth.isSysAdmin.value && poolStats">
             <UCard>
               <template #header>
-                <p class="font-semibold">{{ t('dashboard.poolStatistics') }}</p>
+                <p class="font-semibold tracking-tight">{{ t('dashboard.poolStatistics') }}</p>
               </template>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="border-l-2 border-error/50 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.hotTier') }}</p>
-                  <p class="text-xl font-bold">
-                    {{ poolStats.hot_tier_count }}
-                  </p>
+                  <p class="text-xl font-bold tabular-nums">{{ poolStats.hot_tier_count }}</p>
                 </div>
-                <div>
+                <div class="border-l-2 border-success/50 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.warmTier') }}</p>
-                  <p class="text-xl font-bold">
-                    {{ poolStats.warm_tier_count }}
-                  </p>
+                  <p class="text-xl font-bold tabular-nums">{{ poolStats.warm_tier_count }}</p>
                 </div>
-                <div>
+                <div class="border-l-2 border-info/50 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.coldTier') }}</p>
-                  <p class="text-xl font-bold">
-                    {{ poolStats.cold_tier_count }}
-                  </p>
+                  <p class="text-xl font-bold tabular-nums">{{ poolStats.cold_tier_count }}</p>
                 </div>
-                <div>
+                <div class="border-l-2 border-neutral/50 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.sharedModels') }}</p>
-                  <p class="text-xl font-bold">
-                    {{ poolStats.shared_model_count }}
-                  </p>
+                  <p class="text-xl font-bold tabular-nums">{{ poolStats.shared_model_count }}</p>
                 </div>
               </div>
             </UCard>
           </template>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Row 1: Users + Tokens (60/40 split) -->
+          <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6">
             <UCard>
               <template #header>
-                <p class="font-semibold">{{ t('dashboard.usersOverTime') }}</p>
+                <p class="font-semibold tracking-tight">{{ t('dashboard.usersOverTime') }}</p>
               </template>
               <ClientOnly>
-                <div class="h-64">
+                <div class="h-72">
                   <Bar :data="usersChartData" :options="chartOptions" />
                 </div>
                 <template #fallback>
-                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
                 </template>
               </ClientOnly>
             </UCard>
 
             <UCard>
               <template #header>
-                <p class="font-semibold">{{ t('dashboard.tokenConsumption') }}</p>
+                <p class="font-semibold tracking-tight">{{ t('dashboard.tokenConsumption') }}</p>
               </template>
               <ClientOnly>
-                <div class="h-64">
+                <div class="h-72">
                   <Line :data="tokensChartData" :options="chartOptions" />
                 </div>
                 <template #fallback>
-                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
-                </template>
-              </ClientOnly>
-            </UCard>
-
-            <UCard>
-              <template #header>
-                <p class="font-semibold">{{ t('dashboard.orchestratorByTier') }}</p>
-              </template>
-              <ClientOnly>
-                <div class="h-64 flex items-center justify-center">
-                  <div class="size-48">
-                    <Doughnut :data="orchestratorTierChartData" :options="chartOptions" />
-                  </div>
-                </div>
-                <template #fallback>
-                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
-                </template>
-              </ClientOnly>
-            </UCard>
-
-            <UCard>
-              <template #header>
-                <p class="font-semibold">{{ t('dashboard.chatsPerDay') }}</p>
-              </template>
-              <ClientOnly>
-                <div class="h-64">
-                  <Bar :data="chatsChartData" :options="chartOptions" />
-                </div>
-                <template #fallback>
-                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
-                </template>
-              </ClientOnly>
-            </UCard>
-
-            <UCard>
-              <template #header>
-                <p class="font-semibold">{{ t('dashboard.llmCostOverTime') }}</p>
-              </template>
-              <ClientOnly>
-                <div class="h-64">
-                  <Line :data="llmCostChartData" :options="chartOptions" />
-                </div>
-                <template #fallback>
-                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
-                </template>
-              </ClientOnly>
-            </UCard>
-
-            <UCard>
-              <template #header>
-                <p class="font-semibold">{{ t('dashboard.modelUsage') }}</p>
-              </template>
-              <ClientOnly>
-                <div class="h-64 flex items-center justify-center">
-                  <div class="size-48">
-                    <Doughnut :data="modelUsageChartData" :options="chartOptions" />
-                  </div>
-                </div>
-                <template #fallback>
-                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
-                </template>
-              </ClientOnly>
-            </UCard>
-
-            <UCard>
-              <template #header>
-                <p class="font-semibold">{{ t('dashboard.costByProvider') }}</p>
-              </template>
-              <ClientOnly>
-                <div class="h-64">
-                  <Bar :data="costByProviderChartData" :options="chartOptions" />
-                </div>
-                <template #fallback>
-                  <div class="h-64 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
                 </template>
               </ClientOnly>
             </UCard>
           </div>
 
+          <!-- Row 2: Chats + Orchestrator Tier (2fr/1fr) -->
+          <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
+            <UCard>
+              <template #header>
+                <p class="font-semibold tracking-tight">{{ t('dashboard.chatsPerDay') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-72">
+                  <Bar :data="chatsChartData" :options="chartOptions" />
+                </div>
+                <template #fallback>
+                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+
+            <UCard>
+              <template #header>
+                <p class="font-semibold tracking-tight">{{ t('dashboard.orchestratorByTier') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-72 flex items-center justify-center">
+                  <div class="size-52">
+                    <Doughnut :data="orchestratorTierChartData" :options="chartOptions" />
+                  </div>
+                </div>
+                <template #fallback>
+                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+          </div>
+
+          <!-- Row 3: Full-width LLM Cost -->
           <UCard>
             <template #header>
-              <p class="font-semibold">{{ t('dashboard.quickActions') }}</p>
+              <p class="font-semibold tracking-tight">{{ t('dashboard.llmCostOverTime') }}</p>
             </template>
-            <div class="flex flex-wrap gap-3">
-              <UButton icon="i-lucide-message-square" :label="t('dashboard.startChat')" :to="localePath('/chat')" />
-              <UButton icon="i-lucide-cpu" :label="t('dashboard.viewOrchestrators')" :to="localePath('/orchestrators')" variant="outline" />
-              <UButton
-                v-if="auth.isOrgAdmin.value"
-                icon="i-lucide-puzzle"
-                :label="t('dashboard.managePlugins')"
-                :to="localePath('/plugins')"
-                variant="outline"
-              />
-            </div>
+            <ClientOnly>
+              <div class="h-72">
+                <Line :data="llmCostChartData" :options="chartOptions" />
+              </div>
+              <template #fallback>
+                <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+              </template>
+            </ClientOnly>
           </UCard>
+
+          <!-- Row 4: Model Usage + Cost by Provider -->
+          <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-6">
+            <UCard>
+              <template #header>
+                <p class="font-semibold tracking-tight">{{ t('dashboard.modelUsage') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-72 flex items-center justify-center">
+                  <div class="size-52">
+                    <Doughnut :data="modelUsageChartData" :options="chartOptions" />
+                  </div>
+                </div>
+                <template #fallback>
+                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+
+            <UCard>
+              <template #header>
+                <p class="font-semibold tracking-tight">{{ t('dashboard.costByProvider') }}</p>
+              </template>
+              <ClientOnly>
+                <div class="h-72">
+                  <Bar :data="costByProviderChartData" :options="chartOptions" />
+                </div>
+                <template #fallback>
+                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                </template>
+              </ClientOnly>
+            </UCard>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <p class="text-sm font-medium text-dimmed">{{ t('dashboard.quickActions') }}</p>
+            <UButton icon="i-lucide-message-square" :label="t('dashboard.startChat')" :to="localePath('/chat')" size="sm" />
+            <UButton icon="i-lucide-cpu" :label="t('dashboard.viewOrchestrators')" :to="localePath('/orchestrators')" variant="outline" size="sm" />
+            <UButton
+              v-if="auth.isOrgAdmin.value"
+              icon="i-lucide-puzzle"
+              :label="t('dashboard.managePlugins')"
+              :to="localePath('/plugins')"
+              variant="outline"
+              size="sm"
+            />
+          </div>
 
           <UCard>
             <template #header>
               <div class="flex items-center justify-between">
-                <p class="font-semibold">{{ t('dashboard.orchestrators') }}</p>
+                <p class="font-semibold tracking-tight">{{ t('dashboard.orchestrators') }}</p>
                 <UButton :label="t('common.viewAll')" size="sm" :to="localePath('/orchestrators')" variant="outline" />
               </div>
             </template>

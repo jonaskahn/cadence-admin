@@ -57,7 +57,6 @@ function toggleDefaultModelManual() {
             :icon="supervisor.defaultModelManual ? 'i-lucide-list' : 'i-lucide-pencil'"
             :title="supervisor.defaultModelManual ? t('settings.selectFromList') : t('settings.enterManually')"
             color="neutral"
-            size="sm"
             variant="outline"
             @click="toggleDefaultModelManual"
           />

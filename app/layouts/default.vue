@@ -163,7 +163,10 @@ const mainLinks = computed(() => {
         id="default"
         v-model:open="open"
         :default-size="32"
-        :ui="{ footer: 'lg:border-t lg:border-default' }"
+        :ui="{
+          body: 'flex flex-col gap-4 overflow-y-auto px-4 py-2',
+          footer: 'mt-auto shrink-0 flex items-center gap-1.5 px-4 py-2 lg:border-t lg:border-default'
+        }"
         class="bg-elevated"
         collapsible
         resizable
