@@ -335,6 +335,8 @@
       "llmConfig": "LLM Config",
       "nodeConfig": "Node Config",
       "namePlaceholder": "e.g. customer-support-agent",
+      "whoami": "Identity",
+      "whoamiPlaceholder": "Optional context about who this orchestrator is (e.g. role, domain, tone). Injected into answer nodes.",
       "initialTier": "Initial Tier",
       "tierCold": "Cold (default)",
       "tierWarm": "Warm",
@@ -360,6 +362,20 @@
       "pluginSettings": "Plugin Settings",
       "pluginConfiguration": "Plugin Configuration",
       "pluginConfigurationDesc": "Configure settings for each active plugin."
+    },
+    "grounded": {
+      "predefinedContext": "Predefined Context",
+      "predefinedContextDesc": "Static context injected into every turn. Use for general instructions.",
+      "predefinedContextPlaceholder": "Optional static instructions…",
+      "scopeRules": "Scope Rules",
+      "scopeRulesDesc": "Define what is in and out of bounds. Leave empty to auto-generate from the anchor record.",
+      "scopeRulesPlaceholder": "Leave empty to auto-generate from the record…",
+      "maxToolRounds": "Max Tool Rounds",
+      "maxToolRoundsDesc": "Maximum number of tool-call loops per turn (default: 5)",
+      "enabledValidator": "Validator Node",
+      "enabledValidatorDesc": "Add a validation step to check responses stay within the defined scope",
+      "settingsTitle": "Grounded Mode Settings",
+      "singlePluginHint": "Grounded mode requires exactly one scoped plugin."
     },
     "pluginSelector": {
       "title": "Add Plugin",

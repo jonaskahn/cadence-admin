@@ -74,8 +74,10 @@ function onCardClick() {
       </p>
 
       <div class="flex items-center gap-2 mt-auto pt-1 text-xs text-dimmed">
-        <span>{{ plugin.agent_type }}</span>
-        <span v-if="plugin.stateless"> - stateless</span>
+        <span v-if="plugin.is_scoped"> • SCOPED</span>
+        <span v-if="plugin.is_specialized"> • SPECIALIZED</span>
+        <span v-if="plugin.stateless"> • STATELESS</span>
+        <span v-else> • STATEFUL</span>
       </div>
     </div>
   </UCard>

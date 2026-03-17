@@ -30,14 +30,16 @@ const schema = computed(() =>
       .string()
       .min(10, { message: t('orchestrators.edit.nameMinLength') })
       .max(200, { message: t('orchestrators.edit.nameMaxLength') }),
-    tier: z.enum(['hot', 'warm', 'cold'])
+    tier: z.enum(['hot', 'warm', 'cold']),
+    whoami: z.string().max(2000).optional()
   })
 )
 
-type Schema = { name: string; tier: 'hot' | 'warm' | 'cold' }
+type Schema = { name: string; tier: 'hot' | 'warm' | 'cold'; whoami?: string }
 
 const name = ref('')
 const tier = ref<'hot' | 'warm' | 'cold'>('cold')
+const whoami = ref('')
 const monitoringConfig = ref<MonitoringConfig>({
   enabled: false,
   provider: 'langfuse',
@@ -65,6 +67,14 @@ const { data: frameworkCapabilities } = await useFetch<FrameworkSupportedProvide
 const supportedProviders = computed(() => (frameworkCapabilities.value?.supports_all ? null : (frameworkCapabilities.value?.supported_providers ?? null)))
 const supportedModes = computed(() => frameworkCapabilities.value?.supported_modes ?? [])
 const isSupervisor = computed(() => orchestrator.value?.mode === 'supervisor' && supportedModes.value.includes('supervisor'))
+const isGrounded = computed(() => orchestrator.value?.mode === 'grounded' && supportedModes.value.includes('grounded'))
+
+const groundedConfigRef = ref<{ getValue: () => Record<string, unknown> } | null>(null)
+const groundedConfig = ref<Record<string, unknown>>({
+  scope_rules: '',
+  max_tool_rounds: 5,
+  enabled_validator: true
+})
 
 watch(
   orchestrator,
@@ -72,6 +82,7 @@ watch(
     if (!o) return
     name.value = o.name
     tier.value = o.tier as 'hot' | 'warm' | 'cold'
+    whoami.value = o.whoami ?? ''
     const existing = (o.config as Record<string, unknown> | undefined)?.monitoring as MonitoringConfig | undefined
     if (existing) {
       monitoringConfig.value = {
@@ -84,11 +95,19 @@ watch(
         }
       }
     }
+    const modeConfig = (o.config as Record<string, unknown> | undefined)?.mode_config as Record<string, unknown> | undefined
+    if (modeConfig) {
+      groundedConfig.value = {
+        scope_rules: modeConfig.scope_rules ?? '',
+        max_tool_rounds: modeConfig.max_tool_rounds ?? 5,
+        enabled_validator: modeConfig.enabled_validator ?? true
+      }
+    }
   },
   { immediate: true }
 )
 
-async function patchMetadata(payload: Pick<Schema, 'name' | 'tier'>) {
+async function patchMetadata(payload: Pick<Schema, 'name' | 'tier'> & { whoami?: string }) {
   await orchestrators.updateMetadata(instanceId, payload)
 }
 
@@ -110,7 +129,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   try {
     await withOverlay(async () => {
-      await patchMetadata({ name: event.data.name, tier: event.data.tier })
+      await patchMetadata({ name: event.data.name, tier: event.data.tier, whoami: whoami.value || undefined })
       const supervisorConfig = supervisorProviderRef.value?.getValue()
       await patchConfig({ ...(supervisorConfig ?? {}), monitoring: monitoringConfig.value })
       await router.push(localePath(`/orchestrators/${instanceId}`))
@@ -147,7 +166,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <UAlert v-else-if="error" color="error" :description="error.message" :title="t('orchestrators.edit.failedLoad')" class="m-6" />
 
         <div v-else-if="orchestrator" class="p-6 min-w-0 w-full">
-          <UForm ref="orchestratorEditFormRef" :schema="schema" :state="{ name, tier }" @submit="onSubmit">
+          <UForm ref="orchestratorEditFormRef" :schema="schema" :state="{ name, tier, whoami }" @submit="onSubmit">
             <div class="flex flex-col gap-8 w-full">
               <!-- Provider wraps Basic + Additional Settings + LLM Config + Supervisor Config -->
               <LangGraphSupervisorProvider
@@ -155,6 +174,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 :initial-value="orchestrator.config"
                 :org-id="orgId"
                 :supported-providers="supportedProviders"
+                :mode="orchestrator.mode"
+                :grounded-mode-config="groundedConfig"
               >
                 <div class="flex flex-col gap-8 w-full">
                   <!-- 3-column grid: Basic, Additional Settings, LLM Config -->
@@ -173,6 +194,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       <div class="flex flex-col gap-4">
                         <UFormField :label="t('dashboard.name')" name="name" required>
                           <UInput v-model="name" class="w-full" :placeholder="t('orchestrators.edit.namePlaceholder')" />
+                        </UFormField>
+                        <UFormField :label="t('orchestrators.create.whoami')" name="whoami">
+                          <UTextarea v-model="whoami" class="w-full" :placeholder="t('orchestrators.create.whoamiPlaceholder')" :rows="3" />
                         </UFormField>
                         <UFormField :label="t('dashboard.tier')" name="tier">
                           <USelect v-model="tier" :items="tierOptions" class="w-full" />
@@ -248,6 +272,17 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       <LangGraphSupervisorLLMConfig />
                       <LangGraphSupervisorNodeConfig />
                     </div>
+                  </UCard>
+
+                  <!-- Grounded Mode Settings card (grounded only) -->
+                  <UCard v-if="isGrounded" class="min-w-0 w-full">
+                    <template #header>
+                      <div class="flex items-center gap-2">
+                        <UIcon name="i-lucide-anchor" />
+                        <p class="font-semibold">{{ t('orchestrators.grounded.settingsTitle') }}</p>
+                      </div>
+                    </template>
+                    <GroundedModeSettings ref="groundedConfigRef" v-model="groundedConfig" />
                   </UCard>
                 </div>
               </LangGraphSupervisorProvider>

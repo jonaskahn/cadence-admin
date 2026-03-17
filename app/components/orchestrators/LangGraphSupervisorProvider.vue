@@ -6,6 +6,8 @@ const props = defineProps<{
   initialValue?: Record<string, unknown>
   disabled?: boolean
   supportedProviders?: string[] | null
+  mode?: string
+  groundedModeConfig?: Record<string, unknown>
 }>()
 
 const orgIdRef = computed(() => props.orgId)
@@ -17,9 +19,17 @@ const supervisor = useLangGraphSupervisor(orgIdRef, initialValueRef, supportedPr
 
 provide('langGraphSupervisor', reactive(supervisor))
 
+function getValue() {
+  const base = supervisor.getValue()
+  if (props.mode === 'grounded' && props.groundedModeConfig) {
+    return { ...base, mode_config: { ...props.groundedModeConfig, node_execution_timeout: 60 } }
+  }
+  return base
+}
+
 defineExpose({
   isValid: () => supervisor.isValid(),
-  getValue: () => supervisor.getValue()
+  getValue
 })
 </script>
 

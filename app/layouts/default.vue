@@ -159,7 +159,15 @@ const mainLinks = computed(() => {
 <template>
   <div class="flex flex-col min-h-screen">
     <UDashboardGroup unit="rem" class="flex-1 min-h-0">
-      <UDashboardSidebar id="default" v-model:open="open" :ui="{ footer: 'lg:border-t lg:border-default' }" class="bg-elevated" collapsible resizable>
+      <UDashboardSidebar
+        id="default"
+        v-model:open="open"
+        :default-size="32"
+        :ui="{ footer: 'lg:border-t lg:border-default' }"
+        class="bg-elevated"
+        collapsible
+        resizable
+      >
         <template #header="{ collapsed }">
           <OrgMenu :collapsed="collapsed" />
         </template>

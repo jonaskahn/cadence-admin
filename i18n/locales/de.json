@@ -329,6 +329,8 @@
       "llmConfig": "LLM-Konfiguration",
       "nodeConfig": "Knoten-Konfiguration",
       "namePlaceholder": "z.B. kundensupport-agent",
+      "whoami": "Identität",
+      "whoamiPlaceholder": "Optionale Angaben zur Rolle dieses Orchestrators (z.B. Rolle, Domain, Ton). Wird in Antwortknoten injiziert.",
       "initialTier": "Anfangs-Tier",
       "tierCold": "Cold (Standard)",
       "tierWarm": "Warm",

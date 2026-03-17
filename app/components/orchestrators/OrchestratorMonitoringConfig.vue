@@ -68,7 +68,7 @@ defineExpose({ validate })
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-1">
-      <UCheckbox v-model="enabled" :label="t('orchestrators.edit.enableMonitoring')" class="mt-1" />
+      <UCheckbox v-model="enabled" :label="t('orchestrators.edit.enableMonitoring')" />
     </div>
 
     <template v-if="enabled">

@@ -169,6 +169,7 @@ export interface OrchestratorResponse {
   status: string
   config: Record<string, unknown>
   tier: string
+  whoami?: string | null
   plugin_settings: Record<string, PluginSettingsEntry>
   config_hash: string | null
   is_ready: boolean
@@ -183,6 +184,7 @@ export interface CreateOrchestratorRequest {
   mode: string
   active_plugin_ids: string[]
   tier?: 'hot' | 'warm' | 'cold'
+  whoami?: string | null
   config?: Record<string, unknown> | null
 }
 
@@ -193,6 +195,7 @@ export interface UpdateOrchestratorConfigRequest {
 export interface UpdateOrchestratorMetadataRequest {
   name?: string | null
   tier?: 'hot' | 'warm' | 'cold' | null
+  whoami?: string | null
   default_llm_config_id?: string | null
 }
 
@@ -224,7 +227,8 @@ export interface PluginMetadataResponse {
   logo_image?: string | null
   settings_schema?: PluginSettingSchema[]
   capabilities: string[]
-  agent_type: string
+  is_specialized: boolean
+  is_scoped: boolean
   stateless: boolean
   source: string
   default_settings: Record<string, unknown>
@@ -244,7 +248,8 @@ export interface SystemPluginResponse {
   settings_schema?: PluginSettingSchema[]
   default_settings: Record<string, unknown>
   capabilities: unknown[]
-  agent_type: string
+  is_specialized: boolean
+  is_scoped: boolean
   stateless: boolean
   enabled: boolean
 }

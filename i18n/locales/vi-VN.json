@@ -329,6 +329,8 @@
       "llmConfig": "Cấu hình LLM",
       "nodeConfig": "Cấu hình node",
       "namePlaceholder": "ví dụ: customer-support-agent",
+      "whoami": "Bản sắc trình điều phối",
+      "whoamiPlaceholder": "Thông tin tùy chọn về vai trò của trình điều phối (vd: vai trò, lĩnh vực, giọng điệu). Được chèn vào các nút trả lời.",
       "initialTier": "Tầng ban đầu",
       "tierCold": "Cold (mặc định)",
       "tierWarm": "Warm",

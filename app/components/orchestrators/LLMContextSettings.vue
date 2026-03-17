@@ -32,8 +32,6 @@ function toggleAutocompactModelManual() {
     </div>
 
     <UCheckbox v-model="supervisor.modeConfig.enabled_auto_compact" :disabled="disabled" :label="t('langGraphSupervisor.autoCompactMessages')" />
-    <UCheckbox v-model="supervisor.modeConfig.enabled_suggestion" :disabled="disabled" :label="t('langGraphSupervisor.enabledSuggestion')" />
-
     <div v-if="supervisor.modeConfig.enabled_auto_compact" class="grid grid-cols-1 gap-4">
       <div>
         <UFormField :description="t('langGraphSupervisor.autocompactLlmConfigDescription')" :label="t('langGraphSupervisor.autocompactLlmConfig')">
@@ -77,5 +75,6 @@ function toggleAutocompactModelManual() {
         </UFormField>
       </div>
     </div>
+    <UCheckbox v-model="supervisor.modeConfig.enabled_suggestion" :disabled="disabled" :label="t('langGraphSupervisor.enabledSuggestion')" />
   </div>
 </template>

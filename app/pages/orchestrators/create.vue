@@ -57,7 +57,8 @@ const schema = computed(() =>
       .max(200),
     framework_type: z.string().min(1),
     mode: z.string().min(1),
-    tier: z.enum(['hot', 'warm', 'cold'])
+    tier: z.enum(['hot', 'warm', 'cold']),
+    whoami: z.string().max(2000).optional()
   })
 )
 
@@ -66,13 +67,15 @@ type Schema = {
   framework_type: string
   mode: string
   tier: 'hot' | 'warm' | 'cold'
+  whoami?: string
 }
 
 const state = reactive<Partial<Schema>>({
   name: '',
   framework_type: 'langgraph',
   mode: 'supervisor',
-  tier: 'cold'
+  tier: 'cold',
+  whoami: ''
 })
 
 const monitoringConfig = ref<MonitoringConfig>({
@@ -98,11 +101,18 @@ const pluginSettingsRef = ref<{
   getValue: () => Record<string, PluginSettingsEntry>
   validate?: () => { valid: boolean; message?: string }
 } | null>(null)
+const groundedConfigRef = ref<{ getValue: () => Record<string, unknown> } | null>(null)
+const groundedConfig = ref<Record<string, unknown>>({
+  scope_rules: '',
+  max_tool_rounds: 5,
+  enabled_validator: true
+})
 
 const currentFrameworkCaps = computed(() => frameworks.value?.find((fw) => fw.framework_type === state.framework_type))
 const supportedProviders = computed(() => (currentFrameworkCaps.value?.supports_all ? null : (currentFrameworkCaps.value?.supported_providers ?? null)))
 const supportedModes = computed(() => currentFrameworkCaps.value?.supported_modes ?? [])
 const isSupervisor = computed(() => state.mode === 'supervisor' && supportedModes.value.includes('supervisor'))
+const isGrounded = computed(() => state.mode === 'grounded' && supportedModes.value.includes('grounded'))
 
 const supervisorInitialValue = computed(
   () => (cloneSource.value?.config ?? (orgDefaults.value as unknown as Record<string, unknown>) ?? {}) as Record<string, unknown>
@@ -206,6 +216,7 @@ async function initFromClone(source: OrchestratorResponse | null) {
   state.framework_type = (source.framework_type as Schema['framework_type']) ?? 'langgraph'
   state.mode = (source.mode as Schema['mode']) ?? 'supervisor'
   state.tier = (source.tier as Schema['tier']) ?? 'cold'
+  state.whoami = (source as { whoami?: string }).whoami ?? ''
   const entries = (Object.values(source.plugin_settings ?? {}) as PluginSettingsEntry[]).filter((e) => e.active)
   const resolved: PluginMetadataResponse[] = []
   for (const e of entries) {
@@ -243,10 +254,11 @@ function removePlugin(index: number) {
 
 async function createOrchestrator(data: Schema) {
   const activePluginIds = selectedPlugins.value.map((p) => p.id)
-  const supervisorConfig = supervisorProviderRef.value?.getValue()
-  const config = { ...(supervisorConfig ?? {}), monitoring: monitoringConfig.value }
+  const baseConfig = supervisorProviderRef.value?.getValue()
+  const config = { ...(baseConfig ?? {}), monitoring: monitoringConfig.value }
   return orchestrators.create({
     ...data,
+    whoami: data.whoami || undefined,
     active_plugin_ids: activePluginIds,
     config
   })
@@ -261,6 +273,10 @@ async function saveInitialPluginSettings(instanceId: string) {
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   if (selectedPlugins.value.length === 0) {
     toast.add({ title: t('orchestrators.create.selectPluginRequired'), color: 'error' })
+    return
+  }
+  if (isGrounded.value && selectedPlugins.value.length !== 1) {
+    toast.add({ title: t('orchestrators.grounded.singlePluginHint'), color: 'error' })
     return
   }
   if (!supervisorProviderRef.value?.isValid()) {
@@ -314,6 +330,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 :initial-value="supervisorInitialValue"
                 :org-id="orgId"
                 :supported-providers="supportedProviders"
+                :mode="state.mode"
+                :grounded-mode-config="groundedConfig"
               >
                 <div class="flex flex-col gap-8 w-full">
                   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
@@ -331,6 +349,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       <div class="flex flex-col gap-4">
                         <UFormField :label="t('dashboard.name')" name="name" required>
                           <UInput v-model="state.name" class="w-full" :placeholder="t('orchestrators.create.namePlaceholder')" />
+                        </UFormField>
+                        <UFormField :label="t('orchestrators.create.whoami')" name="whoami">
+                          <UTextarea v-model="state.whoami" class="w-full" :placeholder="t('orchestrators.create.whoamiPlaceholder')" :rows="3" />
                         </UFormField>
                         <UFormField :label="t('dashboard.framework')" name="framework_type" required>
                           <USelect v-model="state.framework_type" :items="frameworkOptions" class="w-full" />
@@ -395,6 +416,17 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       <LangGraphSupervisorNodeConfig />
                     </div>
                   </UCard>
+
+                  <!-- Grounded Mode Settings card (grounded only) -->
+                  <UCard v-if="isGrounded" class="min-w-0 w-full">
+                    <template #header>
+                      <div class="flex items-center gap-2">
+                        <UIcon name="i-lucide-anchor" />
+                        <p class="font-semibold">{{ t('orchestrators.grounded.settingsTitle') }}</p>
+                      </div>
+                    </template>
+                    <GroundedModeSettings ref="groundedConfigRef" v-model="groundedConfig" />
+                  </UCard>
                 </div>
               </LangGraphSupervisorProvider>
 
@@ -416,6 +448,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       size="sm"
                       color="primary"
                       variant="outline"
+                      :disabled="isGrounded && selectedPlugins.length >= 1"
                       @click="openPluginSelector"
                     />
                   </div>
@@ -436,20 +469,21 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     <OrchestratorPluginCard
                       v-for="(plugin, index) in selectedPlugins"
-                      :key="toPluginUniquenessKey(plugin.source as string, plugin.pid)"
+                      :key="toPluginUniquenessKey(String(plugin.source ?? 'org'), plugin.pid)"
                       :plugin="{
                         id: plugin.id,
                         name: plugin.name,
                         pid: plugin.pid,
-                        source: plugin.source as 'system' | 'org',
+                        source: plugin.source ?? 'org',
                         logo: plugin.logo_image,
                         version: plugin.version
                       }"
                       :interactive="true"
                       @remove="removePlugin(index)"
                     />
-                    <!-- Ghost card: browse more -->
+                    <!-- Ghost card: browse more (hidden when grounded and one plugin) -->
                     <div
+                      v-if="!isGrounded || selectedPlugins.length < 1"
                       class="flex flex-col items-center justify-center gap-2 min-h-[120px] border border-dashed border-default rounded-lg text-dimmed hover:text-default cursor-pointer transition-colors"
                       @click="openPluginSelector"
                     >
@@ -485,6 +519,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       :open="showPluginSelector"
       :already-added="alreadyAddedKeys"
       :org-id="orgId"
+      :filter-scoped-only="isGrounded"
+      :filter-non-scoped-only="isSupervisor"
       @plugin-added="onPluginAdded"
       @update:open="showPluginSelector = $event"
     />

@@ -7,6 +7,10 @@ const props = defineProps<{
   open: boolean
   orgId: string
   alreadyAdded: string[]
+  /** When true, only show plugins with is_scoped (for grounded mode) */
+  filterScopedOnly?: boolean
+  /** When true, exclude plugins with is_scoped (for supervisor mode) */
+  filterNonScopedOnly?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -48,7 +52,13 @@ watch(
 )
 
 const filteredPlugins = computed(() => {
-  const list = plugins.value ?? []
+  let list = plugins.value ?? []
+  if (props.filterScopedOnly) {
+    list = list.filter((p) => p.is_scoped === true)
+  }
+  if (props.filterNonScopedOnly) {
+    list = list.filter((p) => p.is_scoped === false)
+  }
   const bySource = sourceFilter.value === 'all' ? list : list.filter((p) => p.source === sourceFilter.value)
   const q = searchQuery.value.trim().toLowerCase()
   if (!q) return bySource

@@ -1,10 +1,12 @@
 const MIN_DISPLAY_MS = 1500
 
 export function useLoadingOverlay() {
-  const $loading = inject<{ show: (opts?: object) => { hide: () => void } }>('$loading')
-  if (!$loading) throw new Error('Loading overlay plugin not registered')
+  const $loading = inject<{ show: (opts?: object) => { hide: () => void } } | null>('$loading', null)
 
   async function withOverlay<T>(fn: () => Promise<T>): Promise<T> {
+    if (!$loading) {
+      return fn()
+    }
     const loader = $loading.show({
       canCancel: false,
       loader: 'bars',

@@ -60,6 +60,15 @@ const pluginAvatarSrc = computed(() => {
 
 const pluginInitial = computed(() => selectedVersion.value?.name?.charAt(0)?.toUpperCase() ?? '?')
 
+const pluginTypeLabel = computed(() => {
+  const v = selectedVersion.value as { is_specialized?: boolean; is_scoped?: boolean } | null
+  if (!v) return ''
+  const types: string[] = []
+  if (v.is_specialized) types.push('specialized')
+  if (v.is_scoped) types.push('scoped')
+  return types.length > 0 ? types.join(', ') : '—'
+})
+
 const storedSettingsSchema = computed(() => (selectedVersion.value as { settings_schema?: PluginSettingSchema[] })?.settings_schema ?? [])
 
 const configRows = computed(() => {
@@ -269,7 +278,7 @@ async function handleDisableConfirm(close: () => void) {
           <div class="text-sm">
             <p class="font-medium text-dimmed mb-1">{{ t('pluginDetail.details') }}</p>
             <p>
-              {{ selectedVersion.agent_type }}
+              {{ pluginTypeLabel }}
               <span v-if="selectedVersion.stateless"> - stateless</span>
             </p>
           </div>

@@ -5,7 +5,7 @@ export interface PluginCardItem {
   id: string
   name: string
   pid: string
-  source: 'system' | 'org'
+  source?: string
   logo?: string | null
   version: string
 }
