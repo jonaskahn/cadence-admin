@@ -149,7 +149,7 @@ async function save() {
 
 <template>
   <div class="flex flex-col gap-6 pt-4">
-    <UCard>
+    <UCard variant="soft">
       <template #header>
         <div class="flex items-center justify-between">
           <div>

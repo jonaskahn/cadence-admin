@@ -86,7 +86,12 @@ watch(
 </script>
 
 <template>
-  <UCard class="flex flex-col h-full ring-0">
+  <UCard
+    :ui="{
+      root: 'bg-neutral-100/10 cursor-pointer hover:bg-primary-100/40 transition-colors border-0 divide-y divide-dotted shadow-none'
+    }"
+    class="flex flex-col h-full"
+  >
     <div class="flex flex-col gap-3">
       <PluginCard :plugin="displayPlugin" :source="source" @select="() => {}" />
 
@@ -102,14 +107,14 @@ watch(
           :items="versionOptions"
           label-key="label"
           :placeholder="t('orchestrators.pluginSelector.version')"
-          size="xs"
+          size="sm"
           value-key="value"
           class="w-24"
         />
         <UBadge v-if="isAlreadyAdded" color="success" variant="subtle">
           {{ t('orchestrators.pluginSelector.added') }}
         </UBadge>
-        <UButton v-else icon="i-lucide-plus" size="xs" :title="t('orchestrators.pluginSelector.addPlugin')" @click="onAdd">
+        <UButton v-else icon="i-lucide-plus" size="sm" :title="t('orchestrators.pluginSelector.addPlugin')" @click="onAdd">
           {{ t('orchestrators.pluginSelector.add') }}
         </UButton>
       </div>

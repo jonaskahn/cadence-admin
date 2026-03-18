@@ -78,7 +78,6 @@ function handleToggleShowDefault(key: NodeKey) {
                 :icon="supervisor.nodeModelManual[key] ? 'i-lucide-list' : 'i-lucide-pencil'"
                 :title="supervisor.nodeModelManual[key] ? t('settings.selectFromList') : t('settings.enterManually')"
                 color="neutral"
-                size="sm"
                 variant="outline"
                 @click="toggleNodeModelManual(key)"
               />

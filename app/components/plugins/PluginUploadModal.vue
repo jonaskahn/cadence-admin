@@ -55,7 +55,7 @@ async function onUpload() {
 </script>
 
 <template>
-  <UCard class="w-full">
+  <UCard variant="soft" class="w-full">
     <template #header>
       <p class="font-semibold">{{ t('pluginUpload.title') }}</p>
     </template>

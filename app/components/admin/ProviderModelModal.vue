@@ -95,7 +95,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>): Promise<void> {
 </script>
 
 <template>
-  <UCard class="w-full max-w-lg">
+  <UCard variant="soft" class="w-full max-w-lg">
     <template #header>
       <p class="font-semibold">
         {{ isEdit ? t('admin.editModel') + ': ' + initialValue?.model_id : t('admin.addModel') }}

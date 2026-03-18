@@ -69,7 +69,7 @@ const statCards = computed(() => {
       <template #body>
         <div class="p-6 flex flex-col gap-6">
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <UCard v-for="card in statCards" :key="card.label">
+            <UCard v-for="card in statCards" :key="card.label" variant="soft">
               <div class="flex items-center gap-3">
                 <UIcon :class="['size-8', STAT_ICON_COLOR[card.color ?? ''] ?? 'text-primary']" :name="card.icon" />
                 <div>
@@ -84,7 +84,7 @@ const statCards = computed(() => {
             </UCard>
           </div>
 
-          <UCard v-if="stats">
+          <UCard v-if="stats" variant="soft">
             <template #header>
               <p class="font-semibold">{{ t('admin.memoryEstimate') }}</p>
             </template>

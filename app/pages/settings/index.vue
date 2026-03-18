@@ -64,7 +64,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
 <template>
   <div class="flex flex-col gap-8">
     <!-- Read-only org identity -->
-    <UPageCard variant="subtle">
+    <UPageCard>
       <template #header>
         <div class="flex items-center gap-2">
           <span class="font-semibold text-sm">{{ t('settings.organization') }}</span>
@@ -111,7 +111,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
     </UPageCard>
 
     <!-- Editable profile (org_admin only) -->
-    <UPageCard v-if="isOrgAdmin" :description="t('settings.orgProfileDescription')" variant="subtle">
+    <UPageCard v-if="isOrgAdmin" :description="t('settings.orgProfileDescription')">
       <template #header>
         <div class="flex items-center gap-2">
           <span class="font-semibold text-sm">{{ t('settings.organizationProfile') }}</span>

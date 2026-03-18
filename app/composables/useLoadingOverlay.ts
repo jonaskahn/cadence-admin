@@ -7,11 +7,13 @@ export function useLoadingOverlay() {
     if (!$loading) {
       return fn()
     }
+    const style = getComputedStyle(document.documentElement)
     const loader = $loading.show({
       canCancel: false,
       loader: 'bars',
       opacity: 0.75,
-      color: 'var(--color-primary-500, #000)'
+      color: style.getPropertyValue('--color-primary-500').trim() || '#000',
+      backgroundColor: style.getPropertyValue('--ui-bg').trim() || '#fff'
     })
     const start = Date.now()
     try {

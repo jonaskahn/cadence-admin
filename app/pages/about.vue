@@ -61,8 +61,8 @@ const links = computed<NavigationMenuItem[][]>(() => [
         </div>
 
         <div class="flex-1 overflow-y-auto">
-          <UDashboardToolbar>
-            <UNavigationMenu :items="links" class="-mx-1 flex-1" highlight />
+          <UDashboardToolbar class="justify-center">
+            <UNavigationMenu :items="links" class="-mx-1" highlight />
           </UDashboardToolbar>
           <div class="p-6 max-w-4xl mx-auto">
             <NuxtPage />
@@ -72,7 +72,7 @@ const links = computed<NavigationMenuItem[][]>(() => [
 
       <UModal v-model:open="showChangelog">
         <template #content>
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <span class="font-semibold">{{ t('about.changelog.title') }}</span>
             </template>

@@ -4,7 +4,6 @@
 
 @theme static {
   --font-sans: 'Geist', sans-serif;
-
   --color-green-50: #effdf5;
   --color-green-100: #d9fbe8;
   --color-green-200: #b3f5d1;
@@ -22,7 +21,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Floating container pattern — diffused ambient shadow + large radius */
 [data-part='root'].bg-default-muted,
 .ui-card {
   border-radius: 1.25rem !important;
@@ -42,9 +40,8 @@ html {
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* Smooth transitions for all interactive elements */
 button,
 a,
 [role='button'] {
-  transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
 }

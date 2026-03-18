@@ -181,7 +181,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   <!-- 3-column grid: Basic, Additional Settings, LLM Config -->
                   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
                     <!-- Section Basic -->
-                    <UCard class="min-w-0 h-full">
+                    <UCard variant="soft" class="min-w-0 h-full">
                       <template #header>
                         <div class="flex items-center gap-2">
                           <p class="font-semibold">{{ t('orchestrators.edit.basic') }}</p>
@@ -222,7 +222,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       </div>
                     </UCard>
 
-                    <UCard class="min-w-0 h-full">
+                    <UCard variant="soft" class="min-w-0 h-full">
                       <template #header>
                         <div class="flex items-center gap-2">
                           <UIcon name="i-lucide-cpu" />
@@ -236,7 +236,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       <LangGraphDefaultLLMConfig />
                     </UCard>
 
-                    <UCard class="min-w-0 h-full">
+                    <UCard variant="soft" class="min-w-0 h-full">
                       <template #header>
                         <div class="flex items-center gap-2">
                           <UIcon name="i-lucide-sliders" />
@@ -256,7 +256,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   </div>
 
                   <!-- Supervisor Config card (supervisor only, full width) -->
-                  <UCard v-if="isSupervisor" class="min-w-0 w-full">
+                  <UCard v-if="isSupervisor" variant="soft" class="min-w-0 w-full">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-settings-2" />
@@ -275,7 +275,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   </UCard>
 
                   <!-- Grounded Mode Settings card (grounded only) -->
-                  <UCard v-if="isGrounded" class="min-w-0 w-full">
+                  <UCard v-if="isGrounded" variant="soft" class="min-w-0 w-full">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-anchor" />

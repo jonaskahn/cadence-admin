@@ -71,7 +71,7 @@ onMounted(async () => {
         </div>
       </UCard>
 
-      <UCard v-if="auth.orgList.value.length === 0" class="text-center py-8">
+      <UCard v-if="auth.orgList.value.length === 0" variant="soft" class="text-center py-8">
         <p class="text-dimmed">{{ t('auth.noOrgsAvailable') }}</p>
         <UButton class="mt-2" :label="t('common.refresh')" size="sm" variant="outline" @click="loadOrgs" />
       </UCard>

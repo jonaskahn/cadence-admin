@@ -299,7 +299,7 @@ function copyGoCode() {
       </div>
 
       <!-- Section 1: Basic Information -->
-      <UCard>
+      <UCard variant="soft">
         <template #header>
           <div class="flex items-center gap-2">
             <p class="font-semibold">{{ t('centralPoints.basicInfo') }}</p>
@@ -342,7 +342,7 @@ function copyGoCode() {
       </UCard>
 
       <!-- Section 2: API Integration -->
-      <UCard>
+      <UCard variant="soft">
         <template #header>
           <div class="flex items-center gap-2">
             <p class="font-semibold">{{ t('centralPoints.apiIntegration') }}</p>

@@ -36,7 +36,7 @@ const logoSrc = computed(() => (props.plugin.logo ? `data:image/png;base64,${pro
 </script>
 
 <template>
-  <UCard>
+  <UCard variant="soft">
     <template #header>
       <div class="flex items-start justify-between gap-2">
         <div class="flex items-center gap-2 min-w-0">

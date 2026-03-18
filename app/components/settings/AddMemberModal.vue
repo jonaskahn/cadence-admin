@@ -58,7 +58,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <UCard class="w-full max-w-lg">
+  <UCard variant="soft" class="w-full max-w-lg">
     <template #header>
       <p class="font-semibold">{{ t('addMember.title') }}</p>
     </template>

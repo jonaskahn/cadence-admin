@@ -172,7 +172,7 @@ const quotaRows = computed(() => {
       <template #body>
         <div class="p-6 flex flex-col gap-6">
           <!-- Identity card -->
-          <UCard v-if="org">
+          <UCard v-if="org" variant="soft">
             <template #header>
               <p class="font-semibold">{{ t('admin.details') }}</p>
             </template>
@@ -209,7 +209,7 @@ const quotaRows = computed(() => {
           </UCard>
 
           <!-- Edit form -->
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <p class="font-semibold">{{ t('admin.editOrganization') }}</p>
             </template>
@@ -258,7 +258,7 @@ const quotaRows = computed(() => {
           </UCard>
 
           <!-- Quota card -->
-          <UCard v-if="displayQuota">
+          <UCard v-if="displayQuota" variant="soft">
             <template #header>
               <div class="flex items-center gap-2">
                 <p class="font-semibold">{{ t('admin.tierQuota') }}</p>
@@ -276,7 +276,7 @@ const quotaRows = computed(() => {
           </UCard>
 
           <!-- Members table -->
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <p class="font-semibold">{{ t('settings.members') }}</p>
             </template>

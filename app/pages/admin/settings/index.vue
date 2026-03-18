@@ -155,7 +155,7 @@ const tabs = computed(() => [
               <div class="flex flex-col gap-6 pt-4">
                 <UAlert color="info" icon="i-lucide-radio" :title="t('admin.platformDefaults')" variant="subtle" />
 
-                <UCard v-for="group in allGroups" :key="group.label">
+                <UCard v-for="group in allGroups" :key="group.label" variant="soft">
                   <template #header>
                     <p class="font-semibold text-sm">{{ group.label }}</p>
                   </template>
@@ -203,7 +203,7 @@ const tabs = computed(() => [
                 />
 
                 <div v-if="tiers?.length" class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                  <UCard v-for="tier in tiers" :key="tier.tier_name">
+                  <UCard v-for="tier in tiers" :key="tier.tier_name" variant="soft">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <UBadge :color="subscriptionTierColor(tier.tier_name)" :label="tier.tier_name?.toUpperCase()" variant="subtle" />

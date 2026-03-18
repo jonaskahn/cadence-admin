@@ -66,8 +66,6 @@ function toggleAutocompactModelManual() {
             <UButton
               :icon="supervisor.nodeModelManual['autocompact'] ? 'i-lucide-list' : 'i-lucide-pencil'"
               :title="supervisor.nodeModelManual['autocompact'] ? t('settings.selectFromList') : t('settings.enterManually')"
-              color="neutral"
-              size="sm"
               variant="outline"
               @click="toggleAutocompactModelManual"
             />

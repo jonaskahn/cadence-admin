@@ -123,7 +123,7 @@ const columns = computed(() => [
 
       <template #body>
         <div class="p-6">
-          <UCard>
+          <UCard variant="soft">
             <UTable :columns="columns" :data="orgs || []">
               <template #name-cell="{ row }">
                 <div>
@@ -160,7 +160,7 @@ const columns = computed(() => [
 
     <UModal v-model:open="showCreate">
       <template #content>
-        <UCard class="w-full">
+        <UCard variant="soft" class="w-full">
           <template #header>
             <p class="font-semibold">{{ t('admin.createOrganization') }}</p>
           </template>

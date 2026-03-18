@@ -119,7 +119,7 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
 
       <template #body>
         <div class="p-6 min-w-0 w-full">
-          <UCard>
+          <UCard variant="soft">
             <UTable
               :columns="columns"
               :data="orchestrators.orchestrators.value"

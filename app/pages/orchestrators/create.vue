@@ -124,6 +124,15 @@ watch(currentFrameworkCaps, (caps) => {
   }
 })
 
+watch(
+  () => state.mode,
+  (_newMode, oldMode) => {
+    if (oldMode !== undefined) {
+      selectedPlugins.value = []
+    }
+  }
+)
+
 const frameworkOptions = computed(() =>
   (frameworks.value ?? []).map((fw) => ({
     label: frameworkLabel(fw.framework_type),
@@ -336,7 +345,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 <div class="flex flex-col gap-8 w-full">
                   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
                     <!-- Section Basic -->
-                    <UCard class="min-w-0 h-full">
+                    <UCard variant="soft" class="min-w-0 h-full">
                       <template #header>
                         <div class="flex items-center gap-2">
                           <p class="font-semibold">{{ t('orchestrators.create.basic') }}</p>
@@ -365,7 +374,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       </div>
                     </UCard>
 
-                    <UCard class="min-w-0 h-full">
+                    <UCard variant="soft" class="min-w-0 h-full">
                       <template #header>
                         <div class="flex items-center gap-2">
                           <UIcon name="i-lucide-cpu" />
@@ -379,7 +388,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       <LangGraphDefaultLLMConfig />
                     </UCard>
 
-                    <UCard class="min-w-0 h-full">
+                    <UCard variant="soft" class="min-w-0 h-full">
                       <template #header>
                         <div class="flex items-center gap-2">
                           <UIcon name="i-lucide-sliders" />
@@ -398,8 +407,75 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </UCard>
                   </div>
 
+                  <!-- Section Plugins -->
+                  <UCard variant="soft" class="min-w-0 w-full">
+                    <template #header>
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                          <UIcon name="i-lucide-plug" />
+                          <span class="font-semibold">{{ t('orchestrators.plugins') }}</span>
+                          <InfoPopover
+                            title-key="info.orchestratorSections.createPlugins.title"
+                            description-key="info.orchestratorSections.createPlugins.description"
+                          />
+                        </div>
+                        <UButton
+                          icon="i-lucide-plus"
+                          :label="t('orchestrators.create.addPlugin')"
+                          color="primary"
+                          variant="outline"
+                          :disabled="isGrounded && selectedPlugins.length >= 1"
+                          @click="openPluginSelector"
+                        />
+                      </div>
+                    </template>
+
+                    <!-- Empty state -->
+                    <div v-if="selectedPlugins.length === 0" class="flex flex-col items-center justify-center py-12 gap-3 text-center">
+                      <UIcon name="i-lucide-plug-2" class="text-4xl text-dimmed" />
+                      <div>
+                        <p class="font-medium">{{ t('orchestrators.create.pluginsEmpty') }}</p>
+                        <p class="text-sm text-dimmed">{{ t('orchestrators.create.pluginsEmptyDesc') }}</p>
+                      </div>
+                      <UButton :label="t('orchestrators.create.addFirstPlugin')" @click="openPluginSelector" />
+                    </div>
+
+                    <!-- Plugin grid -->
+                    <template v-else>
+                      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        <OrchestratorPluginCard
+                          v-for="(plugin, index) in selectedPlugins"
+                          :key="toPluginUniquenessKey(String(plugin.source ?? 'org'), plugin.pid)"
+                          :plugin="{
+                            id: plugin.id,
+                            name: plugin.name,
+                            pid: plugin.pid,
+                            source: plugin.source ?? 'org',
+                            logo: plugin.logo_image,
+                            version: plugin.version
+                          }"
+                          :interactive="true"
+                          @remove="removePlugin(index)"
+                        />
+                        <!-- Ghost card: browse more (hidden when grounded and one plugin) -->
+                        <div
+                          v-if="!isGrounded || selectedPlugins.length < 1"
+                          class="flex flex-col items-center justify-center gap-2 min-h-[120px] border border-dashed border-default rounded-lg text-dimmed hover:text-default cursor-pointer transition-colors"
+                          @click="openPluginSelector"
+                        >
+                          <UIcon name="i-lucide-plus-circle" class="text-2xl" />
+                          <span class="text-sm">{{ t('orchestrators.create.browsePlugins') }}</span>
+                        </div>
+                      </div>
+
+                      <!-- Plugin settings accordion -->
+                      <USeparator :label="t('orchestrators.create.pluginSettings')" class="mt-6 mb-2" />
+                      <OrchestratorPluginSettings ref="pluginSettingsRef" :initial-value="pluginSettingsInitialValue" :org-id="orgId" />
+                    </template>
+                  </UCard>
+
                   <!-- Supervisor Config card (supervisor only, full width) -->
-                  <UCard v-if="isSupervisor && (cloneSource || orgDefaults !== null)" class="min-w-0 w-full">
+                  <UCard v-if="isSupervisor && (cloneSource || orgDefaults !== null)" variant="soft" class="min-w-0 w-full">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-settings-2" />
@@ -418,7 +494,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   </UCard>
 
                   <!-- Grounded Mode Settings card (grounded only) -->
-                  <UCard v-if="isGrounded" class="min-w-0 w-full">
+                  <UCard v-if="isGrounded" variant="soft" class="min-w-0 w-full">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-anchor" />
@@ -429,74 +505,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   </UCard>
                 </div>
               </LangGraphSupervisorProvider>
-
-              <!-- Section Plugins -->
-              <UCard class="min-w-0 w-full">
-                <template #header>
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                      <UIcon name="i-lucide-plug" />
-                      <span class="font-semibold">{{ t('orchestrators.plugins') }}</span>
-                      <InfoPopover
-                        title-key="info.orchestratorSections.createPlugins.title"
-                        description-key="info.orchestratorSections.createPlugins.description"
-                      />
-                    </div>
-                    <UButton
-                      icon="i-lucide-plus"
-                      :label="t('orchestrators.create.addPlugin')"
-                      size="sm"
-                      color="primary"
-                      variant="outline"
-                      :disabled="isGrounded && selectedPlugins.length >= 1"
-                      @click="openPluginSelector"
-                    />
-                  </div>
-                </template>
-
-                <!-- Empty state -->
-                <div v-if="selectedPlugins.length === 0" class="flex flex-col items-center justify-center py-12 gap-3 text-center">
-                  <UIcon name="i-lucide-plug-2" class="text-4xl text-dimmed" />
-                  <div>
-                    <p class="font-medium">{{ t('orchestrators.create.pluginsEmpty') }}</p>
-                    <p class="text-sm text-dimmed">{{ t('orchestrators.create.pluginsEmptyDesc') }}</p>
-                  </div>
-                  <UButton :label="t('orchestrators.create.addFirstPlugin')" @click="openPluginSelector" />
-                </div>
-
-                <!-- Plugin grid -->
-                <template v-else>
-                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    <OrchestratorPluginCard
-                      v-for="(plugin, index) in selectedPlugins"
-                      :key="toPluginUniquenessKey(String(plugin.source ?? 'org'), plugin.pid)"
-                      :plugin="{
-                        id: plugin.id,
-                        name: plugin.name,
-                        pid: plugin.pid,
-                        source: plugin.source ?? 'org',
-                        logo: plugin.logo_image,
-                        version: plugin.version
-                      }"
-                      :interactive="true"
-                      @remove="removePlugin(index)"
-                    />
-                    <!-- Ghost card: browse more (hidden when grounded and one plugin) -->
-                    <div
-                      v-if="!isGrounded || selectedPlugins.length < 1"
-                      class="flex flex-col items-center justify-center gap-2 min-h-[120px] border border-dashed border-default rounded-lg text-dimmed hover:text-default cursor-pointer transition-colors"
-                      @click="openPluginSelector"
-                    >
-                      <UIcon name="i-lucide-plus-circle" class="text-2xl" />
-                      <span class="text-sm">{{ t('orchestrators.create.browsePlugins') }}</span>
-                    </div>
-                  </div>
-
-                  <!-- Plugin settings accordion -->
-                  <USeparator :label="t('orchestrators.create.pluginSettings')" class="mt-6 mb-2" />
-                  <OrchestratorPluginSettings ref="pluginSettingsRef" :initial-value="pluginSettingsInitialValue" :org-id="orgId" />
-                </template>
-              </UCard>
             </div>
 
             <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">

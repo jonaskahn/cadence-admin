@@ -105,7 +105,7 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
       <template #body>
         <div class="flex flex-col gap-8 p-6 lg:max-w-2xl mx-auto w-full">
           <!-- Read-only account info -->
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <p class="font-semibold">{{ t('profile.account') }}</p>
             </template>
@@ -130,7 +130,7 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
           </UCard>
 
           <!-- Editable profile fields -->
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <p class="font-semibold">{{ t('profile.profile') }}</p>
             </template>
@@ -155,7 +155,7 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
           </UCard>
 
           <!-- Change password -->
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <p class="font-semibold">{{ t('profile.changePassword') }}</p>
             </template>

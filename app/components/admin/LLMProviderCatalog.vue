@@ -80,7 +80,7 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
       variant="subtle"
     />
 
-    <UCard>
+    <UCard variant="soft">
       <template #header>
         <div class="flex items-center justify-between gap-4">
           <UButton icon="i-lucide-plus" :label="t('admin.addModel')" size="sm" @click="openAdd" />

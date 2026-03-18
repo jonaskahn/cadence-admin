@@ -4,7 +4,7 @@
 // They can also be set manually or injected by CI at runtime.
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@vueuse/nuxt', '@nuxtjs/mdc', '@nuxtjs/i18n', '@formkit/auto-animate/nuxt'],
+  modules: ['@nuxt/eslint', '@nuxt/ui', '@vueuse/nuxt', '@nuxtjs/mdc', '@nuxtjs/i18n', '@formkit/auto-animate/nuxt', 'motion-v/nuxt'],
 
   components: [
     {

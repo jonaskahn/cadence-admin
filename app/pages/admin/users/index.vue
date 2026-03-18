@@ -197,7 +197,7 @@ const columns = computed(() => [
 
       <template #body>
         <div class="p-6">
-          <UCard>
+          <UCard variant="soft">
             <UTable :columns="columns" :data="users || []">
               <template #is_sys_admin-cell="{ row }">
                 <div class="flex items-center gap-1.5">
@@ -259,7 +259,7 @@ const columns = computed(() => [
 
     <UModal v-model:open="showCreate">
       <template #content>
-        <UCard class="w-full">
+        <UCard variant="soft" class="w-full">
           <template #header>
             <p class="font-semibold">{{ t('admin.newUser') }}</p>
           </template>
@@ -284,7 +284,7 @@ const columns = computed(() => [
 
     <UModal :open="!!editTarget" @update:open="editTarget = null">
       <template #content>
-        <UCard class="w-full">
+        <UCard variant="soft" class="w-full">
           <template #header>
             <p class="font-semibold">{{ t('admin.editUser') }}</p>
           </template>

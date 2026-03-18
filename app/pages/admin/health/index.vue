@@ -31,7 +31,7 @@ const columns = computed(() => [
 
       <template #body>
         <div class="p-6 flex flex-col gap-6">
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <div class="flex items-center gap-2">
                 <UIcon
@@ -64,7 +64,7 @@ const columns = computed(() => [
             </p>
           </UCard>
 
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <p class="font-semibold">{{ t('admin.orchestratorInstanceHealth') }}</p>
             </template>

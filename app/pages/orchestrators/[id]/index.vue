@@ -286,7 +286,7 @@ async function handleActivateConfirm(close: () => void) {
       <template #body>
         <div v-if="orchestrator" class="p-6 min-w-0 w-full flex flex-col gap-6">
           <!-- Overview card: Details + Graph -->
-          <UCard class="min-w-0">
+          <UCard variant="soft" class="min-w-0">
             <template #header>
               <span class="font-semibold">{{ t('orchestrators.overviewSection') }}</span>
             </template>
@@ -340,7 +340,7 @@ async function handleActivateConfirm(close: () => void) {
           </UCard>
 
           <!-- Plugin Configuration card -->
-          <UCard class="min-w-0">
+          <UCard variant="soft" class="min-w-0">
             <template #header>
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">

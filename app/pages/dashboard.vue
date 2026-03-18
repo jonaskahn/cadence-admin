@@ -53,9 +53,10 @@ const usersChartData = {
     {
       label: 'Active Users',
       data: [42, 58, 71, 89, 102, 124],
-      backgroundColor: 'rgba(0, 193, 106, 0.6)',
-      borderColor: 'rgb(0, 193, 106)',
-      borderWidth: 1
+      backgroundColor: 'rgba(249, 115, 22, 0.65)',
+      borderColor: 'rgb(249, 115, 22)',
+      borderWidth: 1,
+      borderRadius: 4
     }
   ]
 }
@@ -67,8 +68,8 @@ const tokensChartData = {
       label: 'Tokens (K)',
       data: [120, 190, 280, 210, 340, 95, 180],
       fill: true,
-      borderColor: 'rgb(99, 102, 241)',
-      backgroundColor: 'rgba(99, 102, 241, 0.2)',
+      borderColor: 'rgb(245, 158, 11)',
+      backgroundColor: 'rgba(245, 158, 11, 0.15)',
       tension: 0.3
     }
   ]
@@ -79,7 +80,7 @@ const orchestratorTierChartData = computed(() => ({
   datasets: [
     {
       data: [tierCounts.value.hot || 2, tierCounts.value.warm || 3, tierCounts.value.cold || 1],
-      backgroundColor: ['rgba(239, 68, 68, 0.7)', 'rgba(34, 197, 94, 0.7)', 'rgba(59, 130, 246, 0.7)'],
+      backgroundColor: ['rgba(249, 115, 22, 0.85)', 'rgba(251, 191, 36, 0.75)', 'rgba(120, 113, 108, 0.55)'],
       borderWidth: 0
     }
   ]
@@ -91,9 +92,10 @@ const chatsChartData = {
     {
       label: 'Chats',
       data: [12, 45, 78, 52, 91, 38],
-      backgroundColor: 'rgba(168, 85, 247, 0.6)',
-      borderColor: 'rgb(168, 85, 247)',
-      borderWidth: 1
+      backgroundColor: 'rgba(251, 146, 60, 0.65)',
+      borderColor: 'rgb(251, 146, 60)',
+      borderWidth: 1,
+      borderRadius: 4
     }
   ]
 }
@@ -105,8 +107,8 @@ const llmCostChartData = {
       label: 'LLM Cost ($)',
       data: [124, 189, 256, 312, 278, 341],
       fill: true,
-      borderColor: 'rgb(234, 179, 8)',
-      backgroundColor: 'rgba(234, 179, 8, 0.15)',
+      borderColor: 'rgb(249, 115, 22)',
+      backgroundColor: 'rgba(249, 115, 22, 0.12)',
       tension: 0.3
     }
   ]
@@ -117,7 +119,13 @@ const modelUsageChartData = {
   datasets: [
     {
       data: [38, 28, 18, 10, 6],
-      backgroundColor: ['rgba(16, 185, 129, 0.8)', 'rgba(99, 102, 241, 0.8)', 'rgba(251, 146, 60, 0.8)', 'rgba(236, 72, 153, 0.8)', 'rgba(34, 211, 238, 0.8)'],
+      backgroundColor: [
+        'rgba(249, 115, 22, 0.85)',
+        'rgba(251, 146, 60, 0.80)',
+        'rgba(253, 186, 116, 0.75)',
+        'rgba(245, 158, 11, 0.70)',
+        'rgba(120, 113, 108, 0.55)'
+      ],
       borderWidth: 0
     }
   ]
@@ -129,9 +137,10 @@ const costByProviderChartData = {
     {
       label: 'Cost ($)',
       data: [420, 285, 156, 89],
-      backgroundColor: ['rgba(16, 185, 129, 0.6)', 'rgba(99, 102, 241, 0.6)', 'rgba(251, 146, 60, 0.6)', 'rgba(156, 163, 175, 0.6)'],
-      borderColor: ['rgb(16, 185, 129)', 'rgb(99, 102, 241)', 'rgb(251, 146, 60)', 'rgb(156, 163, 175)'],
-      borderWidth: 1
+      backgroundColor: ['rgba(249, 115, 22, 0.65)', 'rgba(251, 146, 60, 0.60)', 'rgba(253, 186, 116, 0.55)', 'rgba(120, 113, 108, 0.45)'],
+      borderColor: ['rgb(249, 115, 22)', 'rgb(251, 146, 60)', 'rgb(253, 186, 116)', 'rgb(120, 113, 108)'],
+      borderWidth: 1,
+      borderRadius: 4
     }
   ]
 }
@@ -183,7 +192,7 @@ const costByProviderChartData = {
           </template>
 
           <template v-if="auth.isSysAdmin.value && poolStats">
-            <UCard>
+            <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.poolStatistics') }}</p>
               </template>
@@ -210,7 +219,7 @@ const costByProviderChartData = {
 
           <!-- Row 1: Users + Tokens (60/40 split) -->
           <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6">
-            <UCard>
+            <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.usersOverTime') }}</p>
               </template>
@@ -224,7 +233,7 @@ const costByProviderChartData = {
               </ClientOnly>
             </UCard>
 
-            <UCard>
+            <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.tokenConsumption') }}</p>
               </template>
@@ -241,7 +250,7 @@ const costByProviderChartData = {
 
           <!-- Row 2: Chats + Orchestrator Tier (2fr/1fr) -->
           <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-            <UCard>
+            <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.chatsPerDay') }}</p>
               </template>
@@ -255,7 +264,7 @@ const costByProviderChartData = {
               </ClientOnly>
             </UCard>
 
-            <UCard>
+            <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.orchestratorByTier') }}</p>
               </template>
@@ -273,7 +282,7 @@ const costByProviderChartData = {
           </div>
 
           <!-- Row 3: Full-width LLM Cost -->
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <p class="font-semibold tracking-tight">{{ t('dashboard.llmCostOverTime') }}</p>
             </template>
@@ -289,7 +298,7 @@ const costByProviderChartData = {
 
           <!-- Row 4: Model Usage + Cost by Provider -->
           <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-6">
-            <UCard>
+            <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.modelUsage') }}</p>
               </template>
@@ -305,7 +314,7 @@ const costByProviderChartData = {
               </ClientOnly>
             </UCard>
 
-            <UCard>
+            <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.costByProvider') }}</p>
               </template>
@@ -334,7 +343,7 @@ const costByProviderChartData = {
             />
           </div>
 
-          <UCard>
+          <UCard variant="soft">
             <template #header>
               <div class="flex items-center justify-between">
                 <p class="font-semibold tracking-tight">{{ t('dashboard.orchestrators') }}</p>

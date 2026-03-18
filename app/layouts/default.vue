@@ -141,6 +141,19 @@ const systemLinks = computed<NavigationMenuItem[]>(() => {
   ]
 })
 
+const sidebarVariants = {
+  expanded: {
+    opacity: 1,
+    x: 0,
+    transition: { type: 'tween' as const, duration: 1.2, ease: 'easeInOut' as const }
+  },
+  collapsed: {
+    opacity: 0.5,
+    x: -4,
+    transition: { type: 'tween' as const, duration: 0.8, ease: 'easeInOut' as const }
+  }
+}
+
 const mainLinks = computed(() => {
   const links: NavigationMenuItem[] = [...baseLinks.value, ...orgAdminLinks.value]
   if (systemLinks.value.length) {
@@ -157,30 +170,45 @@ const mainLinks = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen">
-    <UDashboardGroup unit="rem" class="flex-1 min-h-0">
+  <div class="flex flex-col min-h-dvh bg-default">
+    <UDashboardGroup unit="rem" class="flex-1 min-h-0 p-2">
       <UDashboardSidebar
         id="default"
         v-model:open="open"
         :default-size="32"
         :ui="{
-          body: 'flex flex-col gap-4 overflow-y-auto px-4 py-2',
-          footer: 'mt-auto shrink-0 flex items-center gap-1.5 px-4 py-2 lg:border-t lg:border-default'
+          body: 'flex flex-col gap-4 overflow-y-auto px-4 py-2 border-0',
+          footer: 'mt-auto shrink-0 flex items-center gap-1.5 px-4 py-2 border-0'
         }"
-        class="bg-elevated"
+        class="bg-neutral-100/20 rounded-xl shadow-2xl text overflow-hidden border-0"
         collapsible
         resizable
       >
         <template #header="{ collapsed }">
-          <OrgMenu :collapsed="collapsed" />
+          <div
+            v-motion="{ initial: { opacity: 1, x: 0 }, variants: sidebarVariants, animate: collapsed ? 'collapsed' : 'expanded' }"
+            class="flex w-full items-center gap-1.5"
+          >
+            <div class="min-w-0 flex-1">
+              <OrgMenu :collapsed="collapsed" />
+            </div>
+          </div>
         </template>
 
         <template #default="{ collapsed }">
-          <UNavigationMenu :collapsed="collapsed" :items="mainLinks" class="flex-1" orientation="vertical" popover tooltip />
+          <div
+            v-motion="{ initial: { opacity: 1, x: 0 }, variants: sidebarVariants, animate: collapsed ? 'collapsed' : 'expanded' }"
+            class="flex-1 flex flex-col"
+          >
+            <UNavigationMenu :collapsed="collapsed" :items="mainLinks" :ui="{ root: 'gap-2' }" class="flex-1" orientation="vertical" popover tooltip />
+          </div>
         </template>
 
         <template #footer="{ collapsed }">
-          <div class="flex w-full items-center gap-1.5">
+          <div
+            v-motion="{ initial: { opacity: 1, x: 0 }, variants: sidebarVariants, animate: collapsed ? 'collapsed' : 'expanded' }"
+            class="flex w-full items-center gap-1.5"
+          >
             <div class="min-w-0 flex-1">
               <UserMenu :collapsed="collapsed" />
             </div>
@@ -192,3 +220,13 @@ const mainLinks = computed(() => {
     </UDashboardGroup>
   </div>
 </template>
+
+<style>
+/* UDashboardSidebar applies min-h-svh (100svh) which overflows the p-2 padded
+   container (causing bottom content to be clipped and hiding border-radius).
+   Override so the sidebar fills only the flex height, making rounding visible. */
+#dashboard-sidebar-default {
+  min-height: 0 !important;
+  align-self: stretch;
+}
+</style>
