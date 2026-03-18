@@ -25,7 +25,7 @@ const { t } = useI18n()
 
 <template>
   <UPopover>
-    <UButton icon="i-lucide-info" variant="ghost" :size="size" color="primary" />
+    <UButton icon="i-lucide-info" :size="size" color="primary" variant="ghost" />
     <template #content>
       <div class="flex flex-col gap-3 p-4 max-w-md min-w-64">
         <p class="font-semibold text-sm">{{ t(titleKey) }}</p>

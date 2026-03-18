@@ -332,22 +332,15 @@ const costByProviderChartData = {
           <div class="flex flex-wrap items-center gap-3">
             <p class="text-sm font-medium text-dimmed">{{ t('dashboard.quickActions') }}</p>
             <UButton icon="i-lucide-message-square" :label="t('dashboard.startChat')" :to="localePath('/chat')" size="sm" />
-            <UButton icon="i-lucide-cpu" :label="t('dashboard.viewOrchestrators')" :to="localePath('/orchestrators')" variant="outline" size="sm" />
-            <UButton
-              v-if="auth.isOrgAdmin.value"
-              icon="i-lucide-puzzle"
-              :label="t('dashboard.managePlugins')"
-              :to="localePath('/plugins')"
-              variant="outline"
-              size="sm"
-            />
+            <UButton icon="i-lucide-cpu" :label="t('dashboard.viewOrchestrators')" :to="localePath('/orchestrators')" size="sm" />
+            <UButton v-if="auth.isOrgAdmin.value" icon="i-lucide-puzzle" :label="t('dashboard.managePlugins')" :to="localePath('/plugins')" size="sm" />
           </div>
 
           <UCard variant="soft">
             <template #header>
               <div class="flex items-center justify-between">
                 <p class="font-semibold tracking-tight">{{ t('dashboard.orchestrators') }}</p>
-                <UButton :label="t('common.viewAll')" size="sm" :to="localePath('/orchestrators')" variant="outline" />
+                <UButton :label="t('common.viewAll')" size="sm" :to="localePath('/orchestrators')" />
               </div>
             </template>
 

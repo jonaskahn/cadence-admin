@@ -73,8 +73,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="handleClose" />
-        <UButton color="primary" variant="outline" :loading="loading" :label="t('auth.addMember')" type="submit" />
+        <UButton color="neutral" variant="ghost" :label="t('common.cancel')" @click="handleClose" />
+        <UButton color="primary" :loading="loading" :label="t('auth.addMember')" type="submit" />
       </div>
     </UForm>
   </UCard>

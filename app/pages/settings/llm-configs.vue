@@ -139,7 +139,7 @@ const columns = computed(() => [
               </div>
               <p class="text-dimmed text-sm">{{ t('settings.llmConfigsDescription') }}</p>
             </div>
-            <UButton v-if="auth.isAdmin.value" color="primary" variant="outline" icon="i-lucide-plus" :label="t('settings.addConfig')" @click="openAdd" />
+            <UButton v-if="auth.isAdmin.value" color="primary" icon="i-lucide-plus" :label="t('settings.addConfig')" @click="openAdd" />
           </div>
         </template>
         <div v-if="!configs" class="flex flex-col gap-2 p-4">
@@ -172,14 +172,13 @@ const columns = computed(() => [
           <template #actions-cell="{ row }">
             <div class="flex items-center gap-1">
               <template v-if="auth.isAdmin.value">
-                <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="startEdit(row.original)" />
+                <UButton color="primary" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="startEdit(row.original)" />
                 <UButton
                   color="primary"
                   :icon="row?.original?.is_enabled ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                   :label="row?.original?.is_enabled ? t('settings.disableConfig') : t('settings.enableConfig')"
                   :loading="toggling === row?.original?.id"
                   size="xs"
-                  variant="outline"
                   @click="toggleEnabled(row.original)"
                 />
               </template>
@@ -189,7 +188,7 @@ const columns = computed(() => [
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('settings.deleteConfigConfirm', { name: row.original.name }) }}</p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                       <UButton
                         color="error"
                         :label="t('common.delete')"
@@ -206,7 +205,7 @@ const columns = computed(() => [
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                       <UButton
                         color="error"
                         :label="t('common.purge')"

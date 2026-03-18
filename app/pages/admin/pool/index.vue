@@ -60,7 +60,7 @@ const statCards = computed(() => {
           <template #right>
             <div class="flex items-center gap-2">
               <InfoPopover title-key="info.admin.pool.title" description-key="info.admin.pool.description" />
-              <UButton icon="i-lucide-refresh-cw" :label="t('common.refresh')" size="sm" variant="outline" @click="refresh()" />
+              <UButton icon="i-lucide-refresh-cw" :label="t('common.refresh')" size="sm" @click="refresh()" />
             </div>
           </template>
         </UDashboardNavbar>

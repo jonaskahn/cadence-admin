@@ -153,7 +153,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
       class="data-[state=open]:bg-elevated"
       color="neutral"
       leading-icon="i-lucide-user-circle"
-      variant="ghost"
     >
       <template v-if="!collapsed" #default>
         <div class="flex items-center gap-2 min-w-0 flex-1">

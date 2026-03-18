@@ -49,7 +49,7 @@ const logoSrc = computed(() => (props.plugin.logo ? `data:image/png;base64,${pro
             <span class="text-xs text-dimmed font-mono truncate">{{ plugin.pid }}</span>
           </div>
         </div>
-        <UButton v-if="interactive" icon="i-lucide-x" size="xs" color="neutral" variant="ghost" @click="handleRemove" />
+        <UButton v-if="interactive" icon="i-lucide-x" size="xs" color="neutral" @click="handleRemove" />
       </div>
     </template>
 

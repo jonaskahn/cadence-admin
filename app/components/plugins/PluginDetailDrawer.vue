@@ -327,7 +327,7 @@ async function handleDisableConfirm(close: () => void) {
                 <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.enableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
                   <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                  <UButton variant="outline" color="primary" :label="t('pluginDetail.enable')" :loading="enabling" @click="handleEnableConfirm(close)" />
+                  <UButton color="primary" :label="t('pluginDetail.enable')" :loading="enabling" @click="handleEnableConfirm(close)" />
                 </div>
               </div>
             </template>
@@ -341,7 +341,7 @@ async function handleDisableConfirm(close: () => void) {
                 <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.disableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
                   <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                  <UButton variant="outline" color="error" :label="t('pluginDetail.disable')" :loading="disabling" @click="handleDisableConfirm(close)" />
+                  <UButton color="error" :label="t('pluginDetail.disable')" :loading="disabling" @click="handleDisableConfirm(close)" />
                 </div>
               </div>
             </template>

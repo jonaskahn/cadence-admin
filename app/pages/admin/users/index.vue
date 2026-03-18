@@ -189,7 +189,7 @@ const columns = computed(() => [
           <template #right>
             <div class="flex items-center gap-2">
               <InfoPopover title-key="info.admin.users.title" description-key="info.admin.users.description" />
-              <UButton color="primary" variant="outline" icon="i-lucide-plus" :label="t('admin.newUser')" @click="openCreate" />
+              <UButton color="primary" icon="i-lucide-plus" :label="t('admin.newUser')" @click="openCreate" />
             </div>
           </template>
         </UDashboardNavbar>
@@ -214,14 +214,14 @@ const columns = computed(() => [
               </template>
               <template #actions-cell="{ row }">
                 <div class="flex items-center gap-1">
-                  <UButton color="primary" variant="outline" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
+                  <UButton color="primary" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
                   <UPopover v-if="!row.original.is_deleted">
                     <UButton color="error" icon="i-lucide-trash-2" size="xs" />
                     <template #content="{ close }">
                       <div class="p-4 min-w-48">
                         <p class="text-sm text-dimmed mb-3">{{ t('admin.deleteUserConfirm', { username: row.original.username }) }}</p>
                         <div class="flex justify-end gap-2">
-                          <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                          <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton
                             color="error"
                             :label="t('common.delete')"
@@ -238,7 +238,7 @@ const columns = computed(() => [
                       <div class="p-4 min-w-48">
                         <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
                         <div class="flex justify-end gap-2">
-                          <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                          <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton
                             color="error"
                             :label="t('common.purge')"
@@ -274,8 +274,8 @@ const columns = computed(() => [
               <UInput v-model="createState.password" class="w-full" type="password" />
             </UFormField>
             <div class="flex justify-end gap-2">
-              <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="closeCreate" />
-              <UButton color="primary" variant="outline" :loading="createLoading" :label="t('common.create')" type="submit" />
+              <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="closeCreate" />
+              <UButton color="primary" :loading="createLoading" :label="t('common.create')" type="submit" />
             </div>
           </UForm>
         </UCard>
@@ -299,7 +299,7 @@ const columns = computed(() => [
               <UCheckbox v-model="editState.is_sys_admin" :label="t('admin.systemAdmin')" />
             </UFormField>
             <div class="flex justify-end gap-2">
-              <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="closeEdit" />
+              <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="closeEdit" />
               <ConfirmActionPopover
                 label-key="common.save"
                 confirm-title-key="common.saveConfirmTitle"

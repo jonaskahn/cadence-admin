@@ -150,25 +150,18 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
 
               <template #actions-cell="{ row }">
                 <div class="flex items-center gap-1">
-                  <UButton
-                    :to="localePath(`/orchestrators/${row.original.instance_id}`)"
-                    icon="i-lucide-info"
-                    :label="t('common.view')"
-                    size="xs"
-                    variant="outline"
-                  />
+                  <UButton :to="localePath(`/orchestrators/${row.original.instance_id}`)" icon="i-lucide-info" :label="t('common.view')" size="xs" />
                   <template v-if="auth.isAdmin.value">
-                    <UButton icon="i-lucide-copy" :label="t('orchestrators.clone')" size="xs" variant="outline" @click="onClone(row.original)" />
+                    <UButton icon="i-lucide-copy" :label="t('orchestrators.clone')" size="xs" @click="onClone(row.original)" />
                     <template v-if="row.original.status === 'active'">
                       <UPopover>
-                        <UButton icon="i-lucide-play" :label="t('orchestrators.load')" size="xs" variant="outline" />
+                        <UButton icon="i-lucide-play" :label="t('orchestrators.load')" size="xs" />
                         <template #content="{ close }">
                           <div class="p-4 min-w-48">
                             <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.loadConfirm', { name: row.original.name }) }}</p>
                             <div class="flex justify-end gap-2">
                               <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                               <UButton
-                                variant="outline"
                                 :label="t('orchestrators.load')"
                                 :loading="loadingId === row.original.instance_id"
                                 @click="handleLoadConfirm(row.original, close)"
@@ -178,14 +171,13 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                         </template>
                       </UPopover>
                       <UPopover>
-                        <UButton icon="i-lucide-square" :label="t('orchestrators.unload')" size="xs" variant="outline" />
+                        <UButton icon="i-lucide-square" :label="t('orchestrators.unload')" size="xs" />
                         <template #content="{ close }">
                           <div class="p-4 min-w-48">
                             <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.unloadConfirm', { name: row.original.name }) }}</p>
                             <div class="flex justify-end gap-2">
                               <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                               <UButton
-                                variant="outline"
                                 :label="t('orchestrators.unload')"
                                 :loading="unloading === row.original.instance_id"
                                 @click="handleUnloadConfirm(row.original, close)"
@@ -195,14 +187,13 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                         </template>
                       </UPopover>
                       <UPopover>
-                        <UButton color="error" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="xs" variant="outline" />
+                        <UButton color="error" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="xs" />
                         <template #content="{ close }">
                           <div class="p-4 min-w-48">
                             <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: row.original.name }) }}</p>
                             <div class="flex justify-end gap-2">
                               <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                               <UButton
-                                variant="outline"
                                 color="primary"
                                 :label="t('orchestrators.deactivate')"
                                 :loading="deactivating === row.original.instance_id"
@@ -214,14 +205,13 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                       </UPopover>
                     </template>
                     <UPopover v-else>
-                      <UButton color="success" icon="i-lucide-route" :label="t('orchestrators.activate')" size="xs" variant="outline" />
+                      <UButton color="success" icon="i-lucide-route" :label="t('orchestrators.activate')" size="xs" />
                       <template #content="{ close }">
                         <div class="p-4 min-w-48">
                           <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.activateConfirm', { name: row.original.name }) }}</p>
                           <div class="flex justify-end gap-2">
                             <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                             <UButton
-                              variant="outline"
                               color="success"
                               :label="t('orchestrators.activate')"
                               :loading="activating === row.original.instance_id"
@@ -240,7 +230,6 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton
-                            variant="outline"
                             color="error"
                             :label="t('common.purge')"
                             :loading="purging === row.original.instance_id"

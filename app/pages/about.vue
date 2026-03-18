@@ -53,9 +53,9 @@ const links = computed<NavigationMenuItem[][]>(() => [
           <h1 class="text-base font-semibold">{{ t('about.title') }}</h1>
           <div class="flex items-center gap-2">
             <UDropdownMenu :items="[localeItems]">
-              <UButton icon="i-lucide-languages" variant="outline" color="neutral" :label="currentLocaleName" />
+              <UButton icon="i-lucide-languages" color="neutral" :label="currentLocaleName" />
             </UDropdownMenu>
-            <UButton icon="i-lucide-history" variant="outline" color="neutral" @click="openChangelog" />
+            <UButton icon="i-lucide-history" color="neutral" @click="openChangelog" />
             <UButton icon="i-lucide-house" to="/" external />
           </div>
         </div>

@@ -86,12 +86,7 @@ watch(
 </script>
 
 <template>
-  <UCard
-    :ui="{
-      root: 'bg-neutral-100/10 cursor-pointer hover:bg-primary-100/40 transition-colors border-0 divide-y divide-dotted shadow-none'
-    }"
-    class="flex flex-col h-full"
-  >
+  <div class="flex flex-col h-full">
     <div class="flex flex-col gap-3">
       <PluginCard :plugin="displayPlugin" :source="source" @select="() => {}" />
 
@@ -119,5 +114,5 @@ watch(
         </UButton>
       </div>
     </div>
-  </UCard>
+  </div>
 </template>

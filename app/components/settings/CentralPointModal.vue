@@ -101,8 +101,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <USelect v-model="state.visibility" :items="visibilityItems" class="w-full" label-key="label" value-key="value" />
       </UFormField>
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="handleClose" />
-        <UButton color="primary" variant="outline" :loading="loading" :label="t('common.create')" type="submit" />
+        <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="handleClose" />
+        <UButton color="primary" :loading="loading" :label="t('common.create')" type="submit" />
       </div>
     </UForm>
   </UCard>

@@ -61,14 +61,14 @@ onMounted(loadGraph)
       <div v-if="!graphData.is_ready" class="flex flex-col items-center gap-3 p-12 text-center">
         <UIcon class="size-10 text-neutral-400" name="i-lucide-circle-off" />
         <p class="text-dimmed text-sm">{{ t('orchestratorGraph.notLoaded') }}</p>
-        <UButton icon="i-lucide-refresh-cw" :label="t('orchestratorGraph.refresh')" size="sm" variant="outline" @click="loadGraph" />
+        <UButton icon="i-lucide-refresh-cw" :label="t('orchestratorGraph.refresh')" size="sm" @click="loadGraph" />
       </div>
 
       <template v-else>
         <div v-if="error" class="flex flex-col items-center gap-3 p-12 text-center">
           <UIcon class="size-10 text-warning-400" name="i-lucide-triangle-alert" />
           <p class="text-dimmed text-sm">{{ error }}</p>
-          <UButton icon="i-lucide-refresh-cw" :label="t('orchestratorGraph.retry')" size="sm" variant="outline" @click="loadGraph" />
+          <UButton icon="i-lucide-refresh-cw" :label="t('orchestratorGraph.retry')" size="sm" @click="loadGraph" />
         </div>
 
         <div v-else-if="graphData.mermaid" class="overflow-auto rounded-lg border p-4">
@@ -85,7 +85,7 @@ onMounted(loadGraph)
     <div v-else-if="error" class="flex flex-col items-center gap-3 p-12 text-center">
       <UIcon class="size-10 text-warning-400" name="i-lucide-triangle-alert" />
       <p class="text-dimmed text-sm">{{ error }}</p>
-      <UButton icon="i-lucide-refresh-cw" :label="t('orchestratorGraph.retry')" size="sm" variant="outline" @click="loadGraph" />
+      <UButton icon="i-lucide-refresh-cw" :label="t('orchestratorGraph.retry')" size="sm" @click="loadGraph" />
     </div>
   </div>
 </template>

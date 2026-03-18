@@ -22,10 +22,30 @@ const pluginComponents = computed(() => [
     methods: [
       t('about.plugins.anatomySection.baseAgent.method1'),
       t('about.plugins.anatomySection.baseAgent.method2'),
-      t('about.plugins.anatomySection.baseAgent.method3'),
-      t('about.plugins.anatomySection.baseAgent.method4')
+      t('about.plugins.anatomySection.baseAgent.method3')
     ],
     ref: 'cadence_sdk.BaseAgent'
+  },
+  {
+    id: 'specialized',
+    name: 'BaseSpecializedAgent',
+    color: 'info' as const,
+    desc: t('about.plugins.anatomySection.specializedAgent.desc'),
+    methods: [
+      t('about.plugins.anatomySection.specializedAgent.method1')
+    ],
+    ref: 'cadence_sdk.BaseSpecializedAgent'
+  },
+  {
+    id: 'scoped',
+    name: 'BaseScopedAgent',
+    color: 'error' as const,
+    desc: t('about.plugins.anatomySection.scopedAgent.desc'),
+    methods: [
+      t('about.plugins.anatomySection.scopedAgent.method1'),
+      t('about.plugins.anatomySection.scopedAgent.method2')
+    ],
+    ref: 'cadence_sdk.BaseScopedAgent'
   },
   {
     id: 'metadata',

@@ -146,7 +146,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <template #header>
         <UDashboardNavbar :title="orchestrator?.name ?? t('orchestrators.edit.title')">
           <template #leading>
-            <UButton icon="i-lucide-arrow-left" :to="localePath(`/orchestrators/${instanceId}`)" variant="outline" />
+            <UButton icon="i-lucide-arrow-left" :to="localePath(`/orchestrators/${instanceId}`)" />
           </template>
           <template #right>
             <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
@@ -289,7 +289,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </div>
 
             <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">
-              <UButton color="neutral" :label="t('common.cancel')" :to="localePath(`/orchestrators/${instanceId}`)" variant="outline" />
+              <UButton color="neutral" :label="t('common.cancel')" :to="localePath(`/orchestrators/${instanceId}`)" variant="ghost" />
               <ConfirmActionPopover
                 label-key="common.save"
                 confirm-title-key="common.saveConfirmTitle"

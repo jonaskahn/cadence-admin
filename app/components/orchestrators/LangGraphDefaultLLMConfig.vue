@@ -56,8 +56,6 @@ function toggleDefaultModelManual() {
           <UButton
             :icon="supervisor.defaultModelManual ? 'i-lucide-list' : 'i-lucide-pencil'"
             :title="supervisor.defaultModelManual ? t('settings.selectFromList') : t('settings.enterManually')"
-            color="neutral"
-            variant="outline"
             @click="toggleDefaultModelManual"
           />
         </div>

@@ -149,16 +149,9 @@ const valueProps = [
       <!-- Footer: Locale + Theme Toggle -->
       <div class="p-6 md:p-8 flex items-center gap-2 mt-auto login-item" style="--delay: 420ms">
         <UDropdownMenu :items="[localeItems]">
-          <UButton color="neutral" variant="ghost" size="sm" icon="i-lucide-languages" :label="currentLocaleName" />
+          <UButton color="neutral" size="sm" icon="i-lucide-languages" :label="currentLocaleName" />
         </UDropdownMenu>
-        <UButton
-          :icon="colorMode.value === 'dark' ? 'i-lucide-moon' : 'i-lucide-sun'"
-          color="neutral"
-          variant="ghost"
-          size="sm"
-          square
-          @click="toggleDarkMode"
-        />
+        <UButton :icon="colorMode.value === 'dark' ? 'i-lucide-moon' : 'i-lucide-sun'" color="neutral" size="sm" square @click="toggleDarkMode" />
       </div>
     </div>
 

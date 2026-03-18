@@ -48,7 +48,8 @@ onMounted(async () => {
       <UCard
         v-for="org in auth.orgList.value"
         :key="org.org_id"
-        class="cursor-pointer border-l-3 border-l-primary/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/5 transition-all duration-200"
+        variant="soft"
+        class="cursor-pointer hover:-translate-y-0.5 hover:shadow-2xl transition-all duration-200 shadow-xl"
         @click="selectOrg(org.org_id)"
       >
         <div class="flex items-center justify-between">
@@ -56,15 +57,15 @@ onMounted(async () => {
             <p class="font-medium">
               {{ orgDisplayName(org) }}
             </p>
-            <p class="text-dimmed text-xs mt-0.5">
+            <p class="text-primary dark:text-neutral-100 text-xs mt-0.5">
               {{ org.org_id }}
             </p>
           </div>
           <div class="flex items-center gap-2">
-            <UBadge v-if="org.tier" :color="subscriptionTierColor(org.tier)" size="sm" variant="subtle">
+            <UBadge v-if="org.tier" :color="subscriptionTierColor(org.tier)" size="sm" variant="solid">
               {{ org.tier.toUpperCase() }}
             </UBadge>
-            <UBadge :color="roleColor(org.role)" size="sm" variant="subtle">
+            <UBadge :color="roleColor(org.role)" size="sm" variant="soft">
               {{ t(roleLabelKey(org.role)) }}
             </UBadge>
           </div>
@@ -73,12 +74,18 @@ onMounted(async () => {
 
       <UCard v-if="auth.orgList.value.length === 0" variant="soft" class="text-center py-8">
         <p class="text-dimmed">{{ t('auth.noOrgsAvailable') }}</p>
-        <UButton class="mt-2" :label="t('common.refresh')" size="sm" variant="outline" @click="loadOrgs" />
+        <UButton class="mt-2" :label="t('common.refresh')" size="sm" @click="loadOrgs" />
       </UCard>
     </div>
 
     <div class="text-center">
-      <UButton color="neutral" :label="t('auth.signOut')" size="sm" variant="outline" @click="logout" />
+      <UButton
+        class="cursor-pointer bg-neutral-50/5 hover:bg-primary-50/5 hover:-translate-y-0.5 hover:shadow-2xl transition-all duration-200 shadow-md"
+        color="neutral"
+        :label="t('auth.signOut')"
+        size="xl"
+        @click="logout"
+      />
     </div>
   </div>
 </template>

@@ -43,7 +43,7 @@ const currentOrgName = computed(() => orgDisplayName(auth.currentOrg.value) || t
     :ui="{ content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)' }"
   >
     <template #org-trailing="{ item }">
-      <UBadge v-if="item?.org?.tier" :color="subscriptionTierColor(item.org.tier)" size="sm" variant="subtle">
+      <UBadge v-if="item?.org?.tier" :color="subscriptionTierColor(item.org.tier)" size="sm" variant="solid">
         {{ item?.org.tier.toUpperCase() }}
       </UBadge>
     </template>
@@ -57,12 +57,11 @@ const currentOrgName = computed(() => orgDisplayName(auth.currentOrg.value) || t
       class="data-[state=open]:bg-elevated"
       color="neutral"
       leading-icon="i-lucide-building"
-      variant="ghost"
     >
       <template v-if="!collapsed" #default>
         <div class="flex items-center gap-2 min-w-0 flex-1">
           <span class="truncate">{{ currentOrgName }}</span>
-          <UBadge v-if="auth.currentOrg.value?.tier" :color="subscriptionTierColor(auth.currentOrg.value.tier)" size="sm" variant="subtle">
+          <UBadge v-if="auth.currentOrg.value?.tier" :color="subscriptionTierColor(auth.currentOrg.value.tier)" size="sm" variant="solid">
             {{ auth.currentOrg.value.tier.toUpperCase() }}
           </UBadge>
         </div>

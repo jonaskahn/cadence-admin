@@ -1099,19 +1099,26 @@
     },
     "modes": {
       "title": "Orchestration Modes",
-      "subtitle": "Supervisor mode is fully implemented. Additional modes (Coordinator, Handoff, Pipeline) are in preview.",
+      "subtitle": "Supervisor and Grounded modes are fully implemented. Additional modes are in preview.",
       "intro": "Modes define the high-level agent topology — how many agents run, how they hand off work, and how the final response is assembled. Supervisor mode uses a planner-synthesizer architecture where a router classifies incoming messages, the planner decomposes tasks, tool-calling agents handle subtasks, and the synthesizer assembles the final answer.",
       "bullet1": "Supervisor: multi-node graph with Router, Planner, Synthesizer, and tool agents",
       "bullet2": "Per-node AI config, model, temperature, and timeout overrides in Supervisor mode",
       "bullet3": "Mode is set at creation and cannot be changed later",
-      "bullet4": "Additional modes planned: Coordinator, Handoff, Pipeline, and more",
+      "bullet4": "Grounded: single scoped agent anchored to a resource with LLM-based scope validation",
+      "status": {
+        "stable": "Stable",
+        "preview": "Preview"
+      },
+      "grounded": {
+        "desc": "Single scoped agent anchored to a resource. The agent operates within a defined scope boundary — an LLM validation pass checks that each response stays on-topic before it is returned to the user. Uses BaseScopedAgent which requires load_anchor() and build_scope_rules() implementations."
+      },
       "faq1": {
         "question": "What is Supervisor mode?",
         "answer": "Supervisor mode uses a multi-node architecture with specialized nodes: Router, Planner, Synthesizer, Clarifier, Responder, Validation, and Error Handler. The router classifies each message, the planner breaks it into steps, and the synthesizer composes the final answer."
       },
       "faq2": {
         "question": "Are other modes available?",
-        "answer": "Additional modes (Coordinator, Handoff, Pipeline, etc.) are in preview and planned for future releases. Mode availability depends on the selected framework."
+        "answer": "Grounded mode is fully implemented alongside Supervisor. Additional modes (Coordinator, Handoff, Pipeline, Reflection, Ensemble, Hierarchical) are in preview and planned for future releases."
       },
       "faq3": {
         "question": "Can I change the mode after creation?",
@@ -1144,7 +1151,7 @@
       },
       "anatomySection": {
         "title": "Plugin Anatomy",
-        "intro": "A plugin is three cooperating classes packaged in a single plugin.py file. The platform discovers the BasePlugin subclass automatically — no registration file needed.",
+        "intro": "A plugin is built from four base classes packaged in a single plugin.py file. The platform discovers the BasePlugin subclass automatically — no registration file needed.",
         "basePlugin": {
           "desc": "Stateless factory class. Provides metadata and creates agent instances on demand. All methods are static — BasePlugin is never instantiated itself.",
           "method1": "get_metadata() → PluginMetadata  [required] declare identity, version, and capabilities",
@@ -1152,11 +1159,19 @@
           "method3": "validate_dependencies() → List[str]  [optional] return error strings or empty list if OK"
         },
         "baseAgent": {
-          "desc": "Holds runtime state and exposes tools to the framework. initialize() is called with the resolved settings dict before any tool runs.",
+          "desc": "Abstract base class. Holds runtime state and exposes tools to the framework. Extend via BaseSpecializedAgent (for multi-agent modes) or BaseScopedAgent (for grounded mode). initialize() is called with the resolved settings dict before any tool runs.",
           "method1": "get_tools() → List[UvTool]  [required] return all tool instances this agent provides",
-          "method2": "get_system_prompt() → str  [required] return the agent system instruction",
-          "method3": "initialize(config: Dict[str, Any])  [optional] receives resolved settings on load",
-          "method4": "async cleanup()  [optional] release resources when the orchestrator unloads"
+          "method2": "initialize(config: Dict[str, Any])  [optional] receives resolved settings on load",
+          "method3": "async cleanup()  [optional] release resources when the orchestrator unloads"
+        },
+        "specializedAgent": {
+          "desc": "Extends BaseAgent for use in multi-agent orchestration modes (e.g. Supervisor). Adds a system prompt that the framework injects as context when the agent is invoked by the planner.",
+          "method1": "get_system_prompt() → str  [required] return the agent system instruction passed to the LLM"
+        },
+        "scopedAgent": {
+          "desc": "Extends BaseAgent for use in Grounded mode. The agent is anchored to a specific resource and operates within a scope boundary validated by an LLM pass before each response is returned.",
+          "method1": "load_anchor() → Any  [required] load and return the resource this agent is anchored to",
+          "method2": "build_scope_rules() → str  [required] return a string describing what is in and out of scope"
         },
         "metadata": {
           "desc": "Immutable descriptor returned by get_metadata(). The pid field is the plugin's permanent identity across version upgrades — changing it creates a new plugin.",

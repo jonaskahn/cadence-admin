@@ -150,7 +150,7 @@ const columns = computed(() => [
                 <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
               </template>
               <template #actions-cell="{ row }">
-                <UButton :to="`/admin/orgs/${row.original.org_id}`" icon="i-lucide-info" :label="t('common.viewDetails')" size="xs" variant="outline" />
+                <UButton :to="`/admin/orgs/${row.original.org_id}`" icon="i-lucide-info" :label="t('common.viewDetails')" size="xs" />
               </template>
             </UTable>
           </UCard>
@@ -198,8 +198,8 @@ const columns = computed(() => [
               </UFormField>
             </div>
             <div class="flex justify-end gap-2">
-              <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="closeCreate" />
-              <UButton color="primary" variant="outline" :loading="creating" :label="t('common.create')" type="submit" />
+              <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="closeCreate" />
+              <UButton color="primary" :loading="creating" :label="t('common.create')" type="submit" />
             </div>
           </UForm>
         </UCard>

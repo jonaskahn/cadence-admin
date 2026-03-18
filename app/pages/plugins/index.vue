@@ -63,7 +63,7 @@ function openUpload() {
             <div class="flex items-center gap-2">
               <InfoPopover title-key="info.pages.plugins.title" description-key="info.pages.plugins.description" />
               <USelect v-model="sourceFilter" :items="sourceFilterItems" value-key="value" label-key="label" class="w-32" />
-              <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" :aria-label="t('common.refresh')" @click="refresh()" />
+              <UButton icon="i-lucide-refresh-cw" color="neutral" :aria-label="t('common.refresh')" @click="refresh()" />
               <UButton v-if="auth.isAdmin.value" icon="i-lucide-upload" :label="t('common.upload')" @click="openUpload" />
             </div>
           </template>

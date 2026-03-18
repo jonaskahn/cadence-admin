@@ -18,8 +18,6 @@ const props = withDefaults(
     icon?: string
     /** Button color (e.g. primary, error for delete) */
     color?: ButtonColor
-    /** Button variant */
-    variant?: ButtonVariant
     /** Button size */
     size?: ButtonSize
     /** i18n key for the popover title (e.g. common.saveConfirmTitle = "Save") */
@@ -45,8 +43,7 @@ const props = withDefaults(
   }>(),
   {
     confirmLabelKey: undefined,
-    variant: 'outline',
-    confirmVariant: 'outline',
+    confirmVariant: 'soft',
     type: 'button'
   }
 )
@@ -77,7 +74,7 @@ async function handleConfirm(close: () => void) {
 
 <template>
   <UPopover>
-    <UButton :type="type" :icon="icon" :color="color" :variant="variant" :size="size" :label="triggerLabel" />
+    <UButton :type="type" :icon="icon" :color="color" :size="size" :label="triggerLabel" />
     <template #content="{ close }">
       <div class="flex flex-col gap-3 p-4 min-w-56">
         <!-- Row 1: Title -->
@@ -88,14 +85,7 @@ async function handleConfirm(close: () => void) {
         <!-- Row 3: Action -->
         <div class="flex justify-end gap-2 pt-1">
           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-          <UButton
-            :variant="confirmVariant"
-            :color="confirmColor"
-            :icon="confirmIcon ?? icon"
-            :loading="loading"
-            :label="confirmLabel"
-            @click="handleConfirm(close)"
-          />
+          <UButton variant="soft" :color="confirmColor" :icon="confirmIcon ?? icon" :loading="loading" :label="confirmLabel" @click="handleConfirm(close)" />
         </div>
       </div>
     </template>

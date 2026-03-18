@@ -280,7 +280,7 @@ function copyGoCode() {
   <div class="flex flex-col gap-6 pt-4">
     <!-- Back navigation -->
     <div>
-      <UButton color="neutral" icon="i-lucide-arrow-left" :label="t('centralPoints.backToCenterPoints')" variant="outline" @click="goBack" />
+      <UButton color="neutral" icon="i-lucide-arrow-left" :label="t('centralPoints.backToCenterPoints')" @click="goBack" />
     </div>
 
     <!-- Not found -->
@@ -361,7 +361,7 @@ function copyGoCode() {
               <code class="flex-1 break-all rounded-md bg-elevated px-3 py-2 font-mono text-sm">
                 {{ centerPoint.id }}
               </code>
-              <UButton color="neutral" icon="i-lucide-copy" size="sm" variant="outline" @click="copyCenterPointId" />
+              <UButton color="neutral" icon="i-lucide-copy" size="sm" @click="copyCenterPointId" />
             </div>
           </div>
 
@@ -401,7 +401,7 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ curlCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyCurlCode" />
+                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyCurlCode" />
                 </div>
               </template>
 
@@ -410,7 +410,7 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ pythonCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyPythonCode" />
+                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyPythonCode" />
                 </div>
               </template>
 
@@ -419,7 +419,7 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ jsCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyJsCode" />
+                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyJsCode" />
                 </div>
               </template>
 
@@ -428,7 +428,7 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ tsCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyTsCode" />
+                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyTsCode" />
                 </div>
               </template>
 
@@ -437,7 +437,7 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ goCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" variant="ghost" @click="copyGoCode" />
+                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyGoCode" />
                 </div>
               </template>
             </UTabs>

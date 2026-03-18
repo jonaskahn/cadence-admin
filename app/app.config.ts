@@ -1,10 +1,64 @@
 export default defineAppConfig({
   ui: {
+    avatar: {
+      defaultVariants: { size: 'lg', variant: 'soft' }
+    },
+    badge: {
+      defaultVariants: { size: 'lg', variant: 'soft' }
+    },
+    button: {
+      defaultVariants: { size: 'lg', variant: 'soft' }
+    },
+    toggle: {
+      defaultVariants: { size: 'lg', variant: 'soft' }
+    },
+    checkbox: {
+      defaultVariants: {
+        size: 'lg',
+        color: 'primary',
+        variant: 'soft'
+      }
+    },
+    radioGroup: {
+      defaultVariants: {
+        size: 'lg',
+        color: 'primary',
+        variant: 'soft'
+      }
+    },
+    selectMenu: {
+      defaultVariants: {
+        size: 'lg',
+        color: 'primary',
+        variant: 'soft'
+      }
+    },
+    input: {
+      defaultVariants: {
+        size: 'lg',
+        color: 'primary',
+        variant: 'soft'
+      }
+    },
+    textarea: {
+      defaultVariants: {
+        size: 'lg',
+        color: 'primary',
+        variant: 'soft'
+      }
+    },
+    select: {
+      defaultVariants: {
+        size: 'lg',
+        color: 'primary',
+        variant: 'soft'
+      }
+    },
     pageCard: {
       variants: {
         variant: {
           soft: {
-            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-lg',
+            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-lg hover:shadow-2xl hover:-translate-y-0.6 transition-all duration-300',
             description: 'text-toned'
           }
         }
@@ -23,7 +77,7 @@ export default defineAppConfig({
       variants: {
         variant: {
           soft: {
-            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-md'
+            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-lg hover:shadow-2xl hover:-translate-y-0.6 transition-all duration-300'
           }
         }
       },
@@ -39,16 +93,6 @@ export default defineAppConfig({
       slots: {
         description: 'text-sm text-dimmed'
       }
-    },
-    avatar: { defaultVariants: { size: 'lg' } },
-    badge: { defaultVariants: { size: 'lg' } },
-    button: { defaultVariants: { size: 'lg' } },
-    checkbox: { defaultVariants: { size: 'lg' } },
-    input: { defaultVariants: { size: 'lg' } },
-    radioGroup: { defaultVariants: { size: 'lg' } },
-    select: { defaultVariants: { size: 'lg' } },
-    selectMenu: { defaultVariants: { size: 'lg' } },
-    textarea: { defaultVariants: { size: 'lg' } },
-    toggle: { defaultVariants: { size: 'lg' } }
+    }
   }
 })

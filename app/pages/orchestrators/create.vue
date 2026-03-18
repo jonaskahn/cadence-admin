@@ -322,7 +322,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <template #header>
         <UDashboardNavbar :title="t('orchestrators.create.title')">
           <template #leading>
-            <UButton icon="i-lucide-arrow-left" :to="localePath('/orchestrators')" variant="outline" />
+            <UButton icon="i-lucide-arrow-left" :to="localePath('/orchestrators')" />
           </template>
           <template #right>
             <InfoPopover title-key="info.pages.orchestrators.title" description-key="info.pages.orchestrators.description" />
@@ -423,7 +423,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                           icon="i-lucide-plus"
                           :label="t('orchestrators.create.addPlugin')"
                           color="primary"
-                          variant="outline"
                           :disabled="isGrounded && selectedPlugins.length >= 1"
                           @click="openPluginSelector"
                         />
@@ -508,7 +507,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </div>
 
             <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">
-              <UButton color="neutral" :label="t('common.cancel')" :to="localePath('/orchestrators')" variant="outline" />
+              <UButton color="neutral" :label="t('common.cancel')" :to="localePath('/orchestrators')" variant="ghost" />
               <ConfirmActionPopover
                 label-key="common.create"
                 confirm-title-key="common.addConfirmTitle"

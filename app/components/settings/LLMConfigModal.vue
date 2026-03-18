@@ -122,7 +122,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <div class="flex justify-end gap-2">
-        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="handleClose" />
+        <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="handleClose" />
         <ConfirmActionPopover
           :label-key="isEdit ? 'common.save' : 'settings.addConfig'"
           :confirm-title-key="isEdit ? 'common.saveConfirmTitle' : 'settings.addConfigTitle'"

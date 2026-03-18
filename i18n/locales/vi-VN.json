@@ -1063,19 +1063,26 @@
     },
     "modes": {
       "title": "Chế độ điều phối",
-      "subtitle": "Chế độ Supervisor đã được triển khai đầy đủ. Các chế độ khác (Coordinator, Handoff, Pipeline) đang ở mức preview.",
+      "subtitle": "Chế độ Supervisor và Grounded đã được triển khai đầy đủ. Các chế độ còn lại đang ở mức preview.",
       "intro": "Mode xác định topology agent ở mức cao — có bao nhiêu agent cùng chạy, chúng handoff công việc ra sao và câu trả lời cuối được tổng hợp như thế nào. Supervisor mode dùng kiến trúc planner-synthesizer, trong đó router phân loại tin nhắn đầu vào, planner chia nhỏ tác vụ, các agent gọi tool xử lý từng phần và synthesizer ghép thành câu trả lời cuối.",
       "bullet1": "Supervisor: graph nhiều node với Router, Planner, Synthesizer và các tool agent",
       "bullet2": "Có thể override AI config, model, temperature và timeout theo từng node trong chế độ Supervisor",
       "bullet3": "Mode được chọn lúc tạo và không thể đổi sau đó",
-      "bullet4": "Các mode khác đang được lên kế hoạch: Coordinator, Handoff, Pipeline và nhiều nữa",
+      "bullet4": "Grounded: agent đơn có phạm vi hoạt động neo vào một tài nguyên với xác thực phạm vi bằng LLM",
+      "status": {
+        "stable": "Ổn định",
+        "preview": "Xem trước"
+      },
+      "grounded": {
+        "desc": "Agent đơn có phạm vi hoạt động được neo vào một tài nguyên cụ thể. Agent hoạt động trong ranh giới phạm vi đã định — LLM sẽ kiểm tra từng câu trả lời để đảm bảo đúng chủ đề trước khi trả về cho người dùng. Sử dụng BaseScopedAgent, yêu cầu cài đặt load_anchor() và build_scope_rules()."
+      },
       "faq1": {
         "question": "Supervisor mode là gì?",
         "answer": "Supervisor mode dùng kiến trúc nhiều node với các node chuyên biệt: Router, Planner, Synthesizer, Clarifier, Responder, Validation và Error Handler. Router phân loại từng tin nhắn, planner chia thành các bước và synthesizer ghép câu trả lời cuối."
       },
       "faq2": {
         "question": "Có mode nào khác không?",
-        "answer": "Các mode khác (Coordinator, Handoff, Pipeline, v.v.) đang ở mức preview và được lên kế hoạch cho các bản phát hành tương lai. Việc mode nào khả dụng còn tùy framework đã chọn."
+        "answer": "Grounded mode đã được triển khai đầy đủ cùng với Supervisor. Các mode khác (Coordinator, Handoff, Pipeline, Reflection, Ensemble, Hierarchical) đang ở mức preview và được lên kế hoạch cho các bản phát hành tương lai."
       },
       "faq3": {
         "question": "Sau khi tạo có đổi mode được không?",
@@ -1108,7 +1115,7 @@
       },
       "anatomySection": {
         "title": "Cấu trúc plugin",
-        "intro": "Một plugin gồm 3 class phối hợp với nhau trong cùng file plugin.py. Nền tảng sẽ tự động phát hiện BasePlugin subclass — không cần file đăng ký riêng.",
+        "intro": "Một plugin được xây dựng từ bốn class cơ sở trong cùng file plugin.py. Nền tảng sẽ tự động phát hiện BasePlugin subclass — không cần file đăng ký riêng.",
         "basePlugin": {
           "desc": "Factory class không trạng thái. Cung cấp metadata và tạo agent instance khi cần. Mọi method đều là static — BasePlugin sẽ không được khởi tạo trực tiếp.",
           "method1": "get_metadata() → PluginMetadata  [bắt buộc] khai báo danh tính, phiên bản và khả năng",
@@ -1116,11 +1123,19 @@
           "method3": "validate_dependencies() → List[str]  [không bắt buộc] trả về danh sách lỗi hoặc rỗng nếu ổn"
         },
         "baseAgent": {
-          "desc": "Giữ trạng thái runtime và cung cấp tool cho framework. initialize() sẽ được gọi với dict settings đã được resolve trước khi bất kỳ tool nào chạy.",
+          "desc": "Class cơ sở trừu tượng. Giữ trạng thái runtime và cung cấp tool cho framework. Kế thừa qua BaseSpecializedAgent (cho các multi-agent mode) hoặc BaseScopedAgent (cho Grounded mode). initialize() sẽ được gọi với dict settings đã được resolve trước khi bất kỳ tool nào chạy.",
           "method1": "get_tools() → List[UvTool]  [bắt buộc] trả về toàn bộ tool mà agent này cung cấp",
-          "method2": "get_system_prompt() → str  [bắt buộc] trả về system instruction của agent",
-          "method3": "initialize(config: Dict[str, Any])  [không bắt buộc] nhận settings đã resolve khi load",
-          "method4": "async cleanup()  [không bắt buộc] giải phóng tài nguyên khi orchestrator unload"
+          "method2": "initialize(config: Dict[str, Any])  [không bắt buộc] nhận settings đã resolve khi load",
+          "method3": "async cleanup()  [không bắt buộc] giải phóng tài nguyên khi orchestrator unload"
+        },
+        "specializedAgent": {
+          "desc": "Kế thừa BaseAgent cho các chế độ điều phối đa agent (ví dụ Supervisor). Bổ sung system prompt mà framework truyền vào khi agent được planner gọi.",
+          "method1": "get_system_prompt() → str  [bắt buộc] trả về system instruction của agent truyền cho LLM"
+        },
+        "scopedAgent": {
+          "desc": "Kế thừa BaseAgent cho Grounded mode. Agent được neo vào một tài nguyên cụ thể và hoạt động trong ranh giới phạm vi được LLM xác thực trước khi trả câu trả lời về cho người dùng.",
+          "method1": "load_anchor() → Any  [bắt buộc] load và trả về tài nguyên mà agent này được neo vào",
+          "method2": "build_scope_rules() → str  [bắt buộc] trả về chuỗi mô tả những gì nằm trong và ngoài phạm vi"
         },
         "metadata": {
           "desc": "Descriptor bất biến trả về từ get_metadata(). Trường pid là danh tính cố định của plugin qua các lần nâng cấp phiên bản — đổi pid đồng nghĩa tạo plugin mới.",

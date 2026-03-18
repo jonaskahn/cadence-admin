@@ -30,7 +30,7 @@ function toggleAutocompactModelManual() {
         </UFormField>
       </div>
     </div>
-
+    <UCheckbox v-model="supervisor.modeConfig.enabled_suggestion" :disabled="disabled" :label="t('langGraphSupervisor.enabledSuggestion')" />
     <UCheckbox v-model="supervisor.modeConfig.enabled_auto_compact" :disabled="disabled" :label="t('langGraphSupervisor.autoCompactMessages')" />
     <div v-if="supervisor.modeConfig.enabled_auto_compact" class="grid grid-cols-1 gap-4">
       <div>
@@ -66,13 +66,11 @@ function toggleAutocompactModelManual() {
             <UButton
               :icon="supervisor.nodeModelManual['autocompact'] ? 'i-lucide-list' : 'i-lucide-pencil'"
               :title="supervisor.nodeModelManual['autocompact'] ? t('settings.selectFromList') : t('settings.enterManually')"
-              variant="outline"
               @click="toggleAutocompactModelManual"
             />
           </div>
         </UFormField>
       </div>
     </div>
-    <UCheckbox v-model="supervisor.modeConfig.enabled_suggestion" :disabled="disabled" :label="t('langGraphSupervisor.enabledSuggestion')" />
   </div>
 </template>

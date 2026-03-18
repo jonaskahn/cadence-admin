@@ -23,10 +23,6 @@ async function onSend() {
   await chat.loadConversations()
 }
 
-function clearMessages() {
-  chat.newConversation()
-}
-
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
@@ -71,7 +67,6 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
           <template #right>
             <div class="flex items-center gap-2">
               <InfoPopover title-key="info.pages.chat.title" description-key="info.pages.chat.description" />
-              <UButton icon="i-lucide-trash-2" :label="t('common.clear')" size="sm" variant="outline" @click="clearMessages" />
             </div>
           </template>
         </UDashboardNavbar>
@@ -81,7 +76,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
         <div class="flex h-full overflow-hidden">
           <div class="w-64 border-r border-default flex flex-col shrink-0">
             <div class="p-3 border-b border-default">
-              <UButton icon="i-lucide-plus" :label="t('chat.newThread')" block variant="soft" @click="chat.newConversation()" />
+              <UButton icon="i-lucide-plus" :label="t('chat.newThread')" block @click="chat.newConversation()" />
             </div>
             <div class="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
               <div
@@ -169,7 +164,6 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                       v-for="(suggestion, si) in msg.suggestions"
                       :key="si"
                       size="xs"
-                      variant="soft"
                       color="neutral"
                       :label="suggestion"
                       @click="inputText = suggestion"

@@ -198,7 +198,6 @@ async function save() {
               :disabled="!auth.isAdmin.value"
               color="neutral"
               size="sm"
-              variant="outline"
               @click="toggleModelManual"
             />
           </div>

@@ -71,9 +71,9 @@ function openUpload() {
             <div class="flex items-center gap-2">
               <InfoPopover title-key="info.admin.systemPlugins.title" description-key="info.admin.systemPlugins.description" />
               <UFieldGroup>
-                <UButton color="neutral" variant="subtle" :label="activeTab === 'system' ? t('plugins.system') : t('plugins.org')" />
+                <UButton color="neutral" :label="activeTab === 'system' ? t('plugins.system') : t('plugins.org')" />
                 <UDropdownMenu :items="tabDropdownItems">
-                  <UButton color="neutral" variant="outline" icon="i-lucide-chevron-down" />
+                  <UButton color="neutral" icon="i-lucide-chevron-down" />
                 </UDropdownMenu>
               </UFieldGroup>
               <USelect
@@ -85,7 +85,7 @@ function openUpload() {
                 class="w-56"
                 :placeholder="t('common.selectOrg')"
               />
-              <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" :aria-label="t('common.refresh')" @click="refresh()" />
+              <UButton icon="i-lucide-refresh-cw" color="neutral" :aria-label="t('common.refresh')" @click="refresh()" />
               <UButton v-if="activeTab === 'system'" icon="i-lucide-upload" :label="t('admin.uploadPlugin')" @click="openUpload" />
             </div>
           </template>

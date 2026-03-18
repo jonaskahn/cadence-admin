@@ -158,12 +158,12 @@ const quotaRows = computed(() => {
       <template #header>
         <UDashboardNavbar :title="org?.display_name || org?.name || orgId">
           <template #leading>
-            <UButton icon="i-lucide-arrow-left" :to="localePath('/admin/orgs')" variant="outline" />
+            <UButton icon="i-lucide-arrow-left" :to="localePath('/admin/orgs')" />
           </template>
           <template #right>
             <div class="flex items-center gap-2">
               <InfoPopover title-key="info.admin.orgDetail.title" description-key="info.admin.orgDetail.description" />
-              <UButton color="primary" variant="outline" icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="openAdd" />
+              <UButton color="primary" icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="openAdd" />
             </div>
           </template>
         </UDashboardNavbar>
@@ -293,7 +293,7 @@ const quotaRows = computed(() => {
                     <div class="p-4 min-w-48">
                       <p class="text-sm text-dimmed mb-3">{{ t('admin.removeMemberConfirm') }}</p>
                       <div class="flex justify-end gap-2">
-                        <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                        <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                         <UButton
                           color="error"
                           :label="t('common.remove')"

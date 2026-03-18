@@ -102,7 +102,6 @@ const columns = computed(() => [
           <UButton
             v-if="canUseCentralPoints && auth.isAdmin.value"
             color="primary"
-            variant="outline"
             icon="i-lucide-plus"
             :label="t('centralPoints.addCenterPoint')"
             @click="handleOpenModal"
@@ -139,7 +138,6 @@ const columns = computed(() => [
             <UButton
               v-if="auth.isAdmin.value"
               color="primary"
-              variant="outline"
               icon="i-lucide-pencil"
               :label="t('common.edit')"
               size="xs"
@@ -151,7 +149,7 @@ const columns = computed(() => [
                 <div class="p-4 min-w-48">
                   <p class="text-sm text-dimmed mb-3">{{ t('centralPoints.deleteConfirm', { name: row.original.name }) }}</p>
                   <div class="flex justify-end gap-2">
-                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                    <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                     <UButton
                       color="error"
                       :label="t('common.delete')"
@@ -168,7 +166,7 @@ const columns = computed(() => [
                 <div class="p-4 min-w-48">
                   <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
                   <div class="flex justify-end gap-2">
-                    <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                    <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                     <UButton color="error" :label="t('common.purge')" :loading="purging === row.original.id" @click="handlePurgeConfirm(row.original, close)" />
                   </div>
                 </div>

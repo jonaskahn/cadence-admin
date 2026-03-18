@@ -133,7 +133,6 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
                 :label="row.original.enabled ? t('admin.disable') : t('admin.enable')"
                 :color="row.original.enabled ? 'neutral' : 'success'"
                 size="xs"
-                variant="outline"
               />
               <template #content="{ close }">
                 <div class="p-4 min-w-48">
@@ -143,7 +142,6 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
                   <div class="flex justify-end gap-2">
                     <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                     <UButton
-                      variant="outline"
                       :color="row.original.enabled ? 'neutral' : 'success'"
                       :label="row.original.enabled ? t('admin.disable') : t('admin.enable')"
                       :loading="toggling === `${row.original.provider}:${row.original.model_id}`"
@@ -153,7 +151,7 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
                 </div>
               </template>
             </UPopover>
-            <UButton icon="i-lucide-pencil" variant="outline" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
+            <UButton icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
           </div>
         </template>
       </UTable>

@@ -109,7 +109,7 @@ const columns = computed(() => [
               </div>
               <p class="text-dimmed text-sm">{{ t('settings.membersDescription') }}</p>
             </div>
-            <UButton v-if="auth.isAdmin.value" color="primary" variant="outline" icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="openAdd" />
+            <UButton v-if="auth.isAdmin.value" color="primary" icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="openAdd" />
           </div>
         </template>
         <div v-if="!members" class="flex flex-col gap-2 p-4">
@@ -129,7 +129,6 @@ const columns = computed(() => [
                   :icon="row.original.is_admin ? 'i-lucide-shield-off' : 'i-lucide-shield'"
                   :label="row.original.is_admin ? t('settings.demote') : t('settings.promote')"
                   size="xs"
-                  variant="outline"
                 />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
@@ -137,10 +136,9 @@ const columns = computed(() => [
                       {{ row.original.is_admin ? t('settings.demoteConfirm') : t('settings.promoteConfirm') }}
                     </p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                       <UButton
                         color="primary"
-                        variant="outline"
                         :label="row.original.is_admin ? t('settings.demote') : t('settings.promote')"
                         :loading="toggling === row.original.user_id"
                         @click="handleToggleConfirm(row.original, close)"
@@ -155,7 +153,7 @@ const columns = computed(() => [
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('settings.removeMemberConfirm') }}</p>
                     <div class="flex justify-end gap-2">
-                      <UButton color="neutral" :label="t('common.cancel')" variant="outline" @click="close" />
+                      <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                       <UButton
                         color="error"
                         :label="t('common.remove')"
