@@ -264,6 +264,13 @@ export interface PluginSettingSchema {
   sensitive: boolean
 }
 
+export interface ConversationSummary {
+  id: string
+  title: string | null
+  created_at: string
+  instance_id: string | null
+}
+
 export interface ChatRequest {
   instance_id: string
   message: string

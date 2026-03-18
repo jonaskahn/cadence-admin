@@ -5,23 +5,30 @@ const chat = useChat()
 const { t } = useI18n()
 const inputText = ref('')
 
-onMounted(() => chat.loadOrchestrators())
+onMounted(() => {
+  chat.loadOrchestrators()
+  chat.loadConversations()
+})
 
 const readyOrchestrators = computed(() => chat.orchestrators.value.filter((o) => o.status === 'active' && o.is_ready && !o.is_deleted))
+
+const selectedOrchestrator = computed(() => readyOrchestrators.value.find((o) => o.instance_id === chat.selectedInstanceId.value) ?? null)
+const isGrounded = computed(() => selectedOrchestrator.value?.mode === 'grounded')
 
 async function onSend() {
   const msg = inputText.value.trim()
   if (!msg || chat.streaming.value) return
   inputText.value = ''
   await chat.sendMessage(msg)
-}
-
-function selectOrchestrator(instanceId: string) {
-  chat.selectedInstanceId.value = instanceId
+  await chat.loadConversations()
 }
 
 function clearMessages() {
-  chat.clearMessages()
+  chat.newConversation()
+}
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
 function onKeydown(e: KeyboardEvent) {
@@ -72,42 +79,52 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
 
       <template #body>
         <div class="flex h-full overflow-hidden">
-          <div class="w-64 border-r border-default flex flex-col p-4 gap-4 shrink-0">
-            <div>
-              <p class="text-sm font-medium mb-2">{{ t('chat.selectOrchestrator') }}</p>
-              <div class="flex flex-col gap-2">
-                <div
-                  v-for="orch in readyOrchestrators"
-                  :key="orch.instance_id"
-                  :class="[
-                    chat.selectedInstanceId.value === orch.instance_id
-                      ? 'border-primary bg-primary/5'
-                      : 'border-default hover:bg-elevated/50 hover:-translate-y-px'
-                  ]"
-                  class="p-2.5 rounded-lg border cursor-pointer transition-all duration-200"
-                  @click="selectOrchestrator(orch.instance_id)"
-                >
-                  <div class="flex items-center gap-1.5">
-                    <UIcon class="size-3 text-success shrink-0" name="i-lucide-circle-check" />
-                    <p class="text-sm font-medium truncate">{{ orch.name }}</p>
-                    <UBadge v-if="orch.tier === 'hot'" class="ml-auto shrink-0" color="success" :label="t('chat.persistent')" size="xs" variant="soft" />
-                  </div>
-                  <p class="text-xs text-dimmed mt-0.5">{{ orch.framework_type }} · {{ orch.mode }}</p>
-                </div>
-                <p v-if="readyOrchestrators.length === 0" class="text-dimmed text-xs text-center py-4">
-                  {{ t('chat.noOrchestratorsLoaded') }}<br />
-                  {{ t('chat.askOrgAdmin') }}
-                </p>
-              </div>
+          <div class="w-64 border-r border-default flex flex-col shrink-0">
+            <div class="p-3 border-b border-default">
+              <UButton icon="i-lucide-plus" :label="t('chat.newThread')" block variant="soft" @click="chat.newConversation()" />
             </div>
-
-            <div v-if="chat.conversationId.value" class="mt-auto">
-              <p class="text-xs text-dimmed">{{ t('chat.sessionId') }}</p>
-              <p class="text-xs font-mono truncate">{{ chat.conversationId.value }}</p>
+            <div class="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
+              <div
+                v-for="convo in chat.conversations.value"
+                :key="convo.id"
+                :class="chat.conversationId.value === convo.id ? 'bg-primary/10 text-primary' : 'hover:bg-elevated/50'"
+                class="p-2.5 rounded-lg cursor-pointer transition-colors"
+                @click="chat.selectConversation(convo.id)"
+              >
+                <p class="text-sm font-medium truncate">{{ convo.title || t('chat.untitledThread') }}</p>
+                <p class="text-xs text-dimmed mt-0.5">{{ formatDate(convo.created_at) }}</p>
+              </div>
+              <p v-if="chat.conversations.value.length === 0" class="text-xs text-dimmed text-center py-6">
+                {{ t('chat.noThreadsYet') }}
+              </p>
             </div>
           </div>
 
           <div class="flex-1 flex flex-col overflow-hidden">
+            <div class="border-b border-default p-3 flex items-center gap-3 shrink-0">
+              <USelect
+                v-model="chat.selectedInstanceId.value"
+                :items="readyOrchestrators.map((o) => ({ label: o.name, value: o.instance_id }))"
+                :placeholder="t('chat.selectOrchestrator')"
+                class="w-64"
+                variant="soft"
+                :ui="{
+                  base: [
+                    'relative group rounded-md inline-flex items-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-100 shadow-xs',
+                    'transition-colors'
+                  ]
+                }"
+              />
+              <UInput
+                v-if="isGrounded"
+                v-model="chat.resourceId.value"
+                :placeholder="t('chat.resourceIdPlaceholder')"
+                class="flex-1"
+                icon="i-lucide-link"
+                clearable
+                variant="soft"
+              />
+            </div>
             <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
               <div v-for="(msg, idx) in chat.messages.value" :key="idx" :class="msg.role === 'user' ? 'justify-end' : 'justify-start'" class="flex">
                 <div class="max-w-[70%] flex flex-col">

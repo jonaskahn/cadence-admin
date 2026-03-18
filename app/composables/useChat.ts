@@ -1,4 +1,4 @@
-import type { OrchestratorResponse } from '~/types'
+import type { ConversationSummary, OrchestratorResponse } from '~/types'
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -84,9 +84,11 @@ export function useChat() {
 
   const orgId = computed(() => auth.currentOrgId.value || '')
   const orchestrators = ref<OrchestratorResponse[]>([])
+  const conversations = ref<ConversationSummary[]>([])
   const selectedInstanceId = ref<string | null>(null)
   const messages = ref<ChatMessage[]>([])
   const conversationId = ref<string | null>(null)
+  const resourceId = ref<string>('')
   const enableStream = ref(true)
   const streaming = ref(false)
   const currentStreamContent = ref('')
@@ -98,6 +100,46 @@ export function useChat() {
   async function loadOrchestrators(): Promise<void> {
     if (!orgId.value) return
     orchestrators.value = await $fetch<OrchestratorResponse[]>(`/api/orgs/${orgId.value}/orchestrators`)
+  }
+
+  async function loadConversations(): Promise<void> {
+    if (!orgId.value) return
+    try {
+      const result = await $fetch<ConversationSummary[]>('/api/chat/conversations', {
+        headers: { 'X-ORG-ID': orgId.value }
+      })
+      conversations.value = result.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    } catch {
+      // non-critical; sidebar degrades gracefully
+    }
+  }
+
+  async function selectConversation(id: string): Promise<void> {
+    messages.value = []
+    conversationId.value = id
+    const convo = conversations.value.find((c) => c.id === id)
+    if (convo?.instance_id) {
+      selectedInstanceId.value = convo.instance_id
+    }
+    try {
+      const history = await $fetch<{ role: 'user' | 'assistant'; content: string }[]>(`/api/chat/conversations/${id}/messages`, {
+        headers: { 'X-ORG-ID': orgId.value }
+      })
+      messages.value = history.map((m) => ({
+        role: m.role,
+        content: m.content,
+        timestamp: new Date(),
+        events: []
+      }))
+    } catch {
+      // history load failed — continue with empty messages
+    }
+  }
+
+  function newConversation(): void {
+    messages.value = []
+    conversationId.value = null
+    resourceId.value = ''
   }
 
   function resetStreamState(): void {
@@ -139,7 +181,8 @@ export function useChat() {
         body: JSON.stringify({
           message,
           conversation_id: conversationId.value,
-          stream: enableStream.value
+          stream: enableStream.value,
+          resource_id: resourceId.value || undefined
         })
       })
 
@@ -191,16 +234,13 @@ export function useChat() {
     }
   }
 
-  function clearMessages(): void {
-    messages.value = []
-    conversationId.value = null
-  }
-
   return {
     orchestrators,
+    conversations,
     selectedInstanceId,
     messages,
     conversationId,
+    resourceId,
     enableStream,
     streaming,
     currentStreamContent,
@@ -209,7 +249,10 @@ export function useChat() {
     currentAgentStep,
     currentToolResults,
     loadOrchestrators,
+    loadConversations,
+    selectConversation,
+    newConversation,
     sendMessage,
-    clearMessages
+    clearMessages: newConversation
   }
 }

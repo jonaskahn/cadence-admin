@@ -146,10 +146,6 @@
   "chat": {
     "title": "Chat",
     "selectOrchestrator": "Orchestrator auswählen",
-    "noOrchestratorsLoaded": "Derzeit sind keine Orchestratoren geladen.",
-    "askOrgAdmin": "Bitten Sie Ihren Org-Admin, einen auf der Orchestratoren-Seite zu laden.",
-    "sessionId": "Sitzungs-ID",
-    "persistent": "persistent",
     "sources": "Quellen",
     "steps": "Schritte",
     "typeMessage": "Nachricht eingeben...",
@@ -157,8 +153,12 @@
     "enterToSend": "Eingabe zum Senden · Umschalt+Eingabe für Zeilenumbruch",
     "selectOrchestratorFirst": "Wählen Sie zuerst einen Orchestrator",
     "chatError": "Chat-Fehler",
-    "selectAndStart": "Wählen Sie einen Orchestrator und starten Sie den Chat",
-    "suggestedQuestions": "Vorgeschlagene Fragen"
+    "selectAndStart": "Wählen Sie einen Thread oder erstellen Sie einen neuen, um zu chatten",
+    "suggestedQuestions": "Vorgeschlagene Fragen",
+    "newThread": "Neuer Thread",
+    "untitledThread": "Unbenannter Thread",
+    "noThreadsYet": "Noch keine Threads",
+    "resourceIdPlaceholder": "Ressourcen-ID oder URL (Grounded-Modus)"
   },
   "profile": {
     "title": "Profil",

@@ -146,10 +146,6 @@
   "chat": {
     "title": "Chat",
     "selectOrchestrator": "Select Orchestrator",
-    "noOrchestratorsLoaded": "No orchestrators are currently loaded.",
-    "askOrgAdmin": "Ask your Org Admin to load one from the Orchestrators page.",
-    "sessionId": "Session ID",
-    "persistent": "persistent",
     "sources": "Sources",
     "steps": "steps",
     "typeMessage": "Type a message...",
@@ -157,8 +153,12 @@
     "enterToSend": "Enter to send · Shift+Enter for newline",
     "selectOrchestratorFirst": "Select an orchestrator first",
     "chatError": "Chat error",
-    "selectAndStart": "Select an orchestrator and start chatting",
-    "suggestedQuestions": "Suggested questions"
+    "selectAndStart": "Select a thread or create a new one to start chatting",
+    "suggestedQuestions": "Suggested questions",
+    "newThread": "New Thread",
+    "untitledThread": "Untitled thread",
+    "noThreadsYet": "No threads yet",
+    "resourceIdPlaceholder": "Resource ID or URL (grounded mode)"
   },
   "profile": {
     "title": "Profile",

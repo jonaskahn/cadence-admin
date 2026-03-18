@@ -146,10 +146,6 @@
   "chat": {
     "title": "Chat",
     "selectOrchestrator": "Chọn orchestrator",
-    "noOrchestratorsLoaded": "Hiện chưa có orchestrator nào được load.",
-    "askOrgAdmin": "Nhờ Org Admin load một cái ở trang Orchestrators nhé.",
-    "sessionId": "Session ID",
-    "persistent": "duy trì",
     "sources": "Nguồn",
     "steps": "bước",
     "typeMessage": "Nhập tin nhắn...",
@@ -157,8 +153,12 @@
     "enterToSend": "Nhấn Enter để gửi · Shift+Enter để xuống dòng",
     "selectOrchestratorFirst": "Chọn orchestrator trước đã",
     "chatError": "Lỗi chat",
-    "selectAndStart": "Chọn orchestrator rồi bắt đầu chat",
-    "suggestedQuestions": "Câu hỏi gợi ý"
+    "selectAndStart": "Chọn một cuộc trò chuyện hoặc tạo mới để bắt đầu chat",
+    "suggestedQuestions": "Câu hỏi gợi ý",
+    "newThread": "Cuộc trò chuyện mới",
+    "untitledThread": "Cuộc trò chuyện chưa đặt tên",
+    "noThreadsYet": "Chưa có cuộc trò chuyện nào",
+    "resourceIdPlaceholder": "ID hoặc URL tài nguyên (chế độ grounded)"
   },
   "profile": {
     "title": "Hồ sơ",
