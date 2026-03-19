@@ -228,7 +228,10 @@ async function handleDisableConfirm(close: () => void) {
         <template v-else-if="selectedVersion">
           <div :key="selectedVersion.id" class="flex flex-col gap-4">
             <div class="flex items-center gap-3">
-              <div v-if="pluginAvatarSrc" class="size-36 shrink-0 rounded-lg overflow-hidden bg-elevated p-4">
+              <div
+                v-if="pluginAvatarSrc"
+                class="size-36 shrink-0 rounded-2xl overflow-hidden bg-neutral-50 hover:bg-neutral-200 p-4 hover:-translate-y-0.6 transition-all duration-300"
+              >
                 <img :alt="selectedVersion.name" :src="pluginAvatarSrc" class="size-full object-cover" />
               </div>
               <UAvatar v-else :alt="selectedVersion.name" :text="pluginInitial" class="size-36 shrink-0 p-4" size="xl" />

@@ -74,7 +74,7 @@ async function handleConfirm(close: () => void) {
 
 <template>
   <UPopover>
-    <UButton :type="type" :icon="icon" :color="color" :size="size" :label="triggerLabel" />
+    <UButton :type="type" :icon="icon" :color="color" size="md" :label="triggerLabel" />
     <template #content="{ close }">
       <div class="flex flex-col gap-3 p-4 min-w-56">
         <!-- Row 1: Title -->

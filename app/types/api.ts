@@ -331,6 +331,7 @@ export interface AddLLMConfigRequest {
 export interface ProviderModelResponse {
   model_id: string
   display_name: string
+  model_category: string
   aliases: string[]
 }
 
@@ -341,18 +342,36 @@ export interface ProviderModelCatalogEntry {
   display_name: string
   aliases: string[]
   enabled: boolean
+  model_category: string
+  input_billing_unit: string
+  output_billing_unit: string
+  input_price_per_unit: string | null
+  output_price_per_unit: string | null
+  currency: string
 }
 
 export interface AddProviderModelRequest {
   model_id: string
   display_name: string
   aliases: string[]
+  model_category?: string
+  input_billing_unit?: string | null
+  output_billing_unit?: string | null
+  input_price_per_unit?: string | number | null
+  output_price_per_unit?: string | number | null
+  currency?: string
 }
 
 export interface UpdateProviderModelRequest {
   display_name?: string
   aliases?: string[]
   enabled?: boolean
+  model_category?: string
+  input_billing_unit?: string | null
+  output_billing_unit?: string | null
+  input_price_per_unit?: string | number | null
+  output_price_per_unit?: string | number | null
+  currency?: string
 }
 
 export interface TenantSettingResponse {
@@ -373,6 +392,7 @@ export interface GlobalSettingResponse {
   value_type: string
   description: string
   overridable: boolean
+  category?: string | null
 }
 
 export interface UpdateGlobalSettingRequest {

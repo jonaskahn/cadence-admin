@@ -1,4 +1,10 @@
-export function useApiFetch<T>(url: Parameters<typeof useFetch<T>>[0], options?: Parameters<typeof useFetch<T>>[1]) {
-  const headers = useRequestHeaders(['cookie'])
-  return useFetch<T>(url, { headers, ...options })
+/**
+ * Wrapper around useFetch for API calls.
+ * Sends cookies for same-origin requests (required for authenticated admin endpoints).
+ */
+export function useApiFetch<T>(url: string | (() => string | null), options?: Parameters<typeof useFetch>[1]) {
+  return useFetch<T>(url, {
+    ...options,
+    credentials: 'include'
+  })
 }

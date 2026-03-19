@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { ProviderModelCatalogEntry } from '~/types'
 import { LLM_PROVIDERS } from '~/utils'
+import { MODEL_CATEGORIES } from '~/utils/providerModelCatalog'
 
 const { t } = useI18n()
 const { models, loading, fetchAll, toggleActive } = useProviderModelCatalog()
@@ -11,25 +12,60 @@ function providerLabel(provider: string): string {
   return val !== key ? val : provider
 }
 
+function categoryLabel(category: string): string {
+  const key = `admin.modelCategory.${category}`
+  const val = t(key)
+  return val !== key ? val : category
+}
+
+function formatCatalogPrice(value: string | null, currency: string): string {
+  if (value == null || value === '') return '—'
+  const n = Number(value)
+  if (!Number.isFinite(n)) return value
+  const code = currency?.length === 3 ? currency : 'USD'
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: code,
+      maximumFractionDigits: 8
+    }).format(n)
+  } catch {
+    return `${value} ${currency}`
+  }
+}
+
 onMounted(fetchAll)
 
 const ALL_PROVIDERS = 'all'
+const ALL_CATEGORIES = 'all'
 const selectedProvider = ref(ALL_PROVIDERS)
+const selectedCategory = ref(ALL_CATEGORIES)
 
 const providerFilterItems = computed(() => [
   { label: t('admin.allProviders'), value: ALL_PROVIDERS },
   ...LLM_PROVIDERS.map((p) => ({ label: providerLabel(p), value: p }))
 ])
 
-const filteredModels = computed(() =>
-  selectedProvider.value === ALL_PROVIDERS ? models.value : models.value.filter((m) => m.provider === selectedProvider.value)
-)
+const categoryFilterItems = computed(() => [
+  { label: t('admin.allCategories'), value: ALL_CATEGORIES },
+  ...MODEL_CATEGORIES.map((c) => ({ label: categoryLabel(c), value: c }))
+])
+
+const filteredModels = computed(() => {
+  let list = selectedProvider.value === ALL_PROVIDERS ? models.value : models.value.filter((m) => m.provider === selectedProvider.value)
+  if (selectedCategory.value !== ALL_CATEGORIES) {
+    list = list.filter((m) => m.model_category === selectedCategory.value)
+  }
+  return list
+})
 
 const columns = computed(() => [
   { accessorKey: 'provider', header: t('admin.provider') },
   { accessorKey: 'model_id', header: t('admin.modelId') },
   { accessorKey: 'display_name', header: t('admin.displayName') },
-  { accessorKey: 'aliases', header: t('admin.aliases') },
+  { accessorKey: 'model_category', header: t('admin.modelCategoryLabel') },
+  { id: 'input_price', header: t('admin.inputPriceShort') },
+  { id: 'output_price', header: t('admin.outputPriceShort') },
   { accessorKey: 'status', header: t('admin.status') },
   { id: 'actions' }
 ])
@@ -82,16 +118,26 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
 
     <UCard variant="soft">
       <template #header>
-        <div class="flex items-center justify-between gap-4">
-          <UButton icon="i-lucide-plus" :label="t('admin.addModel')" size="sm" @click="openAdd" />
-          <USelect
-            v-model="selectedProvider"
-            :items="providerFilterItems"
-            value-key="value"
-            label-key="label"
-            class="w-56"
-            :placeholder="t('admin.allProviders')"
-          />
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <UButton icon="i-lucide-plus" :label="t('admin.addModel')" size="md" @click="openAdd" />
+          <div class="flex flex-wrap items-center gap-2">
+            <USelect
+              v-model="selectedProvider"
+              :items="providerFilterItems"
+              value-key="value"
+              label-key="label"
+              class="w-56"
+              :placeholder="t('admin.allProviders')"
+            />
+            <USelect
+              v-model="selectedCategory"
+              :items="categoryFilterItems"
+              value-key="value"
+              label-key="label"
+              class="w-56"
+              :placeholder="t('admin.allCategories')"
+            />
+          </div>
         </div>
       </template>
 
@@ -106,22 +152,30 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
           </UBadge>
         </template>
 
-        <template #aliases-cell="{ row }">
-          <div class="flex flex-wrap gap-1">
-            <template v-if="row.original.aliases?.length">
-              <UBadge v-for="alias in row.original.aliases" :key="alias" variant="soft" color="neutral">
-                {{ alias }}
-              </UBadge>
-            </template>
-            <span v-else class="text-dimmed text-sm">{{ t('common.empty') }}</span>
-          </div>
+        <template #model_category-cell="{ row }">
+          <UBadge color="neutral" variant="soft" size="md">
+            {{ categoryLabel(row.original.model_category) }}
+          </UBadge>
+        </template>
+
+        <template #input_price-cell="{ row }">
+          <span class="text-sm tabular-nums">
+            {{ formatCatalogPrice(row.original.input_price_per_unit, row.original.currency) }}
+          </span>
+        </template>
+
+        <template #output_price-cell="{ row }">
+          <span class="text-sm tabular-nums">
+            {{ formatCatalogPrice(row.original.output_price_per_unit, row.original.currency) }}
+          </span>
         </template>
 
         <template #status-cell="{ row }">
           <UBadge
-            :color="row.original.enabled ? 'success' : 'neutral'"
+            :color="row.original.enabled ? 'success' : 'error'"
             :label="row.original.enabled ? t('plugins.enabled') : t('plugins.disabled')"
-            variant="subtle"
+            variant="outline"
+            size="md"
           />
         </template>
 
@@ -129,10 +183,10 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
           <div class="flex items-center justify-end gap-2">
             <UPopover>
               <UButton
-                :icon="row.original.enabled ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                :icon="row.original.enabled ? 'i-lucide-route-off' : 'i-lucide-route'"
                 :label="row.original.enabled ? t('admin.disable') : t('admin.enable')"
                 :color="row.original.enabled ? 'neutral' : 'success'"
-                size="xs"
+                size="sm"
               />
               <template #content="{ close }">
                 <div class="p-4 min-w-48">
@@ -140,8 +194,9 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
                     {{ row.original.enabled ? t('admin.disableModelConfirm') : t('admin.enableModelConfirm') }}
                   </p>
                   <div class="flex justify-end gap-2">
-                    <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
+                    <UButton color="neutral" size="sm" :label="t('common.cancel')" variant="ghost" @click="close" />
                     <UButton
+                      size="sm"
                       :color="row.original.enabled ? 'neutral' : 'success'"
                       :label="row.original.enabled ? t('admin.disable') : t('admin.enable')"
                       :loading="toggling === `${row.original.provider}:${row.original.model_id}`"
@@ -151,7 +206,7 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
                 </div>
               </template>
             </UPopover>
-            <UButton icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
+            <UButton icon="i-lucide-pencil" :label="t('common.edit')" size="sm" @click="openEdit(row.original)" />
           </div>
         </template>
       </UTable>

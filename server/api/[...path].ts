@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
-import { deleteCookie, getCookie, sendStream, setCookie } from 'h3'
-import { COOKIE_ACCESS_TOKEN } from '~/constants'
+import { deleteCookie, getCookie, sendRedirect, sendStream, setCookie } from 'h3'
+import { COOKIE_ACCESS_TOKEN, COOKIE_REFRESH_TOKEN } from '~/constants'
 
 const TOKEN_PLACEHOLDER = '[set]'
 const METHODS_WITH_BODY = new Set(['POST', 'PUT', 'PATCH', 'DELETE'])
@@ -64,7 +64,12 @@ async function handleLogin(event: H3Event, url: string, headers: Record<string, 
     const errBody = await response.text()
     throw createError({ statusCode: response.status, message: errBody })
   }
-  const data = (await response.json()) as { token?: string; expires_in?: number }
+  const data = (await response.json()) as {
+    token?: string
+    expires_in?: number
+    refresh_token?: string
+    refresh_expires_in?: number
+  }
   if (data.token) {
     setCookie(event, COOKIE_ACCESS_TOKEN, data.token, {
       httpOnly: true,
@@ -73,20 +78,127 @@ async function handleLogin(event: H3Event, url: string, headers: Record<string, 
       maxAge: data.expires_in ?? 60 * 60 * 3
     })
   }
+  if (data.refresh_token) {
+    setCookie(event, COOKIE_REFRESH_TOKEN, data.refresh_token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: data.refresh_expires_in ?? 60 * 60 * 24 * 7
+    })
+  }
   return { token: TOKEN_PLACEHOLDER }
 }
 
-async function handleLogout(event: H3Event, url: string, token: string | undefined, headers: Record<string, string>): Promise<null> {
+async function handleLogout(
+  event: H3Event,
+  url: string,
+  token: string | undefined,
+  refreshToken: string | undefined,
+  headers: Record<string, string>
+): Promise<null> {
   deleteCookie(event, COOKIE_ACCESS_TOKEN, { path: '/' })
+  deleteCookie(event, COOKIE_REFRESH_TOKEN, { path: '/' })
   try {
-    if (token) {
-      await fetch(url, { method: 'DELETE', headers })
+    if (token || refreshToken) {
+      const logoutHeaders = { ...headers }
+      if (refreshToken) {
+        logoutHeaders['X-Refresh-Token'] = refreshToken
+      }
+      await fetch(url, { method: 'DELETE', headers: logoutHeaders })
     }
   } catch {
     void 0
   }
   setResponseStatus(event, 204)
   return null
+}
+
+async function handleRefresh(event: H3Event, url: string, headers: Record<string, string>): Promise<{ token: string }> {
+  const refreshToken = getCookie(event, COOKIE_REFRESH_TOKEN)
+  if (!refreshToken) {
+    throw createError({ statusCode: 401, message: 'No refresh token' })
+  }
+  const body = JSON.stringify({ refresh_token: refreshToken })
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { ...headers, 'Content-Type': CONTENT_TYPE_JSON },
+    body
+  })
+  if (!response.ok) {
+    deleteCookie(event, COOKIE_ACCESS_TOKEN, { path: '/' })
+    deleteCookie(event, COOKIE_REFRESH_TOKEN, { path: '/' })
+    const errBody = await response.text()
+    throw createError({ statusCode: response.status, message: errBody })
+  }
+  const data = (await response.json()) as {
+    token?: string
+    expires_in?: number
+    refresh_token?: string
+    refresh_expires_in?: number
+  }
+  if (data.token) {
+    setCookie(event, COOKIE_ACCESS_TOKEN, data.token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: data.expires_in ?? 60 * 60 * 3
+    })
+  }
+  if (data.refresh_token) {
+    setCookie(event, COOKIE_REFRESH_TOKEN, data.refresh_token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: data.refresh_expires_in ?? 60 * 60 * 24 * 7
+    })
+  }
+  return { token: TOKEN_PLACEHOLDER }
+}
+
+async function handleOAuthInitiate(event: H3Event, url: string, headers: Record<string, string>): Promise<void> {
+  const response = await fetch(url, { method: 'GET', headers })
+  if (!response.ok) {
+    const errBody = await response.text()
+    throw createError({ statusCode: response.status, message: errBody })
+  }
+  const data = (await response.json()) as { authorization_url?: string }
+  if (!data.authorization_url) {
+    throw createError({ statusCode: 500, message: 'No authorization URL' })
+  }
+  sendRedirect(event, data.authorization_url)
+}
+
+async function handleOAuthCallback(event: H3Event, url: string, headers: Record<string, string>): Promise<void> {
+  const response = await fetch(url, { method: 'GET', headers })
+  if (!response.ok) {
+    deleteCookie(event, COOKIE_ACCESS_TOKEN, { path: '/' })
+    deleteCookie(event, COOKIE_REFRESH_TOKEN, { path: '/' })
+    const errBody = await response.text()
+    throw createError({ statusCode: response.status, message: errBody })
+  }
+  const data = (await response.json()) as {
+    token?: string
+    expires_in?: number
+    refresh_token?: string
+    refresh_expires_in?: number
+  }
+  if (data.token) {
+    setCookie(event, COOKIE_ACCESS_TOKEN, data.token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: data.expires_in ?? 60 * 60 * 3
+    })
+  }
+  if (data.refresh_token) {
+    setCookie(event, COOKIE_REFRESH_TOKEN, data.refresh_token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: data.refresh_expires_in ?? 60 * 60 * 24 * 7
+    })
+  }
+  sendRedirect(event, '/org-select')
 }
 
 async function handleStreaming(event: H3Event, url: string, method: string, headers: Record<string, string>, body: BodyInit | undefined): Promise<unknown> {
@@ -129,6 +241,7 @@ export default defineEventHandler(async (event) => {
 
   const url = buildBackendUrl(backendUrl, path, query)
   const token = getCookie(event, COOKIE_ACCESS_TOKEN)
+  const refreshToken = getCookie(event, COOKIE_REFRESH_TOKEN)
   const headers = buildForwardHeaders(event, token)
   const body = await readRequestBody(event, headers, method)
 
@@ -138,8 +251,21 @@ export default defineEventHandler(async (event) => {
     return await handleLogin(event, url.toString(), headers, body)
   }
 
+  if (path === 'auth/refresh' && method === 'POST') {
+    return await handleRefresh(event, url.toString(), headers)
+  }
+
   if (path === 'auth/logout' && method === 'DELETE') {
-    return await handleLogout(event, url.toString(), token, headers)
+    return await handleLogout(event, url.toString(), token, refreshToken, headers)
+  }
+
+  if (method === 'GET' && path.startsWith('auth/oauth/')) {
+    if (path.endsWith('/callback')) {
+      return await handleOAuthCallback(event, url.toString(), headers)
+    }
+    if (path !== 'auth/oauth/providers') {
+      return await handleOAuthInitiate(event, url.toString(), headers)
+    }
   }
 
   if (accept?.includes(ACCEPT_SSE)) {

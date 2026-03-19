@@ -28,10 +28,7 @@ const roleMatrix = computed(() => [
     role: 'member',
     color: 'success' as const,
     scope: t('about.roles.techSection.matrix.member.scope'),
-    permissions: [
-      t('about.roles.techSection.matrix.member.perm1'),
-      t('about.roles.techSection.matrix.member.perm2')
-    ]
+    permissions: [t('about.roles.techSection.matrix.member.perm1'), t('about.roles.techSection.matrix.member.perm2')]
   }
 ])
 

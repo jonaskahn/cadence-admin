@@ -125,12 +125,6 @@ const systemLinks = computed<NavigationMenuItem[]>(() => {
           onSelect: closeMenu
         },
         {
-          label: t('nav.telemetry'),
-          icon: 'i-lucide-radio-tower',
-          to: localePath('/admin/telemetry'),
-          onSelect: closeMenu
-        },
-        {
           label: t('nav.pool'),
           icon: 'i-lucide-server',
           to: localePath('/admin/pool'),
@@ -181,7 +175,8 @@ const mainLinks = computed(() => {
       <UDashboardSidebar
         id="default"
         v-model:open="open"
-        :default-size="32"
+        :default-size="24"
+        :max-size="28"
         :ui="{
           body: 'flex flex-col gap-4 overflow-y-auto px-4 py-2 border-0',
           footer: 'mt-auto shrink-0 flex items-center gap-1.5 px-4 py-2 border-0'
@@ -217,8 +212,8 @@ const mainLinks = computed(() => {
           >
             <div class="min-w-0 flex-1">
               <UserMenu :collapsed="collapsed" />
+              <AppVersionInfo v-if="!collapsed" :collapsed="collapsed" class="shrink-0" />
             </div>
-            <AppVersionInfo v-if="!collapsed" :collapsed="collapsed" class="shrink-0" />
           </div>
         </template>
       </UDashboardSidebar>
@@ -228,9 +223,6 @@ const mainLinks = computed(() => {
 </template>
 
 <style>
-/* UDashboardSidebar applies min-h-svh (100svh) which overflows the p-2 padded
-   container (causing bottom content to be clipped and hiding border-radius).
-   Override so the sidebar fills only the flex height, making rounding visible. */
 #dashboard-sidebar-default {
   min-height: 0 !important;
   align-self: stretch;

@@ -34,7 +34,7 @@ function onCardClick() {
 </script>
 
 <template>
-  <UCard class="cursor-pointer hover:bg-neutral-100/50 transition-colors h-full flex flex-col shadow-xs hover:shadow-sm" @click="onCardClick">
+  <UCard @click="onCardClick">
     <div class="flex flex-col gap-3">
       <div class="flex items-start gap-3">
         <div v-if="pluginAvatarSrc" class="size-12 shrink-0 rounded-lg overflow-hidden bg-elevated p-2">

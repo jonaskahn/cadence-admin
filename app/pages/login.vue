@@ -80,6 +80,27 @@ const valueProps = [
   { icon: 'i-lucide-activity', text: 'Real-time monitoring' },
   { icon: 'i-lucide-puzzle', text: 'Plugin ecosystem' }
 ]
+
+const { data: oauthProvidersData, refresh: refreshOAuthProviders } = await useFetch<string[]>('/api/auth/oauth/providers', {
+  default: () => []
+})
+const oauthProviders = computed(() => oauthProvidersData.value ?? [])
+
+onMounted(() => {
+  refreshOAuthProviders()
+})
+
+const oauthProviderLabels: Record<string, string> = {
+  google: 'Google',
+  github: 'GitHub',
+  oauth2: 'OAuth2'
+}
+
+const oauthProviderIcons: Record<string, string> = {
+  google: 'i-simple-icons-google',
+  github: 'i-simple-icons-github',
+  oauth2: 'i-lucide-key-round'
+}
 </script>
 
 <template>
@@ -142,6 +163,21 @@ const valueProps = [
               class="font-semibold tracking-wide active:scale-[0.98] login-item"
               style="--delay: 360ms"
             />
+
+            <template v-if="oauthProviders.length > 0">
+              <div class="flex justify-center text-xs text-muted login-item" style="--delay: 380ms">Or continue with</div>
+              <div class="flex flex-row gap-2 login-item" style="--delay: 400ms">
+                <UButton
+                  v-for="provider in oauthProviders"
+                  :key="provider"
+                  class="flex-1"
+                  color="neutral"
+                  :icon="oauthProviderIcons[provider] ?? 'i-lucide-key-round'"
+                  :label="oauthProviderLabels[provider] ?? provider"
+                  @click="auth.loginWithOAuth(provider)"
+                />
+              </div>
+            </template>
           </UForm>
         </div>
       </div>

@@ -68,7 +68,10 @@ defineExpose({ validate })
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-1">
-      <UCheckbox v-model="enabled" :label="t('orchestrators.edit.enableMonitoring')" />
+      <div class="flex items-center gap-2">
+        <USwitch v-model="enabled" />
+        <span class="text-sm">{{ t('orchestrators.edit.enableMonitoring') }}</span>
+      </div>
     </div>
 
     <template v-if="enabled">

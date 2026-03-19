@@ -1,64 +1,118 @@
 export default defineAppConfig({
   ui: {
     avatar: {
-      defaultVariants: { size: 'lg', variant: 'soft' }
+      variants: {
+        variant: {
+          subtle:
+            'text-highlighted bg-default shadow-sm ring ring-inset ring-accented hover:bg-neutral-50/5 disabled:bg-elevated/50 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+        }
+      },
+      defaultVariants: { size: 'lg', variant: 'subtle' }
     },
     badge: {
-      defaultVariants: { size: 'lg', variant: 'soft' }
+      variants: {
+        variant: {
+          subtle:
+            'text-highlighted bg-default shadow-sm ring ring-inset ring-accented hover:bg-neutral-50/5 disabled:bg-elevated/50 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+        }
+      },
+      defaultVariants: { size: 'lg', variant: 'subtle' }
     },
     button: {
       defaultVariants: { size: 'lg', variant: 'soft' }
     },
     toggle: {
-      defaultVariants: { size: 'lg', variant: 'soft' }
+      variants: {
+        variant: {
+          subtle:
+            'text-highlighted bg-default shadow-sm ring ring-inset ring-accented hover:bg-neutral-50/5 disabled:bg-elevated/50 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+        }
+      },
+      defaultVariants: { size: 'lg', variant: 'subtle' }
     },
     checkbox: {
+      variants: {
+        variant: {
+          subtle:
+            'text-highlighted bg-default shadow-sm ring ring-inset ring-accented hover:bg-neutral-50/5 disabled:bg-elevated/50 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+        }
+      },
       defaultVariants: {
         size: 'lg',
         color: 'primary',
-        variant: 'soft'
+        variant: 'subtle'
       }
     },
     radioGroup: {
+      variants: {
+        variant: {
+          subtle:
+            'text-highlighted bg-default shadow-sm ring ring-inset ring-accented hover:bg-neutral-50/5 disabled:bg-elevated/50 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+        }
+      },
       defaultVariants: {
         size: 'lg',
         color: 'primary',
-        variant: 'soft'
+        variant: 'subtle'
       }
     },
     selectMenu: {
+      variants: {
+        variant: {
+          subtle:
+            'text-highlighted bg-default shadow-sm ring ring-inset ring-accented hover:bg-neutral-50/5 disabled:bg-elevated/50 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+        }
+      },
       defaultVariants: {
         size: 'lg',
         color: 'primary',
-        variant: 'soft'
+        variant: 'subtle'
       }
     },
     input: {
+      variants: {
+        variant: {
+          subtle:
+            'text-highlighted bg-default shadow-sm ring ring-inset ring-accented hover:bg-neutral-50/5 disabled:bg-elevated/50 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+        }
+      },
       defaultVariants: {
         size: 'lg',
         color: 'primary',
-        variant: 'soft'
+        variant: 'subtle'
       }
     },
     textarea: {
+      variants: {
+        variant: {
+          subtle:
+            'text-highlighted bg-default shadow-sm ring ring-inset ring-accented hover:bg-neutral-50/5 disabled:bg-elevated/50 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+        }
+      },
       defaultVariants: {
         size: 'lg',
         color: 'primary',
-        variant: 'soft'
+        variant: 'subtle'
       }
     },
     select: {
+      variants: {
+        variant: {
+          subtle:
+            'text-highlighted bg-default shadow-sm ring ring-inset ring-accented hover:bg-neutral-50/5 disabled:bg-elevated/50 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+        }
+      },
       defaultVariants: {
         size: 'lg',
         color: 'primary',
-        variant: 'soft'
+        variant: 'subtle'
       }
     },
     pageCard: {
       variants: {
         variant: {
           soft: {
-            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-lg hover:shadow-2xl hover:-translate-y-0.6 transition-all duration-300',
+            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-sm hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300',
             description: 'text-toned'
           }
         }
@@ -77,7 +131,7 @@ export default defineAppConfig({
       variants: {
         variant: {
           soft: {
-            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-lg hover:shadow-2xl hover:-translate-y-0.6 transition-all duration-300'
+            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-sm hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
           }
         }
       },
@@ -91,7 +145,7 @@ export default defineAppConfig({
     },
     formField: {
       slots: {
-        description: 'text-sm text-dimmed'
+        description: 'text-xs text-dimmed'
       }
     }
   }

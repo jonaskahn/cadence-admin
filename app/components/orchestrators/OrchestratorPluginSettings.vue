@@ -247,9 +247,10 @@ defineExpose({
     <p v-if="pluginGroups.length === 0" class="text-dimmed text-sm text-center py-2">{{ t('orchestratorPlugin.noSettingsConfigured') }}</p>
 
     <div v-for="group in pluginGroups" :key="group.groupKey" class="border border-default rounded-lg overflow-hidden">
-      <button
-        class="w-full px-4 py-2.5 bg-elevated/50 flex items-center justify-between hover:bg-elevated/80 transition-colors"
-        type="button"
+      <UButton
+        class="w-full justify-between px-4 py-2.5 bg-elevated/50 hover:bg-elevated/80 transition-colors rounded-none"
+        color="neutral"
+        variant="ghost"
         @click="togglePlugin(group.groupKey)"
       >
         <div class="flex items-center gap-3">
@@ -266,23 +267,24 @@ defineExpose({
           </UBadge>
         </div>
         <UIcon :name="expandedPlugins[group.groupKey] ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'" class="size-4 text-dimmed shrink-0" />
-      </button>
+      </UButton>
 
       <div v-show="expandedPlugins[group.groupKey]" class="border-t border-default">
         <div v-if="group.versions.length > 1" class="flex gap-0 border-b border-default overflow-x-auto">
-          <button
+          <UButton
             v-for="v in group.versions"
             :key="v.specKey"
             :class="
               selectedVersionKey[group.groupKey] === v.specKey ? 'border-primary text-primary font-medium' : 'border-transparent text-dimmed hover:text-default'
             "
-            class="px-4 py-2 text-sm flex items-center gap-2 shrink-0 border-b-2 transition-colors"
-            type="button"
+            class="px-4 py-2 text-sm flex items-center gap-2 shrink-0 border-b-2 transition-colors rounded-none"
+            color="neutral"
+            variant="ghost"
             @click="selectVersion(group.groupKey, v.specKey)"
           >
             v{{ v.entry.version }}
             <UBadge v-if="v.entry.active" color="success" size="xs" variant="subtle">{{ t('orchestratorPlugin.active') }}</UBadge>
-          </button>
+          </UButton>
         </div>
 
         <template v-for="v in group.versions" :key="v.specKey">
@@ -303,7 +305,7 @@ defineExpose({
                     :label="getLabel(v.entry, setting.key)"
                     :required="isRequired(v.entry, setting.key)"
                   >
-                    <UCheckbox
+                    <USwitch
                       :disabled="disabled || !v.entry.active"
                       :model-value="Boolean(setting.value)"
                       @update:model-value="onFieldUpdate(v.specKey, setting.key, $event)"

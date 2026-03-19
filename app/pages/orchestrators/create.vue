@@ -500,7 +500,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         <p class="font-semibold">{{ t('orchestrators.grounded.settingsTitle') }}</p>
                       </div>
                     </template>
-                    <GroundedModeSettings ref="groundedConfigRef" v-model="groundedConfig" />
+                    <div class="flex flex-col gap-4">
+                      <GroundedModeSettings ref="groundedConfigRef" v-model="groundedConfig" />
+                      <LangGraphSupervisorNodeConfig :node-keys="['agent_node', 'synthesizer_node', 'error_handler_node']" />
+                    </div>
                   </UCard>
                 </div>
               </LangGraphSupervisorProvider>

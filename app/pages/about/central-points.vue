@@ -40,13 +40,13 @@ const useCases = computed(() => [
 ])
 
 const cpHeaders = computed(() => [
-  { key: 'X-CENTRAL-ID',   desc: t('about.centralPoints.techSection.headers.centralId') },
-  { key: 'X-ORG-ID',       desc: t('about.centralPoints.techSection.headers.orgId') },
-  { key: 'Authorization',  desc: t('about.centralPoints.techSection.headers.authorization') }
+  { key: 'X-CENTRAL-ID', desc: t('about.centralPoints.techSection.headers.centralId') },
+  { key: 'X-ORG-ID', desc: t('about.centralPoints.techSection.headers.orgId') },
+  { key: 'Authorization', desc: t('about.centralPoints.techSection.headers.authorization') }
 ])
 
 const cpVisibility = computed(() => [
-  { mode: 'public',  color: 'success' as const, desc: t('about.centralPoints.techSection.visibility.public') },
+  { mode: 'public', color: 'success' as const, desc: t('about.centralPoints.techSection.visibility.public') },
   { mode: 'private', color: 'warning' as const, desc: t('about.centralPoints.techSection.visibility.private') }
 ])
 

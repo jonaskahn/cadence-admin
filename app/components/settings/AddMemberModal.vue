@@ -69,7 +69,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <UFormField name="is_admin">
-        <UCheckbox v-model="state.is_admin" :label="t('auth.grantAdminRights')" />
+        <div class="flex items-center gap-2">
+          <USwitch v-model="state.is_admin" />
+          <span class="text-sm">{{ t('auth.grantAdminRights') }}</span>
+        </div>
       </UFormField>
 
       <div class="flex justify-end gap-2">

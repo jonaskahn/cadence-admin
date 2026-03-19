@@ -22,7 +22,16 @@ provide('langGraphSupervisor', reactive(supervisor))
 function getValue() {
   const base = supervisor.getValue()
   if (props.mode === 'grounded' && props.groundedModeConfig) {
-    return { ...base, mode_config: { ...props.groundedModeConfig, node_execution_timeout: 60 } }
+    const groundedNodeOverrides = supervisor.getGroundedNodeOverrides()
+    const modeConfig = (base.mode_config ?? {}) as Record<string, unknown>
+    return {
+      ...base,
+      mode_config: {
+        ...modeConfig,
+        ...props.groundedModeConfig,
+        ...groundedNodeOverrides
+      }
+    }
   }
   return base
 }

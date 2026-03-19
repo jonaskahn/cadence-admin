@@ -31,7 +31,7 @@ export default defineNuxtConfig({
       appTagline: process.env.NUXT_PUBLIC_APP_TAGLINE || 'AI Orchestration Platform',
       appVersion: process.env.NUXT_PUBLIC_APP_VERSION || 'dev',
       gitHash: process.env.NUXT_PUBLIC_GIT_HASH || '',
-      copyright: process.env.NUXT_PUBLIC_APP_COPYRIGHT || '© {year} Cadence'
+      copyright: process.env.NUXT_PUBLIC_APP_COPYRIGHT || '© {year}'
     }
   },
 

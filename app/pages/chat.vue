@@ -202,13 +202,6 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                     <div class="flex items-center gap-1.5 text-xs text-dimmed">
                       <UIcon class="size-3 shrink-0 animate-spin" name="i-lucide-loader" />
                       <span>{{ chat.currentAgentStep.value.fallback }}</span>
-                      <span class="ml-auto tabular-nums"> {{ chat.currentAgentStep.value.progress }}% </span>
-                    </div>
-                    <div class="h-0.5 rounded-full bg-default overflow-hidden">
-                      <div
-                        :style="{ width: `${Math.max(chat.currentAgentStep.value.progress, 4)}%` }"
-                        class="h-full bg-primary rounded-full transition-[width] duration-500 ease-out"
-                      />
                     </div>
                   </template>
 
@@ -248,7 +241,10 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                 />
               </div>
               <div class="flex items-center gap-3 mt-2">
-                <UCheckbox v-model="chat.enableStream.value" :label="t('chat.stream')" size="sm" />
+                <div class="flex items-center gap-2">
+                  <USwitch v-model="chat.enableStream.value" size="sm" />
+                  <span class="text-sm">{{ t('chat.stream') }}</span>
+                </div>
                 <p class="text-xs text-dimmed">{{ t('chat.enterToSend') }}</p>
               </div>
             </div>

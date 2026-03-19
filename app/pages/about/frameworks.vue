@@ -43,10 +43,10 @@ const providerCompat = [
 ]
 
 const factoryFields = computed(() => [
-  { key: 'framework_type',          desc: t('about.frameworks.techSection.factory.frameworkType') },
-  { key: 'mode',                    desc: t('about.frameworks.techSection.factory.mode') },
-  { key: 'adapter_class',           desc: t('about.frameworks.techSection.factory.adapterClass') },
-  { key: 'orchestrator_class',      desc: t('about.frameworks.techSection.factory.orchestratorClass') },
+  { key: 'framework_type', desc: t('about.frameworks.techSection.factory.frameworkType') },
+  { key: 'mode', desc: t('about.frameworks.techSection.factory.mode') },
+  { key: 'adapter_class', desc: t('about.frameworks.techSection.factory.adapterClass') },
+  { key: 'orchestrator_class', desc: t('about.frameworks.techSection.factory.orchestratorClass') },
   { key: 'streaming_wrapper_class', desc: t('about.frameworks.techSection.factory.streamingWrapperClass') }
 ])
 
@@ -132,7 +132,9 @@ const faqItems = computed(() => [
       <!-- Registration Signature -->
       <div>
         <p class="text-xs font-semibold text-dimmed uppercase tracking-wide mb-2">{{ t('about.frameworks.techSection.factory.title') }}</p>
-        <code class="block text-xs font-mono text-primary bg-(--ui-bg-muted) rounded p-2">register_backend(framework_type, mode, adapter_class, orchestrator_class, streaming_wrapper_class)</code>
+        <code class="block text-xs font-mono text-primary bg-(--ui-bg-muted) rounded p-2"
+          >register_backend(framework_type, mode, adapter_class, orchestrator_class, streaming_wrapper_class)</code
+        >
         <div class="space-y-2 mt-3">
           <div v-for="field in factoryFields" :key="field.key" class="flex items-start gap-3">
             <code class="text-primary text-sm font-mono shrink-0">{{ field.key }}</code>

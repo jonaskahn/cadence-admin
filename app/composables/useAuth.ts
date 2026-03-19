@@ -51,6 +51,28 @@ export const useAuth = () => {
     return false
   }
 
+  async function refresh(): Promise<boolean> {
+    try {
+      const response = await $fetch<{ token: string }>('/api/auth/refresh', {
+        method: 'POST',
+        body: {}
+      })
+      if (response.token === '[set]') {
+        authUser.value = null
+        await restoreSession()
+        return true
+      }
+    } catch {
+      await logout()
+      return false
+    }
+    return false
+  }
+
+  function loginWithOAuth(provider: string): void {
+    window.location.href = `/api/auth/oauth/${provider}`
+  }
+
   async function logout(): Promise<void> {
     try {
       await $fetch('/api/auth/logout', { method: 'DELETE' })
@@ -120,7 +142,9 @@ export const useAuth = () => {
     isOrgAdmin,
     isAdmin,
     login,
+    loginWithOAuth,
     logout,
+    refresh,
     loadMe,
     loadOrgs,
     selectOrg,

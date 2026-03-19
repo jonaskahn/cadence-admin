@@ -31,9 +31,7 @@ const pluginComponents = computed(() => [
     name: 'BaseSpecializedAgent',
     color: 'info' as const,
     desc: t('about.plugins.anatomySection.specializedAgent.desc'),
-    methods: [
-      t('about.plugins.anatomySection.specializedAgent.method1')
-    ],
+    methods: [t('about.plugins.anatomySection.specializedAgent.method1')],
     ref: 'cadence_sdk.BaseSpecializedAgent'
   },
   {
@@ -41,10 +39,7 @@ const pluginComponents = computed(() => [
     name: 'BaseScopedAgent',
     color: 'error' as const,
     desc: t('about.plugins.anatomySection.scopedAgent.desc'),
-    methods: [
-      t('about.plugins.anatomySection.scopedAgent.method1'),
-      t('about.plugins.anatomySection.scopedAgent.method2')
-    ],
+    methods: [t('about.plugins.anatomySection.scopedAgent.method1'), t('about.plugins.anatomySection.scopedAgent.method2')],
     ref: 'cadence_sdk.BaseScopedAgent'
   },
   {

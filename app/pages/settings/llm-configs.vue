@@ -172,18 +172,18 @@ const columns = computed(() => [
           <template #actions-cell="{ row }">
             <div class="flex items-center gap-1">
               <template v-if="auth.isAdmin.value">
-                <UButton color="primary" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="startEdit(row.original)" />
+                <UButton color="primary" icon="i-lucide-pencil" :label="t('common.edit')" size="sm" @click="startEdit(row.original)" />
                 <UButton
                   color="primary"
                   :icon="row?.original?.is_enabled ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                   :label="row?.original?.is_enabled ? t('settings.disableConfig') : t('settings.enableConfig')"
                   :loading="toggling === row?.original?.id"
-                  size="xs"
+                  size="sm"
                   @click="toggleEnabled(row.original)"
                 />
               </template>
               <UPopover v-if="auth.isAdmin.value && !row?.original?.is_deleted">
-                <UButton color="error" icon="i-lucide-trash-2" size="xs" />
+                <UButton color="error" icon="i-lucide-trash-2" size="sm" />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('settings.deleteConfigConfirm', { name: row.original.name }) }}</p>
@@ -200,7 +200,7 @@ const columns = computed(() => [
                 </template>
               </UPopover>
               <UPopover v-else-if="auth.isSysAdmin.value && row?.original?.is_deleted">
-                <UButton color="error" icon="i-lucide-shredder" size="xs" />
+                <UButton color="error" icon="i-lucide-shredder" size="sm" />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
                     <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>

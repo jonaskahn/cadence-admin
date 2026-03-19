@@ -13,20 +13,20 @@ const modesInfo = computed(() => [
 ])
 
 const supervisorConfigFields = computed(() => [
-  { key: 'max_agent_hops',      default: '5',     desc: t('about.modes.techSection.supervisorConfig.maxAgentHops') },
-  { key: 'parallel_tool_calls', default: 'true',  desc: t('about.modes.techSection.supervisorConfig.parallelToolCalls') },
-  { key: 'llm_validation',      default: 'false', desc: t('about.modes.techSection.supervisorConfig.llmValidation') },
-  { key: 'auto_compact',        default: 'true',  desc: t('about.modes.techSection.supervisorConfig.autoCompact') },
-  { key: 'node_timeout',        default: '60',    desc: t('about.modes.techSection.supervisorConfig.nodeTimeout') }
+  { key: 'max_agent_hops', default: '5', desc: t('about.modes.techSection.supervisorConfig.maxAgentHops') },
+  { key: 'parallel_tool_calls', default: 'true', desc: t('about.modes.techSection.supervisorConfig.parallelToolCalls') },
+  { key: 'llm_validation', default: 'false', desc: t('about.modes.techSection.supervisorConfig.llmValidation') },
+  { key: 'auto_compact', default: 'true', desc: t('about.modes.techSection.supervisorConfig.autoCompact') },
+  { key: 'node_timeout', default: '60', desc: t('about.modes.techSection.supervisorConfig.nodeTimeout') }
 ])
 
 const supervisorNodes = ['Router', 'Planner', 'Executor', 'Synthesizer', 'Clarifier', 'Responder', 'ErrorHandler']
 
 const groundedConfigFields = computed(() => [
-  { key: 'scope_rules',       default: t('about.modes.techSection.groundedConfig.scopeRulesDefault'), desc: t('about.modes.techSection.groundedConfig.scopeRules') },
-  { key: 'max_tool_rounds',   default: '3',     desc: t('about.modes.techSection.groundedConfig.maxToolRounds') },
-  { key: 'enabled_validator', default: 'true',  desc: t('about.modes.techSection.groundedConfig.enabledValidator') },
-  { key: 'node_timeout',      default: '60',    desc: t('about.modes.techSection.groundedConfig.nodeTimeout') }
+  { key: 'scope_rules', default: t('about.modes.techSection.groundedConfig.scopeRulesDefault'), desc: t('about.modes.techSection.groundedConfig.scopeRules') },
+  { key: 'max_tool_rounds', default: '3', desc: t('about.modes.techSection.groundedConfig.maxToolRounds') },
+  { key: 'enabled_validator', default: 'true', desc: t('about.modes.techSection.groundedConfig.enabledValidator') },
+  { key: 'node_timeout', default: '60', desc: t('about.modes.techSection.groundedConfig.nodeTimeout') }
 ])
 
 const faqItems = computed(() => [
@@ -60,27 +60,13 @@ const faqItems = computed(() => [
       <li>{{ t('about.modes.bullet4') }}</li>
     </ul>
     <div class="space-y-2">
-      <div
-        v-for="mode in modesInfo"
-        :key="mode.id"
-        class="flex items-center gap-3 rounded-lg border px-4 py-2"
-      >
+      <div v-for="mode in modesInfo" :key="mode.id" class="flex items-center gap-3 rounded-lg border px-4 py-2">
         <span class="text-sm font-medium w-28 shrink-0">{{ mode.label }}</span>
-        <UBadge
-          :color="mode.status === 'stable' ? 'success' : 'warning'"
-          variant="subtle"
-          class="shrink-0 w-20 justify-center"
-        >
+        <UBadge :color="mode.status === 'stable' ? 'success' : 'warning'" variant="subtle" class="shrink-0 w-20 justify-center">
           {{ mode.status === 'stable' ? t('about.modes.status.stable') : t('about.modes.status.preview') }}
         </UBadge>
         <div class="flex gap-1 flex-wrap">
-          <UBadge
-            v-for="fw in mode.frameworks"
-            :key="fw"
-            color="neutral"
-            variant="subtle"
-            size="sm"
-          >
+          <UBadge v-for="fw in mode.frameworks" :key="fw" color="neutral" variant="subtle" size="sm">
             {{ fw }}
           </UBadge>
         </div>

@@ -2,25 +2,25 @@
 const { t } = useI18n()
 
 const globalSettingFields = computed(() => [
-  { key: 'max_orgs',       desc: t('about.admin.techSection.globalSettings.maxOrgs') },
-  { key: 'default_tier',   desc: t('about.admin.techSection.globalSettings.defaultTier') },
-  { key: 'hot_quota',      desc: t('about.admin.techSection.globalSettings.hotQuota') },
-  { key: 'warm_quota',     desc: t('about.admin.techSection.globalSettings.warmQuota') },
-  { key: 'cold_quota',     desc: t('about.admin.techSection.globalSettings.coldQuota') },
-  { key: 'model_catalog',  desc: t('about.admin.techSection.globalSettings.modelCatalog') },
-  { key: 'feature_flags',  desc: t('about.admin.techSection.globalSettings.featureFlags') }
+  { key: 'max_orgs', desc: t('about.admin.techSection.globalSettings.maxOrgs') },
+  { key: 'default_tier', desc: t('about.admin.techSection.globalSettings.defaultTier') },
+  { key: 'hot_quota', desc: t('about.admin.techSection.globalSettings.hotQuota') },
+  { key: 'warm_quota', desc: t('about.admin.techSection.globalSettings.warmQuota') },
+  { key: 'cold_quota', desc: t('about.admin.techSection.globalSettings.coldQuota') },
+  { key: 'model_catalog', desc: t('about.admin.techSection.globalSettings.modelCatalog') },
+  { key: 'feature_flags', desc: t('about.admin.techSection.globalSettings.featureFlags') }
 ])
 
 const healthServices = computed(() => [
-  { name: 'PostgreSQL', icon: 'i-lucide-database',       desc: t('about.admin.techSection.health.postgresql') },
-  { name: 'Redis',      icon: 'i-lucide-server',         desc: t('about.admin.techSection.health.redis') },
-  { name: 'MongoDB',    icon: 'i-lucide-hard-drive',     desc: t('about.admin.techSection.health.mongodb') }
+  { name: 'PostgreSQL', icon: 'i-lucide-database', desc: t('about.admin.techSection.health.postgresql') },
+  { name: 'Redis', icon: 'i-lucide-server', desc: t('about.admin.techSection.health.redis') },
+  { name: 'MongoDB', icon: 'i-lucide-hard-drive', desc: t('about.admin.techSection.health.mongodb') }
 ])
 
 const poolTiers = computed(() => [
-  { tier: 'hot',  color: 'error' as const,   desc: t('about.admin.techSection.pool.hot') },
+  { tier: 'hot', color: 'error' as const, desc: t('about.admin.techSection.pool.hot') },
   { tier: 'warm', color: 'warning' as const, desc: t('about.admin.techSection.pool.warm') },
-  { tier: 'cold', color: 'info' as const,    desc: t('about.admin.techSection.pool.cold') }
+  { tier: 'cold', color: 'info' as const, desc: t('about.admin.techSection.pool.cold') }
 ])
 
 const faqItems = computed(() => [

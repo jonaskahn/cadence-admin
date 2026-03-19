@@ -15,7 +15,6 @@ interface ChatEvent {
 
 export interface AgentStep {
   key: string
-  progress: number
   fallback: string
 }
 

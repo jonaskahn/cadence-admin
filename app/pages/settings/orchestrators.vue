@@ -28,6 +28,14 @@ function providerOf(configId: string | null | undefined): string | null {
   return llmConfigs.value?.find((c) => c.id === configId)?.provider ?? null
 }
 
+function toTitleCase(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[-_\s.]+/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .trim()
+}
+
 async function ensureModels(provider: string | null) {
   if (!provider || modelsByProvider.value[provider]) return
   try {
@@ -35,7 +43,7 @@ async function ensureModels(provider: string | null) {
     modelsByProvider.value = {
       ...modelsByProvider.value,
       [provider]: models.map((m) => ({
-        label: m.aliases.length ? `${m.display_name} — ${m.model_id} (${m.aliases.join(', ')})` : `${m.display_name} — ${m.model_id}`,
+        label: `${toTitleCase(m.model_category)} | ${m.display_name}`,
         value: m.model_id
       }))
     }

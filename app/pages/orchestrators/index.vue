@@ -150,12 +150,12 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
 
               <template #actions-cell="{ row }">
                 <div class="flex items-center gap-1">
-                  <UButton :to="localePath(`/orchestrators/${row.original.instance_id}`)" icon="i-lucide-info" :label="t('common.view')" size="xs" />
+                  <UButton :to="localePath(`/orchestrators/${row.original.instance_id}`)" icon="i-lucide-info" :label="t('common.view')" size="sm" />
                   <template v-if="auth.isAdmin.value">
-                    <UButton icon="i-lucide-copy" :label="t('orchestrators.clone')" size="xs" @click="onClone(row.original)" />
+                    <UButton icon="i-lucide-copy" :label="t('orchestrators.clone')" size="sm" @click="onClone(row.original)" />
                     <template v-if="row.original.status === 'active'">
                       <UPopover>
-                        <UButton icon="i-lucide-play" :label="t('orchestrators.load')" size="xs" />
+                        <UButton icon="i-lucide-play" :label="t('orchestrators.load')" size="sm" />
                         <template #content="{ close }">
                           <div class="p-4 min-w-48">
                             <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.loadConfirm', { name: row.original.name }) }}</p>
@@ -171,7 +171,7 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                         </template>
                       </UPopover>
                       <UPopover>
-                        <UButton icon="i-lucide-square" :label="t('orchestrators.unload')" size="xs" />
+                        <UButton icon="i-lucide-square" :label="t('orchestrators.unload')" size="sm" />
                         <template #content="{ close }">
                           <div class="p-4 min-w-48">
                             <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.unloadConfirm', { name: row.original.name }) }}</p>
@@ -187,7 +187,7 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                         </template>
                       </UPopover>
                       <UPopover>
-                        <UButton color="error" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="xs" />
+                        <UButton color="error" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="sm" />
                         <template #content="{ close }">
                           <div class="p-4 min-w-48">
                             <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: row.original.name }) }}</p>
@@ -205,7 +205,7 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                       </UPopover>
                     </template>
                     <UPopover v-else>
-                      <UButton color="success" icon="i-lucide-route" :label="t('orchestrators.activate')" size="xs" />
+                      <UButton color="success" icon="i-lucide-route" :label="t('orchestrators.activate')" size="sm" />
                       <template #content="{ close }">
                         <div class="p-4 min-w-48">
                           <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.activateConfirm', { name: row.original.name }) }}</p>
@@ -223,7 +223,7 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                     </UPopover>
                   </template>
                   <UPopover v-if="auth.isSysAdmin.value && row.original.is_deleted">
-                    <UButton color="neutral" icon="i-lucide-shredder" size="xs" />
+                    <UButton color="neutral" icon="i-lucide-shredder" size="sm" />
                     <template #content="{ close }">
                       <div class="p-4 min-w-48">
                         <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>

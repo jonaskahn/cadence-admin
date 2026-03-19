@@ -1,5 +1,21 @@
 /** Setting keys that cannot be overridden by orgs (platform-level only) */
-export const NON_OVERRIDABLE_SETTING_KEYS = new Set(['access_token_ttl_seconds'])
+export const NON_OVERRIDABLE_SETTING_KEYS = new Set([
+  'access_token_ttl_seconds',
+  'refresh_token_ttl_seconds',
+  'oauth.google.enabled',
+  'oauth.github.enabled',
+  'oauth.oauth2.enabled',
+  'oauth.google.client_id',
+  'oauth.google.client_secret',
+  'oauth.github.client_id',
+  'oauth.github.client_secret',
+  'oauth.oauth2.client_id',
+  'oauth.oauth2.client_secret',
+  'oauth.oauth2.authorization_url',
+  'oauth.oauth2.token_url',
+  'oauth.oauth2.userinfo_url',
+  'oauth.oauth2.scopes'
+])
 
 export const SETTINGS_GROUPS: Record<string, string[]> = {
   LLM: [
@@ -38,6 +54,5 @@ export const SETTINGS_GROUPS: Record<string, string[]> = {
   ],
   Streaming: ['default_enable_streaming', 'sse_heartbeat_interval', 'sse_timeout'],
   Checkpointing: ['enable_checkpointing', 'checkpoint_storage', 'checkpoint_retention'],
-  'Feature Flags': ['enable_multi_tier_pool', 'enable_shared_resources', 'enable_hot_reload', 'enable_tenant_isolation'],
-  Security: ['access_token_ttl_seconds']
+  'Feature Flags': ['enable_multi_tier_pool', 'enable_shared_resources', 'enable_hot_reload', 'enable_tenant_isolation']
 }

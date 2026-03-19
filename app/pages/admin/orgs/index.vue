@@ -52,7 +52,7 @@ const state = reactive<Partial<Schema>>({
 })
 const creating = ref(false)
 
-const tierOptions = SUBSCRIPTION_TIERS.map((t) => ({ label: t, value: t }))
+const tierOptions = SUBSCRIPTION_TIERS.map((tier) => ({ label: tier.charAt(0).toUpperCase() + tier.slice(1), value: tier }))
 
 async function onCreate(event: FormSubmitEvent<Schema>) {
   creating.value = true

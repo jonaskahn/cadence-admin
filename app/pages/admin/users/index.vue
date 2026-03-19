@@ -296,7 +296,10 @@ const columns = computed(() => [
               <UInput v-model="editState.email" class="w-full" type="email" />
             </UFormField>
             <UFormField name="is_sys_admin">
-              <UCheckbox v-model="editState.is_sys_admin" :label="t('admin.systemAdmin')" />
+              <div class="flex items-center gap-2">
+                <USwitch v-model="editState.is_sys_admin" />
+                <span class="text-sm">{{ t('admin.systemAdmin') }}</span>
+              </div>
             </UFormField>
             <div class="flex justify-end gap-2">
               <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="closeEdit" />

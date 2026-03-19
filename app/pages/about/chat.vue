@@ -2,16 +2,31 @@
 const { t } = useI18n()
 
 const sseEventTypes = computed(() => [
-  { type: 'agent',      color: 'primary' as const,  desc: t('about.chat.techSection.events.agent.desc'),      fields: t('about.chat.techSection.events.agent.fields') },
-  { type: 'message',   color: 'success' as const,  desc: t('about.chat.techSection.events.message.desc'),    fields: t('about.chat.techSection.events.message.fields') },
-  { type: 'tool',      color: 'warning' as const,  desc: t('about.chat.techSection.events.tool.desc'),       fields: t('about.chat.techSection.events.tool.fields') },
-  { type: 'suggestion',color: 'info' as const,     desc: t('about.chat.techSection.events.suggestion.desc'), fields: t('about.chat.techSection.events.suggestion.fields') },
-  { type: 'metadata',  color: 'neutral' as const,  desc: t('about.chat.techSection.events.metadata.desc'),   fields: t('about.chat.techSection.events.metadata.fields') }
+  { type: 'agent', color: 'primary' as const, desc: t('about.chat.techSection.events.agent.desc'), fields: t('about.chat.techSection.events.agent.fields') },
+  {
+    type: 'message',
+    color: 'success' as const,
+    desc: t('about.chat.techSection.events.message.desc'),
+    fields: t('about.chat.techSection.events.message.fields')
+  },
+  { type: 'tool', color: 'warning' as const, desc: t('about.chat.techSection.events.tool.desc'), fields: t('about.chat.techSection.events.tool.fields') },
+  {
+    type: 'suggestion',
+    color: 'info' as const,
+    desc: t('about.chat.techSection.events.suggestion.desc'),
+    fields: t('about.chat.techSection.events.suggestion.fields')
+  },
+  {
+    type: 'metadata',
+    color: 'neutral' as const,
+    desc: t('about.chat.techSection.events.metadata.desc'),
+    fields: t('about.chat.techSection.events.metadata.fields')
+  }
 ])
 
 const chatEndpoints = computed(() => [
-  { method: 'POST', path: '/api/chat/{orchestrator_id}',   desc: t('about.chat.techSection.endpoints.direct.desc') },
-  { method: 'POST', path: '/api/chat/{central_point_id}',  desc: t('about.chat.techSection.endpoints.centralPoint.desc') }
+  { method: 'POST', path: '/api/chat/{orchestrator_id}', desc: t('about.chat.techSection.endpoints.direct.desc') },
+  { method: 'POST', path: '/api/chat/{central_point_id}', desc: t('about.chat.techSection.endpoints.centralPoint.desc') }
 ])
 
 const faqItems = computed(() => [
@@ -63,7 +78,9 @@ const faqItems = computed(() => [
             <UBadge :label="ev.type" :color="ev.color" variant="soft" class="mt-0.5 shrink-0" />
             <div class="flex-1 min-w-0">
               <p class="text-xs">{{ ev.desc }}</p>
-              <p class="text-xs text-dimmed mt-1">Fields: <code class="text-primary">{{ ev.fields }}</code></p>
+              <p class="text-xs text-dimmed mt-1">
+                Fields: <code class="text-primary">{{ ev.fields }}</code>
+              </p>
             </div>
           </div>
         </div>

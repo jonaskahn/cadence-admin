@@ -228,7 +228,7 @@ async function handleActivateConfirm(close: () => void) {
                     </template>
                   </UPopover>
                   <UPopover>
-                    <UButton color="primary" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="sm" />
+                    <UButton color="error" icon="i-lucide-route-off" :label="t('orchestrators.deactivate')" size="sm" />
                     <template #content="{ close }">
                       <div class="p-4 min-w-48">
                         <p class="text-sm text-dimmed mb-3">{{ t('orchestrators.deactivateConfirm', { name: orchestrator.name }) }}</p>

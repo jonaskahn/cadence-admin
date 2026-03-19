@@ -2,18 +2,18 @@
 const { t } = useI18n()
 
 const isolatedResources = computed(() => [
-  { key: 'llm_configs',    desc: t('about.orgs.techSection.isolation.llmConfigs') },
-  { key: 'plugins',        desc: t('about.orgs.techSection.isolation.plugins') },
-  { key: 'orchestrators',  desc: t('about.orgs.techSection.isolation.orchestrators') },
+  { key: 'llm_configs', desc: t('about.orgs.techSection.isolation.llmConfigs') },
+  { key: 'plugins', desc: t('about.orgs.techSection.isolation.plugins') },
+  { key: 'orchestrators', desc: t('about.orgs.techSection.isolation.orchestrators') },
   { key: 'central_points', desc: t('about.orgs.techSection.isolation.centralPoints') },
-  { key: 'members',        desc: t('about.orgs.techSection.isolation.members') }
+  { key: 'members', desc: t('about.orgs.techSection.isolation.members') }
 ])
 
 const quotaFields = computed(() => [
   { key: 'max_orchestrators', desc: t('about.orgs.techSection.quotas.maxOrchestrators') },
   { key: 'max_central_points', desc: t('about.orgs.techSection.quotas.maxCentralPoints') },
-  { key: 'max_plugins',       desc: t('about.orgs.techSection.quotas.maxPlugins') },
-  { key: 'max_members',       desc: t('about.orgs.techSection.quotas.maxMembers') }
+  { key: 'max_plugins', desc: t('about.orgs.techSection.quotas.maxPlugins') },
+  { key: 'max_members', desc: t('about.orgs.techSection.quotas.maxMembers') }
 ])
 
 const faqItems = computed(() => [
