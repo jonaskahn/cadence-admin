@@ -39,6 +39,17 @@ const useCases = computed(() => [
   }
 ])
 
+const cpHeaders = computed(() => [
+  { key: 'X-CENTRAL-ID',   desc: t('about.centralPoints.techSection.headers.centralId') },
+  { key: 'X-ORG-ID',       desc: t('about.centralPoints.techSection.headers.orgId') },
+  { key: 'Authorization',  desc: t('about.centralPoints.techSection.headers.authorization') }
+])
+
+const cpVisibility = computed(() => [
+  { mode: 'public',  color: 'success' as const, desc: t('about.centralPoints.techSection.visibility.public') },
+  { mode: 'private', color: 'warning' as const, desc: t('about.centralPoints.techSection.visibility.private') }
+])
+
 const faqItems = computed(() => [
   {
     label: t('about.centralPoints.faq1.question'),
@@ -91,6 +102,51 @@ const faqItems = computed(() => [
           <p class="text-xs text-dimmed italic">{{ uc.benefit }}</p>
         </div>
       </div>
+    </div>
+
+    <!-- Technical Reference -->
+    <div class="space-y-4">
+      <div class="flex items-center gap-2">
+        <UIcon name="i-lucide-globe" class="w-4 h-4 text-primary" />
+        <h3 class="text-sm font-semibold">{{ t('about.centralPoints.techSection.title') }}</h3>
+      </div>
+
+      <!-- Endpoint -->
+      <div>
+        <p class="text-xs font-semibold text-dimmed uppercase tracking-wide mb-2">{{ t('about.centralPoints.techSection.endpoints.title') }}</p>
+        <div class="flex items-start gap-3 border border-(--ui-border) rounded-lg p-3">
+          <UBadge label="POST" color="success" variant="soft" class="mt-0.5 shrink-0" />
+          <div class="flex-1 min-w-0">
+            <code class="text-xs text-primary">/api/chat/{central_point_id}</code>
+            <p class="text-xs text-dimmed mt-1">{{ t('about.centralPoints.techSection.endpoints.chat.desc') }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Headers -->
+      <div>
+        <p class="text-xs font-semibold text-dimmed uppercase tracking-wide mb-2">{{ t('about.centralPoints.techSection.headers.title') }}</p>
+        <div class="space-y-2">
+          <div v-for="hdr in cpHeaders" :key="hdr.key" class="flex items-start gap-3">
+            <code class="text-primary text-sm font-mono shrink-0">{{ hdr.key }}</code>
+            <p class="text-xs text-dimmed">{{ hdr.desc }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visibility -->
+      <div>
+        <p class="text-xs font-semibold text-dimmed uppercase tracking-wide mb-2">{{ t('about.centralPoints.techSection.visibility.title') }}</p>
+        <div class="grid grid-cols-2 gap-2">
+          <div v-for="vis in cpVisibility" :key="vis.mode" class="border border-(--ui-border) rounded-lg p-3">
+            <UBadge :label="vis.mode" :color="vis.color" variant="soft" class="mb-2" />
+            <p class="text-xs text-dimmed">{{ vis.desc }}</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-xs text-dimmed">{{ t('about.centralPoints.techSection.statusNote') }}</p>
+      <p class="text-xs text-dimmed">{{ t('about.centralPoints.techSection.tierNote') }}</p>
     </div>
 
     <!-- 3. FAQ -->

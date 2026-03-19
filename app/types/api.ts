@@ -419,3 +419,25 @@ export interface OrchestratorDefaults {
   default_max_tokens: number | null
   default_timeout: number | null
 }
+
+export interface TelemetryConfigResponse {
+  enabled: boolean
+  service_name: string
+  service_version: string
+  environment: string
+  exporter: string
+  endpoint: string
+  endpoint_insecure: boolean
+  headers: string
+  traces_enabled: boolean
+  metrics_enabled: boolean
+  logs_enabled: boolean
+  trace_sampler: string
+  trace_sample_rate: number
+  metrics_export_interval_ms: number
+  instrument_langchain: boolean
+  instrument_openai_agents: boolean
+  propagation: string
+}
+
+export type UpdateTelemetryConfigRequest = TelemetryConfigResponse

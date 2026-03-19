@@ -42,6 +42,14 @@ const providerCompat = [
   { id: 'openai', name: 'OpenAI Agents', color: 'neutral' as const, providers: ['litellm', 'bifrost', 'openai'] }
 ]
 
+const factoryFields = computed(() => [
+  { key: 'framework_type',          desc: t('about.frameworks.techSection.factory.frameworkType') },
+  { key: 'mode',                    desc: t('about.frameworks.techSection.factory.mode') },
+  { key: 'adapter_class',           desc: t('about.frameworks.techSection.factory.adapterClass') },
+  { key: 'orchestrator_class',      desc: t('about.frameworks.techSection.factory.orchestratorClass') },
+  { key: 'streaming_wrapper_class', desc: t('about.frameworks.techSection.factory.streamingWrapperClass') }
+])
+
 const faqItems = computed(() => [
   {
     label: t('about.frameworks.faq1.question'),
@@ -109,6 +117,54 @@ const faqItems = computed(() => [
           <UBadge :color="fw.color" variant="subtle" size="sm">{{ fw.name }}</UBadge>
           <div class="flex flex-wrap gap-1">
             <UBadge v-for="p in fw.providers" :key="p" color="neutral" variant="subtle" size="xs">{{ p }}</UBadge>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Reference -->
+    <div class="space-y-4">
+      <div class="flex items-center gap-2">
+        <UIcon name="i-lucide-code-2" class="w-4 h-4 text-primary" />
+        <h3 class="text-sm font-semibold">{{ t('about.frameworks.techSection.title') }}</h3>
+      </div>
+
+      <!-- Registration Signature -->
+      <div>
+        <p class="text-xs font-semibold text-dimmed uppercase tracking-wide mb-2">{{ t('about.frameworks.techSection.factory.title') }}</p>
+        <code class="block text-xs font-mono text-primary bg-(--ui-bg-muted) rounded p-2">register_backend(framework_type, mode, adapter_class, orchestrator_class, streaming_wrapper_class)</code>
+        <div class="space-y-2 mt-3">
+          <div v-for="field in factoryFields" :key="field.key" class="flex items-start gap-3">
+            <code class="text-primary text-sm font-mono shrink-0">{{ field.key }}</code>
+            <p class="text-xs text-dimmed">{{ field.desc }}</p>
+          </div>
+        </div>
+        <p class="text-xs text-dimmed mt-2">{{ t('about.frameworks.techSection.factory.registryNote') }}</p>
+      </div>
+
+      <!-- Streaming Internals -->
+      <div>
+        <p class="text-xs font-semibold text-dimmed uppercase tracking-wide mb-2">{{ t('about.frameworks.techSection.streaming.title') }}</p>
+        <div class="space-y-2">
+          <div class="border border-(--ui-border) rounded-lg p-3">
+            <p class="text-xs font-medium mb-1">LangGraph</p>
+            <p class="text-xs text-dimmed">{{ t('about.frameworks.techSection.streaming.langraph') }}</p>
+          </div>
+          <div class="border border-(--ui-border) rounded-lg p-3">
+            <p class="text-xs font-medium mb-1">Google ADK</p>
+            <p class="text-xs text-dimmed">{{ t('about.frameworks.techSection.streaming.adk') }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discovery API -->
+      <div>
+        <p class="text-xs font-semibold text-dimmed uppercase tracking-wide mb-2">{{ t('about.frameworks.techSection.endpoints.title') }}</p>
+        <div class="flex items-start gap-3 border border-(--ui-border) rounded-lg p-3">
+          <UBadge label="GET" color="info" variant="soft" class="mt-0.5 shrink-0" />
+          <div class="flex-1 min-w-0">
+            <code class="text-xs text-primary">/api/frameworks</code>
+            <p class="text-xs text-dimmed mt-1">{{ t('about.frameworks.techSection.endpoints.list.desc') }}</p>
           </div>
         </div>
       </div>

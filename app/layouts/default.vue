@@ -125,6 +125,12 @@ const systemLinks = computed<NavigationMenuItem[]>(() => {
           onSelect: closeMenu
         },
         {
+          label: t('nav.telemetry'),
+          icon: 'i-lucide-radio-tower',
+          to: localePath('/admin/telemetry'),
+          onSelect: closeMenu
+        },
+        {
           label: t('nav.pool'),
           icon: 'i-lucide-server',
           to: localePath('/admin/pool'),

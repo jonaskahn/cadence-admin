@@ -100,6 +100,7 @@
     "globalSettings": "Cài đặt toàn cục",
     "pool": "Pool",
     "health": "Tình trạng",
+    "telemetry": "Telemetry",
     "about": "Giới thiệu"
   },
   "userMenu": {
@@ -505,7 +506,29 @@
     "aliasesDescription": "Danh sách định danh thay thế, cách nhau bằng dấu phẩy",
     "modelIdPlaceholder": "ví dụ: gpt-4o-mini",
     "displayNamePlaceholder": "ví dụ: GPT-4o Mini",
-    "aliasesPlaceholder": "gpt-4o-mini-2024-07-18, ..."
+    "aliasesPlaceholder": "gpt-4o-mini-2024-07-18, ...",
+    "telemetry": "Telemetry",
+    "telemetryConfig": "Cấu hình Telemetry",
+    "telemetryConfigDescription": "Cấu hình distributed tracing, metrics và logs OpenTelemetry.",
+    "telemetrySaved": "Đã lưu cấu hình telemetry",
+    "telemetrySaveFailed": "Không lưu được cấu hình telemetry",
+    "otelEnabled": "Bật OpenTelemetry",
+    "otelExporter": "Exporter",
+    "otelEndpoint": "Collector Endpoint",
+    "otelEndpointInsecure": "Không bảo mật (không TLS)",
+    "otelHeaders": "Auth Headers",
+    "otelHeadersHint": "Các cặp key=value cách nhau bằng dấu phẩy",
+    "otelTracesEnabled": "Traces",
+    "otelMetricsEnabled": "Metrics",
+    "otelLogsEnabled": "Logs",
+    "otelTraceSampler": "Sampler",
+    "otelSampleRate": "Tỉ lệ lấy mẫu",
+    "otelSampleRateHint": "0.0 – 1.0, dùng với traceid_ratio",
+    "otelMetricsInterval": "Chu kỳ xuất metrics (ms)",
+    "otelInstrumentLangchain": "Instrument LangChain / LangGraph",
+    "otelInstrumentOpenAIAgents": "Instrument OpenAI Agents SDK",
+    "otelPropagation": "Propagators",
+    "otelPropagationHint": "Cách nhau bằng dấu phẩy: tracecontext,baggage"
   },
   "pluginDetail": {
     "title": "Chi tiết plugin",
@@ -1059,6 +1082,27 @@
       "compatSection": {
         "title": "Tương thích nhà cung cấp",
         "intro": "Mỗi framework hoạt động với một tập nhà cung cấp LLM khác nhau. Provider được cấu hình trong LLM Config của bạn và phải tương thích với framework đã chọn."
+      },
+      "techSection": {
+        "title": "Tham chiếu Đăng ký & Factory",
+        "factory": {
+          "title": "Chữ ký Đăng ký Backend",
+          "frameworkType":         "Định danh chuỗi cho framework, ví dụ: langgraph hoặc google_adk.",
+          "mode":                  "Chế độ điều phối mà đăng ký áp dụng, ví dụ: supervisor.",
+          "adapterClass":          "Class điều chỉnh runner gốc của framework sang mô hình plugin và cài đặt của Cadence.",
+          "orchestratorClass":     "Class cấp cao nhất xây dựng pipeline đồ thị/agent và hiển thị giao diện run.",
+          "streamingWrapperClass": "Bọc đầu ra streaming gốc của framework thành các sự kiện SSE của Cadence.",
+          "registryNote":          "Factory tra cứu (framework_type, mode) tại thời điểm tạo orchestrator. Các cặp chưa đăng ký sẽ tạo ra UnsupportedBackendError."
+        },
+        "streaming": {
+          "title": "Nội bộ Streaming Framework",
+          "langraph": "LangGraph: streaming qua .astream_events() trên đồ thị đã biên dịch. Mỗi sự kiện được phát ra được ánh xạ đến một loại sự kiện SSE.",
+          "adk":      "Google ADK: không có gọi công cụ song song gốc. Các sự kiện được tạo ra từ ADK runner và được ánh xạ riêng lẻ thành sự kiện SSE."
+        },
+        "endpoints": {
+          "title": "API Khám phá Framework",
+          "list": { "desc": "Trả về danh sách các cặp (framework, mode) đã đăng ký và trạng thái triển khai của chúng." }
+        }
       }
     },
     "modes": {
@@ -1087,6 +1131,28 @@
       "faq3": {
         "question": "Sau khi tạo có đổi mode được không?",
         "answer": "Không. Framework và mode là bất biến sau khi orchestrator được tạo. Muốn đổi mode thì hãy clone orchestrator và chọn mode khác."
+      },
+      "techSection": {
+        "title": "Tham chiếu Cấu hình Chế độ",
+        "supervisorConfig": {
+          "title": "Trường Cấu hình SupervisorMode",
+          "maxAgentHops":       "Số lượng chu kỳ planner→executor tối đa trước khi supervisor buộc trả lời cuối cùng.",
+          "parallelToolCalls":  "Cho phép planner gọi nhiều công cụ trong một lượt LLM.",
+          "llmValidation":      "Chạy thêm một lượt LLM để xác thực đầu ra synthesizer trước khi trả về.",
+          "autoCompact":        "Tự động nén trạng thái đồ thị khi vượt quá cửa sổ ngữ cảnh model.",
+          "nodeTimeout":        "Thời gian chờ wall-clock thực thi theo từng node tính bằng giây. Áp dụng cho tất cả node trừ khi bị ghi đè.",
+          "nodeOverridesNote":  "Ghi đè theo từng node được hỗ trợ cho tất cả bảy node Supervisor:",
+          "nodeOverridesFields": "Mỗi node chấp nhận: llm_config_id, model_name, prompt, temperature, max_tokens, timeout."
+        },
+        "groundedConfig": {
+          "title": "Trường Cấu hình GroundedMode",
+          "scopeRules":        "Quy tắc ngôn ngữ tự nhiên mà validator dùng để kiểm tra rằng phản hồi luôn đúng chủ đề.",
+          "scopeRulesDefault": "auto",
+          "maxToolRounds":     "Số lượng vòng gọi công cụ tối đa trước khi agent phải đưa ra câu trả lời cuối cùng.",
+          "enabledValidator":  "Chạy LLM scope-validator trước khi trả về mỗi phản hồi.",
+          "nodeTimeout":       "Thời gian chờ wall-clock tính bằng giây cho node Processor duy nhất.",
+          "stateNote":         "Chế độ Grounded theo dõi trạng thái theo phiên: thread_id, resource_id, anchor_context, context_loaded, context_was_fresh."
+        }
       }
     },
     "plugins": {
@@ -1249,6 +1315,25 @@
       "faq3": {
         "question": "Central Point trong ngữ cảnh chat là gì?",
         "answer": "Central Point là một endpoint tên ổn định mà bạn có thể gán cho orchestrator. Client gửi tin nhắn tới central point ID; bạn có thể thay orchestrator phía sau mà không cần sửa code phía client."
+      },
+      "techSection": {
+        "title": "Tham chiếu Streaming & API",
+        "intro": "Chat sử dụng Server-Sent Events (SSE). Mỗi sự kiện theo định dạng wire dưới đây. Kết nối duy trì mở cho đến khi trợ lý hoàn thành hoặc xảy ra lỗi.",
+        "wireFormat": "event: {type}\\ndata: {json}\\n\\n",
+        "events": {
+          "title": "Loại sự kiện SSE",
+          "agent":      { "desc": "Cập nhật tiến trình thực thi node — bao gồm khóa hiển thị (i18n), phần trăm tiến trình và nhãn dự phòng.", "fields": "key, progress, fallback" },
+          "message":    { "desc": "Đoạn token (hoặc nội dung đầy đủ) từ node streaming token. role luôn là assistant.", "fields": "role, content, node" },
+          "tool":       { "desc": "Đầu ra công cụ thô được stream trực tiếp trước khi synthesizer chạy. Bao gồm ID plugin gọi.", "fields": "tool_name, plugin_id, data" },
+          "suggestion": { "desc": "Đoạn câu hỏi tiếp theo được tạo sau khi phản hồi chính hoàn thành.", "fields": "content (chunk)" },
+          "metadata":   { "desc": "Siêu dữ liệu phiên và định tuyến. Gửi một lần khi bắt đầu stream.", "fields": "session_id, orchestrator_id" }
+        },
+        "endpoints": {
+          "title": "Endpoint Chat",
+          "direct":       { "desc": "Chat trực tiếp với orchestrator. Yêu cầu vai trò org_admin hoặc member trong org đó." },
+          "centralPoint": { "desc": "Chat qua Central Point. Không cần xác thực nếu central point là public; cần Bearer token nếu private." }
+        },
+        "streamingNodes": "Các node token-streaming trong chế độ Supervisor: Synthesizer, Clarifier, Responder, ErrorHandler. Trong chế độ Grounded: Processor."
       }
     },
     "llmConfigs": {
@@ -1271,6 +1356,35 @@
       "faq3": {
         "question": "Các orchestrator khác nhau có thể dùng config LLM khác nhau không?",
         "answer": "Có. Mỗi orchestrator có thể chọn config LLM riêng. Trong chế độ Supervisor bạn còn có thể override config và model theo từng node để kiểm soát chi tiết hơn."
+      },
+      "techSection": {
+        "title": "Tham chiếu Provider & API",
+        "providers": {
+          "title": "Provider được hỗ trợ",
+          "openai":     { "note": "Khóa API tương thích OpenAI tiêu chuẩn. Không cần cấu hình thêm." },
+          "anthropic":  { "note": "Khóa API Anthropic. Hỗ trợ các dòng model claude-*." },
+          "google":     { "note": "Khóa Google AI Studio. Hỗ trợ các model gemini-*." },
+          "groq":       { "note": "Khóa API Groq. Inference nhanh qua groq.com." },
+          "azure":      { "note": "Yêu cầu additional_config: deployment_id và api_version." },
+          "litellm":    { "note": "Proxy bất kỳ provider nào qua LiteLLM. Yêu cầu additional_config: model_prefix hoặc base_url tùy chỉnh." },
+          "tensorzero": { "note": "Cổng TensorZero. Cấu hình base_url trỏ đến cổng của bạn." },
+          "bifrost":    { "note": "Proxy Bifrost. Cấu hình base_url trỏ đến instance Bifrost của bạn." }
+        },
+        "fields": {
+          "title": "Trường cấu hình đáng chú ý",
+          "isEnabled":        { "desc": "Khi false, cấu hình bị ẩn khỏi orchestrator mới nhưng các tham chiếu runtime hiện có vẫn hoạt động." },
+          "additionalConfig": { "desc": "Cài đặt bổ sung dành riêng cho provider. Azure yêu cầu deployment_id và api_version. LiteLLM yêu cầu model_prefix." },
+          "baseUrl":          { "desc": "Ghi đè URL cơ sở API mặc định của provider. Bắt buộc cho các cổng tự lưu trữ (LiteLLM, Bifrost, TensorZero)." }
+        },
+        "lifecycleNote": "Xóa mềm bị chặn khi có orchestrator đang hoạt động nào đó giữ tham chiếu runtime đến cấu hình này.",
+        "endpoints": {
+          "title": "API Cấu hình LLM",
+          "list":   { "desc": "Liệt kê tất cả cấu hình LLM cho org." },
+          "create": { "desc": "Tạo cấu hình LLM mới. Provider và khóa API là bắt buộc." },
+          "update": { "desc": "Vá một hoặc nhiều trường trên cấu hình hiện có." },
+          "delete": { "desc": "Xóa mềm cấu hình. Bị chặn nếu có orchestrator đang hoạt động tham chiếu đến nó." },
+          "models": { "desc": "Lấy danh mục model cho một provider. Dùng để điền vào bộ chọn model trong UI." }
+        }
       }
     },
     "centralPoints": {
@@ -1296,6 +1410,26 @@
       },
       "faqSection": {
         "title": "Câu hỏi thường gặp"
+      },
+      "techSection": {
+        "title": "Tham chiếu API & Truy cập",
+        "endpoints": {
+          "title": "Endpoint Chat",
+          "chat": { "desc": "Endpoint SSE streaming. Cùng định dạng tin nhắn với chat orchestrator trực tiếp. Phản hồi với cùng loại sự kiện SSE." }
+        },
+        "headers": {
+          "title": "Header Yêu cầu",
+          "centralId":     "ID ổn định của central point. Bắt buộc trên tất cả yêu cầu.",
+          "orgId":         "Org mà central point này thuộc về. Bắt buộc trên tất cả yêu cầu.",
+          "authorization": "Bearer token. Bắt buộc khi visibility là private. Bỏ qua cho central point public."
+        },
+        "visibility": {
+          "title": "Chế độ Hiển thị",
+          "public":  "Không cần xác thực. Bất kỳ người gọi nào có URL endpoint đều có thể gửi tin nhắn. Phù hợp cho nhúng và demo.",
+          "private": "Yêu cầu Authorization: Bearer {token} từ thành viên org. Phù hợp cho công cụ nội bộ và truy cập hạn chế."
+        },
+        "statusNote": "Central point không hoạt động trả về HTTP 404 cho tất cả người gọi bất kể cài đặt visibility.",
+        "tierNote": "Central point là tính năng bậc Pro+. Việc tạo bị chặn khi hạn ngạch max_central_points của org đạt đến giới hạn."
       },
       "useCasesSection": {
         "title": "Bạn có thể làm gì với Central Point",
@@ -1347,6 +1481,26 @@
       "faq3": {
         "question": "Nếu mình ở trong org nhưng không phải admin thì sao?",
         "answer": "Bạn sẽ có vai trò Member, nghĩa là chỉ được vào Chat. Các phần orchestrator, plugin, settings và công cụ admin sẽ không hiện."
+      },
+      "techSection": {
+        "title": "Tham chiếu Cô lập Dữ liệu & Hạn ngạch",
+        "isolation": {
+          "title": "Tài nguyên Cô lập theo Org",
+          "llmConfigs":     "Khóa API và cấu hình provider chỉ thuộc phạm vi org này.",
+          "plugins":        "Gói plugin được tải lên không được chia sẻ giữa các org.",
+          "orchestrators":  "Định nghĩa orchestrator và các instance pool của chúng thuộc org này.",
+          "centralPoints":  "ID central point là duy nhất trong org; không có định tuyến xuyên org.",
+          "members":        "Việc phân công thành viên và vai trò theo từng org. Người dùng có thể là thành viên của nhiều org."
+        },
+        "quotas": {
+          "title": "Trường Hạn ngạch Đăng ký",
+          "maxOrchestrators": "Số lượng orchestrator tối đa được phép trong org này. Được áp dụng tại thời điểm tạo.",
+          "maxCentralPoints": "Số lượng central point tối đa. Yêu cầu gói Pro+.",
+          "maxPlugins":       "Số lượng gói plugin được tải lên tối đa.",
+          "maxMembers":       "Số lượng thành viên tối đa trong org này."
+        },
+        "membershipNote": "Người dùng có thể thuộc nhiều org cùng lúc. Kiểm tra vai trò luôn được đánh giá theo org cụ thể của yêu cầu.",
+        "slugNote": "Slug org được dùng trong định tuyến UI và không thể thay đổi sau khi tạo."
       }
     },
     "roles": {
@@ -1369,6 +1523,33 @@
       "faq3": {
         "question": "Member làm được gì?",
         "answer": "Member chỉ có thể dùng trang Chat. Họ không thấy orchestrator, plugin hay settings. Họ chat qua các orchestrator hoặc central point đang hiển thị trong org."
+      },
+      "techSection": {
+        "title": "Tham chiếu Quyền hạn",
+        "intro": "Mỗi vai trò ánh xạ đến một tập quyền cố định. Vai trò được gán ở cấp thành viên org, không phải cấp người dùng.",
+        "matrix": {
+          "systemAdmin": {
+            "scope": "Toàn nền tảng",
+            "perm1": "Tạo và xóa bất kỳ tổ chức nào",
+            "perm2": "Quản lý tất cả người dùng trên tất cả org; gán hoặc thu hồi system_admin",
+            "perm3": "Đọc và ghi cài đặt toàn cục (hạn ngạch, danh mục model, feature flags)",
+            "perm4": "Xóa dữ liệu org và xóa buộc orchestrator"
+          },
+          "orgAdmin": {
+            "scope": "Chỉ org của mình",
+            "perm1": "Mời và xóa thành viên org; gán vai trò org_admin hoặc member",
+            "perm2": "Quản lý cấu hình LLM, plugin, orchestrator và central point",
+            "perm3": "Đọc cài đặt cấp org và mức sử dụng hạn ngạch",
+            "perm4": "Không thể truy cập org khác hoặc cài đặt cấp nền tảng"
+          },
+          "member": {
+            "scope": "Chỉ org của mình — chỉ đọc và chat",
+            "perm1": "Gửi tin nhắn đến bất kỳ orchestrator đang hoạt động trong org",
+            "perm2": "Truy cập central point public không cần xác thực; truy cập central point private cần Bearer token"
+          }
+        },
+        "crossOrgNote": "Người dùng có thể giữ các vai trò khác nhau trong các org khác nhau cùng lúc — ví dụ: org_admin trong Org A và member trong Org B.",
+        "platformNote": "system_admin là thuộc tính cấp nền tảng, không được phạm vi cho bất kỳ org đơn lẻ nào."
       }
     },
     "admin": {
@@ -1391,6 +1572,32 @@
       "faq3": {
         "question": "Global Settings là gì?",
         "answer": "Global Settings là các mặc định toàn nền tảng: quota theo gói thuê bao, catalog model theo nhà cung cấp LLM và feature flag (hành vi pool, cache, giới hạn tốc độ, v.v.). Một số cài đặt có thể được org admin ghi đè theo từng tổ chức."
+      },
+      "techSection": {
+        "title": "Tham chiếu Cài đặt Toàn cục & Sức khỏe",
+        "globalSettings": {
+          "title": "Trường Cài đặt Toàn cục",
+          "maxOrgs":      "Số lượng tổ chức tối đa có thể được tạo trên nền tảng này.",
+          "defaultTier":  "Bậc pool mặc định được gán cho orchestrator mới. Một trong hot, warm, cold.",
+          "hotQuota":     "Tổng số slot pool bậc Hot có sẵn trên toàn nền tảng.",
+          "warmQuota":    "Tổng số slot pool bậc Warm có sẵn trên toàn nền tảng.",
+          "coldQuota":    "Tổng số slot pool bậc Cold có sẵn trên toàn nền tảng.",
+          "modelCatalog": "Danh sách cho phép tên model mà quản trị viên org được phép cấu hình. Danh sách rỗng có nghĩa là không bị hạn chế.",
+          "featureFlags": "Cờ khóa-giá trị để bật các tính năng thử nghiệm hoặc bị hạn chế trên toàn nền tảng."
+        },
+        "health": {
+          "title": "Dịch vụ Kiểm tra Sức khỏe",
+          "postgresql": "Kho lưu trữ quan hệ chính. Báo cáo trạng thái và độ trễ truy vấn.",
+          "redis":      "Trạng thái pool và bộ nhớ đệm phiên. Báo cáo trạng thái và độ trễ ping.",
+          "mongodb":    "Lịch sử cuộc hội thoại và kho lưu trữ tài liệu. Báo cáo trạng thái và độ trễ khứ hồi."
+        },
+        "pool": {
+          "title": "Định nghĩa Bậc Pool",
+          "hot":        "Được tải đầy đủ vào bộ nhớ. Độ trễ khởi động lạnh bằng không. Chi phí bộ nhớ cao nhất.",
+          "warm":       "Được khởi tạo một phần. Khởi động dưới một giây cho yêu cầu đầu tiên.",
+          "cold":       "Chỉ lưu trữ cấu hình. Tải đầy đủ cho yêu cầu đầu tiên; độ trễ cao nhất.",
+          "memoryNote": "Bảng thống kê pool hiển thị số lượng thực tế theo từng bậc và số liệu ước tính mức sử dụng bộ nhớ cho các instance Hot và Warm."
+        }
       }
     },
     "changelog": {

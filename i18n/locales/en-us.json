@@ -100,6 +100,7 @@
     "globalSettings": "Global",
     "pool": "Pool",
     "health": "Health",
+    "telemetry": "Telemetry",
     "about": "About"
   },
   "userMenu": {
@@ -533,7 +534,29 @@
     "aliasesDescription": "Comma-separated list of alternative identifiers",
     "modelIdPlaceholder": "e.g. gpt-4o-mini",
     "displayNamePlaceholder": "e.g. GPT-4o Mini",
-    "aliasesPlaceholder": "gpt-4o-mini-2024-07-18, ..."
+    "aliasesPlaceholder": "gpt-4o-mini-2024-07-18, ...",
+    "telemetry": "Telemetry",
+    "telemetryConfig": "Telemetry Configuration",
+    "telemetryConfigDescription": "Configure OpenTelemetry distributed tracing, metrics, and logs.",
+    "telemetrySaved": "Telemetry configuration saved",
+    "telemetrySaveFailed": "Failed to save telemetry configuration",
+    "otelEnabled": "Enable OpenTelemetry",
+    "otelExporter": "Exporter",
+    "otelEndpoint": "Collector Endpoint",
+    "otelEndpointInsecure": "Insecure (no TLS)",
+    "otelHeaders": "Auth Headers",
+    "otelHeadersHint": "Comma-separated key=value pairs",
+    "otelTracesEnabled": "Traces",
+    "otelMetricsEnabled": "Metrics",
+    "otelLogsEnabled": "Logs",
+    "otelTraceSampler": "Sampler",
+    "otelSampleRate": "Sample Rate",
+    "otelSampleRateHint": "0.0 – 1.0, used with traceid_ratio",
+    "otelMetricsInterval": "Metrics Export Interval (ms)",
+    "otelInstrumentLangchain": "Instrument LangChain / LangGraph",
+    "otelInstrumentOpenAIAgents": "Instrument OpenAI Agents SDK",
+    "otelPropagation": "Propagators",
+    "otelPropagationHint": "Comma-separated: tracecontext,baggage"
   },
   "pluginDetail": {
     "title": "Plugin Detail",
@@ -1095,6 +1118,27 @@
       "compatSection": {
         "title": "Provider Compatibility",
         "intro": "Each framework works with a specific set of LLM providers. The provider is configured in your LLM Config and must be compatible with the framework you select."
+      },
+      "techSection": {
+        "title": "Registration & Factory Reference",
+        "factory": {
+          "title": "Backend Registration Signature",
+          "frameworkType":         "String identifier for the framework, e.g. langgraph or google_adk.",
+          "mode":                  "Orchestration mode the registration applies to, e.g. supervisor.",
+          "adapterClass":          "Class that adapts the framework-native runner to Cadence's plugin and settings model.",
+          "orchestratorClass":     "Top-level class that builds the graph/agent pipeline and exposes the run interface.",
+          "streamingWrapperClass": "Wraps the framework's native streaming output into Cadence SSE events.",
+          "registryNote":          "The factory looks up (framework_type, mode) at orchestrator creation time. Unregistered pairs raise an UnsupportedBackendError."
+        },
+        "streaming": {
+          "title": "Framework Streaming Internals",
+          "langraph": "LangGraph: streaming via .astream_events() on the compiled graph. Each emitted event is mapped to an SSE event type.",
+          "adk":      "Google ADK: no native parallel tool calls. Events are yielded from the ADK runner and mapped individually to SSE events."
+        },
+        "endpoints": {
+          "title": "Framework Discovery API",
+          "list": { "desc": "Returns the list of registered (framework, mode) pairs and their implementation status." }
+        }
       }
     },
     "modes": {
@@ -1123,6 +1167,28 @@
       "faq3": {
         "question": "Can I change the mode after creation?",
         "answer": "No. The framework and mode are immutable after an orchestrator is created. To change mode, clone the orchestrator and select a different mode."
+      },
+      "techSection": {
+        "title": "Mode Configuration Reference",
+        "supervisorConfig": {
+          "title": "SupervisorMode Config Fields",
+          "maxAgentHops":       "Maximum number of planner→executor cycles before the supervisor forces a final answer.",
+          "parallelToolCalls":  "Allow the planner to call multiple tools in a single LLM round-trip.",
+          "llmValidation":      "Run an extra LLM pass to validate the synthesizer output before returning it.",
+          "autoCompact":        "Automatically compact the graph state when it exceeds the model context window.",
+          "nodeTimeout":        "Per-node execution wall-clock timeout in seconds. Applies to all nodes unless overridden.",
+          "nodeOverridesNote":  "Per-node overrides are supported for all seven Supervisor nodes:",
+          "nodeOverridesFields": "Each node accepts: llm_config_id, model_name, prompt, temperature, max_tokens, timeout."
+        },
+        "groundedConfig": {
+          "title": "GroundedMode Config Fields",
+          "scopeRules":        "Natural-language rules the validator uses to check that responses stay on-topic.",
+          "scopeRulesDefault": "auto",
+          "maxToolRounds":     "Maximum number of tool-call rounds before the agent must produce a final answer.",
+          "enabledValidator":  "Run the LLM scope-validator before returning each response.",
+          "nodeTimeout":       "Wall-clock timeout in seconds for the single Processor node.",
+          "stateNote":         "Grounded mode tracks per-session state: thread_id, resource_id, anchor_context, context_loaded, context_was_fresh."
+        }
       }
     },
     "plugins": {
@@ -1285,6 +1351,25 @@
       "faq3": {
         "question": "What is a Central Point in chat context?",
         "answer": "A Central Point is a stable named endpoint you can assign to an orchestrator. Clients send messages to the central point ID; you can swap orchestrators behind it without changing client code."
+      },
+      "techSection": {
+        "title": "Streaming & API Reference",
+        "intro": "Chat uses Server-Sent Events (SSE). Each event follows the wire format below. The connection stays open until the assistant finishes or an error occurs.",
+        "wireFormat": "event: {type}\\ndata: {json}\\n\\n",
+        "events": {
+          "title": "SSE Event Types",
+          "agent":      { "desc": "Node execution progress update — includes a display key (i18n), progress percentage, and fallback label.", "fields": "key, progress, fallback" },
+          "message":    { "desc": "Token chunk (or full content) from a token-streaming node. role is always assistant.", "fields": "role, content, node" },
+          "tool":       { "desc": "Raw tool output streamed directly before the synthesizer runs. Includes the calling plugin ID.", "fields": "tool_name, plugin_id, data" },
+          "suggestion": { "desc": "Follow-up question chunk generated after the main response completes.", "fields": "content (chunk)" },
+          "metadata":   { "desc": "Session and routing metadata. Sent once at the start of the stream.", "fields": "session_id, orchestrator_id" }
+        },
+        "endpoints": {
+          "title": "Chat Endpoints",
+          "direct":       { "desc": "Direct orchestrator chat. Requires org_admin or member role in that org." },
+          "centralPoint": { "desc": "Chat via a Central Point. No auth required if the central point is public; Bearer token required if private." }
+        },
+        "streamingNodes": "Token-streaming nodes in Supervisor mode: Synthesizer, Clarifier, Responder, ErrorHandler. In Grounded mode: Processor."
       }
     },
     "llmConfigs": {
@@ -1307,6 +1392,35 @@
       "faq3": {
         "question": "Can different orchestrators use different LLM configs?",
         "answer": "Yes. Each orchestrator selects its own LLM config. In Supervisor mode you can also override the config and model per-node for fine-grained control."
+      },
+      "techSection": {
+        "title": "Provider & API Reference",
+        "providers": {
+          "title": "Supported Providers",
+          "openai":     { "note": "Standard OpenAI-compatible API key. No additional config required." },
+          "anthropic":  { "note": "Anthropic API key. Supports claude-* model families." },
+          "google":     { "note": "Google AI Studio key. Supports gemini-* models." },
+          "groq":       { "note": "Groq API key. Fast inference via groq.com." },
+          "azure":      { "note": "Requires additional_config: deployment_id and api_version." },
+          "litellm":    { "note": "Proxy any provider via LiteLLM. Requires additional_config: model_prefix or custom base_url." },
+          "tensorzero": { "note": "TensorZero gateway. Configure base_url to point to your gateway." },
+          "bifrost":    { "note": "Bifrost proxy. Configure base_url to point to your Bifrost instance." }
+        },
+        "fields": {
+          "title": "Notable Config Fields",
+          "isEnabled":        { "desc": "When false, the config is hidden from new orchestrators but existing runtime references remain active." },
+          "additionalConfig": { "desc": "Provider-specific extra settings. Azure requires deployment_id and api_version. LiteLLM requires model_prefix." },
+          "baseUrl":          { "desc": "Override the provider's default API base URL. Required for self-hosted gateways (LiteLLM, Bifrost, TensorZero)." }
+        },
+        "lifecycleNote": "Soft-delete is blocked while any active orchestrator holds a runtime reference to the config.",
+        "endpoints": {
+          "title": "LLM Config API",
+          "list":   { "desc": "List all LLM configs for the org." },
+          "create": { "desc": "Create a new LLM config. Provider and API key are required." },
+          "update": { "desc": "Patch one or more fields on an existing config." },
+          "delete": { "desc": "Soft-delete a config. Blocked if an active orchestrator references it." },
+          "models": { "desc": "Fetch the model catalog for a provider. Used to populate the model picker in the UI." }
+        }
       }
     },
     "centralPoints": {
@@ -1332,6 +1446,26 @@
       },
       "faqSection": {
         "title": "Frequently Asked Questions"
+      },
+      "techSection": {
+        "title": "API & Access Reference",
+        "endpoints": {
+          "title": "Chat Endpoint",
+          "chat": { "desc": "Streaming SSE endpoint. Same message format as direct orchestrator chat. Responds with the same SSE event types." }
+        },
+        "headers": {
+          "title": "Request Headers",
+          "centralId":     "The stable ID of the central point. Required on all requests.",
+          "orgId":         "The org this central point belongs to. Required on all requests.",
+          "authorization": "Bearer token. Required when visibility is private. Omit for public central points."
+        },
+        "visibility": {
+          "title": "Visibility Modes",
+          "public":  "No authentication required. Any caller with the endpoint URL can send messages. Suitable for embeds and demos.",
+          "private": "Requires Authorization: Bearer {token} from an org member. Suitable for internal tools and restricted access."
+        },
+        "statusNote": "Inactive central points return HTTP 404 to all callers regardless of visibility setting.",
+        "tierNote": "Central points are a Pro+ tier feature. Creation is blocked when the org's max_central_points quota is reached."
       },
       "useCasesSection": {
         "title": "What You Can Do With Central Points",
@@ -1383,6 +1517,26 @@
       "faq3": {
         "question": "What happens if I am in an org but not an admin?",
         "answer": "You get the Member role, which grants access to Chat only. Orchestrators, plugins, settings, and admin tools are not visible."
+      },
+      "techSection": {
+        "title": "Data Isolation & Quota Reference",
+        "isolation": {
+          "title": "Per-Org Isolated Resources",
+          "llmConfigs":     "API keys and provider configurations are scoped to this org only.",
+          "plugins":        "Uploaded plugin packages are not shared across orgs.",
+          "orchestrators":  "Orchestrator definitions and their pool instances belong to this org.",
+          "centralPoints":  "Central point IDs are unique within an org; no cross-org routing.",
+          "members":        "Membership and role assignments are per-org. A user may be a member of multiple orgs."
+        },
+        "quotas": {
+          "title": "Subscription Quota Fields",
+          "maxOrchestrators": "Maximum number of orchestrators allowed in this org. Enforced at creation time.",
+          "maxCentralPoints": "Maximum number of central points. Requires Pro+ tier.",
+          "maxPlugins":       "Maximum number of uploaded plugin packages.",
+          "maxMembers":       "Maximum number of members in this org."
+        },
+        "membershipNote": "A user can belong to multiple orgs simultaneously. Role checks are always evaluated against the specific org of the request.",
+        "slugNote": "The org slug is used in UI routing and cannot be changed after creation."
       }
     },
     "roles": {
@@ -1405,6 +1559,33 @@
       "faq3": {
         "question": "What can a Member do?",
         "answer": "Members can only access the Chat page. They cannot see orchestrators, plugins, or settings. They chat via loaded orchestrators or central points visible to their org."
+      },
+      "techSection": {
+        "title": "Permission Reference",
+        "intro": "Each role maps to a fixed permission set. Roles are assigned at the org membership level, not at the user level.",
+        "matrix": {
+          "systemAdmin": {
+            "scope": "Platform-wide",
+            "perm1": "Create and delete any organization",
+            "perm2": "Manage all users across all orgs; assign or revoke system_admin",
+            "perm3": "Read and write global settings (quotas, model catalog, feature flags)",
+            "perm4": "Purge org data and force-delete orchestrators"
+          },
+          "orgAdmin": {
+            "scope": "Own org only",
+            "perm1": "Invite and remove org members; assign org_admin or member role",
+            "perm2": "Manage LLM configs, plugins, orchestrators, and central points",
+            "perm3": "Read org-level settings and quota usage",
+            "perm4": "Cannot access other orgs or platform-level settings"
+          },
+          "member": {
+            "scope": "Own org — read and chat only",
+            "perm1": "Send messages to any active orchestrator in the org",
+            "perm2": "Access public central points without auth; access private central points with Bearer token"
+          }
+        },
+        "crossOrgNote": "A user can hold different roles in different orgs simultaneously — e.g., org_admin in Org A and member in Org B.",
+        "platformNote": "system_admin is a platform-level attribute, not scoped to any single org."
       }
     },
     "admin": {
@@ -1427,6 +1608,32 @@
       "faq3": {
         "question": "What are Global Settings?",
         "answer": "Global Settings are platform-wide defaults: subscription tier quotas, LLM provider model catalogs, and feature flags (pool behavior, caching, rate limiting, etc.). Some settings can be overridden per-organization by org admins."
+      },
+      "techSection": {
+        "title": "Global Settings & Health Reference",
+        "globalSettings": {
+          "title": "Global Settings Fields",
+          "maxOrgs":      "Maximum number of organizations that can be created on this platform.",
+          "defaultTier":  "Default pool tier assigned to new orchestrators. One of hot, warm, cold.",
+          "hotQuota":     "Total number of Hot-tier pool slots available across the platform.",
+          "warmQuota":    "Total number of Warm-tier pool slots available across the platform.",
+          "coldQuota":    "Total number of Cold-tier pool slots available across the platform.",
+          "modelCatalog": "Allowlist of model names that org admins are permitted to configure. Empty list means unrestricted.",
+          "featureFlags": "Key-value flags for enabling experimental or gated features platform-wide."
+        },
+        "health": {
+          "title": "Health Check Services",
+          "postgresql": "Primary relational store. Reports status and query latency.",
+          "redis":      "Pool state and session cache. Reports status and ping latency.",
+          "mongodb":    "Conversation history and document store. Reports status and round-trip latency."
+        },
+        "pool": {
+          "title": "Pool Tier Definitions",
+          "hot":        "Fully loaded in memory. Zero cold-start latency. Highest memory cost.",
+          "warm":       "Partially initialized. Sub-second warm-up on first request.",
+          "cold":       "Config stored only. Full load on first request; highest latency.",
+          "memoryNote": "The pool stats panel shows real-time counts per tier and an estimated memory usage figure for Hot and Warm instances."
+        }
       }
     },
     "changelog": {
