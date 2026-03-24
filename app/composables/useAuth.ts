@@ -1,0 +1,152 @@
+import type { AboutMeResponse, AuthUser, BffAuthSetCookieResponse, OrgAccessResponse, OrgWithRoleResponse } from '~/types'
+import { COOKIE_SESSION_CONTEXT } from '~/constants'
+
+function mapOrgWithRoleToOrgAccess(org: OrgWithRoleResponse): OrgAccessResponse {
+  return {
+    org_id: org.org_id,
+    org_name: org.name,
+    role: org.role as OrgAccessResponse['role'],
+    display_name: org.display_name,
+    domain: org.domain,
+    tier: org.tier
+  }
+}
+
+// useRequestFetch is required for cookie-forwarding during SSR
+export const useAuth = () => {
+  const router = useRouter()
+  const apiFetch = useRequestFetch()
+
+  const authUser = useState<AuthUser | null>('auth:user', () => null)
+  const orgList = useState<OrgAccessResponse[]>('auth:orgs', () => [])
+  const isSysAdmin = useState<boolean>('auth:is_sys_admin', () => false)
+  const currentOrgId = useCookie<string | null>(COOKIE_SESSION_CONTEXT, { default: () => null })
+
+  const currentOrg = computed<OrgAccessResponse | null>(() => {
+    if (!currentOrgId.value) return null
+    return orgList.value.find((o) => o.org_id === currentOrgId.value) ?? null
+  })
+
+  const isAuthenticated = computed(() => !!authUser.value)
+
+  const isOrgAdmin = computed(() => currentOrg.value?.role === 'org_admin')
+
+  const isAdmin = computed(() => isOrgAdmin.value || isSysAdmin.value)
+
+  async function loadUserContext(username: string): Promise<void> {
+    authUser.value = { username }
+    await Promise.all([loadMe(), loadOrgs()])
+    if (isSysAdmin.value) currentOrgId.value = null
+  }
+
+  /** Password sign-in via Nuxt BFF OAuth2 password grant (no raw JWT in the response). */
+  async function login(username: string, password: string): Promise<boolean> {
+    const response = await $fetch<BffAuthSetCookieResponse>('/api/auth/login', {
+      method: 'POST',
+      body: { username, password }
+    })
+    if (response.token === '[set]') {
+      await loadUserContext(username)
+      return true
+    }
+    return false
+  }
+
+  /** Refresh session via BFF → `POST /oauth2/token` (refresh_token grant); cookies updated server-side. */
+  async function refresh(): Promise<boolean> {
+    try {
+      const response = await $fetch<BffAuthSetCookieResponse>('/api/auth/refresh', {
+        method: 'POST',
+        body: {}
+      })
+      if (response.token === '[set]') {
+        authUser.value = null
+        await restoreSession()
+        return true
+      }
+    } catch {
+      await logout()
+      return false
+    }
+    return false
+  }
+
+  function loginWithOAuth(provider: string): void {
+    window.location.href = `/api/oauth2/social/${provider}`
+  }
+
+  async function logout(): Promise<void> {
+    try {
+      await $fetch('/api/auth/logout', { method: 'DELETE' })
+    } catch {
+      /* ignore logout errors */
+    }
+    authUser.value = null
+    orgList.value = []
+    isSysAdmin.value = false
+    currentOrgId.value = null
+    await router.push('/login')
+  }
+
+  async function loadMe(): Promise<void> {
+    try {
+      const me = await apiFetch<AboutMeResponse>('/api/me')
+      isSysAdmin.value = me.is_sys_admin
+      if (authUser.value) {
+        if (me.username) authUser.value.username = me.username
+        authUser.value.display_name = me.display_name
+      }
+    } catch {
+      isSysAdmin.value = false
+    }
+  }
+
+  async function loadOrgs(): Promise<OrgAccessResponse[]> {
+    try {
+      const orgs = await apiFetch<OrgWithRoleResponse[]>('/api/orgs')
+      orgList.value = orgs.map(mapOrgWithRoleToOrgAccess)
+      return orgList.value
+    } catch {
+      orgList.value = []
+      return []
+    }
+  }
+
+  function selectOrg(orgId: string): void {
+    currentOrgId.value = orgId
+    router.push('/dashboard')
+  }
+
+  async function restoreSession(): Promise<void> {
+    if (authUser.value) return
+    try {
+      const [orgs, me] = await Promise.all([apiFetch<OrgWithRoleResponse[]>('/api/orgs'), apiFetch<AboutMeResponse>('/api/me')])
+      orgList.value = orgs.map(mapOrgWithRoleToOrgAccess)
+      isSysAdmin.value = me.is_sys_admin
+      authUser.value = { username: me.username ?? '', display_name: me.display_name }
+    } catch {
+      authUser.value = null
+      orgList.value = []
+      isSysAdmin.value = false
+    }
+  }
+
+  return {
+    authUser,
+    orgList,
+    currentOrg,
+    currentOrgId,
+    isAuthenticated,
+    isSysAdmin,
+    isOrgAdmin,
+    isAdmin,
+    login,
+    loginWithOAuth,
+    logout,
+    refresh,
+    loadMe,
+    loadOrgs,
+    selectOrg,
+    restoreSession
+  }
+}

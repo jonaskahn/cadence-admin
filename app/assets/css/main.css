@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300..900&display=swap');
+@import 'tailwindcss' theme(static);
+@import '@nuxt/ui';
+
+@theme static {
+  --font-sans: 'Geist', sans-serif;
+  --color-green-50: #effdf5;
+  --color-green-100: #d9fbe8;
+  --color-green-200: #b3f5d1;
+  --color-green-300: #75edae;
+  --color-green-400: #00dc82;
+  --color-green-500: #00c16a;
+  --color-green-600: #00a155;
+  --color-green-700: #007f45;
+  --color-green-800: #016538;
+  --color-green-900: #0a5331;
+  --color-green-950: #052e16;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+[data-part='root'].bg-default-muted,
+.ui-card {
+  border-radius: 1.25rem !important;
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.08),
+    0 2px 8px -2px rgba(0, 0, 0, 0.04);
+  transition:
+    box-shadow 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+    transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+:root.dark [data-part='root'].bg-default-muted,
+:root.dark .ui-card {
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.32),
+    0 2px 8px -2px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+button,
+a,
+[role='button'] {
+  transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
