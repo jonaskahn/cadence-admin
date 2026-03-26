@@ -69,7 +69,9 @@ const pluginTypeLabel = computed(() => {
   return types.length > 0 ? types.join(', ') : '—'
 })
 
-const storedSettingsSchema = computed(() => (selectedVersion.value as { settings_schema?: PluginSettingSchema[] })?.settings_schema ?? [])
+const storedSettingsSchema = computed(
+  () => (selectedVersion.value as { settings_schema?: PluginSettingSchema[] })?.settings_schema ?? []
+)
 
 const configRows = computed(() => {
   const versionDefaults =
@@ -194,7 +196,9 @@ async function enablePlugin() {
 }
 
 const canManage = computed(() => props.allowDisable)
-const isDisabled = computed(() => selectedVersion.value && 'enabled' in selectedVersion.value && selectedVersion.value.enabled === false)
+const isDisabled = computed(
+  () => selectedVersion.value && 'enabled' in selectedVersion.value && selectedVersion.value.enabled === false
+)
 
 async function handleEnableConfirm(close: () => void) {
   await enablePlugin()
@@ -234,7 +238,13 @@ async function handleDisableConfirm(close: () => void) {
               >
                 <img :alt="selectedVersion.name" :src="pluginAvatarSrc" class="size-full object-cover" />
               </div>
-              <UAvatar v-else :alt="selectedVersion.name" :text="pluginInitial" class="size-36 shrink-0 p-4" size="xl" />
+              <UAvatar
+                v-else
+                :alt="selectedVersion.name"
+                :text="pluginInitial"
+                class="size-36 shrink-0 p-4"
+                size="xl"
+              />
               <div class="min-w-0 flex-1">
                 <p class="font-medium text-dimmed text-xs mb-0.5">{{ t('pluginDetail.titleLabel') }}</p>
                 <p class="font-semibold">{{ selectedVersion.name }}</p>
@@ -251,7 +261,9 @@ async function handleDisableConfirm(close: () => void) {
                   class="w-28"
                 />
                 <div class="flex flex-wrap gap-1 mt-1">
-                  <UBadge v-if="selectedVersion.is_latest" color="success" size="xs" variant="subtle">{{ t('pluginDetail.latest') }}</UBadge>
+                  <UBadge v-if="selectedVersion.is_latest" color="success" size="xs" variant="subtle">{{
+                    t('pluginDetail.latest')
+                  }}</UBadge>
                   <UBadge
                     v-if="'enabled' in selectedVersion && selectedVersion.enabled !== undefined"
                     :color="selectedVersion.enabled ? 'success' : 'neutral'"
@@ -289,10 +301,20 @@ async function handleDisableConfirm(close: () => void) {
           <div class="text-sm">
             <p class="font-medium text-dimmed mb-1">{{ t('pluginDetail.capabilities') }}</p>
             <div
-              v-if="selectedVersion.capabilities && Array.isArray(selectedVersion.capabilities) && selectedVersion.capabilities.length > 0"
+              v-if="
+                selectedVersion.capabilities &&
+                Array.isArray(selectedVersion.capabilities) &&
+                selectedVersion.capabilities.length > 0
+              "
               class="flex flex-wrap gap-1"
             >
-              <UBadge v-for="cap in selectedVersion.capabilities" :key="String(cap)" color="info" size="md" variant="soft">
+              <UBadge
+                v-for="cap in selectedVersion.capabilities"
+                :key="String(cap)"
+                color="info"
+                size="md"
+                variant="soft"
+              >
                 {{ cap }}
               </UBadge>
             </div>
@@ -330,7 +352,12 @@ async function handleDisableConfirm(close: () => void) {
                 <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.enableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
                   <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                  <UButton color="primary" :label="t('pluginDetail.enable')" :loading="enabling" @click="handleEnableConfirm(close)" />
+                  <UButton
+                    color="primary"
+                    :label="t('pluginDetail.enable')"
+                    :loading="enabling"
+                    @click="handleEnableConfirm(close)"
+                  />
                 </div>
               </div>
             </template>
@@ -344,7 +371,12 @@ async function handleDisableConfirm(close: () => void) {
                 <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.disableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
                   <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                  <UButton color="error" :label="t('pluginDetail.disable')" :loading="disabling" @click="handleDisableConfirm(close)" />
+                  <UButton
+                    color="error"
+                    :label="t('pluginDetail.disable')"
+                    :loading="disabling"
+                    @click="handleDisableConfirm(close)"
+                  />
                 </div>
               </div>
             </template>

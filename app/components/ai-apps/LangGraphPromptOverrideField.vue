@@ -34,7 +34,9 @@ const defaultText = computed(() => defaultPrompts.value?.[props.promptKey] ?? ''
 const hasDefault = computed(() => defaultText.value.length > 0)
 const showPeek = ref(false)
 
-const peekTitle = computed(() => (showPeek.value ? t('langGraphSupervisor.hideDefaultPrompt') : t('langGraphSupervisor.viewDefaultPrompt')))
+const peekTitle = computed(() =>
+  showPeek.value ? t('langGraphSupervisor.hideDefaultPrompt') : t('langGraphSupervisor.viewDefaultPrompt')
+)
 
 async function copyDefaultPrompt() {
   const text = defaultText.value

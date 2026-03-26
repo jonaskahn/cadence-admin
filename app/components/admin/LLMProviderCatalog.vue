@@ -41,7 +41,10 @@ const categoryFilterItems = computed(() => [
 ])
 
 const filteredModels = computed(() => {
-  let list = selectedProvider.value === ALL_PROVIDERS ? models.value : models.value.filter((m) => m.provider === selectedProvider.value)
+  let list =
+    selectedProvider.value === ALL_PROVIDERS
+      ? models.value
+      : models.value.filter((m) => m.provider === selectedProvider.value)
   if (selectedCategory.value !== ALL_CATEGORIES) {
     list = list.filter((m) => m.model_category === selectedCategory.value)
   }
@@ -134,7 +137,12 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
         <USkeleton v-for="n in 6" :key="n" class="h-10 w-full" />
       </div>
 
-      <UTable v-else :columns="columns" :data="filteredModels" :empty-state="{ icon: 'i-lucide-database', label: t('admin.noModelsFound') }">
+      <UTable
+        v-else
+        :columns="columns"
+        :data="filteredModels"
+        :empty-state="{ icon: 'i-lucide-database', label: t('admin.noModelsFound') }"
+      >
         <template #provider-cell="{ row }">
           <UBadge color="neutral" variant="subtle">
             {{ providerLabel(row.original.provider) }}

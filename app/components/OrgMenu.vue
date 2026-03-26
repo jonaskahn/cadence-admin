@@ -61,7 +61,12 @@ const currentOrgName = computed(() => orgDisplayName(auth.currentOrg.value) || t
       <template v-if="!collapsed" #default>
         <div class="flex items-center gap-2 min-w-0 flex-1">
           <span class="truncate">{{ currentOrgName }}</span>
-          <UBadge v-if="auth.currentOrg.value?.tier" :color="subscriptionTierColor(auth.currentOrg.value.tier)" size="sm" variant="solid">
+          <UBadge
+            v-if="auth.currentOrg.value?.tier"
+            :color="subscriptionTierColor(auth.currentOrg.value.tier)"
+            size="sm"
+            variant="solid"
+          >
             {{ auth.currentOrg.value.tier.toUpperCase() }}
           </UBadge>
         </div>

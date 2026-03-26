@@ -63,7 +63,11 @@ function buildForwardHeaders(event: H3Event, token: string | undefined): Record<
   return headers
 }
 
-async function readRequestBody(event: H3Event, headers: Record<string, string>, method: string): Promise<BodyInit | undefined> {
+async function readRequestBody(
+  event: H3Event,
+  headers: Record<string, string>,
+  method: string
+): Promise<BodyInit | undefined> {
   if (!METHODS_WITH_BODY.has(method)) {
     return undefined
   }
@@ -93,7 +97,12 @@ function accessTokenFromOAuth2Response(data: OAuth2TokenSuccess): string | undef
   return data.access_token ?? data.token
 }
 
-async function handleLogin(event: H3Event, tokenUrl: string, clientId: string, body: BodyInit | undefined): Promise<{ token: string }> {
+async function handleLogin(
+  event: H3Event,
+  tokenUrl: string,
+  clientId: string,
+  body: BodyInit | undefined
+): Promise<{ token: string }> {
   const raw = typeof body === 'string' ? body : JSON.stringify(body ?? {})
   let username: string | undefined
   let password: string | undefined
@@ -249,7 +258,13 @@ async function handleOAuthCallback(event: H3Event, url: string, headers: Record<
   sendRedirect(event, '/org-select')
 }
 
-async function handleStreaming(event: H3Event, url: string, method: string, headers: Record<string, string>, body: BodyInit | undefined): Promise<unknown> {
+async function handleStreaming(
+  event: H3Event,
+  url: string,
+  method: string,
+  headers: Record<string, string>,
+  body: BodyInit | undefined
+): Promise<unknown> {
   const response = await fetch(url, { method, headers, body })
   if (!response.ok) {
     throw createError({ statusCode: response.status, message: 'Stream error' })

@@ -1089,7 +1089,29 @@
       "browsePlugins": "Browse & add more",
       "pluginSettings": "AI agent settings",
       "pluginConfiguration": "AI agent configuration",
-      "pluginConfigurationDesc": "Configure settings for each active AI agent."
+      "pluginConfigurationDesc": "Configure settings for each active AI agent.",
+      "steps": {
+        "setup": "Setup",
+        "orchestratorMode": "Orchestrator mode",
+        "plugins": "Plugins",
+        "features": "Features",
+        "review": "Review & create"
+      },
+      "next": "Next",
+      "back": "Back",
+      "reviewTitle": "Summary",
+      "reviewIdentity": "Identity",
+      "reviewPluginsCount": "{count} AI agent(s)",
+      "reviewMonitoringOn": "Enabled",
+      "reviewMonitoringOff": "Disabled",
+      "reviewSetupSection": "Setup",
+      "reviewOrchestratorSection": "Orchestrator mode",
+      "reviewPluginsSection": "Plugins",
+      "reviewFeaturesSection": "Features",
+      "reviewOrchestratorNA": "Not applicable for this mode",
+      "reviewPluginSource": "{source}",
+      "reviewFeaturesAdditional": "{count} additional feature(s) configured",
+      "reviewPluginsMore": "and {count} more"
     },
     "supervisor": {
       "nodeExecutionTimeout": "Node execution timeout (seconds)",
@@ -1109,6 +1131,19 @@
       "defaultTemperature": "Default temperature",
       "defaultMaxTokens": "Default max tokens",
       "nodeOverrides": "Per-node LLM overrides"
+    },
+    "conversationStarters": {
+      "title": "Conversation Starters",
+      "addLanguage": "Add language",
+      "removeLanguage": "Remove language",
+      "addQuestion": "Add question",
+      "removeQuestion": "Remove question",
+      "noStarters": "No conversation starters configured",
+      "maxQuestionsReached": "Maximum 5 questions per language",
+      "questionPlaceholder": "Enter a starter question…",
+      "selectLanguage": "Select a language…",
+      "reviewSummary": "{count} language(s) configured",
+      "questionsRemaining": "{count} more allowed"
     },
     "grounded": {
       "predefinedContext": "Predefined Context",

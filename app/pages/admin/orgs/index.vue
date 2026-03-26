@@ -2,7 +2,13 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import type { OrganizationResponse } from '~/types'
-import { formatDate, getApiErrorMessage, SUBSCRIPTION_TIERS, subscriptionTierColor, subscriptionTierSelectItems } from '~/utils'
+import {
+  formatDate,
+  getApiErrorMessage,
+  SUBSCRIPTION_TIERS,
+  subscriptionTierColor,
+  subscriptionTierSelectItems
+} from '~/utils'
 
 const auth = useAuth()
 const toast = useToast()
@@ -101,7 +107,11 @@ async function onCreate(event: FormSubmitEvent<Schema>) {
       toast.add({ title: t('admin.organizationCreated'), icon: 'i-lucide-check', color: 'success' })
     })
   } catch (err: unknown) {
-    toast.add({ title: t('errors.error'), description: getApiErrorMessage(err, t('admin.failedCreateOrg')), color: 'error' })
+    toast.add({
+      title: t('errors.error'),
+      description: getApiErrorMessage(err, t('admin.failedCreateOrg')),
+      color: 'error'
+    })
   } finally {
     creating.value = false
   }
@@ -163,7 +173,12 @@ const columns = computed(() => [
                 <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
               </template>
               <template #actions-cell="{ row }">
-                <UButton v-bind="orgDetailNav(row.original.org_id)" icon="i-lucide-info" :label="t('common.viewDetails')" size="xs" />
+                <UButton
+                  v-bind="orgDetailNav(row.original.org_id)"
+                  icon="i-lucide-info"
+                  :label="t('common.viewDetails')"
+                  size="xs"
+                />
               </template>
             </UTable>
           </UCard>
@@ -192,7 +207,12 @@ const columns = computed(() => [
                 <USelect v-model="state.tier" :items="tierOptions" class="w-full" />
               </UFormField>
               <UFormField :label="t('settings.contactEmail')" name="contact_email">
-                <UInput v-model="state.contact_email" class="w-full" :placeholder="t('settings.adminEmailPlaceholder')" type="email" />
+                <UInput
+                  v-model="state.contact_email"
+                  class="w-full"
+                  :placeholder="t('settings.adminEmailPlaceholder')"
+                  type="email"
+                />
               </UFormField>
               <UFormField :label="t('settings.website')" name="website">
                 <UInput v-model="state.website" class="w-full" :placeholder="t('settings.websitePlaceholder')" />
@@ -207,7 +227,11 @@ const columns = computed(() => [
                 <UInput v-model="state.logo_url" class="w-full" :placeholder="t('settings.logoPlaceholder')" />
               </UFormField>
               <UFormField class="col-span-2" :label="t('settings.description')" name="description">
-                <UTextarea v-model="state.description" class="w-full" :placeholder="t('admin.descriptionPlaceholder')" />
+                <UTextarea
+                  v-model="state.description"
+                  class="w-full"
+                  :placeholder="t('admin.descriptionPlaceholder')"
+                />
               </UFormField>
             </div>
             <div class="flex justify-end gap-2">

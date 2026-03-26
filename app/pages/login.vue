@@ -23,7 +23,9 @@ const localeItems = computed(() =>
 )
 
 const currentLocaleName = computed(
-  () => (locales.value as { code: string; name: string }[]).find((l) => l.code === locale.value)?.name ?? t('userMenu.language')
+  () =>
+    (locales.value as { code: string; name: string }[]).find((l) => l.code === locale.value)?.name ??
+    t('userMenu.language')
 )
 const { appName, appTagline } = useAppBranding()
 const localePath = useLocalePath()
@@ -81,9 +83,12 @@ const valueProps = [
   { icon: 'i-lucide-puzzle', text: 'Plugin ecosystem' }
 ]
 
-const { data: oauthProvidersData, refresh: refreshOAuthProviders } = await useFetch<string[]>('/api/auth/oauth/providers', {
-  default: () => []
-})
+const { data: oauthProvidersData, refresh: refreshOAuthProviders } = await useFetch<string[]>(
+  '/api/auth/oauth/providers',
+  {
+    default: () => []
+  }
+)
 const oauthProviders = computed(() => oauthProvidersData.value ?? [])
 
 onMounted(() => {
@@ -117,7 +122,13 @@ const oauthProviderIcons: Record<string, string> = {
 
           <UForm :schema="schema" :state="state" class="flex flex-col gap-5" method="post" @submit="onSubmit">
             <UFormField label="Username" name="username" required class="login-item" style="--delay: 160ms">
-              <UInput v-model="state.username" autocomplete="username" class="w-full" placeholder="username" size="xl" />
+              <UInput
+                v-model="state.username"
+                autocomplete="username"
+                class="w-full"
+                placeholder="username"
+                size="xl"
+              />
             </UFormField>
 
             <UFormField label="Password" name="password" required class="login-item" style="--delay: 240ms">
@@ -143,7 +154,9 @@ const oauthProviderIcons: Record<string, string> = {
 
             <div class="flex items-center justify-between text-[14px] mt-1 mb-2 login-item" style="--delay: 300ms">
               <UCheckbox v-model="state.remember" label="Keep me logged in" />
-              <NuxtLink to="#" class="font-medium text-primary hover:text-primary-600 transition-colors">Forgot password?</NuxtLink>
+              <NuxtLink to="#" class="font-medium text-primary hover:text-primary-600 transition-colors"
+                >Forgot password?</NuxtLink
+              >
             </div>
 
             <UButton
@@ -157,7 +170,9 @@ const oauthProviderIcons: Record<string, string> = {
             />
 
             <template v-if="oauthProviders.length > 0">
-              <div class="flex justify-center text-xs text-muted login-item" style="--delay: 380ms">Or continue with</div>
+              <div class="flex justify-center text-xs text-muted login-item" style="--delay: 380ms">
+                Or continue with
+              </div>
               <div class="flex flex-row gap-2 login-item" style="--delay: 400ms">
                 <UButton
                   v-for="provider in oauthProviders"
@@ -179,7 +194,13 @@ const oauthProviderIcons: Record<string, string> = {
         <UDropdownMenu :items="[localeItems]">
           <UButton color="neutral" size="sm" icon="i-lucide-languages" :label="currentLocaleName" />
         </UDropdownMenu>
-        <UButton :icon="colorMode.value === 'dark' ? 'i-lucide-moon' : 'i-lucide-sun'" color="neutral" size="sm" square @click="toggleDarkMode" />
+        <UButton
+          :icon="colorMode.value === 'dark' ? 'i-lucide-moon' : 'i-lucide-sun'"
+          color="neutral"
+          size="sm"
+          square
+          @click="toggleDarkMode"
+        />
       </div>
     </div>
 
@@ -196,16 +217,21 @@ const oauthProviderIcons: Record<string, string> = {
         class="absolute inset-0 pointer-events-none opacity-[0.03]"
         style="
           background-image:
-            linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+            linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
           background-size: 40px 40px;
         "
       />
 
       <!-- Floating product card -->
       <div class="absolute z-20 top-[10%] left-[8%] floating-card">
-        <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-6 py-5 inline-flex flex-col gap-2 shadow-2xl">
+        <div
+          class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-6 py-5 inline-flex flex-col gap-2 shadow-2xl"
+        >
           <div class="flex items-center gap-3">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg shadow-primary/30">
+            <div
+              class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg shadow-primary/30"
+            >
               <UIcon name="i-lucide-chart-no-axes-column" class="size-4" />
             </div>
             <span class="text-[22px] font-bold text-white tracking-tight">{{ appName || 'Cadence' }}</span>

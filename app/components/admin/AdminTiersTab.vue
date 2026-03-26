@@ -32,7 +32,12 @@ async function saveTier(tierName: string) {
         body: draftQuotas.value[tierName]
       })
       await refreshTiers()
-      toast.add({ title: t('admin.tierUpdated'), description: t('admin.quotaSaved'), icon: 'i-lucide-check', color: 'success' })
+      toast.add({
+        title: t('admin.tierUpdated'),
+        description: t('admin.quotaSaved'),
+        icon: 'i-lucide-check',
+        color: 'success'
+      })
     })
   } catch (err: unknown) {
     const msg = getApiErrorMessage(err, t('admin.failedSaveTier'))
@@ -57,13 +62,23 @@ const QUOTA_FIELDS = computed(() => [
 
 <template>
   <div class="flex flex-col gap-6 pt-4">
-    <UAlert color="info" icon="i-lucide-layers" :title="t('admin.subscriptionTiers')" :description="t('admin.tierQuotasDescription')" variant="subtle" />
+    <UAlert
+      color="info"
+      icon="i-lucide-layers"
+      :title="t('admin.subscriptionTiers')"
+      :description="t('admin.tierQuotasDescription')"
+      variant="subtle"
+    />
 
     <div v-if="tiers?.length" class="grid grid-cols-1 xl:grid-cols-2 gap-6">
       <UCard v-for="tier in tiers" :key="tier.tier_name" variant="soft">
         <template #header>
           <div class="flex items-center gap-2">
-            <UBadge :color="subscriptionTierColor(tier.tier_name)" :label="tier.tier_name?.toUpperCase()" variant="subtle" />
+            <UBadge
+              :color="subscriptionTierColor(tier.tier_name)"
+              :label="tier.tier_name?.toUpperCase()"
+              variant="subtle"
+            />
             <p class="font-semibold text-sm capitalize">{{ tier.quota.description || tier.tier_name }}</p>
           </div>
         </template>

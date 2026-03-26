@@ -11,6 +11,8 @@ const props = withDefaults(
     options: { label: string; value: string }[]
     loading?: boolean
     disabled?: boolean
+    /** Native / a11y required when the parent marks the field required */
+    required?: boolean
     /** Shown on text input when inheriting / empty */
     placeholder?: string
     /** Shown on select when empty */
@@ -19,6 +21,7 @@ const props = withDefaults(
   {
     loading: false,
     disabled: false,
+    required: false,
     placeholder: undefined,
     selectPlaceholder: undefined
   }
@@ -55,12 +58,20 @@ watch(
       :items="options"
       :loading="loading"
       :disabled="disabled"
+      :required="required"
       class="w-full"
       clearable
       :placeholder="selectPlaceholder ?? placeholder"
       label-key="label"
       value-key="value"
     />
-    <UInput v-else v-model="localModel" :disabled="disabled" class="w-full" :placeholder="placeholder" />
+    <UInput
+      v-else
+      v-model="localModel"
+      :disabled="disabled"
+      :required="required"
+      class="w-full"
+      :placeholder="placeholder"
+    />
   </div>
 </template>

@@ -39,7 +39,11 @@ function upsertEnvVar(key, value, file) {
   }
   const content = readFileSync(file, 'utf-8')
   const regex = new RegExp(`^${key}=.*$`, 'm')
-  const updated = regex.test(content) ? content.replace(regex, line) : content.endsWith('\n') ? content + `${line}\n` : `${content}\n${line}\n`
+  const updated = regex.test(content)
+    ? content.replace(regex, line)
+    : content.endsWith('\n')
+      ? content + `${line}\n`
+      : `${content}\n${line}\n`
   writeFileSync(file, updated, 'utf-8')
 }
 

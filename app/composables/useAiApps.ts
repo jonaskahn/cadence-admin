@@ -136,7 +136,10 @@ export function useAiApps() {
     }
   }
 
-  async function updateMetadata(instanceId: string, payload: UpdateOrchestratorMetadataRequest): Promise<OrchestratorResponse> {
+  async function updateMetadata(
+    instanceId: string,
+    payload: UpdateOrchestratorMetadataRequest
+  ): Promise<OrchestratorResponse> {
     return withErrorToast(async () => {
       const result = await $fetch<OrchestratorResponse>(`/api/orgs/${orgId.value}/orchestrators/${instanceId}`, {
         method: 'PATCH',
@@ -160,12 +163,18 @@ export function useAiApps() {
     }, 'aiAppApi.failedUpdateConfig')
   }
 
-  async function updatePluginSettings(instanceId: string, pluginSettings: UpdatePluginSettingsRequest['plugin_settings']): Promise<OrchestratorResponse> {
+  async function updatePluginSettings(
+    instanceId: string,
+    pluginSettings: UpdatePluginSettingsRequest['plugin_settings']
+  ): Promise<OrchestratorResponse> {
     return withErrorToast(async () => {
-      const result = await $fetch<OrchestratorResponse>(`/api/orgs/${orgId.value}/orchestrators/${instanceId}/plugin-settings`, {
-        method: 'PATCH',
-        body: { plugin_settings: pluginSettings }
-      })
+      const result = await $fetch<OrchestratorResponse>(
+        `/api/orgs/${orgId.value}/orchestrators/${instanceId}/plugin-settings`,
+        {
+          method: 'PATCH',
+          body: { plugin_settings: pluginSettings }
+        }
+      )
       updateAiAppInList(aiApps.value, instanceId, result)
       toast.add({ title: t('aiAppApi.pluginSettingsUpdated'), icon: 'i-lucide-check' })
       return result
@@ -176,13 +185,21 @@ export function useAiApps() {
     return $fetch<GraphDefinitionResponse>(`/api/orgs/${orgId.value}/orchestrators/${instanceId}/graph`)
   }
 
-  async function activatePluginVersion(instanceId: string, pid: string, version: string, source: string): Promise<OrchestratorResponse> {
+  async function activatePluginVersion(
+    instanceId: string,
+    pid: string,
+    version: string,
+    source: string
+  ): Promise<OrchestratorResponse> {
     const body: ActivatePluginVersionRequest = { pid, version, source: source as 'system' | 'org' }
     return withErrorToast(async () => {
-      const result = await $fetch<OrchestratorResponse>(`/api/orgs/${orgId.value}/orchestrators/${instanceId}/plugin-settings/activate`, {
-        method: 'POST',
-        body
-      })
+      const result = await $fetch<OrchestratorResponse>(
+        `/api/orgs/${orgId.value}/orchestrators/${instanceId}/plugin-settings/activate`,
+        {
+          method: 'POST',
+          body
+        }
+      )
       updateAiAppInList(aiApps.value, instanceId, result)
       toast.add({
         title: t('aiAppApi.pluginVersionActivated', { pluginRef: `${source}:${pid}@${version}` }),

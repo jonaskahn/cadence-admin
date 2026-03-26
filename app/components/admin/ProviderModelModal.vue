@@ -2,7 +2,14 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { getApiErrorMessage, LLM_PROVIDERS } from '~/utils'
-import { BILLING_UNITS, defaultBillingUnits, MODEL_CATEGORIES, parseOptionalPrice, type BillingUnit, type ModelCategory } from '~/utils/providerModelCatalog'
+import {
+  BILLING_UNITS,
+  defaultBillingUnits,
+  MODEL_CATEGORIES,
+  parseOptionalPrice,
+  type BillingUnit,
+  type ModelCategory
+} from '~/utils/providerModelCatalog'
 import type { AddProviderModelRequest, ProviderModelCatalogEntry, UpdateProviderModelRequest } from '~/types'
 
 const props = defineProps<{
@@ -207,11 +214,23 @@ async function onSubmit(event: FormSubmitEvent<ProviderModelFormData>): Promise<
             {{ providerLabel(state.provider ?? '') }}
           </UBadge>
         </div>
-        <USelect v-else v-model="state.provider" :items="providerItems" value-key="value" label-key="label" class="w-full" />
+        <USelect
+          v-else
+          v-model="state.provider"
+          :items="providerItems"
+          value-key="value"
+          label-key="label"
+          class="w-full"
+        />
       </UFormField>
 
       <UFormField :label="t('admin.modelId')" name="model_id" :required="!isEdit">
-        <UInput v-model="state.model_id" :disabled="isEdit" class="w-full" :placeholder="t('admin.modelIdPlaceholder')" />
+        <UInput
+          v-model="state.model_id"
+          :disabled="isEdit"
+          class="w-full"
+          :placeholder="t('admin.modelIdPlaceholder')"
+        />
       </UFormField>
 
       <UFormField :label="t('admin.displayName')" name="display_name" required>
@@ -222,7 +241,11 @@ async function onSubmit(event: FormSubmitEvent<ProviderModelFormData>): Promise<
         <UInput v-model="state.aliases" class="w-full" :placeholder="t('admin.aliasesPlaceholder')" />
       </UFormField>
 
-      <UFormField :label="t('admin.modelCategoryLabel')" name="model_category" :description="t('admin.modelCategoryHint')">
+      <UFormField
+        :label="t('admin.modelCategoryLabel')"
+        name="model_category"
+        :description="t('admin.modelCategoryHint')"
+      >
         <USelect
           v-model="state.model_category"
           :items="categoryItems"
@@ -235,18 +258,38 @@ async function onSubmit(event: FormSubmitEvent<ProviderModelFormData>): Promise<
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <UFormField :label="t('admin.inputBillingUnit')" name="input_billing_unit">
-          <USelect v-model="state.input_billing_unit" :items="billingUnitItems" value-key="value" label-key="label" class="w-full" />
+          <USelect
+            v-model="state.input_billing_unit"
+            :items="billingUnitItems"
+            value-key="value"
+            label-key="label"
+            class="w-full"
+          />
         </UFormField>
         <UFormField :label="t('admin.outputBillingUnit')" name="output_billing_unit">
-          <USelect v-model="state.output_billing_unit" :items="billingUnitItems" value-key="value" label-key="label" class="w-full" />
+          <USelect
+            v-model="state.output_billing_unit"
+            :items="billingUnitItems"
+            value-key="value"
+            label-key="label"
+            class="w-full"
+          />
         </UFormField>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <UFormField :label="t('admin.inputPricePerUnit')" name="input_price" :description="t('admin.priceOptionalHint')">
+        <UFormField
+          :label="t('admin.inputPricePerUnit')"
+          name="input_price"
+          :description="t('admin.priceOptionalHint')"
+        >
           <UInput v-model="state.input_price" class="w-full" type="text" inputmode="decimal" />
         </UFormField>
-        <UFormField :label="t('admin.outputPricePerUnit')" name="output_price" :description="t('admin.priceOptionalHint')">
+        <UFormField
+          :label="t('admin.outputPricePerUnit')"
+          name="output_price"
+          :description="t('admin.priceOptionalHint')"
+        >
           <UInput v-model="state.output_price" class="w-full" type="text" inputmode="decimal" />
         </UFormField>
       </div>

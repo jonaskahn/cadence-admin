@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import { DEFAULT_TEMPERATURE_SELECT_VALUES, NULL_TEMPERATURE_SELECT_VALUE, snapTemperatureToSelectStep } from './llmTemperaturePresets'
+import {
+  DEFAULT_TEMPERATURE_SELECT_VALUES,
+  NULL_TEMPERATURE_SELECT_VALUE,
+  snapTemperatureToSelectStep
+} from './llmTemperaturePresets'
 
 /** Temperature USelect: 0–2 step 0.1; optional first row for null (inherit / none). */
 const modelValue = defineModel<number | null>({ default: null })
@@ -53,5 +57,12 @@ const localSelect = computed({
 </script>
 
 <template>
-  <USelect v-model="localSelect" :items="selectItems" :disabled="disabled" class="w-full min-w-0" label-key="label" value-key="value" />
+  <USelect
+    v-model="localSelect"
+    :items="selectItems"
+    :disabled="disabled"
+    class="w-full min-w-0"
+    label-key="label"
+    value-key="value"
+  />
 </template>

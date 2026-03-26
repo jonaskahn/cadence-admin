@@ -75,7 +75,9 @@ async function enrichMissingSchemas() {
     if (entry.settings_schema?.length || entry.settings.length === 0) continue
     const source = (entry.source ?? 'org') as 'system' | 'org'
     try {
-      const versions = await $fetch<PluginMetadataResponse[]>(`/api/orgs/${resolvedOrgId.value}/plugins/${entry.id}/versions?source=${source}`)
+      const versions = await $fetch<PluginMetadataResponse[]>(
+        `/api/orgs/${resolvedOrgId.value}/plugins/${entry.id}/versions?source=${source}`
+      )
       const match = versions.find((v) => v.version === entry.version)
       if (match?.settings_schema?.length) {
         local.value[specKey] = { ...local.value[specKey], settings_schema: match.settings_schema }
@@ -123,7 +125,9 @@ function labelFromKey(key: string): string {
   const acronyms = new Set(['api', 'url', 'id', 'llm', 'ai', 'sdk', 'uri'])
   return key
     .split('_')
-    .map((word) => (acronyms.has(word.toLowerCase()) ? word.toUpperCase() : word.charAt(0).toUpperCase() + word.slice(1)))
+    .map((word) =>
+      acronyms.has(word.toLowerCase()) ? word.toUpperCase() : word.charAt(0).toUpperCase() + word.slice(1)
+    )
     .join(' ')
 }
 
@@ -244,7 +248,9 @@ defineExpose({
 
 <template>
   <div class="flex flex-col gap-4">
-    <p v-if="pluginGroups.length === 0" class="text-dimmed text-sm text-center py-2">{{ t('aiAppPlugin.noSettingsConfigured') }}</p>
+    <p v-if="pluginGroups.length === 0" class="text-dimmed text-sm text-center py-2">
+      {{ t('aiAppPlugin.noSettingsConfigured') }}
+    </p>
 
     <div v-for="group in pluginGroups" :key="group.groupKey" class="border border-default rounded-lg overflow-hidden">
       <UButton
@@ -263,10 +269,14 @@ defineExpose({
           </UBadge>
           <UBadge color="neutral" size="xs" variant="subtle"> {{ sourceLabel(group.source) }} </UBadge>
           <UBadge color="neutral" size="xs" variant="subtle">
-            {{ group.versions.length }} {{ group.versions.length > 1 ? t('aiAppPlugin.versions') : t('aiAppPlugin.version') }}
+            {{ group.versions.length }}
+            {{ group.versions.length > 1 ? t('aiAppPlugin.versions') : t('aiAppPlugin.version') }}
           </UBadge>
         </div>
-        <UIcon :name="expandedPlugins[group.groupKey] ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'" class="size-4 text-dimmed shrink-0" />
+        <UIcon
+          :name="expandedPlugins[group.groupKey] ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
+          class="size-4 text-dimmed shrink-0"
+        />
       </UButton>
 
       <div v-show="expandedPlugins[group.groupKey]" class="border-t border-default">
@@ -275,7 +285,9 @@ defineExpose({
             v-for="v in group.versions"
             :key="v.specKey"
             :class="
-              selectedVersionKey[group.groupKey] === v.specKey ? 'border-primary text-primary font-medium' : 'border-transparent text-dimmed hover:text-default'
+              selectedVersionKey[group.groupKey] === v.specKey
+                ? 'border-primary text-primary font-medium'
+                : 'border-transparent text-dimmed hover:text-default'
             "
             class="px-4 py-2 text-sm flex items-center gap-2 shrink-0 border-b-2 transition-colors rounded-none"
             color="neutral"
@@ -283,7 +295,9 @@ defineExpose({
             @click="selectVersion(group.groupKey, v.specKey)"
           >
             v{{ v.entry.version }}
-            <UBadge v-if="v.entry.active" color="success" size="xs" variant="subtle">{{ t('aiAppPlugin.active') }}</UBadge>
+            <UBadge v-if="v.entry.active" color="success" size="xs" variant="subtle">{{
+              t('aiAppPlugin.active')
+            }}</UBadge>
           </UButton>
         </div>
 
@@ -291,10 +305,14 @@ defineExpose({
           <div v-show="group.versions.length === 1 || selectedVersionKey[group.groupKey] === v.specKey" class="p-4">
             <div v-if="group.versions.length === 1" class="flex items-center gap-2 mb-4">
               <span class="text-xs text-dimmed font-mono">v{{ v.entry.version }}</span>
-              <UBadge v-if="v.entry.active" color="success" size="xs" variant="subtle">{{ t('aiAppPlugin.active') }}</UBadge>
+              <UBadge v-if="v.entry.active" color="success" size="xs" variant="subtle">{{
+                t('aiAppPlugin.active')
+              }}</UBadge>
             </div>
 
-            <p v-if="v.entry.settings.length === 0" class="text-dimmed text-sm">{{ t('aiAppPlugin.noSettingsForVersion') }}</p>
+            <p v-if="v.entry.settings.length === 0" class="text-dimmed text-sm">
+              {{ t('aiAppPlugin.noSettingsForVersion') }}
+            </p>
 
             <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
               <template v-for="setting in v.entry.settings" :key="setting.key">

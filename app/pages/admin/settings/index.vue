@@ -21,7 +21,10 @@ const tabs = computed(() => [
             <UDashboardSidebarCollapse />
           </template>
           <template #right>
-            <InfoPopover title-key="info.admin.globalSettings.title" description-key="info.admin.globalSettings.description" />
+            <InfoPopover
+              title-key="info.admin.globalSettings.title"
+              description-key="info.admin.globalSettings.description"
+            />
           </template>
         </UDashboardNavbar>
       </template>

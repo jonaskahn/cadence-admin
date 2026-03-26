@@ -114,7 +114,13 @@ const columns = computed(() => [
 
 <template>
   <div class="flex flex-col gap-6 pt-4">
-    <UAlert color="info" icon="i-lucide-radar" :title="t('admin.oauth2ClientsTab')" :description="t('admin.oauth2ClientsTabDescription')" variant="subtle" />
+    <UAlert
+      color="info"
+      icon="i-lucide-radar"
+      :title="t('admin.oauth2ClientsTab')"
+      :description="t('admin.oauth2ClientsTabDescription')"
+      variant="subtle"
+    />
 
     <div class="flex justify-end">
       <UButton icon="i-lucide-plus" :label="t('admin.registerOAuthClient')" @click="openRegister" />
@@ -128,7 +134,13 @@ const columns = computed(() => [
         </template>
         <template #allowed_grant_types-cell="{ row }">
           <div class="flex flex-wrap gap-1">
-            <UBadge v-for="g in row.original.allowed_grant_types" :key="g" color="neutral" variant="subtle" class="text-xs">
+            <UBadge
+              v-for="g in row.original.allowed_grant_types"
+              :key="g"
+              color="neutral"
+              variant="subtle"
+              class="text-xs"
+            >
               {{ grantLabel(g) }}
             </UBadge>
           </div>

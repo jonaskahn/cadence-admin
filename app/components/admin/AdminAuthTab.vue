@@ -2,7 +2,9 @@
 const { settings, editValues, overridableValues, saving, saveMultiple } = useAdminSettings()
 const { t } = useI18n()
 
-const tokenSettings = computed(() => (settings.value ?? []).filter((s) => ['access_token_ttl_seconds', 'refresh_token_ttl_seconds'].includes(s.key)))
+const tokenSettings = computed(() =>
+  (settings.value ?? []).filter((s) => ['access_token_ttl_seconds', 'refresh_token_ttl_seconds'].includes(s.key))
+)
 
 const googleEnabled = computed(() => {
   const v = editValues.value['oauth.google.enabled']
@@ -27,12 +29,16 @@ const oauth2Enabled = computed(() => {
 
 const GOOGLE_ORDER = ['oauth.google.enabled', 'oauth.google.client_id', 'oauth.google.client_secret']
 const googleSettings = computed(() =>
-  (settings.value ?? []).filter((s) => GOOGLE_ORDER.includes(s.key)).sort((a, b) => GOOGLE_ORDER.indexOf(a.key) - GOOGLE_ORDER.indexOf(b.key))
+  (settings.value ?? [])
+    .filter((s) => GOOGLE_ORDER.includes(s.key))
+    .sort((a, b) => GOOGLE_ORDER.indexOf(a.key) - GOOGLE_ORDER.indexOf(b.key))
 )
 
 const GITHUB_ORDER = ['oauth.github.enabled', 'oauth.github.client_id', 'oauth.github.client_secret']
 const githubSettings = computed(() =>
-  (settings.value ?? []).filter((s) => GITHUB_ORDER.includes(s.key)).sort((a, b) => GITHUB_ORDER.indexOf(a.key) - GITHUB_ORDER.indexOf(b.key))
+  (settings.value ?? [])
+    .filter((s) => GITHUB_ORDER.includes(s.key))
+    .sort((a, b) => GITHUB_ORDER.indexOf(a.key) - GITHUB_ORDER.indexOf(b.key))
 )
 
 const oauth2Settings = computed(() => {
@@ -45,7 +51,9 @@ const oauth2Settings = computed(() => {
     'oauth.oauth2.userinfo_url',
     'oauth.oauth2.scopes'
   ]
-  return (settings.value ?? []).filter((s) => ORDER.includes(s.key)).sort((a, b) => ORDER.indexOf(a.key) - ORDER.indexOf(b.key))
+  return (settings.value ?? [])
+    .filter((s) => ORDER.includes(s.key))
+    .sort((a, b) => ORDER.indexOf(a.key) - ORDER.indexOf(b.key))
 })
 
 const TOKEN_KEYS = ['access_token_ttl_seconds', 'refresh_token_ttl_seconds']
@@ -73,10 +81,14 @@ function isEmpty(v: unknown): boolean {
 }
 
 const googleMissingCreds = computed(
-  () => googleEnabled.value && (isEmpty(editValues.value['oauth.google.client_id']) || isEmpty(editValues.value['oauth.google.client_secret']))
+  () =>
+    googleEnabled.value &&
+    (isEmpty(editValues.value['oauth.google.client_id']) || isEmpty(editValues.value['oauth.google.client_secret']))
 )
 const githubMissingCreds = computed(
-  () => githubEnabled.value && (isEmpty(editValues.value['oauth.github.client_id']) || isEmpty(editValues.value['oauth.github.client_secret']))
+  () =>
+    githubEnabled.value &&
+    (isEmpty(editValues.value['oauth.github.client_id']) || isEmpty(editValues.value['oauth.github.client_secret']))
 )
 const oauth2MissingCreds = computed(
   () =>
@@ -91,7 +103,13 @@ const oauth2MissingCreds = computed(
 
 <template>
   <div class="flex flex-col gap-6 pt-4">
-    <UAlert color="info" icon="i-lucide-shield" :title="t('admin.authentication')" :description="t('admin.authConfigDescription')" variant="subtle" />
+    <UAlert
+      color="info"
+      icon="i-lucide-shield"
+      :title="t('admin.authentication')"
+      :description="t('admin.authConfigDescription')"
+      variant="subtle"
+    />
 
     <!-- Token Security -->
     <UCard variant="soft">

@@ -80,7 +80,8 @@ export function useAdminSettings() {
     }
   }
 
-  const settingsByCategory = (category: string) => computed(() => (settings.value ?? []).filter((s) => (s.category ?? '') === category))
+  const settingsByCategory = (category: string) =>
+    computed(() => (settings.value ?? []).filter((s) => (s.category ?? '') === category))
 
   const settingByKey = (key: string) => computed(() => (settings.value ?? []).find((s) => s.key === key))
 

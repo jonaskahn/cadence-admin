@@ -10,9 +10,15 @@ const injected = inject<ComputedRef<boolean>>('canUseCentralPoints', null)
 const { centerPoints, loading, fetchAll, remove, purge } = useCentralPoints(toRef(props, 'orgId'))
 defineExpose({ fetchAll })
 
-const { data: org } = await useFetch<{ tier?: string }>(() => `/api/orgs/${props.orgId}`, { watch: [() => props.orgId] })
+const { data: org } = await useFetch<{ tier?: string }>(() => `/api/orgs/${props.orgId}`, {
+  watch: [() => props.orgId]
+})
 const canUseCentralPoints = computed(
-  () => injected?.value ?? (props.orgId && org.value?.tier && (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase()))
+  () =>
+    injected?.value ??
+    (props.orgId &&
+      org.value?.tier &&
+      (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase()))
 )
 
 const auth = useAuth()
@@ -21,7 +27,9 @@ const localePath = useLocalePath()
 const toast = useToast()
 const { t } = useI18n()
 
-const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/api/orgs/${props.orgId}/orchestrators`, { watch: [() => props.orgId] })
+const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/api/orgs/${props.orgId}/orchestrators`, {
+  watch: [() => props.orgId]
+})
 
 onMounted(() => fetchAll())
 
@@ -111,7 +119,13 @@ const columns = computed(() => [
       <div v-if="loading" class="flex flex-col gap-2 p-4">
         <USkeleton v-for="n in 5" :key="n" class="h-10 w-full" />
       </div>
-      <UTable v-else :columns="columns" :data="centerPoints" :empty-state="{ icon: 'i-lucide-radio', label: t('centralPoints.noCenterPoints') }" class="w-full">
+      <UTable
+        v-else
+        :columns="columns"
+        :data="centerPoints"
+        :empty-state="{ icon: 'i-lucide-radio', label: t('centralPoints.noCenterPoints') }"
+        class="w-full"
+      >
         <template #orchestrator_id-cell="{ row }">
           <span>{{ orchestratorLabel(row.original.orchestrator_id) }}</span>
         </template>
@@ -147,7 +161,9 @@ const columns = computed(() => [
               <UButton color="error" icon="i-lucide-trash-2" size="xs" />
               <template #content="{ close }">
                 <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">{{ t('centralPoints.deleteConfirm', { name: row.original.name }) }}</p>
+                  <p class="text-sm text-dimmed mb-3">
+                    {{ t('centralPoints.deleteConfirm', { name: row.original.name }) }}
+                  </p>
                   <div class="flex justify-end gap-2">
                     <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                     <UButton
@@ -167,7 +183,12 @@ const columns = computed(() => [
                   <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
                   <div class="flex justify-end gap-2">
                     <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                    <UButton color="error" :label="t('common.purge')" :loading="purging === row.original.id" @click="handlePurgeConfirm(row.original, close)" />
+                    <UButton
+                      color="error"
+                      :label="t('common.purge')"
+                      :loading="purging === row.original.id"
+                      @click="handlePurgeConfirm(row.original, close)"
+                    />
                   </div>
                 </div>
               </template>

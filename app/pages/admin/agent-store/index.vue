@@ -21,7 +21,9 @@ const { data: orgPlugins, refresh: refreshOrg } = await useApiFetch<PluginCardIt
 )
 
 const plugins = computed(() => (activeTab.value === 'system' ? (systemPlugins.value ?? []) : (orgPlugins.value ?? [])))
-const orgOptions = computed(() => (orgs.value ?? []).map((o) => ({ label: o.name || o.domain || o.org_id, value: o.org_id })))
+const orgOptions = computed(() =>
+  (orgs.value ?? []).map((o) => ({ label: o.name || o.domain || o.org_id, value: o.org_id }))
+)
 
 const tabDropdownItems = computed<DropdownMenuItem[][]>(() => [
   [
@@ -75,7 +77,10 @@ function openUpload() {
           </template>
           <template #right>
             <div class="flex items-center gap-2">
-              <InfoPopover title-key="info.admin.systemPlugins.title" description-key="info.admin.systemPlugins.description" />
+              <InfoPopover
+                title-key="info.admin.systemPlugins.title"
+                description-key="info.admin.systemPlugins.description"
+              />
               <UFieldGroup>
                 <UButton color="neutral" :label="activeTab === 'system' ? t('plugins.system') : t('plugins.org')" />
                 <UDropdownMenu :items="tabDropdownItems">
@@ -91,8 +96,18 @@ function openUpload() {
                 class="w-56"
                 :placeholder="t('common.selectOrg')"
               />
-              <UButton icon="i-lucide-refresh-cw" color="neutral" :aria-label="t('common.refresh')" @click="refresh()" />
-              <UButton v-if="activeTab === 'system'" icon="i-lucide-upload" :label="t('admin.uploadPlugin')" @click="openUpload" />
+              <UButton
+                icon="i-lucide-refresh-cw"
+                color="neutral"
+                :aria-label="t('common.refresh')"
+                @click="refresh()"
+              />
+              <UButton
+                v-if="activeTab === 'system'"
+                icon="i-lucide-upload"
+                :label="t('admin.uploadPlugin')"
+                @click="openUpload"
+              />
             </div>
           </template>
         </UDashboardNavbar>
@@ -104,10 +119,23 @@ function openUpload() {
             {{ t('admin.selectOrgToView') }}
           </div>
           <div v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <PluginCard v-for="plugin in plugins" :key="plugin.id" :plugin="plugin" :source="activeTab" @select="onPluginSelect" />
+            <PluginCard
+              v-for="plugin in plugins"
+              :key="plugin.id"
+              :plugin="plugin"
+              :source="activeTab"
+              @select="onPluginSelect"
+            />
           </div>
-          <p v-if="activeTab === 'system' && plugins.length === 0" class="py-8 text-center text-dimmed">{{ t('admin.noPluginsYet') }}</p>
-          <p v-else-if="activeTab === 'org' && selectedOrgId && plugins.length === 0" class="py-8 text-center text-dimmed">{{ t('admin.noOrgPlugins') }}</p>
+          <p v-if="activeTab === 'system' && plugins.length === 0" class="py-8 text-center text-dimmed">
+            {{ t('admin.noPluginsYet') }}
+          </p>
+          <p
+            v-else-if="activeTab === 'org' && selectedOrgId && plugins.length === 0"
+            class="py-8 text-center text-dimmed"
+          >
+            {{ t('admin.noOrgPlugins') }}
+          </p>
         </div>
       </template>
     </UDashboardPanel>

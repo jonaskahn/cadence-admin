@@ -1,11 +1,21 @@
 import type { LLMConfigResponse, OrchestratorDefaults, ProviderModelResponse } from '~/types'
 import { providerLabel } from '~/utils'
 import { buildGroundedModeConfigPayload, buildSupervisorModeConfigPayload } from './modeConfigPayload'
-import { copyApiSourceIntoNodeState, emptyNodeState, nodeStateHasUserOverride, readPlannerNodeSource } from './nodeConfigPayload'
+import {
+  copyApiSourceIntoNodeState,
+  emptyNodeState,
+  nodeStateHasUserOverride,
+  readPlannerNodeSource
+} from './nodeConfigPayload'
 import { GROUNDED_NODE_KEYS, GROUNDED_NODE_LABELS, NODE_KEYS, NODE_LABELS } from './nodeKeys'
 import type { ApiNodeSource, NodeState } from './types'
 
-function coalesceBoolean(config: Record<string, unknown>, newKey: string, oldKey: string, defaultVal: boolean): boolean {
+function coalesceBoolean(
+  config: Record<string, unknown>,
+  newKey: string,
+  oldKey: string,
+  defaultVal: boolean
+): boolean {
   if (config[newKey] !== undefined) return Boolean(config[newKey])
   if (config[oldKey] !== undefined) return Boolean(config[oldKey])
   return defaultVal
@@ -25,10 +35,14 @@ export function useLangGraphOrchestratorConfig(
   supportedProviders: Ref<string[] | null | undefined>,
   _disabled: Ref<boolean> = ref(false),
   orchestratorDefaults: Ref<OrchestratorDefaults | null | undefined> = ref(null),
-  isGroundedMode: Ref<boolean> = ref(false)
+  isGroundedMode: Ref<boolean> = ref(false),
+  requireDefaultLlm: Ref<boolean> = ref(false)
 ) {
   const orgDefaults = orchestratorDefaults
-  const { data: llmConfigs, pending: llmConfigsLoading } = useApiFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, { watch: [orgId] })
+  const { data: llmConfigs, pending: llmConfigsLoading } = useApiFetch<LLMConfigResponse[]>(
+    () => `/api/orgs/${orgId.value}/llm-configs`,
+    { watch: [orgId] }
+  )
 
   const llmConfigOptions = computed(() =>
     (llmConfigs.value ?? [])
@@ -91,7 +105,12 @@ export function useLangGraphOrchestratorConfig(
   let isLoadingFromInitial = false
 
   const supervisorNodeKeys = [...NODE_KEYS]
-  const nodeModelManual = reactive(Object.fromEntries([...supervisorNodeKeys, 'autocompact', 'suggestion'].map((k) => [k, false])) as Record<string, boolean>)
+  const nodeModelManual = reactive(
+    Object.fromEntries([...supervisorNodeKeys, 'autocompact', 'suggestion'].map((k) => [k, false])) as Record<
+      string,
+      boolean
+    >
+  )
 
   const modeConfigSource = computed(() => (initialValue.value?.mode_config ?? {}) as Record<string, unknown>)
 
@@ -115,7 +134,10 @@ export function useLangGraphOrchestratorConfig(
     defaultModelManual.value = false
   })
 
-  function pickDefaultTemperature(instance: Record<string, unknown> | undefined, org: OrchestratorDefaults | null | undefined): number {
+  function pickDefaultTemperature(
+    instance: Record<string, unknown> | undefined,
+    org: OrchestratorDefaults | null | undefined
+  ): number {
     const v = instance?.default_temperature
     if (v != null) {
       const n = Number(v)
@@ -129,7 +151,10 @@ export function useLangGraphOrchestratorConfig(
     return 0.2
   }
 
-  function pickDefaultMaxTokens(instance: Record<string, unknown> | undefined, org: OrchestratorDefaults | null | undefined): number {
+  function pickDefaultMaxTokens(
+    instance: Record<string, unknown> | undefined,
+    org: OrchestratorDefaults | null | undefined
+  ): number {
     const v = instance?.default_max_tokens
     if (v != null) {
       const n = Number(v)
@@ -169,26 +194,45 @@ export function useLangGraphOrchestratorConfig(
     [modeConfigSource, isGroundedMode],
     () => {
       const src = modeConfigSource.value
-      modeConfig.node_execution_timeout = Number(src.node_execution_timeout ?? src.supervisor_timeout ?? src.invoke_timeout ?? 60)
+      modeConfig.node_execution_timeout = Number(
+        src.node_execution_timeout ?? src.supervisor_timeout ?? src.invoke_timeout ?? 60
+      )
       modeConfig.message_context_window = Number(src.message_context_window ?? src.classifier_context_window ?? 5)
       modeConfig.max_context_window = Number(src.max_context_window ?? 16000)
       modeConfig.max_agent_hops = Number(src.max_agent_hops ?? 25)
       modeConfig.max_tool_rounds = Number(src.max_tool_rounds ?? 3)
-      modeConfig.enabled_parallel_tool_calls = coalesceBoolean(src, 'enabled_parallel_tool_calls', 'parallel_tool_calls', true)
+      modeConfig.enabled_parallel_tool_calls = coalesceBoolean(
+        src,
+        'enabled_parallel_tool_calls',
+        'parallel_tool_calls',
+        true
+      )
       if (src.enabled_validator !== undefined) {
         modeConfig.enabled_llm_validation = Boolean(src.enabled_validator)
       } else {
         const fallback = isGroundedMode.value
-        modeConfig.enabled_llm_validation = coalesceBoolean(src, 'enabled_llm_validation', 'use_llm_validation', fallback)
+        modeConfig.enabled_llm_validation = coalesceBoolean(
+          src,
+          'enabled_llm_validation',
+          'use_llm_validation',
+          fallback
+        )
       }
-      modeConfig.enabled_clarification_intent = coalesceBoolean(src, 'enabled_clarification_intent', 'use_clarification_intent', true)
+      modeConfig.enabled_clarification_intent = coalesceBoolean(
+        src,
+        'enabled_clarification_intent',
+        'use_clarification_intent',
+        true
+      )
       modeConfig.enabled_auto_compact = coalesceBoolean(src, 'enabled_auto_compact', 'autocompact_enabled', false)
       modeConfig.enabled_suggestion = coalesceBoolean(src, 'enabled_suggestion', 'enabled_suggestion', false)
     },
     { immediate: true }
   )
 
-  const nodeConfigs = reactive(Object.fromEntries(supervisorNodeKeys.map((key) => [key, emptyNodeState()])) as Record<string, NodeState>)
+  const nodeConfigs = reactive(
+    Object.fromEntries(supervisorNodeKeys.map((key) => [key, emptyNodeState()])) as Record<string, NodeState>
+  )
 
   watch(
     modeConfigSource,
@@ -201,7 +245,9 @@ export function useLangGraphOrchestratorConfig(
     { immediate: true }
   )
 
-  const autocompactSrc = computed(() => (modeConfigSource.value.autocompact ?? modeConfigSource.value.autocompact_node ?? {}) as ApiNodeSource)
+  const autocompactSrc = computed(
+    () => (modeConfigSource.value.autocompact ?? modeConfigSource.value.autocompact_node ?? {}) as ApiNodeSource
+  )
 
   const autocompactNode = reactive<NodeState>(emptyNodeState())
 
@@ -256,7 +302,9 @@ export function useLangGraphOrchestratorConfig(
     }
   }
 
-  watch([llmConfigs, resolvedDefaultLlmConfigId], ([, id]) => syncDefaultModel(id as string | undefined), { immediate: true })
+  watch([llmConfigs, resolvedDefaultLlmConfigId], ([, id]) => syncDefaultModel(id as string | undefined), {
+    immediate: true
+  })
 
   watch(
     () => autocompactNode.llm_config_id,
@@ -336,7 +384,9 @@ export function useLangGraphOrchestratorConfig(
     }
   }
 
-  watch([llmConfigs, ...supervisorNodeKeys.map((key) => () => nodeConfigs[key]!.llm_config_id)], syncNodeModels, { immediate: true })
+  watch([llmConfigs, ...supervisorNodeKeys.map((key) => () => nodeConfigs[key]!.llm_config_id)], syncNodeModels, {
+    immediate: true
+  })
 
   const expandedNodes = ref<Record<string, boolean>>(Object.fromEntries(supervisorNodeKeys.map((k) => [k, false])))
 
@@ -378,6 +428,7 @@ export function useLangGraphOrchestratorConfig(
   }
 
   function isValid(): boolean {
+    if (!requireDefaultLlm.value) return true
     return !!(resolvedDefaultLlmConfigId.value && resolvedDefaultModelName.value)
   }
 
@@ -460,6 +511,7 @@ export function useLangGraphOrchestratorConfig(
     toggleNode,
     toggleShowDefault,
     hasNodeOverride,
+    requireDefaultLlm,
     isValid,
     getValue,
     getGroundedValue,

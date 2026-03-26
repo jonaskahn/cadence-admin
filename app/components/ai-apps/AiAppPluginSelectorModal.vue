@@ -62,7 +62,12 @@ const filteredPlugins = computed(() => {
   const bySource = sourceFilter.value === 'all' ? list : list.filter((p) => p.source === sourceFilter.value)
   const q = searchQuery.value.trim().toLowerCase()
   if (!q) return bySource
-  return bySource.filter((p) => p.name.toLowerCase().includes(q) || p.pid.toLowerCase().includes(q) || (p.description ?? '').toLowerCase().includes(q))
+  return bySource.filter(
+    (p) =>
+      p.name.toLowerCase().includes(q) ||
+      p.pid.toLowerCase().includes(q) ||
+      (p.description ?? '').toLowerCase().includes(q)
+  )
 })
 
 const sourceFilterItems = computed(() => [
@@ -96,9 +101,17 @@ function onPluginAdded(plugin: PluginMetadataResponse) {
           <UIcon class="size-8 animate-spin text-dimmed" name="i-lucide-loader-2" />
         </div>
 
-        <UAlert v-else-if="pluginsError" color="error" :description="pluginsError.message" :title="t('aiApps.pluginSelector.failedLoad')" />
+        <UAlert
+          v-else-if="pluginsError"
+          color="error"
+          :description="pluginsError.message"
+          :title="t('aiApps.pluginSelector.failedLoad')"
+        />
 
-        <div v-else class="grid grid-cols-1 gap-4 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div
+          v-else
+          class="grid grid-cols-1 gap-4 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+        >
           <AiAppPluginSelectorCard
             v-for="plugin in filteredPlugins"
             :key="`${plugin.source}-${plugin.pid}`"

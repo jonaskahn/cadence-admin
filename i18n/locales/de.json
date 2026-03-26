@@ -1014,7 +1014,42 @@
       "pluginValidationFailed": "Validierung der KI-Agenten-Einstellungen fehlgeschlagen",
       "frameworkLangGraph": "LangGraph",
       "frameworkGoogleAdk": "Google ADK",
-      "frameworkOpenaiAgents": "OpenAI Agents"
+      "frameworkOpenaiAgents": "OpenAI Agents",
+      "steps": {
+        "setup": "Einrichtung",
+        "orchestratorMode": "Orchestrator-Modus",
+        "plugins": "Plugins",
+        "features": "Funktionen",
+        "review": "Prüfen & erstellen"
+      },
+      "next": "Weiter",
+      "back": "Zurück",
+      "reviewTitle": "Zusammenfassung",
+      "reviewIdentity": "Identität",
+      "reviewPluginsCount": "{count} KI-Agent(en)",
+      "reviewMonitoringOn": "Aktiviert",
+      "reviewMonitoringOff": "Deaktiviert",
+      "reviewSetupSection": "Einrichtung",
+      "reviewOrchestratorSection": "Orchestrator-Modus",
+      "reviewPluginsSection": "Plugins",
+      "reviewFeaturesSection": "Funktionen",
+      "reviewOrchestratorNA": "Für diesen Modus nicht zutreffend",
+      "reviewPluginSource": "{source}",
+      "reviewFeaturesAdditional": "{count} weitere Funktion(en) konfiguriert",
+      "reviewPluginsMore": "und {count} weitere"
+    },
+    "conversationStarters": {
+      "title": "Gesprächseinstiege",
+      "addLanguage": "Sprache hinzufügen",
+      "removeLanguage": "Sprache entfernen",
+      "addQuestion": "Frage hinzufügen",
+      "removeQuestion": "Frage entfernen",
+      "noStarters": "Keine Gesprächseinstiege konfiguriert",
+      "maxQuestionsReached": "Maximal 5 Fragen pro Sprache",
+      "questionPlaceholder": "Starterfrage eingeben…",
+      "selectLanguage": "Sprache wählen…",
+      "reviewSummary": "{count} Sprache(n) konfiguriert",
+      "questionsRemaining": "noch {count} möglich"
     },
     "grounded": {
       "predefinedContext": "Vordefinierter Kontext",

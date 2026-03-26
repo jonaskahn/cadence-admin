@@ -21,7 +21,12 @@ const scopeRules = computed({
 <template>
   <div class="flex flex-col gap-4">
     <UFormField :label="t('aiApps.grounded.scopeRules')" :description="t('aiApps.grounded.scopeRulesDesc')">
-      <UTextarea v-model="scopeRules" class="w-full font-mono text-sm" :rows="4" :placeholder="t('aiApps.grounded.scopeRulesPlaceholder')" />
+      <UTextarea
+        v-model="scopeRules"
+        class="w-full font-mono text-sm"
+        :rows="4"
+        :placeholder="t('aiApps.grounded.scopeRulesPlaceholder')"
+      />
     </UFormField>
     <UFormField :label="t('aiApps.grounded.maxAgentHops')" :description="t('aiApps.grounded.maxAgentHopsDesc')">
       <UInput v-model.number="modeConfig.max_agent_hops" type="number" class="w-full" />

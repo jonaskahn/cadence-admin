@@ -27,7 +27,14 @@ export const SETTINGS_GROUPS: Record<string, string[]> = {
     'llm_max_retries',
     'llm_retry_delay'
   ],
-  Pool: ['max_hot_pool_size', 'prewarm_strategy', 'prewarm_count', 'warm_tier_ttl', 'pool_refresh_interval', 'health_check_interval'],
+  Pool: [
+    'max_hot_pool_size',
+    'prewarm_strategy',
+    'prewarm_count',
+    'warm_tier_ttl',
+    'pool_refresh_interval',
+    'health_check_interval'
+  ],
   Caching: [
     'enable_semantic_cache',
     'semantic_cache_similarity_threshold',

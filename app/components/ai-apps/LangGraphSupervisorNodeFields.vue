@@ -61,7 +61,8 @@ const inheritDescription = t('langGraphSupervisor.nodeFieldInheritsFromLlmSectio
 const llmConfigsLoadingBool = computed(() => unref(orchestratorConfig.llmConfigsLoading))
 
 function numericPlaceholder(val: number | null | undefined): string | undefined {
-  if (val != null && !Number.isNaN(Number(val))) return t('langGraphSupervisor.nodeNumericPlaceholder', { value: String(val) })
+  if (val != null && !Number.isNaN(Number(val)))
+    return t('langGraphSupervisor.nodeNumericPlaceholder', { value: String(val) })
   return undefined
 }
 </script>
@@ -69,13 +70,25 @@ function numericPlaceholder(val: number | null | undefined): string | undefined 
 <template>
   <div v-if="node" class="grid grid-cols-1 gap-3">
     <UFormField :label="t('settings.defaultLlmConfig')">
-      <USelect v-model="nodeLlmSelectModel" :items="nodeLlmItems" :disabled="disabled" class="w-full" label-key="label" value-key="value" />
+      <USelect
+        v-model="nodeLlmSelectModel"
+        :items="nodeLlmItems"
+        :disabled="disabled"
+        class="w-full"
+        label-key="label"
+        value-key="value"
+      />
     </UFormField>
     <UFormField :description="inheritDescription">
       <template #label>
         <div class="flex w-full min-w-0 items-center justify-between gap-2">
           <span class="truncate">{{ t('settings.defaultModelName') }}</span>
-          <LlmModelNameLabelActions v-model:manual="manualForNode" :options="modelOptionsForNode" :disabled="disabled" :model-name="node.model_name" />
+          <LlmModelNameLabelActions
+            v-model:manual="manualForNode"
+            :options="modelOptionsForNode"
+            :disabled="disabled"
+            :model-name="node.model_name"
+          />
         </div>
       </template>
       <LlmModelNameField
@@ -89,13 +102,26 @@ function numericPlaceholder(val: number | null | undefined): string | undefined 
       />
     </UFormField>
     <LangGraphPromptOverrideField v-model="node.prompt_override" :prompt-key="nodeKey" :disabled="disabled" />
-    <UFormField :label="t('settings.defaultTemperature')" :description="node.temperature === null ? inheritDescription : undefined">
-      <LlmTemperatureField v-model="node.temperature" nullable :null-option-label="t('langGraphSupervisor.inheritsFromLlmDefaultShort')" :disabled="disabled" />
+    <UFormField
+      :label="t('settings.defaultTemperature')"
+      :description="node.temperature === null ? inheritDescription : undefined"
+    >
+      <LlmTemperatureField
+        v-model="node.temperature"
+        nullable
+        :null-option-label="t('langGraphSupervisor.inheritsFromLlmDefaultShort')"
+        :disabled="disabled"
+      />
     </UFormField>
-    <UFormField :label="t('settings.defaultMaxTokens')" :description="node.max_tokens === null ? inheritDescription : undefined">
+    <UFormField
+      :label="t('settings.defaultMaxTokens')"
+      :description="node.max_tokens === null ? inheritDescription : undefined"
+    >
       <UInputNumber
         v-model="node.max_tokens"
-        :placeholder="node.max_tokens === null ? numericPlaceholder(unref(orchestratorConfig.defaultMaxTokens)) : undefined"
+        :placeholder="
+          node.max_tokens === null ? numericPlaceholder(unref(orchestratorConfig.defaultMaxTokens)) : undefined
+        "
         :disabled="disabled"
         orientation="vertical"
         :min="512"
@@ -104,13 +130,18 @@ function numericPlaceholder(val: number | null | undefined): string | undefined 
         class="w-full"
       />
     </UFormField>
-    <UFormField :label="t('aiApps.supervisor.nodeExecutionTimeout')" :description="node.timeout === null ? inheritDescription : undefined">
+    <UFormField
+      :label="t('aiApps.supervisor.nodeExecutionTimeout')"
+      :description="node.timeout === null ? inheritDescription : undefined"
+    >
       <UInput
         v-model.number="node.timeout"
         type="number"
         :disabled="disabled"
         class="w-full"
-        :placeholder="node.timeout === null ? numericPlaceholder(unref(orchestratorConfig.orgDefaultTimeout)) : undefined"
+        :placeholder="
+          node.timeout === null ? numericPlaceholder(unref(orchestratorConfig.orgDefaultTimeout)) : undefined
+        "
       />
     </UFormField>
   </div>

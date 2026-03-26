@@ -15,11 +15,16 @@ const { withOverlay } = useLoadingOverlay()
 const centerPointId = route.params.id as string
 const orgId = computed(() => auth.currentOrgId.value || '')
 
-const { data: centerPoint, refresh } = await useFetch<CentralPointResponse>(() => `/api/orgs/${orgId.value}/central-points/${centerPointId}`, {
+const { data: centerPoint, refresh } = await useFetch<CentralPointResponse>(
+  () => `/api/orgs/${orgId.value}/central-points/${centerPointId}`,
+  {
+    watch: [orgId]
+  }
+)
+
+const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/api/orgs/${orgId.value}/orchestrators`, {
   watch: [orgId]
 })
-
-const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/api/orgs/${orgId.value}/orchestrators`, { watch: [orgId] })
 
 // ── Basic info form ──────────────────────────────────────────────────────────
 
@@ -59,7 +64,9 @@ watch(
 )
 
 const orchestratorOptions = computed(() =>
-  (orchestrators.value || []).filter((o) => o.status === 'active' && !o.is_deleted).map((o) => ({ label: o.name, value: o.instance_id }))
+  (orchestrators.value || [])
+    .filter((o) => o.status === 'active' && !o.is_deleted)
+    .map((o) => ({ label: o.name, value: o.instance_id }))
 )
 
 const visibilityItems = computed(() => [
@@ -280,7 +287,12 @@ function copyGoCode() {
   <div class="flex flex-col gap-6 pt-4">
     <!-- Back navigation -->
     <div>
-      <UButton color="neutral" icon="i-lucide-arrow-left" :label="t('centralPoints.backToCenterPoints')" @click="goBack" />
+      <UButton
+        color="neutral"
+        icon="i-lucide-arrow-left"
+        :label="t('centralPoints.backToCenterPoints')"
+        @click="goBack"
+      />
     </div>
 
     <!-- Not found -->
@@ -303,16 +315,29 @@ function copyGoCode() {
         <template #header>
           <div class="flex items-center gap-2">
             <p class="font-semibold">{{ t('centralPoints.basicInfo') }}</p>
-            <InfoPopover title-key="info.settings.centralPoints.title" description-key="info.settings.centralPoints.description" />
+            <InfoPopover
+              title-key="info.settings.centralPoints.title"
+              description-key="info.settings.centralPoints.description"
+            />
           </div>
         </template>
 
         <UForm ref="basicInfoFormRef" :schema="schema" :state="state" class="flex flex-col gap-4" @submit="onSubmit">
           <UFormField :label="t('centralPoints.name')" name="name">
-            <UInput v-model="state.name" class="w-full" :disabled="!auth.isAdmin.value" :placeholder="t('centralPoints.namePlaceholder')" />
+            <UInput
+              v-model="state.name"
+              class="w-full"
+              :disabled="!auth.isAdmin.value"
+              :placeholder="t('centralPoints.namePlaceholder')"
+            />
           </UFormField>
           <UFormField :label="t('settings.description')" name="description">
-            <UTextarea v-model="state.description" class="w-full" :disabled="!auth.isAdmin.value" :placeholder="t('centralPoints.descriptionPlaceholder')" />
+            <UTextarea
+              v-model="state.description"
+              class="w-full"
+              :disabled="!auth.isAdmin.value"
+              :placeholder="t('centralPoints.descriptionPlaceholder')"
+            />
           </UFormField>
           <UFormField :label="t('centralPoints.aiApp')" name="orchestrator_id">
             <USelect
@@ -326,7 +351,14 @@ function copyGoCode() {
             />
           </UFormField>
           <UFormField :label="t('centralPoints.visibility')" name="visibility">
-            <USelect v-model="state.visibility" :items="visibilityItems" class="w-full" :disabled="!auth.isAdmin.value" label-key="label" value-key="value" />
+            <USelect
+              v-model="state.visibility"
+              :items="visibilityItems"
+              class="w-full"
+              :disabled="!auth.isAdmin.value"
+              label-key="label"
+              value-key="value"
+            />
           </UFormField>
           <div v-if="auth.isAdmin.value" class="flex justify-end">
             <ConfirmActionPopover
@@ -346,7 +378,10 @@ function copyGoCode() {
         <template #header>
           <div class="flex items-center gap-2">
             <p class="font-semibold">{{ t('centralPoints.apiIntegration') }}</p>
-            <InfoPopover title-key="info.fields.centralPoint.endpoint.title" description-key="info.fields.centralPoint.endpoint.description" />
+            <InfoPopover
+              title-key="info.fields.centralPoint.endpoint.title"
+              description-key="info.fields.centralPoint.endpoint.description"
+            />
           </div>
           <p class="mt-0.5 text-sm text-dimmed">
             {{ t('centralPoints.apiIntegrationDescription') }}
@@ -401,7 +436,13 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ curlCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyCurlCode" />
+                  <UButton
+                    class="absolute right-2 top-2"
+                    color="neutral"
+                    icon="i-lucide-copy"
+                    size="xs"
+                    @click="copyCurlCode"
+                  />
                 </div>
               </template>
 
@@ -410,7 +451,13 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ pythonCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyPythonCode" />
+                  <UButton
+                    class="absolute right-2 top-2"
+                    color="neutral"
+                    icon="i-lucide-copy"
+                    size="xs"
+                    @click="copyPythonCode"
+                  />
                 </div>
               </template>
 
@@ -419,7 +466,13 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ jsCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyJsCode" />
+                  <UButton
+                    class="absolute right-2 top-2"
+                    color="neutral"
+                    icon="i-lucide-copy"
+                    size="xs"
+                    @click="copyJsCode"
+                  />
                 </div>
               </template>
 
@@ -428,7 +481,13 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ tsCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyTsCode" />
+                  <UButton
+                    class="absolute right-2 top-2"
+                    color="neutral"
+                    icon="i-lucide-copy"
+                    size="xs"
+                    @click="copyTsCode"
+                  />
                 </div>
               </template>
 
@@ -437,7 +496,13 @@ function copyGoCode() {
                   <pre
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ goCode }}</code></pre>
-                  <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyGoCode" />
+                  <UButton
+                    class="absolute right-2 top-2"
+                    color="neutral"
+                    icon="i-lucide-copy"
+                    size="xs"
+                    @click="copyGoCode"
+                  />
                 </div>
               </template>
             </UTabs>

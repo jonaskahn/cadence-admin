@@ -42,17 +42,20 @@ const provider = computed({
 
 const secretKey = computed({
   get: () => props.modelValue.langfuse.secret_key,
-  set: (val: string) => emit('update:modelValue', { ...props.modelValue, langfuse: { ...props.modelValue.langfuse, secret_key: val } })
+  set: (val: string) =>
+    emit('update:modelValue', { ...props.modelValue, langfuse: { ...props.modelValue.langfuse, secret_key: val } })
 })
 
 const publicKey = computed({
   get: () => props.modelValue.langfuse.public_key,
-  set: (val: string) => emit('update:modelValue', { ...props.modelValue, langfuse: { ...props.modelValue.langfuse, public_key: val } })
+  set: (val: string) =>
+    emit('update:modelValue', { ...props.modelValue, langfuse: { ...props.modelValue.langfuse, public_key: val } })
 })
 
 const host = computed({
   get: () => props.modelValue.langfuse.host,
-  set: (val: string) => emit('update:modelValue', { ...props.modelValue, langfuse: { ...props.modelValue.langfuse, host: val } })
+  set: (val: string) =>
+    emit('update:modelValue', { ...props.modelValue, langfuse: { ...props.modelValue.langfuse, host: val } })
 })
 
 function validate(): { valid: boolean; message?: string } {
@@ -91,17 +94,33 @@ defineExpose({ validate })
       <template v-if="provider === 'langfuse'">
         <div>
           <UFormField :label="t('aiApps.edit.langfuseSecretKey')" class="sm:col-span-2" required>
-            <UInput v-model="secretKey" type="password" class="w-full" :disabled="!enabled" :placeholder="t('aiApps.edit.langfuseSecretKeyPlaceholder')" />
+            <UInput
+              v-model="secretKey"
+              type="password"
+              class="w-full"
+              :disabled="!enabled"
+              :placeholder="t('aiApps.edit.langfuseSecretKeyPlaceholder')"
+            />
           </UFormField>
         </div>
         <div>
           <UFormField :label="t('aiApps.edit.langfusePublicKey')" required>
-            <UInput v-model="publicKey" class="w-full" :disabled="!enabled" :placeholder="t('aiApps.edit.langfusePublicKeyPlaceholder')" />
+            <UInput
+              v-model="publicKey"
+              class="w-full"
+              :disabled="!enabled"
+              :placeholder="t('aiApps.edit.langfusePublicKeyPlaceholder')"
+            />
           </UFormField>
         </div>
         <div>
           <UFormField :label="t('aiApps.edit.langfuseHost')" required>
-            <UInput v-model="host" class="w-full" :disabled="!enabled" :placeholder="t('aiApps.edit.langfuseHostPlaceholder')" />
+            <UInput
+              v-model="host"
+              class="w-full"
+              :disabled="!enabled"
+              :placeholder="t('aiApps.edit.langfuseHostPlaceholder')"
+            />
           </UFormField>
         </div>
       </template>
