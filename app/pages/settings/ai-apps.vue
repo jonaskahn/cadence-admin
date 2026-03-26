@@ -13,11 +13,17 @@ function providerLabel(provider: string): string {
   return val !== key ? val : provider
 }
 
-const { data: llmConfigs, pending: llmConfigsLoading } = await useApiFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, {
-  watch: [orgId]
-})
+const { data: llmConfigs, pending: llmConfigsLoading } = await useApiFetch<LLMConfigResponse[]>(
+  () => `/api/orgs/${orgId.value}/llm-configs`,
+  {
+    watch: [orgId]
+  }
+)
 
-const { data: defaults, refresh } = await useApiFetch<OrchestratorDefaults>(() => `/api/orgs/${orgId.value}/orchestrator-defaults`, { watch: [orgId] })
+const { data: defaults, refresh } = await useApiFetch<OrchestratorDefaults>(
+  () => `/api/orgs/${orgId.value}/orchestrator-defaults`,
+  { watch: [orgId] }
+)
 
 // --- Helpers ---
 
@@ -54,7 +60,8 @@ async function ensureModels(provider: string | null) {
 
 // --- Form init directly from resolved data (avoids watch timing issues) ---
 
-const initLlmConfigId = defaults.value?.default_llm_config_id != null ? String(defaults.value.default_llm_config_id) : null
+const initLlmConfigId =
+  defaults.value?.default_llm_config_id != null ? String(defaults.value.default_llm_config_id) : null
 
 const form = reactive({
   default_llm_config_id: initLlmConfigId as string | null,
@@ -142,7 +149,10 @@ async function save() {
         body: {
           default_llm_config_id: form.default_llm_config_id ? String(form.default_llm_config_id) : null,
           default_model_name: form.default_model_name || null,
-          default_temperature: form.default_temperature != null && !Number.isNaN(Number(form.default_temperature)) ? Number(form.default_temperature) : null,
+          default_temperature:
+            form.default_temperature != null && !Number.isNaN(Number(form.default_temperature))
+              ? Number(form.default_temperature)
+              : null,
           default_max_tokens: form.default_max_tokens || null,
           default_timeout: form.default_timeout || null
         }
@@ -187,7 +197,11 @@ async function save() {
           />
         </UFormField>
 
-        <UFormField v-if="form.default_llm_config_id" :description="t('settings.defaultModelDescription')" :label="t('settings.defaultModelName')">
+        <UFormField
+          v-if="form.default_llm_config_id"
+          :description="t('settings.defaultModelDescription')"
+          :label="t('settings.defaultModelName')"
+        >
           <div class="flex gap-2 items-center w-full">
             <UInput
               v-if="modelManual"
@@ -215,8 +229,16 @@ async function save() {
           </div>
         </UFormField>
 
-        <UFormField :description="t('settings.defaultTemperatureDescription')" :label="t('settings.defaultTemperature')">
-          <LlmTemperatureField v-model="form.default_temperature" nullable :null-option-label="t('settings.none')" :disabled="!auth.isAdmin.value" />
+        <UFormField
+          :description="t('settings.defaultTemperatureDescription')"
+          :label="t('settings.defaultTemperature')"
+        >
+          <LlmTemperatureField
+            v-model="form.default_temperature"
+            nullable
+            :null-option-label="t('settings.none')"
+            :disabled="!auth.isAdmin.value"
+          />
         </UFormField>
 
         <UFormField :label="t('settings.defaultMaxTokens')">

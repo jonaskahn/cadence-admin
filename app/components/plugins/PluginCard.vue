@@ -53,7 +53,12 @@ function onCardClick() {
 
       <div class="flex flex-wrap gap-1">
         <UBadge color="neutral" size="xs" variant="subtle"> v{{ plugin.version }} </UBadge>
-        <UBadge v-if="'enabled' in plugin && plugin.enabled !== undefined" :color="plugin.enabled ? 'success' : 'neutral'" size="xs" variant="subtle">
+        <UBadge
+          v-if="'enabled' in plugin && plugin.enabled !== undefined"
+          :color="plugin.enabled ? 'success' : 'neutral'"
+          size="xs"
+          variant="subtle"
+        >
           {{ plugin.enabled ? t('plugins.enabled') : t('plugins.disabled') }}
         </UBadge>
         <UBadge v-if="plugin.tag" color="primary" size="xs" variant="subtle">

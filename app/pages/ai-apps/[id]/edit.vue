@@ -18,7 +18,13 @@ if (!auth.isAdmin.value) {
   await navigateTo(localePath(`/ai-apps/${instanceId}`))
 }
 
-const { data: aiApp, status, error } = await useFetch<OrchestratorResponse>(() => `/api/orgs/${orgId.value}/orchestrators/${instanceId}`, { watch: [orgId] })
+const {
+  data: aiApp,
+  status,
+  error
+} = await useFetch<OrchestratorResponse>(() => `/api/orgs/${orgId.value}/orchestrators/${instanceId}`, {
+  watch: [orgId]
+})
 
 const schema = computed(() =>
   z.object({
@@ -61,11 +67,16 @@ const { data: frameworkCapabilities } = await useFetch<FrameworkSupportedProvide
   { watch: [() => aiApp.value?.framework_type] }
 )
 
-const { data: orchestratorDefaults } = await useFetch<OrchestratorDefaults>(() => `/api/orgs/${orgId.value}/orchestrator-defaults`, {
-  watch: [orgId]
-})
+const { data: orchestratorDefaults } = await useFetch<OrchestratorDefaults>(
+  () => `/api/orgs/${orgId.value}/orchestrator-defaults`,
+  {
+    watch: [orgId]
+  }
+)
 
-const supportedProviders = computed(() => (frameworkCapabilities.value?.supports_all ? null : (frameworkCapabilities.value?.supported_providers ?? null)))
+const supportedProviders = computed(() =>
+  frameworkCapabilities.value?.supports_all ? null : (frameworkCapabilities.value?.supported_providers ?? null)
+)
 const supportedModes = computed(() => frameworkCapabilities.value?.supported_modes ?? [])
 const isSupervisor = computed(() => aiApp.value?.mode === 'supervisor' && supportedModes.value.includes('supervisor'))
 const isGrounded = computed(() => aiApp.value?.mode === 'grounded' && supportedModes.value.includes('grounded'))
@@ -73,6 +84,8 @@ const isGrounded = computed(() => aiApp.value?.mode === 'grounded' && supportedM
 const groundedConfig = ref<Record<string, unknown>>({
   scope_rules: ''
 })
+
+const startersModel = ref<{ language: string; questions: string[] }[]>([])
 
 watch(
   aiApp,
@@ -93,11 +106,24 @@ watch(
         }
       }
     }
-    const modeConfig = (o.config as Record<string, unknown> | undefined)?.mode_config as Record<string, unknown> | undefined
+    const modeConfig = (o.config as Record<string, unknown> | undefined)?.mode_config as
+      | Record<string, unknown>
+      | undefined
     if (modeConfig) {
       groundedConfig.value = {
         scope_rules: modeConfig.scope_rules ?? ''
       }
+    }
+    const cs = (o.config as Record<string, unknown> | undefined)?.conversation_starters as
+      | Record<string, string[]>
+      | undefined
+    if (cs && typeof cs === 'object' && Object.keys(cs).length > 0) {
+      startersModel.value = Object.entries(cs).map(([language, questions]) => ({
+        language,
+        questions: Array.isArray(questions) && questions.length > 0 ? [...questions] : ['']
+      }))
+    } else {
+      startersModel.value = []
     }
   },
   { immediate: true }
@@ -127,7 +153,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     await withOverlay(async () => {
       await patchMetadata({ name: event.data.name, tier: event.data.tier, whoami: whoami.value || undefined })
       const orchestratorFormConfig = orchestratorConfigProviderRef.value?.getValue()
-      await patchConfig({ ...(orchestratorFormConfig ?? {}), monitoring: monitoringConfig.value })
+      const startersPayload = Object.fromEntries(
+        startersModel.value
+          .filter((e) => e.questions.some((q) => q.trim()))
+          .map((e) => [
+            e.language,
+            e.questions
+              .map((q) => q.trim())
+              .filter(Boolean)
+              .slice(0, 5)
+          ])
+      )
+      await patchConfig({
+        ...(orchestratorFormConfig ?? {}),
+        monitoring: monitoringConfig.value,
+        conversation_starters: startersPayload
+      })
       await router.push(localePath(`/ai-apps/${instanceId}`))
     })
   } finally {
@@ -165,9 +206,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           </div>
         </div>
 
-        <UAlert v-else-if="error" color="error" :description="error.message" :title="t('aiApps.edit.failedLoad')" class="m-6" />
+        <UAlert
+          v-else-if="error"
+          color="error"
+          :description="error.message"
+          :title="t('aiApps.edit.failedLoad')"
+          class="m-6"
+        />
 
-        <div v-else-if="aiApp" class="p-6 min-w-0 w-full">
+        <div v-else-if="aiApp" class="p-6 pb-28 min-w-0 w-full">
           <UForm ref="orchestratorEditFormRef" :schema="schema" :state="{ name, tier, whoami }" @submit="onSubmit">
             <div class="flex flex-col gap-8 w-full">
               <!-- Provider wraps Basic + Additional Settings + LLM Config + Supervisor Config -->
@@ -179,6 +226,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 :mode="aiApp.mode"
                 :grounded-mode-config="groundedConfig"
                 :orchestrator-defaults="orchestratorDefaults"
+                require-default-llm
               >
                 <div class="flex flex-col gap-8 w-full">
                   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
@@ -187,7 +235,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       <template #header>
                         <div class="flex items-center gap-2">
                           <p class="font-semibold">{{ t('aiApps.edit.basic') }}</p>
-                          <InfoPopover title-key="info.aiAppSections.editBasic.title" description-key="info.aiAppSections.editBasic.description" />
+                          <InfoPopover
+                            title-key="info.aiAppSections.editBasic.title"
+                            description-key="info.aiAppSections.editBasic.description"
+                          />
                         </div>
                       </template>
                       <div class="flex flex-col gap-4">
@@ -195,7 +246,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                           <UInput v-model="name" class="w-full" :placeholder="t('aiApps.edit.namePlaceholder')" />
                         </UFormField>
                         <UFormField :label="t('aiApps.create.whoami')" name="whoami">
-                          <UTextarea v-model="whoami" class="w-full" :placeholder="t('aiApps.create.whoamiPlaceholder')" :rows="3" />
+                          <UTextarea
+                            v-model="whoami"
+                            class="w-full"
+                            :placeholder="t('aiApps.create.whoamiPlaceholder')"
+                            :rows="3"
+                          />
                         </UFormField>
                         <UFormField :label="t('dashboard.tier')" name="tier">
                           <USelect v-model="tier" :items="tierOptions" class="w-full" />
@@ -226,7 +282,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         <div class="flex items-center gap-2">
                           <UIcon name="i-lucide-cpu" />
                           <span class="font-semibold">{{ t('aiApps.create.llmConfig') }}</span>
-                          <InfoPopover title-key="info.aiAppSections.llmConfig.title" description-key="info.aiAppSections.llmConfig.description" />
+                          <InfoPopover
+                            title-key="info.aiAppSections.llmConfig.title"
+                            description-key="info.aiAppSections.llmConfig.description"
+                          />
                         </div>
                       </template>
                       <LangGraphDefaultLLMConfig />
@@ -250,8 +309,19 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </UCard>
                   </div>
 
+                  <div class="flex items-center gap-3 my-2">
+                    <USeparator class="flex-1" />
+                    <span class="text-xs text-dimmed uppercase tracking-wider shrink-0">
+                      {{ t('aiApps.create.reviewFeaturesSection') }}
+                    </span>
+                    <USeparator class="flex-1" />
+                  </div>
+
                   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-                    <AiAppCollapsibleFeatureCard v-model:enabled="monitoringConfig.enabled" :section-label="t('aiApps.featureCards.monitoring')">
+                    <AiAppCollapsibleFeatureCard
+                      v-model:enabled="monitoringConfig.enabled"
+                      :section-label="t('aiApps.featureCards.monitoring')"
+                    >
                       <template #header>
                         <UIcon name="i-lucide-activity" />
                         <span class="font-semibold">{{ t('aiApps.featureCards.monitoring') }}</span>
@@ -282,23 +352,58 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </LangGraphAiAppFeatureCard>
                   </div>
 
-                  <LangGraphSupervisorSection v-if="isSupervisor" />
+                  <div class="flex items-center gap-3 my-2">
+                    <USeparator class="flex-1" />
+                    <span class="text-xs text-dimmed uppercase tracking-wider shrink-0">
+                      {{ t('aiApps.create.reviewOrchestratorSection') }}
+                    </span>
+                    <USeparator class="flex-1" />
+                  </div>
 
-                  <LangGraphGroundedSection v-if="isGrounded" v-model="groundedConfig" />
+                  <LangGraphSupervisorSection v-if="isSupervisor" hide-header />
+
+                  <LangGraphGroundedSection v-if="isGrounded" v-model="groundedConfig" hide-header />
+
+                  <div class="flex items-center gap-3 my-2">
+                    <USeparator class="flex-1" />
+                    <span class="text-xs text-dimmed uppercase tracking-wider shrink-0">
+                      {{ t('aiApps.conversationStarters.title') }}
+                    </span>
+                    <USeparator class="flex-1" />
+                  </div>
+                  <UCard variant="soft" class="min-w-0 w-full">
+                    <template #header>
+                      <div class="flex items-center gap-2">
+                        <UIcon name="i-lucide-message-square-plus" />
+                        <span class="font-semibold">{{ t('aiApps.conversationStarters.title') }}</span>
+                      </div>
+                    </template>
+                    <ConversationStartersEditor v-model="startersModel" />
+                  </UCard>
                 </div>
               </LangGraphAiAppConfigProvider>
             </div>
 
-            <div class="flex justify-end gap-2 pt-6 mt-6 border-t border-default">
-              <UButton color="neutral" :label="t('common.cancel')" :to="localePath(`/ai-apps/${instanceId}`)" variant="ghost" />
-              <ConfirmActionPopover
-                label-key="common.save"
-                confirm-title-key="common.saveConfirmTitle"
-                confirm-message-key="common.saveConfirmMessage"
-                confirm-label-key="common.saveConfirmFriendly"
-                :loading="loading"
-                :on-confirm="() => orchestratorEditFormRef?.$el?.requestSubmit?.()"
-              />
+            <div class="sticky bottom-0 z-10 -mx-6 mt-4 flex justify-end px-6 pb-6 pt-4 pointer-events-none">
+              <div
+                class="pointer-events-auto inline-flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 rounded-2xl border border-default bg-default/95 px-4 py-3 shadow-lg backdrop-blur supports-backdrop-filter:bg-default/80"
+              >
+                <UButton
+                  color="neutral"
+                  :label="t('common.cancel')"
+                  :to="localePath(`/ai-apps/${instanceId}`)"
+                  variant="ghost"
+                />
+                <ConfirmActionPopover
+                  label-key="common.save"
+                  confirm-title-key="common.saveConfirmTitle"
+                  confirm-message-key="common.saveConfirmMessage"
+                  confirm-label-key="common.saveConfirmFriendly"
+                  :loading="loading"
+                  size="lg"
+                  :on-confirm="() => orchestratorEditFormRef?.$el?.requestSubmit?.()"
+                />
+              </div>
             </div>
           </UForm>
         </div>

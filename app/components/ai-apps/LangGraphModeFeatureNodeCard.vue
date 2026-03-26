@@ -79,7 +79,8 @@ const inheritDescription = t('langGraphSupervisor.nodeFieldInheritsFromLlmSectio
 const llmConfigsLoadingBool = computed(() => unref(orchestratorConfig.llmConfigsLoading))
 
 function numericPlaceholder(val: number | null | undefined): string | undefined {
-  if (val != null && !Number.isNaN(Number(val))) return t('langGraphSupervisor.nodeNumericPlaceholder', { value: String(val) })
+  if (val != null && !Number.isNaN(Number(val)))
+    return t('langGraphSupervisor.nodeNumericPlaceholder', { value: String(val) })
   return undefined
 }
 </script>
@@ -89,14 +90,25 @@ function numericPlaceholder(val: number | null | undefined): string | undefined 
     <div v-if="!hideHeaderSwitch" class="flex items-center gap-2">
       <USwitch
         v-model="featureEnabled"
-        :aria-label="feature === 'suggestion' ? t('aiApps.featureCards.followUpSuggestions') : t('aiApps.featureCards.autoCompactMessage')"
+        :aria-label="
+          feature === 'suggestion'
+            ? t('aiApps.featureCards.followUpSuggestions')
+            : t('aiApps.featureCards.autoCompactMessage')
+        "
       />
       <span class="text-sm text-dimmed">{{ t('aiApps.featureCards.enable') }}</span>
     </div>
 
     <div class="grid grid-cols-1 gap-3">
       <UFormField :label="t('settings.defaultLlmConfig')">
-        <USelect v-model="nodeLlmSelectModel" :items="nodeLlmItems" :disabled="fieldsDisabled" class="w-full" label-key="label" value-key="value" />
+        <USelect
+          v-model="nodeLlmSelectModel"
+          :items="nodeLlmItems"
+          :disabled="fieldsDisabled"
+          class="w-full"
+          label-key="label"
+          value-key="value"
+        />
       </UFormField>
       <UFormField :description="inheritDescription">
         <template #label>
@@ -121,7 +133,10 @@ function numericPlaceholder(val: number | null | undefined): string | undefined 
         />
       </UFormField>
       <LangGraphPromptOverrideField v-model="node.prompt_override" :prompt-key="promptKey" :disabled="fieldsDisabled" />
-      <UFormField :label="t('settings.defaultTemperature')" :description="node.temperature === null ? inheritDescription : undefined">
+      <UFormField
+        :label="t('settings.defaultTemperature')"
+        :description="node.temperature === null ? inheritDescription : undefined"
+      >
         <LlmTemperatureField
           v-model="node.temperature"
           nullable
@@ -129,22 +144,32 @@ function numericPlaceholder(val: number | null | undefined): string | undefined 
           :disabled="fieldsDisabled"
         />
       </UFormField>
-      <UFormField :label="t('settings.defaultMaxTokens')" :description="node.max_tokens === null ? inheritDescription : undefined">
+      <UFormField
+        :label="t('settings.defaultMaxTokens')"
+        :description="node.max_tokens === null ? inheritDescription : undefined"
+      >
         <UInput
           v-model.number="node.max_tokens"
           type="number"
           :disabled="fieldsDisabled"
           class="w-full"
-          :placeholder="node.max_tokens === null ? numericPlaceholder(unref(orchestratorConfig.defaultMaxTokens)) : undefined"
+          :placeholder="
+            node.max_tokens === null ? numericPlaceholder(unref(orchestratorConfig.defaultMaxTokens)) : undefined
+          "
         />
       </UFormField>
-      <UFormField :label="t('aiApps.supervisor.nodeExecutionTimeout')" :description="node.timeout === null ? inheritDescription : undefined">
+      <UFormField
+        :label="t('aiApps.supervisor.nodeExecutionTimeout')"
+        :description="node.timeout === null ? inheritDescription : undefined"
+      >
         <UInput
           v-model.number="node.timeout"
           type="number"
           :disabled="fieldsDisabled"
           class="w-full"
-          :placeholder="node.timeout === null ? numericPlaceholder(unref(orchestratorConfig.orgDefaultTimeout)) : undefined"
+          :placeholder="
+            node.timeout === null ? numericPlaceholder(unref(orchestratorConfig.orgDefaultTimeout)) : undefined
+          "
         />
       </UFormField>
     </div>

@@ -14,7 +14,10 @@ const { data: org } = await useFetch<{ tier: string }>(() => `/api/orgs/${orgId.
   watch: [orgId]
 })
 
-const canUseCentralPoints = computed(() => orgId.value && org.value?.tier && (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase()))
+const canUseCentralPoints = computed(
+  () =>
+    orgId.value && org.value?.tier && (CENTRAL_POINTS_TIERS as readonly string[]).includes(org.value.tier.toLowerCase())
+)
 
 provide('canUseCentralPoints', canUseCentralPoints)
 

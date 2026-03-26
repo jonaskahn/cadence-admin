@@ -8,7 +8,9 @@ const { withOverlay } = useLoadingOverlay()
 const orgId = computed(() => auth.currentOrgId.value || '')
 const showAdd = ref(false)
 
-const { data: members, refresh } = await useApiFetch<UserMembershipResponse[]>(() => `/api/orgs/${orgId.value}/users`, { watch: [orgId] })
+const { data: members, refresh } = await useApiFetch<UserMembershipResponse[]>(() => `/api/orgs/${orgId.value}/users`, {
+  watch: [orgId]
+})
 
 async function withMemberAction(fn: () => Promise<void>, errorTitle: string): Promise<void> {
   try {
@@ -105,17 +107,32 @@ const columns = computed(() => [
             <div>
               <div class="flex items-center gap-2">
                 <p class="font-semibold">{{ t('settings.members') }}</p>
-                <InfoPopover title-key="info.settings.members.title" description-key="info.settings.members.description" />
+                <InfoPopover
+                  title-key="info.settings.members.title"
+                  description-key="info.settings.members.description"
+                />
               </div>
               <p class="text-dimmed text-sm">{{ t('settings.membersDescription') }}</p>
             </div>
-            <UButton v-if="auth.isAdmin.value" color="primary" icon="i-lucide-user-plus" :label="t('settings.addMember')" @click="openAdd" />
+            <UButton
+              v-if="auth.isAdmin.value"
+              color="primary"
+              icon="i-lucide-user-plus"
+              :label="t('settings.addMember')"
+              @click="openAdd"
+            />
           </div>
         </template>
         <div v-if="!members" class="flex flex-col gap-2 p-4">
           <USkeleton v-for="n in 5" :key="n" class="h-10 w-full" />
         </div>
-        <UTable v-else :columns="columns" :data="members" :empty-state="{ icon: 'i-lucide-contact', label: t('settings.noMembers') }" class="w-full">
+        <UTable
+          v-else
+          :columns="columns"
+          :data="members"
+          :empty-state="{ icon: 'i-lucide-contact', label: t('settings.noMembers') }"
+          class="w-full"
+        >
           <template #is_admin-cell="{ row }">
             <UBadge :color="row.original.is_admin ? 'warning' : 'neutral'" size="sm" variant="subtle">
               {{ row.original.is_admin ? t('roles.orgAdmin') : t('roles.member') }}

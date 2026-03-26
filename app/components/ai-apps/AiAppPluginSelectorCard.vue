@@ -94,7 +94,13 @@ watch(
         <UIcon class="size-5 animate-spin text-dimmed" name="i-lucide-loader-2" />
       </div>
 
-      <UAlert v-else-if="error" color="error" :description="error.message" size="sm" :title="t('aiApps.pluginSelector.failedLoadVersions')" />
+      <UAlert
+        v-else-if="error"
+        color="error"
+        :description="error.message"
+        size="sm"
+        :title="t('aiApps.pluginSelector.failedLoadVersions')"
+      />
 
       <div v-else class="flex flex-wrap items-center gap-2">
         <USelect

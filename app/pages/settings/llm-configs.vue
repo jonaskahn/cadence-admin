@@ -11,7 +11,10 @@ const orgId = computed(() => auth.currentOrgId.value || '')
 const showAdd = ref(false)
 const editingConfig = ref<LLMConfigResponse | null>(null)
 
-const { data: configs, refresh } = await useApiFetch<LLMConfigResponse[]>(() => `/api/orgs/${orgId.value}/llm-configs`, { watch: [orgId] })
+const { data: configs, refresh } = await useApiFetch<LLMConfigResponse[]>(
+  () => `/api/orgs/${orgId.value}/llm-configs`,
+  { watch: [orgId] }
+)
 
 function openAdd() {
   showAdd.value = true
@@ -130,19 +133,36 @@ const columns = computed(() => [
             <div>
               <div class="flex items-center gap-2">
                 <p class="font-semibold">{{ t('settings.llmConfigs') }}</p>
-                <InfoPopover title-key="info.settings.llmConfigs.title" description-key="info.settings.llmConfigs.description" />
+                <InfoPopover
+                  title-key="info.settings.llmConfigs.title"
+                  description-key="info.settings.llmConfigs.description"
+                />
               </div>
               <p class="text-dimmed text-sm">{{ t('settings.llmConfigsDescription') }}</p>
             </div>
-            <UButton v-if="auth.isAdmin.value" color="primary" icon="i-lucide-plus" :label="t('settings.addConfig')" @click="openAdd" />
+            <UButton
+              v-if="auth.isAdmin.value"
+              color="primary"
+              icon="i-lucide-plus"
+              :label="t('settings.addConfig')"
+              @click="openAdd"
+            />
           </div>
         </template>
         <div v-if="!configs" class="flex flex-col gap-2 p-4">
           <USkeleton v-for="n in 5" :key="n" class="h-10 w-full" />
         </div>
-        <UTable v-else :columns="columns" :data="configs" :empty-state="{ icon: 'i-lucide-cable', label: t('settings.noConfigs') }" class="w-full">
+        <UTable
+          v-else
+          :columns="columns"
+          :data="configs"
+          :empty-state="{ icon: 'i-lucide-cable', label: t('settings.noConfigs') }"
+          class="w-full"
+        >
           <template #provider-cell="{ row }">
-            <span :class="{ 'opacity-60': row?.original?.is_enabled === false }">{{ providerLabel(row.original.provider) }}</span>
+            <span :class="{ 'opacity-60': row?.original?.is_enabled === false }">{{
+              providerLabel(row.original.provider)
+            }}</span>
           </template>
 
           <template #is_enabled-cell="{ row }">
@@ -167,7 +187,13 @@ const columns = computed(() => [
           <template #actions-cell="{ row }">
             <div class="flex items-center gap-1">
               <template v-if="auth.isAdmin.value">
-                <UButton color="primary" icon="i-lucide-pencil" :label="t('common.edit')" size="sm" @click="startEdit(row.original)" />
+                <UButton
+                  color="primary"
+                  icon="i-lucide-pencil"
+                  :label="t('common.edit')"
+                  size="sm"
+                  @click="startEdit(row.original)"
+                />
                 <UButton
                   color="primary"
                   :icon="row?.original?.is_enabled ? 'i-lucide-eye-off' : 'i-lucide-eye'"
@@ -181,7 +207,9 @@ const columns = computed(() => [
                 <UButton color="error" icon="i-lucide-trash-2" size="sm" />
                 <template #content="{ close }">
                   <div class="p-4 min-w-48">
-                    <p class="text-sm text-dimmed mb-3">{{ t('settings.deleteConfigConfirm', { name: row.original.name }) }}</p>
+                    <p class="text-sm text-dimmed mb-3">
+                      {{ t('settings.deleteConfigConfirm', { name: row.original.name }) }}
+                    </p>
                     <div class="flex justify-end gap-2">
                       <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                       <UButton

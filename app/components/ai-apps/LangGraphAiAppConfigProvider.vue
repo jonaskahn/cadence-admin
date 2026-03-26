@@ -10,11 +10,13 @@ const props = withDefaults(
     mode?: string
     groundedModeConfig?: Record<string, unknown>
     orchestratorDefaults?: OrchestratorDefaults | null
+    requireDefaultLlm?: boolean
   }>(),
   {
     disabled: false,
     mode: 'supervisor',
-    groundedModeConfig: () => ({})
+    groundedModeConfig: () => ({}),
+    requireDefaultLlm: false
   }
 )
 
@@ -23,6 +25,7 @@ const initialValueRef = toRef(props, 'initialValue')
 const supportedProvidersRef = toRef(props, 'supportedProviders')
 const disabledRef = toRef(props, 'disabled')
 const orchestratorDefaultsRef = toRef(props, 'orchestratorDefaults')
+const requireDefaultLlmRef = toRef(props, 'requireDefaultLlm')
 const isGroundedMode = computed(() => props.mode === 'grounded')
 
 const orchestratorConfig = useLangGraphOrchestratorConfig(
@@ -31,7 +34,8 @@ const orchestratorConfig = useLangGraphOrchestratorConfig(
   supportedProvidersRef,
   disabledRef,
   orchestratorDefaultsRef,
-  isGroundedMode
+  isGroundedMode,
+  requireDefaultLlmRef
 )
 
 provide('langGraphOrchestratorConfig', orchestratorConfig)

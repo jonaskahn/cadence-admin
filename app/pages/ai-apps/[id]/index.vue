@@ -20,7 +20,10 @@ const aiAppStore = useAiApps()
 const instanceId = route.params.id as string
 const orgId = computed(() => auth.currentOrgId.value || '')
 
-const { data: aiApp, refresh } = await useFetch<OrchestratorResponse>(() => `/api/orgs/${orgId.value}/orchestrators/${instanceId}`, { watch: [orgId] })
+const { data: aiApp, refresh } = await useFetch<OrchestratorResponse>(
+  () => `/api/orgs/${orgId.value}/orchestrators/${instanceId}`,
+  { watch: [orgId] }
+)
 
 const supportedProviders = ref<string[] | null>(null)
 
@@ -82,7 +85,9 @@ watch(
       const logos = await Promise.all(
         needsLogo.map(async (p) => {
           try {
-            const res = await $fetch<PluginMetadataResponse[]>(`/api/orgs/${orgIdVal}/plugins/${p.id}/versions?source=${p.source}`)
+            const res = await $fetch<PluginMetadataResponse[]>(
+              `/api/orgs/${orgIdVal}/plugins/${p.id}/versions?source=${p.source}`
+            )
             const match = res.find((v) => v.version === p.version)
             return match?.logo_image ?? null
           } catch {
@@ -207,7 +212,13 @@ async function handleActivateConfirm(close: () => void) {
             <div class="flex items-center gap-2">
               <InfoPopover title-key="info.pages.aiApps.title" description-key="info.pages.aiApps.description" />
               <template v-if="auth.isAdmin.value && aiApp">
-                <UButton color="primary" icon="i-lucide-pencil" :label="t('common.edit')" size="sm" :to="localePath(`/ai-apps/${instanceId}/edit`)" />
+                <UButton
+                  color="primary"
+                  icon="i-lucide-pencil"
+                  :label="t('common.edit')"
+                  size="sm"
+                  :to="localePath(`/ai-apps/${instanceId}/edit`)"
+                />
                 <template v-if="aiApp.status === 'active'">
                   <UPopover>
                     <UButton color="primary" icon="i-lucide-play" :label="t('aiApps.load')" size="sm" />
@@ -216,7 +227,12 @@ async function handleActivateConfirm(close: () => void) {
                         <p class="text-sm text-dimmed mb-3">{{ t('aiApps.loadConfirm', { name: aiApp.name }) }}</p>
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                          <UButton color="primary" :label="t('aiApps.load')" :loading="loadingId" @click="handleLoadConfirm(close)" />
+                          <UButton
+                            color="primary"
+                            :label="t('aiApps.load')"
+                            :loading="loadingId"
+                            @click="handleLoadConfirm(close)"
+                          />
                         </div>
                       </div>
                     </template>
@@ -228,7 +244,12 @@ async function handleActivateConfirm(close: () => void) {
                         <p class="text-sm text-dimmed mb-3">{{ t('aiApps.unloadConfirm', { name: aiApp.name }) }}</p>
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                          <UButton color="primary" :label="t('aiApps.unload')" :loading="unloadingId" @click="handleUnloadConfirm(close)" />
+                          <UButton
+                            color="primary"
+                            :label="t('aiApps.unload')"
+                            :loading="unloadingId"
+                            @click="handleUnloadConfirm(close)"
+                          />
                         </div>
                       </div>
                     </template>
@@ -237,10 +258,17 @@ async function handleActivateConfirm(close: () => void) {
                     <UButton color="error" icon="i-lucide-route-off" :label="t('aiApps.deactivate')" size="sm" />
                     <template #content="{ close }">
                       <div class="p-4 min-w-48">
-                        <p class="text-sm text-dimmed mb-3">{{ t('aiApps.deactivateConfirm', { name: aiApp.name }) }}</p>
+                        <p class="text-sm text-dimmed mb-3">
+                          {{ t('aiApps.deactivateConfirm', { name: aiApp.name }) }}
+                        </p>
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                          <UButton color="primary" :label="t('aiApps.deactivate')" :loading="deactivating" @click="handleDeactivateConfirm(close)" />
+                          <UButton
+                            color="primary"
+                            :label="t('aiApps.deactivate')"
+                            :loading="deactivating"
+                            @click="handleDeactivateConfirm(close)"
+                          />
                         </div>
                       </div>
                     </template>
@@ -253,7 +281,12 @@ async function handleActivateConfirm(close: () => void) {
                       <p class="text-sm text-dimmed mb-3">{{ t('aiApps.activateConfirm', { name: aiApp.name }) }}</p>
                       <div class="flex justify-end gap-2">
                         <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
-                        <UButton color="primary" :label="t('aiApps.activate')" :loading="activating" @click="handleActivateConfirm(close)" />
+                        <UButton
+                          color="primary"
+                          :label="t('aiApps.activate')"
+                          :loading="activating"
+                          @click="handleActivateConfirm(close)"
+                        />
                       </div>
                     </div>
                   </template>
@@ -343,14 +376,24 @@ async function handleActivateConfirm(close: () => void) {
 
             <!-- Plugin status mini-cards -->
             <div v-if="displayPlugins.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-              <AiAppPluginCard v-for="plugin in displayPlugins" :key="plugin.id + plugin.version" :plugin="plugin" :interactive="false" />
+              <AiAppPluginCard
+                v-for="plugin in displayPlugins"
+                :key="plugin.id + plugin.version"
+                :plugin="plugin"
+                :interactive="false"
+              />
             </div>
 
             <USeparator v-if="displayPlugins.length > 0" :label="t('aiApps.create.pluginSettings')" class="mb-4" />
 
             <p class="text-dimmed text-xs mb-4">{{ t('aiApps.create.pluginConfigurationDesc') }}</p>
 
-            <AiAppPluginSettings ref="pluginSettingsRef" :disabled="!auth.isAdmin.value" :initial-value="aiApp.plugin_settings" :org-id="orgId" />
+            <AiAppPluginSettings
+              ref="pluginSettingsRef"
+              :disabled="!auth.isAdmin.value"
+              :initial-value="aiApp.plugin_settings"
+              :org-id="orgId"
+            />
           </UCard>
         </div>
 

@@ -18,7 +18,9 @@ const {
   'oauth-consent-context',
   () => {
     if (!handoff.value) return Promise.resolve(null)
-    return $fetch<{ client_id: string; scope: string; requested_claims: string[] }>('/api/oauth2/consent/context', { query: { handoff: handoff.value } })
+    return $fetch<{ client_id: string; scope: string; requested_claims: string[] }>('/api/oauth2/consent/context', {
+      query: { handoff: handoff.value }
+    })
   },
   { watch: [handoff] }
 )

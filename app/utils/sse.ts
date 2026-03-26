@@ -17,7 +17,10 @@ function isMessageContentEvent(eventType: string | null, parsed: Record<string, 
   return eventType === MESSAGE_EVENT_TYPE || (!eventType && !!parsed.content)
 }
 
-export async function processChatSseStream(reader: ReadableStreamDefaultReader<Uint8Array>, callbacks: StreamCallbacks): Promise<void> {
+export async function processChatSseStream(
+  reader: ReadableStreamDefaultReader<Uint8Array>,
+  callbacks: StreamCallbacks
+): Promise<void> {
   const decoder = new TextDecoder()
   let buffer = ''
   let currentEventType: string | null = null

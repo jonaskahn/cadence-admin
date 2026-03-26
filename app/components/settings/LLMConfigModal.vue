@@ -81,7 +81,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       emit('close')
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, isEdit.value ? t('llmConfig.failedUpdateConfig') : t('llmConfig.failedAddConfig'))
+    const msg = getApiErrorMessage(
+      err,
+      isEdit.value ? t('llmConfig.failedUpdateConfig') : t('llmConfig.failedAddConfig')
+    )
     toast.add({ title: t('errors.error'), description: msg, color: 'error' })
   } finally {
     loading.value = false
@@ -106,18 +109,40 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <div v-if="isEdit" class="text-xs py-1.5 text-dimmed">
           {{ providerLabel(provider) }}
         </div>
-        <USelect v-else v-model="state.provider" :items="providerOptions" class="w-full" value-key="value" label-key="label" />
+        <USelect
+          v-else
+          v-model="state.provider"
+          :items="providerOptions"
+          class="w-full"
+          value-key="value"
+          label-key="label"
+        />
       </UFormField>
 
-      <UFormField :description="isEdit ? undefined : undefined" :required="!isEdit" :label="t('llmConfig.apiKey')" name="api_key">
-        <UInput v-model="state.api_key" class="w-full" :placeholder="t('llmConfig.apiKeyPlaceholder')" type="password" />
+      <UFormField
+        :description="isEdit ? undefined : undefined"
+        :required="!isEdit"
+        :label="t('llmConfig.apiKey')"
+        name="api_key"
+      >
+        <UInput
+          v-model="state.api_key"
+          class="w-full"
+          :placeholder="t('llmConfig.apiKeyPlaceholder')"
+          type="password"
+        />
       </UFormField>
 
       <UFormField :description="t('llmConfig.baseUrlDescription')" :label="t('llmConfig.baseUrl')" name="base_url">
         <UInput v-model="state.base_url" class="w-full" :placeholder="t('llmConfig.baseUrlPlaceholder')" />
       </UFormField>
 
-      <UFormField v-if="isAzure" :description="t('llmConfig.apiVersionDescription')" :label="t('llmConfig.apiVersion')" name="api_version">
+      <UFormField
+        v-if="isAzure"
+        :description="t('llmConfig.apiVersionDescription')"
+        :label="t('llmConfig.apiVersion')"
+        name="api_version"
+      >
         <UInput v-model="state.api_version" class="w-full" :placeholder="t('llmConfig.apiVersionPlaceholder')" />
       </UFormField>
 

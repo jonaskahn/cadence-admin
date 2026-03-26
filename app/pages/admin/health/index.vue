@@ -39,7 +39,9 @@ const columns = computed(() => [
                   :name="systemHealth?.status === 'healthy' ? 'i-lucide-check-circle' : 'i-lucide-x-circle'"
                   class="size-5"
                 />
-                <p class="font-semibold">{{ t('admin.systemStatus') }}: {{ systemHealth?.status || t('errors.unknown') }}</p>
+                <p class="font-semibold">
+                  {{ t('admin.systemStatus') }}: {{ systemHealth?.status || t('errors.unknown') }}
+                </p>
               </div>
             </template>
 
@@ -50,11 +52,19 @@ const columns = computed(() => [
                 </p>
                 <div class="flex items-center gap-1 mt-1">
                   <UIcon
-                    :class="systemHealth?.[key as keyof typeof systemHealth] === 'connected' ? 'text-success' : 'text-error'"
-                    :name="systemHealth?.[key as keyof typeof systemHealth] === 'connected' ? 'i-lucide-circle-check' : 'i-lucide-circle-x'"
+                    :class="
+                      systemHealth?.[key as keyof typeof systemHealth] === 'connected' ? 'text-success' : 'text-error'
+                    "
+                    :name="
+                      systemHealth?.[key as keyof typeof systemHealth] === 'connected'
+                        ? 'i-lucide-circle-check'
+                        : 'i-lucide-circle-x'
+                    "
                     class="size-4"
                   />
-                  <span class="text-sm">{{ systemHealth?.[key as keyof typeof systemHealth] || t('errors.unknown') }}</span>
+                  <span class="text-sm">{{
+                    systemHealth?.[key as keyof typeof systemHealth] || t('errors.unknown')
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -80,7 +90,9 @@ const columns = computed(() => [
               </template>
             </UTable>
 
-            <p v-if="!instanceHealth?.length" class="text-dimmed text-sm text-center py-4">{{ t('admin.noInstances') }}</p>
+            <p v-if="!instanceHealth?.length" class="text-dimmed text-sm text-center py-4">
+              {{ t('admin.noInstances') }}
+            </p>
           </UCard>
         </div>
       </template>

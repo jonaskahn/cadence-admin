@@ -1,4 +1,10 @@
-import type { AboutMeResponse, AuthUser, BffAuthSetCookieResponse, OrgAccessResponse, OrgWithRoleResponse } from '~/types'
+import type {
+  AboutMeResponse,
+  AuthUser,
+  BffAuthSetCookieResponse,
+  OrgAccessResponse,
+  OrgWithRoleResponse
+} from '~/types'
 import { COOKIE_SESSION_CONTEXT } from '~/constants'
 
 function mapOrgWithRoleToOrgAccess(org: OrgWithRoleResponse): OrgAccessResponse {
@@ -120,7 +126,10 @@ export const useAuth = () => {
   async function restoreSession(): Promise<void> {
     if (authUser.value) return
     try {
-      const [orgs, me] = await Promise.all([apiFetch<OrgWithRoleResponse[]>('/api/orgs'), apiFetch<AboutMeResponse>('/api/me')])
+      const [orgs, me] = await Promise.all([
+        apiFetch<OrgWithRoleResponse[]>('/api/orgs'),
+        apiFetch<AboutMeResponse>('/api/me')
+      ])
       orgList.value = orgs.map(mapOrgWithRoleToOrgAccess)
       isSysAdmin.value = me.is_sys_admin
       authUser.value = { username: me.username ?? '', display_name: me.display_name }

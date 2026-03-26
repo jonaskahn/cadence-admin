@@ -55,7 +55,9 @@ const showSampleRate = computed(() => form.value.trace_sampler === 'traceid_rati
 
 const statusSummary = computed(() => {
   const exporterLabel = EXPORTER_OPTIONS.find((o) => o.value === form.value.exporter)?.label ?? form.value.exporter
-  const activeCount = [form.value.traces_enabled, form.value.metrics_enabled, form.value.logs_enabled].filter(Boolean).length
+  const activeCount = [form.value.traces_enabled, form.value.metrics_enabled, form.value.logs_enabled].filter(
+    Boolean
+  ).length
   return {
     enabled: form.value.enabled,
     exporter: exporterLabel,
@@ -166,7 +168,13 @@ async function save() {
         </template>
         <div class="flex flex-col gap-4">
           <UFormField :label="t('admin.otelExporter')">
-            <USelect v-model="form.exporter" :items="EXPORTER_OPTIONS" value-key="value" label-key="label" class="w-full" />
+            <USelect
+              v-model="form.exporter"
+              :items="EXPORTER_OPTIONS"
+              value-key="value"
+              label-key="label"
+              class="w-full"
+            />
           </UFormField>
           <template v-if="showEndpointFields">
             <UFormField :label="t('admin.otelEndpoint')">
@@ -217,9 +225,19 @@ async function save() {
         </template>
         <div class="flex flex-col gap-4">
           <UFormField :label="t('admin.otelTraceSampler')">
-            <USelect v-model="form.trace_sampler" :items="SAMPLER_OPTIONS" value-key="value" label-key="label" class="w-full" />
+            <USelect
+              v-model="form.trace_sampler"
+              :items="SAMPLER_OPTIONS"
+              value-key="value"
+              label-key="label"
+              class="w-full"
+            />
           </UFormField>
-          <UFormField v-if="showSampleRate" :label="t('admin.otelSampleRate')" :description="t('admin.otelSampleRateHint')">
+          <UFormField
+            v-if="showSampleRate"
+            :label="t('admin.otelSampleRate')"
+            :description="t('admin.otelSampleRateHint')"
+          >
             <UInput v-model.number="form.trace_sample_rate" type="number" step="0.1" min="0" max="1" class="w-full" />
           </UFormField>
         </div>

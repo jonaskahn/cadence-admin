@@ -55,7 +55,22 @@ const strValue = computed({
 
 <template>
   <USwitch v-if="isBoolean" v-model="boolValue" :size="size" :class="props.class" />
-  <UInput v-else-if="isInteger" v-model.number="numValue" type="number" :size="size" :class="props.class" class="flex-1" />
-  <UInput v-else-if="isFloat" v-model.number="numValue" type="number" step="0.01" :size="size" :class="props.class" class="flex-1" />
+  <UInput
+    v-else-if="isInteger"
+    v-model.number="numValue"
+    type="number"
+    :size="size"
+    :class="props.class"
+    class="flex-1"
+  />
+  <UInput
+    v-else-if="isFloat"
+    v-model.number="numValue"
+    type="number"
+    step="0.01"
+    :size="size"
+    :class="props.class"
+    class="flex-1"
+  />
   <UInput v-else v-model="strValue" type="text" :size="size" :class="props.class" class="flex-1" />
 </template>

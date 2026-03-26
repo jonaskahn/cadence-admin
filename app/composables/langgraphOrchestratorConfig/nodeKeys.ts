@@ -16,7 +16,13 @@ export const SUPERVISOR_NODE_KEYS = [
 
 export type SupervisorNodeKey = (typeof SUPERVISOR_NODE_KEYS)[number]
 
-export const GROUNDED_NODE_KEYS = ['router_node', 'planner_node', 'synthesizer_node', 'validation_node', 'error_handler_node'] as const
+export const GROUNDED_NODE_KEYS = [
+  'router_node',
+  'planner_node',
+  'synthesizer_node',
+  'validation_node',
+  'error_handler_node'
+] as const
 
 export type GroundedNodeKey = (typeof GROUNDED_NODE_KEYS)[number]
 

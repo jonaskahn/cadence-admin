@@ -45,7 +45,9 @@ const state = reactive<Partial<Schema>>({
 })
 
 const orchestratorOptions = computed(() =>
-  (props.orchestrators || []).filter((o) => o.status === 'active' && !o.is_deleted).map((o) => ({ label: o.name, value: o.instance_id }))
+  (props.orchestrators || [])
+    .filter((o) => o.status === 'active' && !o.is_deleted)
+    .map((o) => ({ label: o.name, value: o.instance_id }))
 )
 
 const visibilityItems = computed(() => [
@@ -85,7 +87,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <UInput v-model="state.name" class="w-full" :placeholder="t('centralPoints.namePlaceholder')" />
       </UFormField>
       <UFormField :label="t('settings.description')" name="description">
-        <UTextarea v-model="state.description" class="w-full" :placeholder="t('centralPoints.descriptionPlaceholder')" />
+        <UTextarea
+          v-model="state.description"
+          class="w-full"
+          :placeholder="t('centralPoints.descriptionPlaceholder')"
+        />
       </UFormField>
       <UFormField :label="t('centralPoints.aiApp')" name="orchestrator_id">
         <USelect
@@ -98,7 +104,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         />
       </UFormField>
       <UFormField :label="t('centralPoints.visibility')" name="visibility">
-        <USelect v-model="state.visibility" :items="visibilityItems" class="w-full" label-key="label" value-key="value" />
+        <USelect
+          v-model="state.visibility"
+          :items="visibilityItems"
+          class="w-full"
+          label-key="label"
+          value-key="value"
+        />
       </UFormField>
       <div class="flex justify-end gap-2">
         <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="handleClose" />

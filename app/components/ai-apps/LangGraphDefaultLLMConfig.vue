@@ -14,7 +14,8 @@ const {
   defaultMaxTokens,
   resolvedDefaultModelName,
   defaultModelManual,
-  defaultModelOptions
+  defaultModelOptions,
+  requireDefaultLlm
 } = toRefs(orchestratorConfig)
 
 const defaultModelStr = computed({
@@ -32,7 +33,11 @@ const modelPlaceholder = computed(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <UFormField :label="t('aiApps.supervisor.defaultLlmConfig')" name="default_llm_config_id">
+    <UFormField
+      :label="t('aiApps.supervisor.defaultLlmConfig')"
+      name="default_llm_config_id"
+      :required="requireDefaultLlm"
+    >
       <USelect
         v-model="defaultLlmConfigId"
         :items="llmConfigOptions"
@@ -44,16 +49,31 @@ const modelPlaceholder = computed(() => {
         value-key="value"
       />
     </UFormField>
-    <UFormField name="default_model_name" :description="t('langGraphSupervisor.nodeFieldInheritsFromLlmSection')">
+    <UFormField
+      name="default_model_name"
+      :description="t('langGraphSupervisor.nodeFieldInheritsFromLlmSection')"
+      :required="false"
+    >
       <template #label>
-        <div class="flex w-full min-w-0 items-center justify-between gap-2">
-          <span class="truncate">{{ t('aiApps.supervisor.defaultModelName') }}</span>
-          <LlmModelNameLabelActions v-model:manual="defaultModelManual" :options="defaultModelOptions" :model-name="defaultModelStr" />
+        <div class="flex w-full min-w-0 flex-nowrap items-center justify-between gap-2">
+          <div class="flex min-w-0 flex-nowrap items-center gap-1">
+            <span class="truncate">{{ t('aiApps.supervisor.defaultModelName') }}</span>
+            <span v-if="requireDefaultLlm" class="text-error shrink-0 text-sm leading-none" aria-hidden="true">
+              *
+            </span>
+          </div>
+          <LlmModelNameLabelActions
+            v-model:manual="defaultModelManual"
+            class="shrink-0"
+            :options="defaultModelOptions"
+            :model-name="defaultModelStr"
+          />
         </div>
       </template>
       <LlmModelNameField
         v-model="defaultModelStr"
         v-model:manual="defaultModelManual"
+        :required="requireDefaultLlm"
         :options="defaultModelOptions"
         :loading="llmConfigsLoading"
         :placeholder="modelPlaceholder"
@@ -68,7 +88,14 @@ const modelPlaceholder = computed(() => {
       <LlmTemperatureField v-model="defaultTemperature" />
     </UFormField>
     <UFormField :label="t('aiApps.supervisor.defaultMaxTokens')" name="default_max_tokens">
-      <UInputNumber v-model="defaultMaxTokens" orientation="vertical" :min="512" :max="4096" :step="512" class="w-full" />
+      <UInputNumber
+        v-model="defaultMaxTokens"
+        orientation="vertical"
+        :min="512"
+        :max="4096"
+        :step="512"
+        class="w-full"
+      />
     </UFormField>
   </div>
 </template>

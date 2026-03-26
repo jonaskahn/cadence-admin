@@ -112,7 +112,7 @@ export default defineAppConfig({
       variants: {
         variant: {
           soft: {
-            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-sm hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300',
+            root: 'bg-neutral-100 border border-accented border-dotted divide-y divide-dashed shadow-sm backdrop-blur supports-backdrop-filter:bg-default/40 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300',
             description: 'text-toned'
           }
         }
@@ -131,7 +131,7 @@ export default defineAppConfig({
       variants: {
         variant: {
           soft: {
-            root: 'bg-neutral-100/15 border-0 divide-y divide-dotted shadow-sm hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
+            root: 'bg-neutral-100 border border-accented border-dotted divide-y divide-dashed shadow-sm backdrop-blur supports-backdrop-filter:bg-default/40 hover:shadow-lg hover:-translate-y-0.6 transition-all duration-300'
           }
         }
       },

@@ -1,7 +1,13 @@
 <script lang="ts" setup>
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
-import type { OrganizationResponse, TierDefinitionResponse, TierQuota, UpdateOrganizationRequest, UserMembershipResponse } from '~/types'
+import type {
+  OrganizationResponse,
+  TierDefinitionResponse,
+  TierQuota,
+  UpdateOrganizationRequest,
+  UserMembershipResponse
+} from '~/types'
 import { getApiErrorMessage, SUBSCRIPTION_TIERS, subscriptionTierSelectItems } from '~/utils'
 
 const route = useRoute()
@@ -17,7 +23,9 @@ const orgFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 const { data: org, refresh: refreshOrg } = await useApiFetch<OrganizationResponse>(`/api/admin/orgs/${orgId}`)
 const { data: quota, refresh: refreshQuota } = await useApiFetch<TierQuota>(`/api/admin/orgs/${orgId}/quota`)
 const { data: tiers } = await useApiFetch<TierDefinitionResponse[]>('/api/admin/tiers')
-const { data: members, refresh: refreshMembers } = await useApiFetch<UserMembershipResponse[]>(`/api/orgs/${orgId}/users`)
+const { data: members, refresh: refreshMembers } = await useApiFetch<UserMembershipResponse[]>(
+  `/api/orgs/${orgId}/users`
+)
 
 const tierOptions = subscriptionTierSelectItems(SUBSCRIPTION_TIERS)
 
@@ -72,7 +80,11 @@ async function saveOrg(event?: FormSubmitEvent<EditSchema>) {
       toast.add({ title: t('admin.organizationUpdated'), icon: 'i-lucide-check' })
     })
   } catch (err: unknown) {
-    toast.add({ title: t('errors.error'), description: getApiErrorMessage(err, t('admin.failedSaveOrg')), color: 'error' })
+    toast.add({
+      title: t('errors.error'),
+      description: getApiErrorMessage(err, t('admin.failedSaveOrg')),
+      color: 'error'
+    })
   } finally {
     saving.value = false
   }
@@ -98,7 +110,11 @@ async function removeMember(userId: string) {
       toast.add({ title: t('settings.memberRemoved'), icon: 'i-lucide-check' })
     })
   } catch (err: unknown) {
-    toast.add({ title: t('errors.error'), description: getApiErrorMessage(err, t('settings.failedRemoveMember')), color: 'error' })
+    toast.add({
+      title: t('errors.error'),
+      description: getApiErrorMessage(err, t('settings.failedRemoveMember')),
+      color: 'error'
+    })
   } finally {
     removing.value = null
   }
@@ -125,7 +141,9 @@ const displayQuota = computed(() => {
   return quota.value ?? null
 })
 
-const isPreviewingTier = computed(() => !!form.tier && form.tier.toLowerCase() !== (org.value?.tier ?? '').toLowerCase())
+const isPreviewingTier = computed(
+  () => !!form.tier && form.tier.toLowerCase() !== (org.value?.tier ?? '').toLowerCase()
+)
 
 const quotaRows = computed(() => {
   const q = displayQuota.value
@@ -137,7 +155,12 @@ const quotaRows = computed(() => {
     },
     {
       label: t('admin.maxCentralPoints'),
-      value: (q.max_central_points ?? 0) === -1 ? t('common.unlimited') : (q.max_central_points ?? 0) === 0 ? t('common.disabled') : (q.max_central_points ?? 0)
+      value:
+        (q.max_central_points ?? 0) === -1
+          ? t('common.unlimited')
+          : (q.max_central_points ?? 0) === 0
+            ? t('common.disabled')
+            : (q.max_central_points ?? 0)
     },
     { label: t('admin.maxMembers'), value: q.max_members === -1 ? t('common.unlimited') : q.max_members },
     {
@@ -192,7 +215,12 @@ const quotaRows = computed(() => {
                   <USelect v-model="formUi.tier" :items="tierOptions" class="w-full" />
                 </UFormField>
                 <UFormField :label="t('settings.contactEmail')" name="contact_email">
-                  <UInput v-model="formUi.contact_email" class="w-full" :placeholder="t('settings.adminEmailPlaceholder')" type="email" />
+                  <UInput
+                    v-model="formUi.contact_email"
+                    class="w-full"
+                    :placeholder="t('settings.adminEmailPlaceholder')"
+                    type="email"
+                  />
                 </UFormField>
                 <UFormField :label="t('settings.website')" name="website">
                   <UInput v-model="formUi.website" class="w-full" :placeholder="t('settings.websitePlaceholder')" />
@@ -207,7 +235,11 @@ const quotaRows = computed(() => {
                   <UInput v-model="formUi.logo_url" class="w-full" :placeholder="t('settings.logoPlaceholder')" />
                 </UFormField>
                 <UFormField class="col-span-2" :label="t('settings.description')" name="description">
-                  <UTextarea v-model="formUi.description" class="w-full" :placeholder="t('settings.briefDescription')" />
+                  <UTextarea
+                    v-model="formUi.description"
+                    class="w-full"
+                    :placeholder="t('settings.briefDescription')"
+                  />
                 </UFormField>
               </div>
               <div class="flex justify-end mt-2">
@@ -224,9 +256,19 @@ const quotaRows = computed(() => {
             </UForm>
           </UCard>
 
-          <AdminOrgQuotaCard v-if="displayQuota" :quota-rows="quotaRows" :is-previewing-tier="isPreviewingTier" :preview-tier="form.tier" />
+          <AdminOrgQuotaCard
+            v-if="displayQuota"
+            :quota-rows="quotaRows"
+            :is-previewing-tier="isPreviewingTier"
+            :preview-tier="form.tier"
+          />
 
-          <AdminOrgMembersTable :columns="memberColumns" :members="members || []" :removing="removing" @remove-confirmed="handleRemoveConfirm" />
+          <AdminOrgMembersTable
+            :columns="memberColumns"
+            :members="members || []"
+            :removing="removing"
+            @remove-confirmed="handleRemoveConfirm"
+          />
         </div>
       </template>
     </UDashboardPanel>

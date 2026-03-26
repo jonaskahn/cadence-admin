@@ -13,7 +13,10 @@ const selectedPlugin = ref<PluginMetadataResponse | null>(null)
 const sourceFilter = ref<'all' | 'system' | 'org'>('all')
 const orgId = computed(() => auth.currentOrgId.value || '')
 
-const { data: plugins, refresh } = await useApiFetch<PluginMetadataResponse[]>(() => `/api/orgs/${orgId.value}/plugins`, { watch: [orgId] })
+const { data: plugins, refresh } = await useApiFetch<PluginMetadataResponse[]>(
+  () => `/api/orgs/${orgId.value}/plugins`,
+  { watch: [orgId] }
+)
 
 const filteredPlugins = computed(() => {
   const list = plugins.value ?? []
@@ -67,10 +70,29 @@ function openUpload() {
           </template>
           <template #right>
             <div class="flex items-center gap-2">
-              <InfoPopover title-key="info.pages.agentStore.title" description-key="info.pages.agentStore.description" />
-              <USelect v-model="sourceFilter" :items="sourceFilterItems" value-key="value" label-key="label" class="w-32" />
-              <UButton icon="i-lucide-refresh-cw" color="neutral" :aria-label="t('common.refresh')" @click="refresh()" />
-              <UButton v-if="auth.isAdmin.value" icon="i-lucide-upload" :label="t('common.upload')" @click="openUpload" />
+              <InfoPopover
+                title-key="info.pages.agentStore.title"
+                description-key="info.pages.agentStore.description"
+              />
+              <USelect
+                v-model="sourceFilter"
+                :items="sourceFilterItems"
+                value-key="value"
+                label-key="label"
+                class="w-32"
+              />
+              <UButton
+                icon="i-lucide-refresh-cw"
+                color="neutral"
+                :aria-label="t('common.refresh')"
+                @click="refresh()"
+              />
+              <UButton
+                v-if="auth.isAdmin.value"
+                icon="i-lucide-upload"
+                :label="t('common.upload')"
+                @click="openUpload"
+              />
             </div>
           </template>
         </UDashboardNavbar>
@@ -79,9 +101,17 @@ function openUpload() {
       <template #body>
         <div class="p-6">
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <PluginCard v-for="plugin in filteredPlugins" :key="`${plugin.source}-${plugin.pid}`" :plugin="plugin" :source="'org'" @select="onPluginSelect" />
+            <PluginCard
+              v-for="plugin in filteredPlugins"
+              :key="`${plugin.source}-${plugin.pid}`"
+              :plugin="plugin"
+              :source="'org'"
+              @select="onPluginSelect"
+            />
           </div>
-          <p v-if="filteredPlugins.length === 0" class="py-8 text-center text-dimmed">{{ t('plugins.noPluginsMatch') }}</p>
+          <p v-if="filteredPlugins.length === 0" class="py-8 text-center text-dimmed">
+            {{ t('plugins.noPluginsMatch') }}
+          </p>
         </div>
       </template>
     </UDashboardPanel>

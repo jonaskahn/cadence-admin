@@ -28,10 +28,13 @@ const { withOverlay } = useLoadingOverlay()
 
 const { data: me, refresh: refreshMe } = await useApiFetch<AboutMeResponse>('/api/me')
 
-const { data: adminRoles, pending: loadingAdminRoles } = await useApiFetch<AdminRoleResponse[]>(() => (me.value?.is_sys_admin ? '/api/admin/roles' : null), {
-  watch: [() => me.value?.is_sys_admin],
-  default: () => []
-})
+const { data: adminRoles, pending: loadingAdminRoles } = await useApiFetch<AdminRoleResponse[]>(
+  () => (me.value?.is_sys_admin ? '/api/admin/roles' : null),
+  {
+    watch: [() => me.value?.is_sys_admin],
+    default: () => []
+  }
+)
 
 const roleTabItems = computed(() => {
   const roles = adminRoles.value ?? []
@@ -62,7 +65,9 @@ watch(
 )
 
 const tabs = computed(() => {
-  const items: { label: string; slot: string; icon: string }[] = [{ label: t('profile.tabProfile'), slot: 'profile', icon: 'i-lucide-user' }]
+  const items: { label: string; slot: string; icon: string }[] = [
+    { label: t('profile.tabProfile'), slot: 'profile', icon: 'i-lucide-user' }
+  ]
   if (me.value?.is_sys_admin) {
     items.push({ label: t('profile.tabApiKeys'), slot: 'api-keys', icon: 'i-lucide-key' })
   }
@@ -181,7 +186,9 @@ const calendarPickerDate = computed({
   }
 })
 const minExpiryCalendarDate = computed(() => toCalendarDate(minApiKeyExpiry.value))
-const apiKeyExpiryInputDate = useTemplateRef<{ inputsRef?: { value?: Array<{ $el?: HTMLElement }> } }>('apiKeyExpiryInputDate')
+const apiKeyExpiryInputDate = useTemplateRef<{ inputsRef?: { value?: Array<{ $el?: HTMLElement }> } }>(
+  'apiKeyExpiryInputDate'
+)
 const apiKeyExpiryPopoverReference = computed(() => apiKeyExpiryInputDate.value?.inputsRef?.value?.[0]?.$el)
 const creatingKey = ref(false)
 const rawKeyModalOpen = ref(false)
@@ -416,30 +423,63 @@ async function copyApiKeySample(text: string) {
                   <template #header>
                     <p class="font-semibold">{{ t('profile.editProfile') }}</p>
                   </template>
-                  <UForm ref="profileFormRef" :schema="profileSchema" :state="profileState" class="flex flex-col gap-6" @submit="onProfileSubmit">
+                  <UForm
+                    ref="profileFormRef"
+                    :schema="profileSchema"
+                    :state="profileState"
+                    class="flex flex-col gap-6"
+                    @submit="onProfileSubmit"
+                  >
                     <div class="flex flex-col gap-4">
                       <p class="text-sm font-medium text-dimmed">{{ t('profile.contactAndDisplay') }}</p>
                       <UFormField :label="t('profile.displayName')" name="display_name">
-                        <UInput v-model="profileState.display_name" class="w-full" :placeholder="t('profile.yourName')" />
+                        <UInput
+                          v-model="profileState.display_name"
+                          class="w-full"
+                          :placeholder="t('profile.yourName')"
+                        />
                       </UFormField>
                       <UFormField :label="t('profile.email')" name="email">
-                        <UInput v-model="profileState.email" class="w-full" :placeholder="t('profile.emailPlaceholder')" type="email" />
+                        <UInput
+                          v-model="profileState.email"
+                          class="w-full"
+                          :placeholder="t('profile.emailPlaceholder')"
+                          type="email"
+                        />
                       </UFormField>
                     </div>
                     <USeparator />
                     <div class="flex flex-col gap-4">
                       <p class="text-sm font-medium text-dimmed">{{ t('profile.profileDetails') }}</p>
                       <UFormField :label="t('profile.avatarUrl')" name="avatar_url">
-                        <UInput v-model="profileState.avatar_url" class="w-full" :placeholder="t('profile.avatarUrlPlaceholder')" />
+                        <UInput
+                          v-model="profileState.avatar_url"
+                          class="w-full"
+                          :placeholder="t('profile.avatarUrlPlaceholder')"
+                        />
                       </UFormField>
                       <UFormField :label="t('profile.locale')" name="locale">
-                        <UInput v-model="profileState.locale" class="w-full" :placeholder="t('profile.localePlaceholder')" />
+                        <UInput
+                          v-model="profileState.locale"
+                          class="w-full"
+                          :placeholder="t('profile.localePlaceholder')"
+                        />
                       </UFormField>
                       <UFormField :label="t('profile.timezone')" name="timezone">
-                        <UInput v-model="profileState.timezone" class="w-full" :placeholder="t('profile.timezonePlaceholder')" />
+                        <UInput
+                          v-model="profileState.timezone"
+                          class="w-full"
+                          :placeholder="t('profile.timezonePlaceholder')"
+                        />
                       </UFormField>
                       <UFormField :label="t('profile.bio')" name="bio">
-                        <UTextarea v-model="profileState.bio" class="w-full" :rows="4" :placeholder="t('profile.bioPlaceholder')" autoresize />
+                        <UTextarea
+                          v-model="profileState.bio"
+                          class="w-full"
+                          :rows="4"
+                          :placeholder="t('profile.bioPlaceholder')"
+                          autoresize
+                        />
                       </UFormField>
                     </div>
                     <div class="flex justify-end">
@@ -470,7 +510,9 @@ async function copyApiKeySample(text: string) {
                   </template>
                   <div class="flex flex-col gap-4">
                     <div class="rounded-lg border border-default p-3 space-y-3">
-                      <p class="text-xs font-semibold text-dimmed uppercase tracking-wide">{{ t('profile.apiKeysAuthHeadersTitle') }}</p>
+                      <p class="text-xs font-semibold text-dimmed uppercase tracking-wide">
+                        {{ t('profile.apiKeysAuthHeadersTitle') }}
+                      </p>
                       <div class="flex flex-wrap gap-x-3 gap-y-1 items-baseline">
                         <code class="text-xs font-mono text-primary shrink-0">X-API-KEY</code>
                         <span class="text-xs text-dimmed">{{ t('profile.apiKeysHeaderXApiKeyDesc') }}</span>
@@ -521,7 +563,13 @@ async function copyApiKeySample(text: string) {
                             <pre
                               class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                             ><code>{{ apiKeyExampleJs }}</code></pre>
-                            <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyApiKeySample(apiKeyExampleJs)" />
+                            <UButton
+                              class="absolute right-2 top-2"
+                              color="neutral"
+                              icon="i-lucide-copy"
+                              size="xs"
+                              @click="copyApiKeySample(apiKeyExampleJs)"
+                            />
                           </div>
                         </template>
                         <template #ts>
@@ -529,7 +577,13 @@ async function copyApiKeySample(text: string) {
                             <pre
                               class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                             ><code>{{ apiKeyExampleTs }}</code></pre>
-                            <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyApiKeySample(apiKeyExampleTs)" />
+                            <UButton
+                              class="absolute right-2 top-2"
+                              color="neutral"
+                              icon="i-lucide-copy"
+                              size="xs"
+                              @click="copyApiKeySample(apiKeyExampleTs)"
+                            />
                           </div>
                         </template>
                         <template #go>
@@ -537,7 +591,13 @@ async function copyApiKeySample(text: string) {
                             <pre
                               class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                             ><code>{{ apiKeyExampleGo }}</code></pre>
-                            <UButton class="absolute right-2 top-2" color="neutral" icon="i-lucide-copy" size="xs" @click="copyApiKeySample(apiKeyExampleGo)" />
+                            <UButton
+                              class="absolute right-2 top-2"
+                              color="neutral"
+                              icon="i-lucide-copy"
+                              size="xs"
+                              @click="copyApiKeySample(apiKeyExampleGo)"
+                            />
                           </div>
                         </template>
                       </UTabs>
@@ -554,7 +614,11 @@ async function copyApiKeySample(text: string) {
                     <div class="flex flex-col gap-2">
                       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4">
                         <UFormField :label="t('profile.apiKeysName')" class="min-w-0">
-                          <UInput v-model="createKeyName" class="w-full" :placeholder="t('profile.apiKeysNamePlaceholder')" />
+                          <UInput
+                            v-model="createKeyName"
+                            class="w-full"
+                            :placeholder="t('profile.apiKeysNamePlaceholder')"
+                          />
                         </UFormField>
                         <UFormField :label="t('profile.apiKeysExpiresAtOptional')" class="min-w-0">
                           <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:gap-2">
@@ -566,7 +630,10 @@ async function copyApiKeySample(text: string) {
                               class="w-full min-w-0 sm:flex-1"
                             >
                               <template #trailing>
-                                <UPopover :reference="apiKeyExpiryPopoverReference" :content="{ side: 'bottom', align: 'end', collisionPadding: 16 }">
+                                <UPopover
+                                  :reference="apiKeyExpiryPopoverReference"
+                                  :content="{ side: 'bottom', align: 'end', collisionPadding: 16 }"
+                                >
                                   <UButton
                                     color="neutral"
                                     variant="link"
@@ -576,7 +643,11 @@ async function copyApiKeySample(text: string) {
                                     class="px-0"
                                   />
                                   <template #content>
-                                    <UCalendar v-model="calendarPickerDate" class="p-2" :min-value="minExpiryCalendarDate" />
+                                    <UCalendar
+                                      v-model="calendarPickerDate"
+                                      class="p-2"
+                                      :min-value="minExpiryCalendarDate"
+                                    />
                                   </template>
                                 </UPopover>
                               </template>
@@ -601,8 +672,19 @@ async function copyApiKeySample(text: string) {
                       <div v-if="loadingAdminRoles && !adminRoles?.length" class="flex flex-col gap-2 py-2">
                         <USkeleton v-for="n in 3" :key="n" class="h-9 w-full" />
                       </div>
-                      <UAlert v-else-if="!roleTabItems.length" color="neutral" variant="subtle" :title="t('profile.apiKeysNoRoles')" />
-                      <UTabs v-else v-model="selectedRoleId" :items="roleTabItems" variant="link" :unmount-on-hide="false">
+                      <UAlert
+                        v-else-if="!roleTabItems.length"
+                        color="neutral"
+                        variant="subtle"
+                        :title="t('profile.apiKeysNoRoles')"
+                      />
+                      <UTabs
+                        v-else
+                        v-model="selectedRoleId"
+                        :items="roleTabItems"
+                        variant="link"
+                        :unmount-on-hide="false"
+                      >
                         <template #role="{ item }">
                           <div class="flex flex-col gap-3 pt-3">
                             <p class="text-sm text-dimmed">
@@ -652,7 +734,13 @@ async function copyApiKeySample(text: string) {
                       <span class="text-sm text-dimmed">
                         <template v-if="row.original.expires_at">
                           {{ formatDateTime(row.original.expires_at) }}
-                          <UBadge v-if="isApiKeyExpired(row.original.expires_at)" class="ml-2" color="error" size="sm" variant="subtle">
+                          <UBadge
+                            v-if="isApiKeyExpired(row.original.expires_at)"
+                            class="ml-2"
+                            color="error"
+                            size="sm"
+                            variant="subtle"
+                          >
                             {{ t('profile.apiKeysExpiredBadge') }}
                           </UBadge>
                         </template>
@@ -663,7 +751,11 @@ async function copyApiKeySample(text: string) {
                     </template>
                     <template #last_used_at-cell="{ row }">
                       <span class="text-sm text-dimmed">
-                        {{ row.original.last_used_at ? formatDateTime(row.original.last_used_at) : t('profile.apiKeysNeverUsed') }}
+                        {{
+                          row.original.last_used_at
+                            ? formatDateTime(row.original.last_used_at)
+                            : t('profile.apiKeysNeverUsed')
+                        }}
                       </span>
                     </template>
                     <template #created_at-cell="{ row }">
@@ -673,7 +765,13 @@ async function copyApiKeySample(text: string) {
                     </template>
                     <template #is_active-cell="{ row }">
                       <UBadge
-                        :color="isApiKeyExpired(row.original.expires_at) ? 'error' : row.original.is_active ? 'success' : 'neutral'"
+                        :color="
+                          isApiKeyExpired(row.original.expires_at)
+                            ? 'error'
+                            : row.original.is_active
+                              ? 'success'
+                              : 'neutral'
+                        "
                         size="sm"
                         variant="subtle"
                       >

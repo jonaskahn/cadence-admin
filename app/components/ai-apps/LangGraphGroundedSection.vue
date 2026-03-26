@@ -4,6 +4,14 @@ import { GROUNDED_NODE_KEYS } from '~/composables/langgraphOrchestratorConfig/no
 
 const { t } = useI18n()
 
+withDefaults(
+  defineProps<{
+    /** Hide the section title row (Grounded settings heading) */
+    hideHeader?: boolean
+  }>(),
+  { hideHeader: false }
+)
+
 const groundedConfig = defineModel<Record<string, unknown>>({ required: true })
 
 function featureToggleFor(key: GroundedNodeKey): 'llm_validation' | undefined {
@@ -14,7 +22,7 @@ function featureToggleFor(key: GroundedNodeKey): 'llm_validation' | undefined {
 
 <template>
   <div class="flex w-full min-w-0 flex-col gap-8">
-    <div class="flex min-w-0 flex-col gap-2">
+    <div v-if="!hideHeader" class="flex min-w-0 flex-col gap-2">
       <div class="flex flex-wrap items-center gap-2">
         <UIcon name="i-lucide-anchor" />
         <span class="font-semibold">{{ t('aiApps.grounded.settingsTitle') }}</span>
@@ -35,7 +43,12 @@ function featureToggleFor(key: GroundedNodeKey): 'llm_validation' | undefined {
     <USeparator :label="t('aiApps.supervisor.nodeOverrides')" />
 
     <div class="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
-      <LangGraphSupervisorNodeOverrideCard v-for="key in GROUNDED_NODE_KEYS" :key="key" :node-key="key" :feature-toggle="featureToggleFor(key)" />
+      <LangGraphSupervisorNodeOverrideCard
+        v-for="key in GROUNDED_NODE_KEYS"
+        :key="key"
+        :node-key="key"
+        :feature-toggle="featureToggleFor(key)"
+      />
     </div>
   </div>
 </template>

@@ -120,7 +120,11 @@ async function onEdit(event: FormSubmitEvent<EditSchema>) {
         withOverlay(async () => {
           await $fetch(`/api/admin/users/${editTarget.value!.user_id}`, {
             method: 'PATCH',
-            body: { username: event.data.username, email: event.data.email || null, is_sys_admin: event.data.is_sys_admin }
+            body: {
+              username: event.data.username,
+              email: event.data.email || null,
+              is_sys_admin: event.data.is_sys_admin
+            }
           })
           toast.add({ title: t('admin.userUpdated'), icon: 'i-lucide-check', color: 'success' })
           editTarget.value = null
@@ -174,7 +178,11 @@ async function onPurge(user: UserMembershipResponse) {
     if (status === 409) {
       toast.add({ title: t('errors.purgeReferencedError'), color: 'error' })
     } else {
-      toast.add({ title: t('admin.failedDeleteUser'), description: getApiErrorMessage(err, t('errors.unknown')), color: 'error' })
+      toast.add({
+        title: t('admin.failedDeleteUser'),
+        description: getApiErrorMessage(err, t('errors.unknown')),
+        color: 'error'
+      })
     }
   } finally {
     purging.value = null
@@ -226,12 +234,20 @@ const columns = computed(() => [
               </template>
               <template #actions-cell="{ row }">
                 <div class="flex items-center gap-1">
-                  <UButton color="primary" icon="i-lucide-pencil" :label="t('common.edit')" size="xs" @click="openEdit(row.original)" />
+                  <UButton
+                    color="primary"
+                    icon="i-lucide-pencil"
+                    :label="t('common.edit')"
+                    size="xs"
+                    @click="openEdit(row.original)"
+                  />
                   <UPopover v-if="!row.original.is_deleted">
                     <UButton color="error" icon="i-lucide-trash-2" size="xs" />
                     <template #content="{ close }">
                       <div class="p-4 min-w-48">
-                        <p class="text-sm text-dimmed mb-3">{{ t('admin.deleteUserConfirm', { username: row.original.username }) }}</p>
+                        <p class="text-sm text-dimmed mb-3">
+                          {{ t('admin.deleteUserConfirm', { username: row.original.username }) }}
+                        </p>
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton
@@ -280,7 +296,12 @@ const columns = computed(() => [
               <UInput v-model="createState.username" class="w-full" :placeholder="t('admin.placeholderUsername')" />
             </UFormField>
             <UFormField :label="t('profile.email')" name="email">
-              <UInput v-model="createState.email" class="w-full" :placeholder="t('admin.placeholderEmail')" type="email" />
+              <UInput
+                v-model="createState.email"
+                class="w-full"
+                :placeholder="t('admin.placeholderEmail')"
+                type="email"
+              />
             </UFormField>
             <UFormField :description="t('admin.passwordOptional')" :label="t('auth.password')" name="password">
               <UInput v-model="createState.password" class="w-full" type="password" />
@@ -306,7 +327,13 @@ const columns = computed(() => [
           <template #header>
             <p class="font-semibold">{{ t('admin.editUser') }}</p>
           </template>
-          <UForm ref="editUserFormRef" :schema="editSchema" :state="editState" class="flex flex-col gap-4" @submit="onEdit">
+          <UForm
+            ref="editUserFormRef"
+            :schema="editSchema"
+            :state="editState"
+            class="flex flex-col gap-4"
+            @submit="onEdit"
+          >
             <UFormField :label="t('auth.username')" name="username" required>
               <UInput v-model="editState.username" class="w-full" />
             </UFormField>

@@ -236,15 +236,30 @@ const items = computed<DropdownMenuItem[][]>(() => [
 
     <UModal v-model:open="passwordModalOpen" :title="t('userMenu.changePassword')" :ui="{ content: 'sm:max-w-md' }">
       <template #content>
-        <UForm :schema="passwordSchema" :state="passwordState" class="flex flex-col gap-4 p-4 sm:p-6" @submit="onPasswordSubmit">
+        <UForm
+          :schema="passwordSchema"
+          :state="passwordState"
+          class="flex flex-col gap-4 p-4 sm:p-6"
+          @submit="onPasswordSubmit"
+        >
           <UFormField :label="t('profile.currentPassword')" name="current_password">
-            <UInput v-model="passwordState.current_password" class="w-full" type="password" autocomplete="current-password" />
+            <UInput
+              v-model="passwordState.current_password"
+              class="w-full"
+              type="password"
+              autocomplete="current-password"
+            />
           </UFormField>
           <UFormField :label="t('profile.newPassword')" name="new_password">
             <UInput v-model="passwordState.new_password" class="w-full" type="password" autocomplete="new-password" />
           </UFormField>
           <UFormField :label="t('userMenu.confirmNewPassword')" name="confirm_new_password">
-            <UInput v-model="passwordState.confirm_new_password" class="w-full" type="password" autocomplete="new-password" />
+            <UInput
+              v-model="passwordState.confirm_new_password"
+              class="w-full"
+              type="password"
+              autocomplete="new-password"
+            />
           </UFormField>
           <div class="flex justify-end gap-2 pt-2">
             <UButton color="neutral" variant="subtle" :label="t('common.cancel')" @click="passwordModalOpen = false" />

@@ -9,9 +9,13 @@ const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
 const orgId = computed(() => auth.currentOrgId.value || '')
-const isOrgAdmin = computed(() => auth.currentOrg.value?.role === 'org_admin' || auth.currentOrg.value?.role === 'sys_admin')
+const isOrgAdmin = computed(
+  () => auth.currentOrg.value?.role === 'org_admin' || auth.currentOrg.value?.role === 'sys_admin'
+)
 
-const { data: org, refresh: refreshOrg } = await useApiFetch<OrganizationResponse>(() => `/api/orgs/${orgId.value}`, { watch: [orgId] })
+const { data: org, refresh: refreshOrg } = await useApiFetch<OrganizationResponse>(() => `/api/orgs/${orgId.value}`, {
+  watch: [orgId]
+})
 
 const profileSchema = z.object({
   display_name: z.string().optional().nullable(),
@@ -68,7 +72,10 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
       <template #header>
         <div class="flex items-center gap-2">
           <span class="font-semibold text-sm">{{ t('settings.organization') }}</span>
-          <InfoPopover title-key="info.settings.orgIdentity.title" description-key="info.settings.orgIdentity.description" />
+          <InfoPopover
+            title-key="info.settings.orgIdentity.title"
+            description-key="info.settings.orgIdentity.description"
+          />
         </div>
       </template>
       <dl class="grid grid-cols-2 gap-4">
@@ -79,7 +86,9 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.yourRole') }}</dt>
           <dd class="mt-1">
-            <UBadge size="sm" variant="subtle">{{ auth.currentOrg.value?.role?.toUpperCase() || t('common.empty') }}</UBadge>
+            <UBadge size="sm" variant="subtle">{{
+              auth.currentOrg.value?.role?.toUpperCase() || t('common.empty')
+            }}</UBadge>
           </dd>
         </div>
         <div>
@@ -115,22 +124,39 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
       <template #header>
         <div class="flex items-center gap-2">
           <span class="font-semibold text-sm">{{ t('settings.organizationProfile') }}</span>
-          <InfoPopover title-key="info.settings.orgProfile.title" description-key="info.settings.orgProfile.description" />
+          <InfoPopover
+            title-key="info.settings.orgProfile.title"
+            description-key="info.settings.orgProfile.description"
+          />
         </div>
       </template>
-      <UForm ref="settingsProfileFormRef" :schema="profileSchema" :state="profileState" class="flex flex-col gap-4" @submit="onProfileSubmit">
+      <UForm
+        ref="settingsProfileFormRef"
+        :schema="profileSchema"
+        :state="profileState"
+        class="flex flex-col gap-4"
+        @submit="onProfileSubmit"
+      >
         <div class="grid grid-cols-2 gap-4">
           <UFormField name="display_name">
             <template #label>
               <div class="flex items-center gap-2">
                 <span>{{ t('settings.displayName') }}</span>
-                <InfoPopover title-key="info.fields.displayName.title" description-key="info.fields.displayName.description" />
+                <InfoPopover
+                  title-key="info.fields.displayName.title"
+                  description-key="info.fields.displayName.description"
+                />
               </div>
             </template>
             <UInput v-model="profileState.display_name" class="w-full" :placeholder="t('settings.acmePlaceholder')" />
           </UFormField>
           <UFormField :label="t('settings.contactEmail')" name="contact_email">
-            <UInput v-model="profileState.contact_email" class="w-full" :placeholder="t('settings.adminEmailPlaceholder')" type="email" />
+            <UInput
+              v-model="profileState.contact_email"
+              class="w-full"
+              :placeholder="t('settings.adminEmailPlaceholder')"
+              type="email"
+            />
           </UFormField>
           <UFormField :label="t('settings.website')" name="website">
             <UInput v-model="profileState.website" class="w-full" :placeholder="t('settings.websitePlaceholder')" />
@@ -145,7 +171,11 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
             <UInput v-model="profileState.logo_url" class="w-full" :placeholder="t('settings.logoPlaceholder')" />
           </UFormField>
           <UFormField class="col-span-2" :label="t('settings.description')" name="description">
-            <UTextarea v-model="profileState.description" class="w-full" :placeholder="t('settings.briefDescription')" />
+            <UTextarea
+              v-model="profileState.description"
+              class="w-full"
+              :placeholder="t('settings.briefDescription')"
+            />
           </UFormField>
         </div>
         <div class="flex justify-end pt-2">

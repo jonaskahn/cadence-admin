@@ -117,7 +117,12 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
           <template #right>
             <div class="flex items-center gap-2">
               <InfoPopover title-key="info.pages.aiApps.title" description-key="info.pages.aiApps.description" />
-              <UButton v-if="auth.isAdmin.value" icon="i-lucide-plus" :label="t('dashboard.create')" :to="localePath('/ai-apps/create')" />
+              <UButton
+                v-if="auth.isAdmin.value"
+                icon="i-lucide-plus"
+                :label="t('dashboard.create')"
+                :to="localePath('/ai-apps/create')"
+              />
             </div>
           </template>
         </UDashboardNavbar>
@@ -156,7 +161,12 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
 
               <template #actions-cell="{ row }">
                 <div class="flex items-center gap-1">
-                  <UButton :to="localePath(`/ai-apps/${row.original.instance_id}`)" icon="i-lucide-info" :label="t('common.view')" size="sm" />
+                  <UButton
+                    :to="localePath(`/ai-apps/${row.original.instance_id}`)"
+                    icon="i-lucide-info"
+                    :label="t('common.view')"
+                    size="sm"
+                  />
                   <template v-if="auth.isAdmin.value">
                     <UButton icon="i-lucide-copy" :label="t('aiApps.clone')" size="sm" @click="onClone(row.original)" />
                     <template v-if="row.original.status === 'active'">
@@ -164,7 +174,9 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                         <UButton icon="i-lucide-play" :label="t('aiApps.load')" size="sm" />
                         <template #content="{ close }">
                           <div class="p-4 min-w-48">
-                            <p class="text-sm text-dimmed mb-3">{{ t('aiApps.loadConfirm', { name: row.original.name }) }}</p>
+                            <p class="text-sm text-dimmed mb-3">
+                              {{ t('aiApps.loadConfirm', { name: row.original.name }) }}
+                            </p>
                             <div class="flex justify-end gap-2">
                               <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                               <UButton
@@ -180,7 +192,9 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                         <UButton icon="i-lucide-square" :label="t('aiApps.unload')" size="sm" />
                         <template #content="{ close }">
                           <div class="p-4 min-w-48">
-                            <p class="text-sm text-dimmed mb-3">{{ t('aiApps.unloadConfirm', { name: row.original.name }) }}</p>
+                            <p class="text-sm text-dimmed mb-3">
+                              {{ t('aiApps.unloadConfirm', { name: row.original.name }) }}
+                            </p>
                             <div class="flex justify-end gap-2">
                               <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                               <UButton
@@ -196,7 +210,9 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                         <UButton color="error" icon="i-lucide-route-off" :label="t('aiApps.deactivate')" size="sm" />
                         <template #content="{ close }">
                           <div class="p-4 min-w-48">
-                            <p class="text-sm text-dimmed mb-3">{{ t('aiApps.deactivateConfirm', { name: row.original.name }) }}</p>
+                            <p class="text-sm text-dimmed mb-3">
+                              {{ t('aiApps.deactivateConfirm', { name: row.original.name }) }}
+                            </p>
                             <div class="flex justify-end gap-2">
                               <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                               <UButton
@@ -214,7 +230,9 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                       <UButton color="success" icon="i-lucide-route" :label="t('aiApps.activate')" size="sm" />
                       <template #content="{ close }">
                         <div class="p-4 min-w-48">
-                          <p class="text-sm text-dimmed mb-3">{{ t('aiApps.activateConfirm', { name: row.original.name }) }}</p>
+                          <p class="text-sm text-dimmed mb-3">
+                            {{ t('aiApps.activateConfirm', { name: row.original.name }) }}
+                          </p>
                           <div class="flex justify-end gap-2">
                             <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                             <UButton

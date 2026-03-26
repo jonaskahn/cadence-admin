@@ -8,7 +8,9 @@ if (!orchestratorConfig) {
 
 const { modeConfig } = orchestratorConfig
 
-const switchAriaLabel = computed(() => `${t('aiApps.supervisor.parallelToolCalls')}. ${t('aiApps.featureCards.toggleFeature')}`)
+const switchAriaLabel = computed(
+  () => `${t('aiApps.supervisor.parallelToolCalls')}. ${t('aiApps.featureCards.toggleFeature')}`
+)
 </script>
 
 <template>

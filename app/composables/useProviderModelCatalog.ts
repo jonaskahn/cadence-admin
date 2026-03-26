@@ -29,10 +29,13 @@ export function useProviderModelCatalog() {
     const previousState = model.enabled
     model.enabled = !previousState
     try {
-      const updated = await $fetch<ProviderModelCatalogEntry>(`/api/admin/providers/${model.provider}/models/${model.model_id}`, {
-        method: 'PATCH',
-        body: { enabled: model.enabled } satisfies UpdateProviderModelRequest
-      })
+      const updated = await $fetch<ProviderModelCatalogEntry>(
+        `/api/admin/providers/${model.provider}/models/${model.model_id}`,
+        {
+          method: 'PATCH',
+          body: { enabled: model.enabled } satisfies UpdateProviderModelRequest
+        }
+      )
       replaceModelInList(models.value, updated)
       toast.add({
         title: updated.enabled ? t('providerModelApi.modelEnabled') : t('providerModelApi.modelDisabled'),
@@ -47,13 +50,23 @@ export function useProviderModelCatalog() {
   }
 
   async function addModel(provider: string, body: AddProviderModelRequest): Promise<ProviderModelCatalogEntry> {
-    const created = await $fetch<ProviderModelCatalogEntry>(`/api/admin/providers/${provider}/models`, { method: 'POST', body })
+    const created = await $fetch<ProviderModelCatalogEntry>(`/api/admin/providers/${provider}/models`, {
+      method: 'POST',
+      body
+    })
     models.value.push(created)
     return created
   }
 
-  async function updateModel(provider: string, modelId: string, body: UpdateProviderModelRequest): Promise<ProviderModelCatalogEntry> {
-    const updated = await $fetch<ProviderModelCatalogEntry>(`/api/admin/providers/${provider}/models/${modelId}`, { method: 'PATCH', body })
+  async function updateModel(
+    provider: string,
+    modelId: string,
+    body: UpdateProviderModelRequest
+  ): Promise<ProviderModelCatalogEntry> {
+    const updated = await $fetch<ProviderModelCatalogEntry>(`/api/admin/providers/${provider}/models/${modelId}`, {
+      method: 'PATCH',
+      body
+    })
     replaceModelInList(models.value, updated)
     return updated
   }

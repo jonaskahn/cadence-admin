@@ -8,9 +8,14 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const orgId = computed(() => auth.currentOrgId.value)
 
-const { data: orchestrators } = await useApiFetch<OrchestratorResponse[]>(() => `/api/orgs/${orgId.value}/orchestrators`, { watch: [orgId] })
+const { data: orchestrators } = await useApiFetch<OrchestratorResponse[]>(
+  () => `/api/orgs/${orgId.value}/orchestrators`,
+  { watch: [orgId] }
+)
 
-const { data: plugins } = await useApiFetch<PluginMetadataResponse[]>(() => `/api/orgs/${orgId.value}/plugins`, { watch: [orgId] })
+const { data: plugins } = await useApiFetch<PluginMetadataResponse[]>(() => `/api/orgs/${orgId.value}/plugins`, {
+  watch: [orgId]
+})
 
 const apiFetch = useRequestFetch()
 const { data: poolStats } = await useAsyncData<PoolStatsResponse | null>('pool-stats', async () => {
@@ -137,7 +142,12 @@ const costByProviderChartData = {
     {
       label: 'Cost ($)',
       data: [420, 285, 156, 89],
-      backgroundColor: ['rgba(249, 115, 22, 0.65)', 'rgba(251, 146, 60, 0.60)', 'rgba(253, 186, 116, 0.55)', 'rgba(120, 113, 108, 0.45)'],
+      backgroundColor: [
+        'rgba(249, 115, 22, 0.65)',
+        'rgba(251, 146, 60, 0.60)',
+        'rgba(253, 186, 116, 0.55)',
+        'rgba(120, 113, 108, 0.45)'
+      ],
       borderColor: ['rgb(249, 115, 22)', 'rgb(251, 146, 60)', 'rgb(253, 186, 116)', 'rgb(120, 113, 108)'],
       borderWidth: 1,
       borderRadius: 4
@@ -331,9 +341,20 @@ const costByProviderChartData = {
 
           <div class="flex flex-wrap items-center gap-3">
             <p class="text-sm font-medium text-dimmed">{{ t('dashboard.quickActions') }}</p>
-            <UButton icon="i-lucide-message-square" :label="t('dashboard.startChat')" :to="localePath('/chat')" size="sm" />
+            <UButton
+              icon="i-lucide-message-square"
+              :label="t('dashboard.startChat')"
+              :to="localePath('/chat')"
+              size="sm"
+            />
             <UButton icon="i-lucide-cpu" :label="t('dashboard.viewAiApps')" :to="localePath('/ai-apps')" size="sm" />
-            <UButton v-if="auth.isOrgAdmin.value" icon="i-lucide-puzzle" :label="t('dashboard.manageAiAgents')" :to="localePath('/agent-store')" size="sm" />
+            <UButton
+              v-if="auth.isOrgAdmin.value"
+              icon="i-lucide-puzzle"
+              :label="t('dashboard.manageAiAgents')"
+              :to="localePath('/agent-store')"
+              size="sm"
+            />
           </div>
 
           <UCard variant="soft">
@@ -362,7 +383,9 @@ const costByProviderChartData = {
             <p v-else class="text-dimmed text-sm text-center py-4">
               {{ t('dashboard.noAiApps') }}
               <template v-if="auth.isOrgAdmin.value || auth.isSysAdmin.value">
-                <NuxtLink class="text-primary underline" :to="localePath('/ai-apps')"> {{ t('dashboard.create') }}</NuxtLink>
+                <NuxtLink class="text-primary underline" :to="localePath('/ai-apps')">
+                  {{ t('dashboard.create') }}</NuxtLink
+                >
               </template>
             </p>
           </UCard>

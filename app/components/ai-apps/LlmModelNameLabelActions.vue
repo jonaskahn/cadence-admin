@@ -68,7 +68,11 @@ const visible = computed(() => props.options.length > 0 && !props.disabled)
       class="shrink-0"
       :disabled="!canToggleToCatalog"
       :aria-label="t('langGraphSupervisor.modelNameChooseFromCatalog')"
-      :title="canToggleToCatalog ? t('langGraphSupervisor.modelNameChooseFromCatalog') : t('langGraphSupervisor.modelNameChooseCatalogHint')"
+      :title="
+        canToggleToCatalog
+          ? t('langGraphSupervisor.modelNameChooseFromCatalog')
+          : t('langGraphSupervisor.modelNameChooseCatalogHint')
+      "
       @click="chooseCatalog"
     />
   </div>

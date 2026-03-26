@@ -2,7 +2,15 @@ export const MODEL_CATEGORIES = ['text_generation', 'image_generation', 'tts', '
 
 export type ModelCategory = (typeof MODEL_CATEGORIES)[number]
 
-export const BILLING_UNITS = ['per_1m_tokens', 'per_1k_tokens', 'per_image', 'per_request', 'per_second', 'per_minute', 'per_1k_characters'] as const
+export const BILLING_UNITS = [
+  'per_1m_tokens',
+  'per_1k_tokens',
+  'per_image',
+  'per_request',
+  'per_second',
+  'per_minute',
+  'per_1k_characters'
+] as const
 
 export type BillingUnit = (typeof BILLING_UNITS)[number]
 

@@ -39,7 +39,12 @@ const switchAriaLabel = computed(() => {
     <template #header>
       <div class="flex w-full items-center justify-between gap-2 min-w-0">
         <span class="font-semibold truncate">{{ NODE_LABELS[nodeKey] }}</span>
-        <USwitch v-if="featureToggle === 'llm_validation'" v-model="modeConfig.enabled_llm_validation" :aria-label="switchAriaLabel" class="shrink-0" />
+        <USwitch
+          v-if="featureToggle === 'llm_validation'"
+          v-model="modeConfig.enabled_llm_validation"
+          :aria-label="switchAriaLabel"
+          class="shrink-0"
+        />
         <USwitch
           v-else-if="featureToggle === 'clarification_intent'"
           v-model="modeConfig.enabled_clarification_intent"
