@@ -70,7 +70,7 @@ const QUOTA_FIELDS = computed(() => [
       variant="subtle"
     />
 
-    <div v-if="tiers?.length" class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+    <div v-if="tiers?.length" class="grid grid-cols-1 gap-6 xl:grid-cols-2">
       <UCard v-for="tier in tiers" :key="tier.tier_name" variant="soft">
         <template #header>
           <div class="flex items-center gap-2">
@@ -79,17 +79,17 @@ const QUOTA_FIELDS = computed(() => [
               :label="tier.tier_name?.toUpperCase()"
               variant="subtle"
             />
-            <p class="font-semibold text-sm capitalize">{{ tier.quota.description || tier.tier_name }}</p>
+            <p class="text-sm font-semibold capitalize">{{ tier.quota.description || tier.tier_name }}</p>
           </div>
         </template>
 
-        <div v-if="draftQuotas[tier.tier_name]" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div v-if="draftQuotas[tier.tier_name]" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <UFormField v-for="field in QUOTA_FIELDS" :key="field.key" :label="field.label" :description="field.hint">
             <div class="relative w-full">
-              <UInput v-model.number="draftQuotas[tier.tier_name][field.key]" type="number" class="w-full" />
+              <UInput v-model.number="draftQuotas[tier.tier_name]![field.key]" type="number" class="w-full" />
               <span
-                v-if="draftQuotas[tier.tier_name][field.key] === -1"
-                class="absolute right-8 top-1/2 -translate-y-1/2 text-xs text-success pointer-events-none"
+                v-if="draftQuotas[tier.tier_name]![field.key] === -1"
+                class="text-success pointer-events-none absolute top-1/2 right-8 -translate-y-1/2 text-xs"
               >
                 {{ t('common.unlimited') }}
               </span>
@@ -113,6 +113,6 @@ const QUOTA_FIELDS = computed(() => [
       </UCard>
     </div>
 
-    <p v-else class="text-dimmed text-sm text-center py-4">{{ t('admin.noTierDefinitions') }}</p>
+    <p v-else class="text-dimmed py-4 text-center text-sm">{{ t('admin.noTierDefinitions') }}</p>
   </div>
 </template>

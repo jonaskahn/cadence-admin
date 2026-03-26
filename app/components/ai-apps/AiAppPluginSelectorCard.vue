@@ -86,12 +86,12 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col h-full">
+  <div class="flex h-full flex-col">
     <div class="flex flex-col gap-3">
       <PluginCard :plugin="displayPlugin" :source="source" @select="() => {}" />
 
       <div v-if="loading" class="flex justify-center py-2">
-        <UIcon class="size-5 animate-spin text-dimmed" name="i-lucide-loader-2" />
+        <UIcon class="text-dimmed size-5 animate-spin" name="i-lucide-loader-2" />
       </div>
 
       <UAlert

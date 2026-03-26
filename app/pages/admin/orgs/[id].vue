@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
 import type {
   OrganizationResponse,
   TierDefinitionResponse,
@@ -179,7 +180,7 @@ const quotaRows = computed(() => {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel :id="`admin-org-${orgId}`">
       <template #header>
         <UDashboardNavbar :title="org?.display_name || org?.name || orgId">
@@ -196,7 +197,7 @@ const quotaRows = computed(() => {
       </template>
 
       <template #body>
-        <div class="pt-2 pl-6 pr-6 pr-6 flex flex-col gap-2">
+        <div class="flex flex-col gap-2 pt-2 pr-6 pl-6">
           <AdminOrgIdentityCard v-if="org" :organization="org" />
 
           <UCard variant="soft">
@@ -242,7 +243,7 @@ const quotaRows = computed(() => {
                   />
                 </UFormField>
               </div>
-              <div class="flex justify-end mt-2">
+              <div class="mt-2 flex justify-end">
                 <ConfirmActionPopover
                   label-key="common.save"
                   icon="i-lucide-save"

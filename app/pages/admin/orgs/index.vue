@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
 import type { OrganizationResponse } from '~/types'
 import {
   formatDate,
@@ -40,14 +41,14 @@ function closeCreate() {
 const { data: orgs, refresh } = await useApiFetch<OrganizationResponse[]>('/api/admin/orgs')
 
 const schema = z.object({
-  name: z.string().min(1, () => t('common.nameRequired')),
+  name: z.string().min(1, { error: () => t('common.nameRequired') }),
   display_name: z.string().optional(),
-  domain: z.string().min(1, () => t('common.domainRequired')),
+  domain: z.string().min(1, { error: () => t('common.domainRequired') }),
   tier: z.string().optional(),
   description: z.string().optional(),
   contact_email: z
     .string()
-    .email(() => t('common.invalidEmail'))
+    .email({ error: () => t('common.invalidEmail') })
     .optional()
     .or(z.literal('')),
   website: z.string().optional(),
@@ -128,7 +129,7 @@ const columns = computed(() => [
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="admin-orgs">
       <template #header>
         <UDashboardNavbar :title="t('admin.organizations')">
@@ -151,7 +152,7 @@ const columns = computed(() => [
               <template #name-cell="{ row }">
                 <div>
                   <p class="font-medium">{{ row.original.display_name || row.original.name }}</p>
-                  <p v-if="row.original.display_name" class="text-xs text-dimmed font-mono">{{ row.original.name }}</p>
+                  <p v-if="row.original.display_name" class="text-dimmed font-mono text-xs">{{ row.original.name }}</p>
                 </div>
               </template>
               <template #tier-cell="{ row }">
@@ -170,7 +171,7 @@ const columns = computed(() => [
                 </div>
               </template>
               <template #created_at-cell="{ row }">
-                <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
+                <span class="text-dimmed text-sm">{{ formatDate(row.original.created_at) }}</span>
               </template>
               <template #actions-cell="{ row }">
                 <UButton

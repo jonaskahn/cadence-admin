@@ -31,8 +31,8 @@ const columnsForTable = computed(() => props.columns as never)
         <UPopover>
           <UButton color="error" icon="i-lucide-trash" size="xs" />
           <template #content="{ close }">
-            <div class="p-4 min-w-48">
-              <p class="text-sm text-dimmed mb-3">{{ t('admin.removeMemberConfirm') }}</p>
+            <div class="min-w-48 p-4">
+              <p class="text-dimmed mb-3 text-sm">{{ t('admin.removeMemberConfirm') }}</p>
               <div class="flex justify-end gap-2">
                 <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                 <UButton

@@ -50,7 +50,7 @@ const statCards = computed(() => {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="admin-pool">
       <template #header>
         <UDashboardNavbar :title="t('admin.pool')">
@@ -67,8 +67,8 @@ const statCards = computed(() => {
       </template>
 
       <template #body>
-        <div class="pt-2 pl-6 pr-6 pr-6 flex flex-col gap-2">
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="flex flex-col gap-2 pt-2 pr-6 pl-6">
+          <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
             <UCard v-for="card in statCards" :key="card.label" variant="soft">
               <div class="flex items-center gap-3">
                 <UIcon :class="['size-8', STAT_ICON_COLOR[card.color ?? ''] ?? 'text-primary']" :name="card.icon" />
@@ -89,18 +89,18 @@ const statCards = computed(() => {
               <p class="font-semibold">{{ t('admin.memoryEstimate') }}</p>
             </template>
             <div class="flex items-center gap-4">
-              <UIcon class="size-10 text-primary" name="i-lucide-memory-stick" />
+              <UIcon class="text-primary size-10" name="i-lucide-memory-stick" />
               <div>
                 <p class="text-3xl font-bold">
                   {{ stats.memory_estimate_mb.toFixed(1) }}
-                  <span class="text-lg text-dimmed">{{ t('common.memoryUnitMB') }}</span>
+                  <span class="text-dimmed text-lg">{{ t('common.memoryUnitMB') }}</span>
                 </p>
                 <p class="text-dimmed text-sm">{{ t('admin.memoryEstimateDescription') }}</p>
               </div>
             </div>
           </UCard>
 
-          <p class="text-xs text-dimmed text-center">{{ t('admin.autoRefresh') }}</p>
+          <p class="text-dimmed text-center text-xs">{{ t('admin.autoRefresh') }}</p>
         </div>
       </template>
     </UDashboardPanel>

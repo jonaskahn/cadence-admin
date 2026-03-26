@@ -115,11 +115,11 @@ const oauth2MissingCreds = computed(
     <UCard variant="soft">
       <template #header>
         <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-key-round" class="size-5 text-primary" />
-          <p class="font-semibold text-sm">{{ t('admin.tokenSecurity') }}</p>
+          <UIcon name="i-lucide-key-round" class="text-primary size-5" />
+          <p class="text-sm font-semibold">{{ t('admin.tokenSecurity') }}</p>
         </div>
       </template>
-      <div class="flex flex-col divide-y divide-default">
+      <div class="divide-default flex flex-col divide-y">
         <SettingRow
           v-for="setting in tokenSettings"
           :key="setting.key"
@@ -152,8 +152,8 @@ const oauth2MissingCreds = computed(
     <UCard variant="soft">
       <template #header>
         <div class="flex items-center gap-2">
-          <UIcon name="i-simple-icons-google" class="size-5 text-primary" />
-          <p class="font-semibold text-sm">{{ t('admin.googleOAuth') }}</p>
+          <UIcon name="i-simple-icons-google" class="text-primary size-5" />
+          <p class="text-sm font-semibold">{{ t('admin.googleOAuth') }}</p>
         </div>
       </template>
       <UAlert
@@ -164,7 +164,7 @@ const oauth2MissingCreds = computed(
         variant="subtle"
         class="mb-4"
       />
-      <div class="flex flex-col divide-y divide-default">
+      <div class="divide-default flex flex-col divide-y">
         <SettingRow
           v-for="setting in googleSettings"
           v-show="setting.key === 'oauth.google.enabled' || googleEnabled"
@@ -198,8 +198,8 @@ const oauth2MissingCreds = computed(
     <UCard variant="soft">
       <template #header>
         <div class="flex items-center gap-2">
-          <UIcon name="i-simple-icons-github" class="size-5 text-primary" />
-          <p class="font-semibold text-sm">{{ t('admin.githubOAuth') }}</p>
+          <UIcon name="i-simple-icons-github" class="text-primary size-5" />
+          <p class="text-sm font-semibold">{{ t('admin.githubOAuth') }}</p>
         </div>
       </template>
       <UAlert
@@ -210,7 +210,7 @@ const oauth2MissingCreds = computed(
         variant="subtle"
         class="mb-4"
       />
-      <div class="flex flex-col divide-y divide-default">
+      <div class="divide-default flex flex-col divide-y">
         <SettingRow
           v-for="setting in githubSettings"
           v-show="setting.key === 'oauth.github.enabled' || githubEnabled"
@@ -244,8 +244,8 @@ const oauth2MissingCreds = computed(
     <UCard variant="soft">
       <template #header>
         <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-key-round" class="size-5 text-primary" />
-          <p class="font-semibold text-sm">{{ t('admin.genericOAuth2') }}</p>
+          <UIcon name="i-lucide-key-round" class="text-primary size-5" />
+          <p class="text-sm font-semibold">{{ t('admin.genericOAuth2') }}</p>
         </div>
       </template>
       <UAlert
@@ -256,7 +256,7 @@ const oauth2MissingCreds = computed(
         variant="subtle"
         class="mb-4"
       />
-      <div class="flex flex-col divide-y divide-default">
+      <div class="divide-default flex flex-col divide-y">
         <SettingRow
           v-for="setting in oauth2Settings"
           v-show="setting.key === 'oauth.oauth2.enabled' || oauth2Enabled"

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import { Bar, Doughnut, Line } from 'vue-chartjs'
+
 import type { OrchestratorResponse, PluginMetadataResponse, PoolStatsResponse } from '~/types'
 import { statusColor, tierColor } from '~/utils'
-import { Bar, Doughnut, Line } from 'vue-chartjs'
 
 const auth = useAuth()
 const { t } = useI18n()
@@ -157,7 +158,7 @@ const costByProviderChartData = {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="dashboard">
       <template #header>
         <UDashboardNavbar :title="t('dashboard.title')">
@@ -171,32 +172,32 @@ const costByProviderChartData = {
       </template>
 
       <template #body>
-        <div class="p-6 flex flex-col gap-10">
+        <div class="flex flex-col gap-10 p-6">
           <template v-if="auth.isOrgAdmin.value">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div class="border-l-2 border-primary pl-4 py-1">
+            <div class="grid grid-cols-2 gap-6 md:grid-cols-4">
+              <div class="border-primary border-l-2 py-1 pl-4">
                 <p class="text-3xl font-bold tracking-tight">{{ tierCounts.total }}</p>
-                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.totalAiApps') }}</p>
+                <p class="text-dimmed mt-1 text-sm">{{ t('dashboard.totalAiApps') }}</p>
               </div>
 
-              <div class="border-l-2 border-error pl-4 py-1">
+              <div class="border-error border-l-2 py-1 pl-4">
                 <p class="text-3xl font-bold tracking-tight">{{ tierCounts.hot }}</p>
-                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.hotTier') }}</p>
+                <p class="text-dimmed mt-1 text-sm">{{ t('dashboard.hotTier') }}</p>
               </div>
 
-              <div class="border-l-2 border-success pl-4 py-1">
+              <div class="border-success border-l-2 py-1 pl-4">
                 <p class="text-3xl font-bold tracking-tight">{{ plugins?.length || 0 }}</p>
-                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.plugins') }}</p>
+                <p class="text-dimmed mt-1 text-sm">{{ t('dashboard.plugins') }}</p>
               </div>
 
-              <div v-if="auth.isSysAdmin.value && poolStats" class="border-l-2 border-warning pl-4 py-1">
+              <div v-if="auth.isSysAdmin.value && poolStats" class="border-warning border-l-2 py-1 pl-4">
                 <p class="text-3xl font-bold tracking-tight">{{ poolStats.memory_estimate_mb.toFixed(0) }} MB</p>
-                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.poolMemory') }}</p>
+                <p class="text-dimmed mt-1 text-sm">{{ t('dashboard.poolMemory') }}</p>
               </div>
 
-              <div v-else class="border-l-2 border-info pl-4 py-1">
+              <div v-else class="border-info border-l-2 py-1 pl-4">
                 <p class="text-3xl font-bold tracking-tight">{{ tierCounts.warm }}</p>
-                <p class="text-dimmed text-sm mt-1">{{ t('dashboard.warmTier') }}</p>
+                <p class="text-dimmed mt-1 text-sm">{{ t('dashboard.warmTier') }}</p>
               </div>
             </div>
           </template>
@@ -206,20 +207,20 @@ const costByProviderChartData = {
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.poolStatistics') }}</p>
               </template>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="border-l-2 border-error/50 pl-3">
+              <div class="grid grid-cols-2 gap-6 md:grid-cols-4">
+                <div class="border-error/50 border-l-2 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.hotTier') }}</p>
                   <p class="text-xl font-bold tabular-nums">{{ poolStats.hot_tier_count }}</p>
                 </div>
-                <div class="border-l-2 border-success/50 pl-3">
+                <div class="border-success/50 border-l-2 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.warmTier') }}</p>
                   <p class="text-xl font-bold tabular-nums">{{ poolStats.warm_tier_count }}</p>
                 </div>
-                <div class="border-l-2 border-info/50 pl-3">
+                <div class="border-info/50 border-l-2 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.coldTier') }}</p>
                   <p class="text-xl font-bold tabular-nums">{{ poolStats.cold_tier_count }}</p>
                 </div>
-                <div class="border-l-2 border-neutral/50 pl-3">
+                <div class="border-neutral/50 border-l-2 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.sharedModels') }}</p>
                   <p class="text-xl font-bold tabular-nums">{{ poolStats.shared_model_count }}</p>
                 </div>
@@ -228,7 +229,7 @@ const costByProviderChartData = {
           </template>
 
           <!-- Row 1: Users + Tokens (60/40 split) -->
-          <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6">
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-[3fr_2fr]">
             <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.usersOverTime') }}</p>
@@ -238,7 +239,7 @@ const costByProviderChartData = {
                   <Bar :data="usersChartData" :options="chartOptions" />
                 </div>
                 <template #fallback>
-                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                  <div class="text-dimmed flex h-72 items-center justify-center text-sm">Loading chart...</div>
                 </template>
               </ClientOnly>
             </UCard>
@@ -252,14 +253,14 @@ const costByProviderChartData = {
                   <Line :data="tokensChartData" :options="chartOptions" />
                 </div>
                 <template #fallback>
-                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                  <div class="text-dimmed flex h-72 items-center justify-center text-sm">Loading chart...</div>
                 </template>
               </ClientOnly>
             </UCard>
           </div>
 
           <!-- Row 2: Chats + Orchestrator Tier (2fr/1fr) -->
-          <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
             <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.chatsPerDay') }}</p>
@@ -269,7 +270,7 @@ const costByProviderChartData = {
                   <Bar :data="chatsChartData" :options="chartOptions" />
                 </div>
                 <template #fallback>
-                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                  <div class="text-dimmed flex h-72 items-center justify-center text-sm">Loading chart...</div>
                 </template>
               </ClientOnly>
             </UCard>
@@ -279,13 +280,13 @@ const costByProviderChartData = {
                 <p class="font-semibold tracking-tight">{{ t('dashboard.aiAppsByTier') }}</p>
               </template>
               <ClientOnly>
-                <div class="h-72 flex items-center justify-center">
+                <div class="flex h-72 items-center justify-center">
                   <div class="size-52">
                     <Doughnut :data="orchestratorTierChartData" :options="chartOptions" />
                   </div>
                 </div>
                 <template #fallback>
-                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                  <div class="text-dimmed flex h-72 items-center justify-center text-sm">Loading chart...</div>
                 </template>
               </ClientOnly>
             </UCard>
@@ -301,25 +302,25 @@ const costByProviderChartData = {
                 <Line :data="llmCostChartData" :options="chartOptions" />
               </div>
               <template #fallback>
-                <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                <div class="text-dimmed flex h-72 items-center justify-center text-sm">Loading chart...</div>
               </template>
             </ClientOnly>
           </UCard>
 
           <!-- Row 4: Model Usage + Cost by Provider -->
-          <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-6">
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_2fr]">
             <UCard variant="soft">
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.modelUsage') }}</p>
               </template>
               <ClientOnly>
-                <div class="h-72 flex items-center justify-center">
+                <div class="flex h-72 items-center justify-center">
                   <div class="size-52">
                     <Doughnut :data="modelUsageChartData" :options="chartOptions" />
                   </div>
                 </div>
                 <template #fallback>
-                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                  <div class="text-dimmed flex h-72 items-center justify-center text-sm">Loading chart...</div>
                 </template>
               </ClientOnly>
             </UCard>
@@ -333,14 +334,14 @@ const costByProviderChartData = {
                   <Bar :data="costByProviderChartData" :options="chartOptions" />
                 </div>
                 <template #fallback>
-                  <div class="h-72 flex items-center justify-center text-dimmed text-sm">Loading chart...</div>
+                  <div class="text-dimmed flex h-72 items-center justify-center text-sm">Loading chart...</div>
                 </template>
               </ClientOnly>
             </UCard>
           </div>
 
           <div class="flex flex-wrap items-center gap-3">
-            <p class="text-sm font-medium text-dimmed">{{ t('dashboard.quickActions') }}</p>
+            <p class="text-dimmed text-sm font-medium">{{ t('dashboard.quickActions') }}</p>
             <UButton
               icon="i-lucide-message-square"
               :label="t('dashboard.startChat')"
@@ -380,7 +381,7 @@ const costByProviderChartData = {
               </UTable>
             </template>
 
-            <p v-else class="text-dimmed text-sm text-center py-4">
+            <p v-else class="text-dimmed py-4 text-center text-sm">
               {{ t('dashboard.noAiApps') }}
               <template v-if="auth.isOrgAdmin.value || auth.isSysAdmin.value">
                 <NuxtLink class="text-primary underline" :to="localePath('/ai-apps')">

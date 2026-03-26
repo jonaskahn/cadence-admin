@@ -79,7 +79,7 @@ async function copyDefaultPrompt() {
         class="w-full"
         :placeholder="!props.modelValue.trim() ? t('langGraphSupervisor.promptOverridePlaceholderBuiltin') : undefined"
       />
-      <div v-show="showPeek" class="relative rounded-md border border-default bg-muted/30">
+      <div v-show="showPeek" class="border-default bg-muted/30 relative rounded-md border">
         <UButton
           type="button"
           class="absolute top-1 right-1 z-10"
@@ -91,7 +91,7 @@ async function copyDefaultPrompt() {
           :title="t('langGraphSupervisor.copyDefaultPrompt')"
           @click="copyDefaultPrompt"
         />
-        <div class="max-h-48 overflow-y-auto p-2 pt-8 pr-10 font-mono text-xs whitespace-pre-wrap text-dimmed">
+        <div class="text-dimmed max-h-48 overflow-y-auto p-2 pt-8 pr-10 font-mono text-xs whitespace-pre-wrap">
           {{ defaultText }}
         </div>
       </div>

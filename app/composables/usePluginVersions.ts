@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
+
 import type { PluginMetadataResponse, SystemPluginResponse } from '~/types'
 
 type PluginVersionItem = PluginMetadataResponse | SystemPluginResponse

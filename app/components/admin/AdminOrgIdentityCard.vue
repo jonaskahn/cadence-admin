@@ -17,7 +17,7 @@ const { t } = useI18n()
     <dl class="grid grid-cols-2 gap-4">
       <div>
         <dt class="text-dimmed text-sm">{{ t('admin.orgId') }}</dt>
-        <dd class="font-mono text-sm mt-1">{{ organization.org_id }}</dd>
+        <dd class="mt-1 font-mono text-sm">{{ organization.org_id }}</dd>
       </div>
       <div>
         <dt class="text-dimmed text-sm">{{ t('dashboard.status') }}</dt>
@@ -29,11 +29,11 @@ const { t } = useI18n()
       </div>
       <div>
         <dt class="text-dimmed text-sm">{{ t('admin.slugName') }}</dt>
-        <dd class="font-mono text-sm mt-1">{{ organization.name }}</dd>
+        <dd class="mt-1 font-mono text-sm">{{ organization.name }}</dd>
       </div>
       <div>
         <dt class="text-dimmed text-sm">{{ t('settings.domain') }}</dt>
-        <dd class="font-mono text-sm mt-1">{{ organization.domain || t('common.empty') }}</dd>
+        <dd class="mt-1 font-mono text-sm">{{ organization.domain || t('common.empty') }}</dd>
       </div>
       <div>
         <dt class="text-dimmed text-sm">{{ t('settings.subscriptionTier') }}</dt>

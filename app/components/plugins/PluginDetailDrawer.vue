@@ -222,9 +222,9 @@ async function handleDisableConfirm(close: () => void) {
     @after:leave="emit('closed')"
   >
     <template #body>
-      <div class="flex flex-col h-full space-y-4">
+      <div class="flex h-full flex-col space-y-4">
         <div v-if="loading" class="flex justify-center py-8">
-          <UIcon class="size-8 animate-spin text-dimmed" name="i-lucide-loader-2" />
+          <UIcon class="text-dimmed size-8 animate-spin" name="i-lucide-loader-2" />
         </div>
 
         <UAlert v-else-if="error" color="error" :description="error.message" :title="t('pluginDetail.failedToLoad')" />
@@ -234,7 +234,7 @@ async function handleDisableConfirm(close: () => void) {
             <div class="flex items-center gap-3">
               <div
                 v-if="pluginAvatarSrc"
-                class="size-36 shrink-0 rounded-2xl overflow-hidden bg-neutral-50 hover:bg-neutral-200 p-4 hover:-translate-y-0.6 transition-all duration-300"
+                class="hover:-translate-y-0.6 size-36 shrink-0 overflow-hidden rounded-2xl bg-neutral-50 p-4 transition-all duration-300 hover:bg-neutral-200"
               >
                 <img :alt="selectedVersion.name" :src="pluginAvatarSrc" class="size-full object-cover" />
               </div>
@@ -246,11 +246,11 @@ async function handleDisableConfirm(close: () => void) {
                 size="xl"
               />
               <div class="min-w-0 flex-1">
-                <p class="font-medium text-dimmed text-xs mb-0.5">{{ t('pluginDetail.titleLabel') }}</p>
+                <p class="text-dimmed mb-0.5 text-xs font-medium">{{ t('pluginDetail.titleLabel') }}</p>
                 <p class="font-semibold">{{ selectedVersion.name }}</p>
-                <p class="font-medium text-dimmed text-xs mt-2 mb-0.5">{{ t('pluginDetail.namePid') }}</p>
+                <p class="text-dimmed mt-2 mb-0.5 text-xs font-medium">{{ t('pluginDetail.namePid') }}</p>
                 <p class="text-sm">{{ selectedVersion.pid }}</p>
-                <p class="font-medium text-dimmed text-xs mt-2 mb-1">{{ t('pluginDetail.version') }}</p>
+                <p class="text-dimmed mt-2 mb-1 text-xs font-medium">{{ t('pluginDetail.version') }}</p>
                 <USelect
                   v-model="selectedVersionOption"
                   :items="versionOptions"
@@ -260,7 +260,7 @@ async function handleDisableConfirm(close: () => void) {
                   size="xs"
                   class="w-28"
                 />
-                <div class="flex flex-wrap gap-1 mt-1">
+                <div class="mt-1 flex flex-wrap gap-1">
                   <UBadge v-if="selectedVersion.is_latest" color="success" size="xs" variant="subtle">{{
                     t('pluginDetail.latest')
                   }}</UBadge>
@@ -279,19 +279,19 @@ async function handleDisableConfirm(close: () => void) {
           </div>
 
           <div class="text-sm">
-            <p class="font-medium text-dimmed mb-1">{{ t('pluginDetail.description') }}</p>
+            <p class="text-dimmed mb-1 font-medium">{{ t('pluginDetail.description') }}</p>
             <p>{{ selectedVersion.description || t('common.empty') }}</p>
           </div>
 
           <div v-if="selectedVersion.tag" class="text-sm">
-            <p class="font-medium text-dimmed mb-1">{{ t('pluginDetail.tag') }}</p>
+            <p class="text-dimmed mb-1 font-medium">{{ t('pluginDetail.tag') }}</p>
             <UBadge color="primary" size="sm" variant="subtle">
               {{ selectedVersion.tag }}
             </UBadge>
           </div>
 
           <div class="text-sm">
-            <p class="font-medium text-dimmed mb-1">{{ t('pluginDetail.details') }}</p>
+            <p class="text-dimmed mb-1 font-medium">{{ t('pluginDetail.details') }}</p>
             <p>
               {{ pluginTypeLabel }}
               <span v-if="selectedVersion.stateless"> — {{ t('plugins.stateless') }}</span>
@@ -299,7 +299,7 @@ async function handleDisableConfirm(close: () => void) {
           </div>
 
           <div class="text-sm">
-            <p class="font-medium text-dimmed mb-1">{{ t('pluginDetail.capabilities') }}</p>
+            <p class="text-dimmed mb-1 font-medium">{{ t('pluginDetail.capabilities') }}</p>
             <div
               v-if="
                 selectedVersion.capabilities &&
@@ -322,7 +322,7 @@ async function handleDisableConfirm(close: () => void) {
           </div>
 
           <div class="text-sm">
-            <p class="font-medium text-dimmed mb-2">{{ t('pluginDetail.configSettings') }}</p>
+            <p class="text-dimmed mb-2 font-medium">{{ t('pluginDetail.configSettings') }}</p>
             <UTable
               v-if="configRows.length > 0"
               :columns="[
@@ -343,13 +343,13 @@ async function handleDisableConfirm(close: () => void) {
     </template>
 
     <template v-if="selectedVersion && canManage" #footer>
-      <div class="flex justify-end w-full gap-2">
+      <div class="flex w-full justify-end gap-2">
         <template v-if="isDisabled">
           <UPopover>
             <UButton color="primary" icon="i-lucide-route" :label="t('pluginDetail.enable')" />
             <template #content="{ close }">
-              <div class="p-4 min-w-48">
-                <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.enableConfirm') }}</p>
+              <div class="min-w-48 p-4">
+                <p class="text-dimmed mb-3 text-sm">{{ t('pluginDetail.enableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
                   <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                   <UButton
@@ -367,8 +367,8 @@ async function handleDisableConfirm(close: () => void) {
           <UPopover>
             <UButton color="error" icon="i-lucide-route-off" :label="t('pluginDetail.disable')" />
             <template #content="{ close }">
-              <div class="p-4 min-w-48">
-                <p class="text-sm text-dimmed mb-3">{{ t('pluginDetail.disableConfirm') }}</p>
+              <div class="min-w-48 p-4">
+                <p class="text-dimmed mb-3 text-sm">{{ t('pluginDetail.disableConfirm') }}</p>
                 <div class="flex justify-end gap-2">
                   <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                   <UButton

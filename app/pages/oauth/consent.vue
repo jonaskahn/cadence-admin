@@ -82,7 +82,7 @@ async function submit(approve: boolean) {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-neutral-950 p-6">
+  <div class="flex min-h-screen items-center justify-center bg-neutral-950 p-6">
     <UCard class="w-full max-w-lg">
       <template #header>
         <h1 class="text-lg font-semibold">{{ t('consent.title') }}</h1>
@@ -105,7 +105,7 @@ async function submit(approve: boolean) {
           </label>
         </div>
 
-        <div class="flex gap-2 justify-end pt-2">
+        <div class="flex justify-end gap-2 pt-2">
           <UButton color="neutral" variant="soft" :loading="submitting" @click="submit(false)">
             {{ t('consent.deny') }}
           </UButton>

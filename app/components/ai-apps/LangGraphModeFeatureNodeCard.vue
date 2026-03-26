@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { unref } from 'vue'
+
 import { INHERIT_TOP_LLM_SELECT_VALUE } from '~/composables/useLangGraphOrchestratorConfig'
 
 const props = withDefaults(
@@ -96,7 +97,7 @@ function numericPlaceholder(val: number | null | undefined): string | undefined 
             : t('aiApps.featureCards.autoCompactMessage')
         "
       />
-      <span class="text-sm text-dimmed">{{ t('aiApps.featureCards.enable') }}</span>
+      <span class="text-dimmed text-sm">{{ t('aiApps.featureCards.enable') }}</span>
     </div>
 
     <div class="grid grid-cols-1 gap-3">

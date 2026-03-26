@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
 import type { OrganizationResponse } from '~/types'
 import { subscriptionTierColor } from '~/utils'
 
@@ -22,7 +23,7 @@ const profileSchema = z.object({
   description: z.string().optional().nullable(),
   contact_email: z
     .string()
-    .email(() => t('common.invalidEmail'))
+    .email({ error: () => t('common.invalidEmail') })
     .optional()
     .nullable()
     .or(z.literal('')),
@@ -33,15 +34,41 @@ const profileSchema = z.object({
 })
 type ProfileSchema = z.output<typeof profileSchema>
 
-const profileState = reactive<Partial<ProfileSchema>>({
-  display_name: org.value?.display_name ?? null,
-  description: org.value?.description ?? null,
-  contact_email: org.value?.contact_email ?? null,
-  website: org.value?.website ?? null,
-  logo_url: org.value?.logo_url ?? null,
-  country: org.value?.country ?? null,
-  timezone: org.value?.timezone ?? null
+/** Form model for Nuxt UI inputs (`string | undefined` only; API/nullable handled by Zod on submit). */
+type OrgProfileFormState = {
+  display_name?: string
+  description?: string
+  contact_email?: string
+  website?: string
+  logo_url?: string
+  country?: string
+  timezone?: string
+}
+
+const profileState = reactive<OrgProfileFormState>({
+  display_name: org.value?.display_name ?? undefined,
+  description: org.value?.description ?? undefined,
+  contact_email: org.value?.contact_email ?? undefined,
+  website: org.value?.website ?? undefined,
+  logo_url: org.value?.logo_url ?? undefined,
+  country: org.value?.country ?? undefined,
+  timezone: org.value?.timezone ?? undefined
 })
+
+watch(
+  () => org.value,
+  (o) => {
+    if (!o) return
+    profileState.display_name = o.display_name ?? undefined
+    profileState.description = o.description ?? undefined
+    profileState.contact_email = o.contact_email ?? undefined
+    profileState.website = o.website ?? undefined
+    profileState.logo_url = o.logo_url ?? undefined
+    profileState.country = o.country ?? undefined
+    profileState.timezone = o.timezone ?? undefined
+  },
+  { immediate: true }
+)
 
 const savingProfile = ref(false)
 const settingsProfileFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
@@ -71,7 +98,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
     <UPageCard>
       <template #header>
         <div class="flex items-center gap-2">
-          <span class="font-semibold text-sm">{{ t('settings.organization') }}</span>
+          <span class="text-sm font-semibold">{{ t('settings.organization') }}</span>
           <InfoPopover
             title-key="info.settings.orgIdentity.title"
             description-key="info.settings.orgIdentity.description"
@@ -81,7 +108,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
       <dl class="grid grid-cols-2 gap-4">
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.organizationId') }}</dt>
-          <dd class="font-mono text-sm mt-1">{{ orgId }}</dd>
+          <dd class="mt-1 font-mono text-sm">{{ orgId }}</dd>
         </div>
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.yourRole') }}</dt>
@@ -93,11 +120,11 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
         </div>
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.slug') }}</dt>
-          <dd class="font-mono text-sm mt-1">{{ org?.name || t('common.empty') }}</dd>
+          <dd class="mt-1 font-mono text-sm">{{ org?.name || t('common.empty') }}</dd>
         </div>
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.domain') }}</dt>
-          <dd class="font-mono text-sm mt-1">{{ org?.domain || t('common.empty') }}</dd>
+          <dd class="mt-1 font-mono text-sm">{{ org?.domain || t('common.empty') }}</dd>
         </div>
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.subscriptionTier') }}</dt>
@@ -105,7 +132,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
             <UBadge v-if="org?.tier" :color="subscriptionTierColor(org.tier)" size="sm" variant="subtle">
               {{ org.tier.toUpperCase() }}
             </UBadge>
-            <span v-else class="text-sm text-dimmed">{{ t('common.empty') }}</span>
+            <span v-else class="text-dimmed text-sm">{{ t('common.empty') }}</span>
           </dd>
         </div>
         <div>
@@ -123,7 +150,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
     <UPageCard v-if="isOrgAdmin" :description="t('settings.orgProfileDescription')">
       <template #header>
         <div class="flex items-center gap-2">
-          <span class="font-semibold text-sm">{{ t('settings.organizationProfile') }}</span>
+          <span class="text-sm font-semibold">{{ t('settings.organizationProfile') }}</span>
           <InfoPopover
             title-key="info.settings.orgProfile.title"
             description-key="info.settings.orgProfile.description"

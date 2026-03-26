@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
 import { getApiErrorMessage } from '~/utils'
 
 const props = defineProps<{ orgId: string }>()
@@ -17,7 +18,7 @@ const { withOverlay } = useLoadingOverlay()
 const loading = ref(false)
 
 const schema = z.object({
-  identifier: z.string().min(1, () => t('addMember.identifierRequired')),
+  identifier: z.string().min(1, { error: () => t('addMember.identifierRequired') }),
   is_admin: z.boolean()
 })
 

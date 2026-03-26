@@ -55,12 +55,12 @@ function openUpload() {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="agent-store">
       <template #header>
         <UDashboardNavbar>
           <template #title>
-            <span class="inline-flex items-center gap-2 flex-wrap">
+            <span class="inline-flex flex-wrap items-center gap-2">
               <span>{{ t('plugins.title') }}</span>
               <UBadge color="neutral" size="xs" variant="subtle">{{ t('plugins.legacyBadge') }}</UBadge>
             </span>
@@ -109,7 +109,7 @@ function openUpload() {
               @select="onPluginSelect"
             />
           </div>
-          <p v-if="filteredPlugins.length === 0" class="py-8 text-center text-dimmed">
+          <p v-if="filteredPlugins.length === 0" class="text-dimmed py-8 text-center">
             {{ t('plugins.noPluginsMatch') }}
           </p>
         </div>

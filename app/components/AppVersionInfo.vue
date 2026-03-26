@@ -33,7 +33,7 @@ async function copyVersionInfo() {
 <template>
   <button
     type="button"
-    class="flex flex-wrap gap-x-2 gap-y-0.5 m-2 text-[10px] text-dimmed transition-colors hover:text-primary-500 hover:cursor-copy"
+    class="text-dimmed hover:text-primary-500 m-2 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] transition-colors hover:cursor-copy"
     :class="collapsed ? 'flex-col' : ''"
     :title="t('footer.copyVersion')"
     @click="copyVersionInfo"

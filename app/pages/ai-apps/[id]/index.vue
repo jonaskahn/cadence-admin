@@ -195,12 +195,12 @@ async function handleActivateConfirm(close: () => void) {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel :id="`ai-app-${instanceId}`" :ui="{ body: 'min-w-0' }">
       <template #header>
         <UDashboardNavbar>
           <template #title>
-            <span class="inline-flex items-center gap-2 flex-wrap min-w-0">
+            <span class="inline-flex min-w-0 flex-wrap items-center gap-2">
               <span class="truncate">{{ aiApp?.name ?? t('aiApps.title') }}</span>
               <UBadge color="neutral" class="shrink-0" size="xs" variant="subtle">{{ t('aiApps.legacyBadge') }}</UBadge>
             </span>
@@ -223,8 +223,8 @@ async function handleActivateConfirm(close: () => void) {
                   <UPopover>
                     <UButton color="primary" icon="i-lucide-play" :label="t('aiApps.load')" size="sm" />
                     <template #content="{ close }">
-                      <div class="p-4 min-w-48">
-                        <p class="text-sm text-dimmed mb-3">{{ t('aiApps.loadConfirm', { name: aiApp.name }) }}</p>
+                      <div class="min-w-48 p-4">
+                        <p class="text-dimmed mb-3 text-sm">{{ t('aiApps.loadConfirm', { name: aiApp.name }) }}</p>
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton
@@ -240,8 +240,8 @@ async function handleActivateConfirm(close: () => void) {
                   <UPopover>
                     <UButton color="primary" icon="i-lucide-square" :label="t('aiApps.unload')" size="sm" />
                     <template #content="{ close }">
-                      <div class="p-4 min-w-48">
-                        <p class="text-sm text-dimmed mb-3">{{ t('aiApps.unloadConfirm', { name: aiApp.name }) }}</p>
+                      <div class="min-w-48 p-4">
+                        <p class="text-dimmed mb-3 text-sm">{{ t('aiApps.unloadConfirm', { name: aiApp.name }) }}</p>
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton
@@ -257,8 +257,8 @@ async function handleActivateConfirm(close: () => void) {
                   <UPopover>
                     <UButton color="error" icon="i-lucide-route-off" :label="t('aiApps.deactivate')" size="sm" />
                     <template #content="{ close }">
-                      <div class="p-4 min-w-48">
-                        <p class="text-sm text-dimmed mb-3">
+                      <div class="min-w-48 p-4">
+                        <p class="text-dimmed mb-3 text-sm">
                           {{ t('aiApps.deactivateConfirm', { name: aiApp.name }) }}
                         </p>
                         <div class="flex justify-end gap-2">
@@ -277,8 +277,8 @@ async function handleActivateConfirm(close: () => void) {
                 <UPopover v-else>
                   <UButton color="primary" icon="i-lucide-route" :label="t('aiApps.activate')" size="sm" />
                   <template #content="{ close }">
-                    <div class="p-4 min-w-48">
-                      <p class="text-sm text-dimmed mb-3">{{ t('aiApps.activateConfirm', { name: aiApp.name }) }}</p>
+                    <div class="min-w-48 p-4">
+                      <p class="text-dimmed mb-3 text-sm">{{ t('aiApps.activateConfirm', { name: aiApp.name }) }}</p>
                       <div class="flex justify-end gap-2">
                         <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                         <UButton
@@ -298,21 +298,21 @@ async function handleActivateConfirm(close: () => void) {
       </template>
 
       <template #body>
-        <div v-if="aiApp" class="p-6 min-w-0 w-full flex flex-col gap-6">
+        <div v-if="aiApp" class="flex w-full min-w-0 flex-col gap-6 p-6">
           <!-- Overview card: Details + Graph -->
           <UCard variant="soft" class="min-w-0">
             <template #header>
               <span class="font-semibold">{{ t('aiApps.overviewSection') }}</span>
             </template>
 
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
               <!-- Details inner panel -->
-              <div class="border border-default rounded-lg p-4">
-                <p class="font-medium text-sm mb-4">{{ t('aiApps.details') }}</p>
+              <div class="border-default rounded-lg border p-4">
+                <p class="mb-4 text-sm font-medium">{{ t('aiApps.details') }}</p>
                 <dl class="grid grid-cols-2 gap-4 sm:grid-cols-3">
                   <div>
                     <dt class="text-dimmed text-sm">Instance ID</dt>
-                    <dd class="font-mono text-sm mt-1 break-all">{{ aiApp.instance_id }}</dd>
+                    <dd class="mt-1 font-mono text-sm break-all">{{ aiApp.instance_id }}</dd>
                   </div>
                   <div>
                     <dt class="text-dimmed text-sm">Framework</dt>
@@ -340,14 +340,14 @@ async function handleActivateConfirm(close: () => void) {
                   </div>
                   <div>
                     <dt class="text-dimmed text-sm">Config Hash</dt>
-                    <dd class="font-mono text-xs mt-1 break-all">{{ aiApp.config_hash || '—' }}</dd>
+                    <dd class="mt-1 font-mono text-xs break-all">{{ aiApp.config_hash || '—' }}</dd>
                   </div>
                 </dl>
               </div>
 
               <!-- Graph inner panel -->
-              <div class="border border-default rounded-lg p-4">
-                <p class="font-medium text-sm mb-4">{{ t('aiApps.graph') }}</p>
+              <div class="border-default rounded-lg border p-4">
+                <p class="mb-4 text-sm font-medium">{{ t('aiApps.graph') }}</p>
                 <AiAppGraph :instance-id="instanceId" :org-id="orgId" />
               </div>
             </div>
@@ -375,7 +375,7 @@ async function handleActivateConfirm(close: () => void) {
             </template>
 
             <!-- Plugin status mini-cards -->
-            <div v-if="displayPlugins.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+            <div v-if="displayPlugins.length > 0" class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <AiAppPluginCard
                 v-for="plugin in displayPlugins"
                 :key="plugin.id + plugin.version"
@@ -386,7 +386,7 @@ async function handleActivateConfirm(close: () => void) {
 
             <USeparator v-if="displayPlugins.length > 0" :label="t('aiApps.create.pluginSettings')" class="mb-4" />
 
-            <p class="text-dimmed text-xs mb-4">{{ t('aiApps.create.pluginConfigurationDesc') }}</p>
+            <p class="text-dimmed mb-4 text-xs">{{ t('aiApps.create.pluginConfigurationDesc') }}</p>
 
             <AiAppPluginSettings
               ref="pluginSettingsRef"

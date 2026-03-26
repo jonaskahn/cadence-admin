@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import { deleteCookie, getCookie, sendRedirect, sendStream, setCookie } from 'h3'
+
 import { COOKIE_ACCESS_TOKEN, COOKIE_REFRESH_TOKEN } from '~/constants'
 
 const TOKEN_PLACEHOLDER = '[set]'

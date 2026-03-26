@@ -101,12 +101,12 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="ai-apps" :ui="{ body: 'min-w-0' }">
       <template #header>
         <UDashboardNavbar>
           <template #title>
-            <span class="inline-flex items-center gap-2 flex-wrap">
+            <span class="inline-flex flex-wrap items-center gap-2">
               <span>{{ t('aiApps.title') }}</span>
               <UBadge color="neutral" size="xs" variant="subtle">{{ t('aiApps.legacyBadge') }}</UBadge>
             </span>
@@ -129,7 +129,7 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
       </template>
 
       <template #body>
-        <div class="p-6 min-w-0 w-full">
+        <div class="w-full min-w-0 p-6">
           <UCard variant="soft">
             <UTable
               :columns="columns"
@@ -173,8 +173,8 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                       <UPopover>
                         <UButton icon="i-lucide-play" :label="t('aiApps.load')" size="sm" />
                         <template #content="{ close }">
-                          <div class="p-4 min-w-48">
-                            <p class="text-sm text-dimmed mb-3">
+                          <div class="min-w-48 p-4">
+                            <p class="text-dimmed mb-3 text-sm">
                               {{ t('aiApps.loadConfirm', { name: row.original.name }) }}
                             </p>
                             <div class="flex justify-end gap-2">
@@ -191,8 +191,8 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                       <UPopover>
                         <UButton icon="i-lucide-square" :label="t('aiApps.unload')" size="sm" />
                         <template #content="{ close }">
-                          <div class="p-4 min-w-48">
-                            <p class="text-sm text-dimmed mb-3">
+                          <div class="min-w-48 p-4">
+                            <p class="text-dimmed mb-3 text-sm">
                               {{ t('aiApps.unloadConfirm', { name: row.original.name }) }}
                             </p>
                             <div class="flex justify-end gap-2">
@@ -209,8 +209,8 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                       <UPopover>
                         <UButton color="error" icon="i-lucide-route-off" :label="t('aiApps.deactivate')" size="sm" />
                         <template #content="{ close }">
-                          <div class="p-4 min-w-48">
-                            <p class="text-sm text-dimmed mb-3">
+                          <div class="min-w-48 p-4">
+                            <p class="text-dimmed mb-3 text-sm">
                               {{ t('aiApps.deactivateConfirm', { name: row.original.name }) }}
                             </p>
                             <div class="flex justify-end gap-2">
@@ -229,8 +229,8 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                     <UPopover v-else>
                       <UButton color="success" icon="i-lucide-route" :label="t('aiApps.activate')" size="sm" />
                       <template #content="{ close }">
-                        <div class="p-4 min-w-48">
-                          <p class="text-sm text-dimmed mb-3">
+                        <div class="min-w-48 p-4">
+                          <p class="text-dimmed mb-3 text-sm">
                             {{ t('aiApps.activateConfirm', { name: row.original.name }) }}
                           </p>
                           <div class="flex justify-end gap-2">
@@ -249,8 +249,8 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
                   <UPopover v-if="auth.isSysAdmin.value && row.original.is_deleted">
                     <UButton color="neutral" icon="i-lucide-shredder" size="sm" />
                     <template #content="{ close }">
-                      <div class="p-4 min-w-48">
-                        <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
+                      <div class="min-w-48 p-4">
+                        <p class="text-dimmed mb-3 text-sm">{{ t('common.purgeConfirm') }}</p>
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton

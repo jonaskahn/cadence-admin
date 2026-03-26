@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
 import { getApiErrorMessage } from '~/utils'
 
 definePageMeta({ layout: 'split' })
@@ -109,15 +110,15 @@ const oauthProviderIcons: Record<string, string> = {
 </script>
 
 <template>
-  <div class="flex w-full min-h-[100dvh] font-sans bg-background">
+  <div class="bg-background flex min-h-[100dvh] w-full font-sans">
     <!-- Left Side: Form -->
-    <div class="flex w-full flex-col lg:w-1/2 relative z-10">
+    <div class="relative z-10 flex w-full flex-col lg:w-1/2">
       <!-- Form Container -->
       <div class="flex flex-1 items-center justify-center p-6 md:p-8">
         <div class="w-full max-w-[420px]">
-          <div class="mb-8 login-item" style="--delay: 80ms">
-            <h1 class="text-[40px] font-bold tracking-tighter text-foreground leading-none">Welcome back.</h1>
-            <p class="mt-3 text-[15px] text-muted">Sign in to your workspace.</p>
+          <div class="login-item mb-8" style="--delay: 80ms">
+            <h1 class="text-foreground text-[40px] leading-none font-bold tracking-tighter">Welcome back.</h1>
+            <p class="text-muted mt-3 text-[15px]">Sign in to your workspace.</p>
           </div>
 
           <UForm :schema="schema" :state="state" class="flex flex-col gap-5" method="post" @submit="onSubmit">
@@ -143,7 +144,7 @@ const oauthProviderIcons: Record<string, string> = {
                 <template #trailing>
                   <button
                     type="button"
-                    class="flex items-center text-muted hover:text-foreground transition-colors"
+                    class="text-muted hover:text-foreground flex items-center transition-colors"
                     @click.prevent="showPassword = !showPassword"
                   >
                     <UIcon :name="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'" class="size-5" />
@@ -152,9 +153,9 @@ const oauthProviderIcons: Record<string, string> = {
               </UInput>
             </UFormField>
 
-            <div class="flex items-center justify-between text-[14px] mt-1 mb-2 login-item" style="--delay: 300ms">
+            <div class="login-item mt-1 mb-2 flex items-center justify-between text-[14px]" style="--delay: 300ms">
               <UCheckbox v-model="state.remember" label="Keep me logged in" />
-              <NuxtLink to="#" class="font-medium text-primary hover:text-primary-600 transition-colors"
+              <NuxtLink to="#" class="text-primary hover:text-primary-600 font-medium transition-colors"
                 >Forgot password?</NuxtLink
               >
             </div>
@@ -165,15 +166,15 @@ const oauthProviderIcons: Record<string, string> = {
               :label="t('auth.signIn')"
               type="submit"
               size="xl"
-              class="font-semibold tracking-wide active:scale-[0.98] login-item"
+              class="login-item font-semibold tracking-wide active:scale-[0.98]"
               style="--delay: 360ms"
             />
 
             <template v-if="oauthProviders.length > 0">
-              <div class="flex justify-center text-xs text-muted login-item" style="--delay: 380ms">
+              <div class="text-muted login-item flex justify-center text-xs" style="--delay: 380ms">
                 Or continue with
               </div>
-              <div class="flex flex-row gap-2 login-item" style="--delay: 400ms">
+              <div class="login-item flex flex-row gap-2" style="--delay: 400ms">
                 <UButton
                   v-for="provider in oauthProviders"
                   :key="provider"
@@ -190,7 +191,7 @@ const oauthProviderIcons: Record<string, string> = {
       </div>
 
       <!-- Footer: Locale + Theme Toggle -->
-      <div class="p-6 md:p-8 flex items-center gap-2 mt-auto login-item" style="--delay: 420ms">
+      <div class="login-item mt-auto flex items-center gap-2 p-6 md:p-8" style="--delay: 420ms">
         <UDropdownMenu :items="[localeItems]">
           <UButton color="neutral" size="sm" icon="i-lucide-languages" :label="currentLocaleName" />
         </UDropdownMenu>
@@ -205,16 +206,16 @@ const oauthProviderIcons: Record<string, string> = {
     </div>
 
     <!-- Right Side: Dark Branding Panel -->
-    <div class="relative hidden w-1/2 flex-col justify-center bg-stone-950 lg:flex overflow-hidden px-12">
+    <div class="relative hidden w-1/2 flex-col justify-center overflow-hidden bg-stone-950 px-12 lg:flex">
       <!-- Orange radial glow -->
       <div
-        class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] pointer-events-none"
+        class="pointer-events-none absolute top-0 left-1/2 h-[400px] w-[600px] -translate-x-1/2"
         style="background: radial-gradient(ellipse at 50% 0%, rgba(249, 115, 22, 0.25) 0%, transparent 70%)"
       />
 
       <!-- Grid pattern overlay -->
       <div
-        class="absolute inset-0 pointer-events-none opacity-[0.03]"
+        class="pointer-events-none absolute inset-0 opacity-[0.03]"
         style="
           background-image:
             linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
@@ -224,27 +225,27 @@ const oauthProviderIcons: Record<string, string> = {
       />
 
       <!-- Floating product card -->
-      <div class="absolute z-20 top-[10%] left-[8%] floating-card">
+      <div class="floating-card absolute top-[10%] left-[8%] z-20">
         <div
-          class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-6 py-5 inline-flex flex-col gap-2 shadow-2xl"
+          class="inline-flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/5 px-6 py-5 shadow-2xl backdrop-blur-sm"
         >
           <div class="flex items-center gap-3">
             <div
-              class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg shadow-primary/30"
+              class="bg-primary shadow-primary/30 flex h-9 w-9 items-center justify-center rounded-lg text-white shadow-lg"
             >
               <UIcon name="i-lucide-chart-no-axes-column" class="size-4" />
             </div>
-            <span class="text-[22px] font-bold text-white tracking-tight">{{ appName || 'Cadence' }}</span>
+            <span class="text-[22px] font-bold tracking-tight text-white">{{ appName || 'Cadence' }}</span>
           </div>
-          <p class="text-sm text-white/50 font-medium">{{ appTagline || 'AI Orchestration Platform' }}</p>
+          <p class="text-sm font-medium text-white/50">{{ appTagline || 'AI Orchestration Platform' }}</p>
         </div>
       </div>
 
       <!-- Value props -->
-      <div class="relative z-10 flex flex-col gap-3 mb-10">
+      <div class="relative z-10 mb-10 flex flex-col gap-3">
         <div v-for="prop in valueProps" :key="prop.text" class="flex items-center gap-3">
-          <div class="flex h-6 w-6 items-center justify-center rounded-md bg-primary/15">
-            <UIcon :name="prop.icon" class="size-3.5 text-primary" />
+          <div class="bg-primary/15 flex h-6 w-6 items-center justify-center rounded-md">
+            <UIcon :name="prop.icon" class="text-primary size-3.5" />
           </div>
           <span class="text-sm font-medium text-white/70">{{ prop.text }}</span>
         </div>

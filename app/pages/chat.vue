@@ -61,7 +61,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="chat">
       <template #header>
         <UDashboardNavbar :title="t('chat.title')">
@@ -78,29 +78,29 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
 
       <template #body>
         <div class="flex h-full overflow-hidden">
-          <div class="w-64 border-r border-default flex flex-col shrink-0">
-            <div class="p-3 border-b border-default">
+          <div class="border-default flex w-64 shrink-0 flex-col border-r">
+            <div class="border-default border-b p-3">
               <UButton icon="i-lucide-plus" :label="t('chat.newThread')" block @click="chat.newConversation()" />
             </div>
-            <div class="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
+            <div class="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
               <div
                 v-for="convo in chat.conversations.value"
                 :key="convo.id"
                 :class="chat.conversationId.value === convo.id ? 'bg-primary/10 text-primary' : 'hover:bg-elevated/50'"
-                class="p-2.5 rounded-lg cursor-pointer transition-colors"
+                class="cursor-pointer rounded-lg p-2.5 transition-colors"
                 @click="chat.selectConversation(convo.id)"
               >
-                <p class="text-sm font-medium truncate">{{ convo.title || t('chat.untitledThread') }}</p>
-                <p class="text-xs text-dimmed mt-0.5">{{ formatDate(convo.created_at) }}</p>
+                <p class="truncate text-sm font-medium">{{ convo.title || t('chat.untitledThread') }}</p>
+                <p class="text-dimmed mt-0.5 text-xs">{{ formatDate(convo.created_at) }}</p>
               </div>
-              <p v-if="chat.conversations.value.length === 0" class="text-xs text-dimmed text-center py-6">
+              <p v-if="chat.conversations.value.length === 0" class="text-dimmed py-6 text-center text-xs">
                 {{ t('chat.noThreadsYet') }}
               </p>
             </div>
           </div>
 
-          <div class="flex-1 flex flex-col overflow-hidden">
-            <div class="border-b border-default p-3 flex items-center gap-3 shrink-0">
+          <div class="flex flex-1 flex-col overflow-hidden">
+            <div class="border-default flex shrink-0 items-center gap-3 border-b p-3">
               <USelect
                 v-model="chat.selectedInstanceId.value"
                 :items="readyAiApps.map((o) => ({ label: o.name, value: o.instance_id }))"
@@ -124,14 +124,14 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                 variant="soft"
               />
             </div>
-            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+            <div class="flex flex-1 flex-col gap-4 overflow-y-auto p-4">
               <div
                 v-for="(msg, idx) in chat.messages.value"
                 :key="idx"
                 :class="msg.role === 'user' ? 'justify-end' : 'justify-start'"
                 class="flex"
               >
-                <div class="max-w-[70%] flex flex-col">
+                <div class="flex max-w-[70%] flex-col">
                   <div
                     :class="msg.role === 'user' ? 'bg-primary text-white' : 'bg-elevated'"
                     class="rounded-2xl px-4 py-2.5"
@@ -149,9 +149,9 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                         msg.role === 'assistant' &&
                         (agentStepsOf(msg.events).length || toolResultsOf(msg.events).length)
                       "
-                      class="mt-2 pt-2 border-t border-default/40"
+                      class="border-default/40 mt-2 border-t pt-2"
                     >
-                      <summary class="text-xs text-dimmed cursor-pointer select-none">
+                      <summary class="text-dimmed cursor-pointer text-xs select-none">
                         <span v-if="agentStepsOf(msg.events).length"
                           >{{ agentStepsOf(msg.events).length }} {{ t('chat.steps') }}</span
                         >
@@ -164,21 +164,21 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                         <div
                           v-for="step in agentStepsOf(msg.events)"
                           :key="step.key"
-                          class="flex items-center gap-1.5 text-xs text-dimmed"
+                          class="text-dimmed flex items-center gap-1.5 text-xs"
                         >
-                          <UIcon class="size-3 shrink-0 text-success-400" name="i-lucide-check" />
+                          <UIcon class="text-success-400 size-3 shrink-0" name="i-lucide-check" />
                           <span>{{ step.fallback }}</span>
                         </div>
                       </div>
                       <div v-if="toolResultsOf(msg.events).length" class="mt-1.5 flex flex-col gap-1">
-                        <p v-if="agentStepsOf(msg.events).length" class="h-px bg-default/40 my-1" />
-                        <p class="text-xs font-medium text-dimmed">{{ t('chat.sources') }}</p>
+                        <p v-if="agentStepsOf(msg.events).length" class="bg-default/40 my-1 h-px" />
+                        <p class="text-dimmed text-xs font-medium">{{ t('chat.sources') }}</p>
                         <template v-for="result in toolResultsOf(msg.events)">
                           <a
                             v-for="(item, i) in linkItemsOf(result)"
                             :key="`${result.tool_name}-${i}`"
                             :href="item.url"
-                            class="text-xs text-primary truncate hover:underline"
+                            class="text-primary truncate text-xs hover:underline"
                             target="_blank"
                             rel="noopener noreferrer"
                             >{{ item?.title || item?.url }}</a
@@ -187,7 +187,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                       </div>
                     </details>
                   </div>
-                  <div v-if="msg.role === 'assistant' && msg.suggestions?.length" class="flex flex-wrap gap-2 mt-2">
+                  <div v-if="msg.role === 'assistant' && msg.suggestions?.length" class="mt-2 flex flex-wrap gap-2">
                     <UButton
                       v-for="(suggestion, si) in msg.suggestions"
                       :key="si"
@@ -201,22 +201,22 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
               </div>
 
               <div v-if="chat.streaming.value" class="flex justify-start">
-                <div class="max-w-[70%] min-w-48 rounded-2xl px-4 py-3 bg-elevated flex flex-col gap-2">
+                <div class="bg-elevated flex max-w-[70%] min-w-48 flex-col gap-2 rounded-2xl px-4 py-3">
                   <!-- tool results arrive before synthesizer; show source links immediately -->
                   <div v-if="chat.currentToolResults.value.length" class="flex flex-col gap-1.5">
-                    <p class="text-xs font-medium text-dimmed">{{ t('chat.sources') }}</p>
+                    <p class="text-dimmed text-xs font-medium">{{ t('chat.sources') }}</p>
                     <template v-for="result in chat.currentToolResults.value">
                       <a
                         v-for="(item, i) in linkItemsOf(result)"
                         :key="`${result.tool_name}-${i}`"
                         :href="item.url"
-                        class="text-xs text-primary truncate hover:underline"
+                        class="text-primary truncate text-xs hover:underline"
                         target="_blank"
                         rel="noopener noreferrer"
                         >{{ item.title || item.url }}</a
                       >
                     </template>
-                    <div class="h-px bg-default/40 mt-0.5" />
+                    <div class="bg-default/40 mt-0.5 h-px" />
                   </div>
 
                   <MDC
@@ -227,32 +227,32 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                   />
 
                   <template v-if="chat.currentAgentStep.value">
-                    <div class="flex items-center gap-1.5 text-xs text-dimmed">
+                    <div class="text-dimmed flex items-center gap-1.5 text-xs">
                       <UIcon class="size-3 shrink-0 animate-spin" name="i-lucide-loader" />
                       <span>{{ chat.currentAgentStep.value.fallback }}</span>
                     </div>
                   </template>
 
                   <div v-else class="flex items-center gap-1">
-                    <span class="size-2 rounded-full bg-primary animate-bounce [animation-delay:0ms]" />
-                    <span class="size-2 rounded-full bg-primary animate-bounce [animation-delay:150ms]" />
-                    <span class="size-2 rounded-full bg-primary animate-bounce [animation-delay:300ms]" />
+                    <span class="bg-primary size-2 animate-bounce rounded-full [animation-delay:0ms]" />
+                    <span class="bg-primary size-2 animate-bounce rounded-full [animation-delay:150ms]" />
+                    <span class="bg-primary size-2 animate-bounce rounded-full [animation-delay:300ms]" />
                   </div>
                 </div>
               </div>
 
               <div
                 v-if="chat.messages.value.length === 0 && !chat.streaming.value"
-                class="flex-1 flex items-center justify-center"
+                class="flex flex-1 items-center justify-center"
               >
-                <div class="text-center text-dimmed">
-                  <UIcon class="size-12 mx-auto mb-3 opacity-30" name="i-lucide-message-square" />
+                <div class="text-dimmed text-center">
+                  <UIcon class="mx-auto mb-3 size-12 opacity-30" name="i-lucide-message-square" />
                   <p>{{ t('chat.selectAndStart') }}</p>
                 </div>
               </div>
             </div>
 
-            <div class="border-t border-default p-4">
+            <div class="border-default border-t p-4">
               <div class="flex gap-2">
                 <UTextarea
                   v-model="inputText"
@@ -271,12 +271,12 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                   @click="onSend"
                 />
               </div>
-              <div class="flex items-center gap-3 mt-2">
+              <div class="mt-2 flex items-center gap-3">
                 <div class="flex items-center gap-2">
                   <USwitch v-model="chat.enableStream.value" size="sm" />
                   <span class="text-sm">{{ t('chat.stream') }}</span>
                 </div>
-                <p class="text-xs text-dimmed">{{ t('chat.enterToSend') }}</p>
+                <p class="text-dimmed text-xs">{{ t('chat.enterToSend') }}</p>
               </div>
             </div>
           </div>

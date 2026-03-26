@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
-import type { FrameworkSupportedProvidersResponse, OrchestratorDefaults, OrchestratorResponse } from '~/types'
+import * as z from 'zod'
+
 import type { MonitoringConfig } from '~/components/ai-apps/AiAppMonitoringConfig.vue'
+import type { FrameworkSupportedProvidersResponse, OrchestratorDefaults, OrchestratorResponse } from '~/types'
 
 const route = useRoute()
 const router = useRouter()
@@ -178,12 +179,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel :id="`ai-app-edit-${instanceId}`" :ui="{ body: 'min-w-0' }">
       <template #header>
         <UDashboardNavbar>
           <template #title>
-            <span class="inline-flex items-center gap-2 flex-wrap min-w-0">
+            <span class="inline-flex min-w-0 flex-wrap items-center gap-2">
               <span class="truncate">{{ aiApp?.name ?? t('aiApps.edit.title') }}</span>
               <UBadge color="neutral" class="shrink-0" size="xs" variant="subtle">{{ t('aiApps.legacyBadge') }}</UBadge>
             </span>
@@ -198,7 +199,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </template>
 
       <template #body>
-        <div v-if="status === 'pending'" class="p-6 w-full">
+        <div v-if="status === 'pending'" class="w-full p-6">
           <div class="flex flex-col gap-4">
             <USkeleton class="h-10 w-full" />
             <USkeleton class="h-10 w-full" />
@@ -214,9 +215,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           class="m-6"
         />
 
-        <div v-else-if="aiApp" class="p-6 pb-28 min-w-0 w-full">
+        <div v-else-if="aiApp" class="w-full min-w-0 p-6 pb-28">
           <UForm ref="orchestratorEditFormRef" :schema="schema" :state="{ name, tier, whoami }" @submit="onSubmit">
-            <div class="flex flex-col gap-8 w-full">
+            <div class="flex w-full flex-col gap-8">
               <!-- Provider wraps Basic + Additional Settings + LLM Config + Supervisor Config -->
               <LangGraphAiAppConfigProvider
                 ref="orchestratorConfigProviderRef"
@@ -228,10 +229,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 :orchestrator-defaults="orchestratorDefaults"
                 require-default-llm
               >
-                <div class="flex flex-col gap-8 w-full">
-                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                <div class="flex w-full flex-col gap-8">
+                  <div class="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
                     <!-- Section Basic -->
-                    <UCard variant="soft" class="min-w-0 h-full">
+                    <UCard variant="soft" class="h-full min-w-0">
                       <template #header>
                         <div class="flex items-center gap-2">
                           <p class="font-semibold">{{ t('aiApps.edit.basic') }}</p>
@@ -260,7 +261,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                           <template #label>
                             <div class="flex items-center gap-1">
                               <span>{{ t('dashboard.framework') }}</span>
-                              <UIcon name="i-lucide-lock" class="text-xs text-dimmed" />
+                              <UIcon name="i-lucide-lock" class="text-dimmed text-xs" />
                             </div>
                           </template>
                           <UInput :model-value="aiApp.framework_type" class="w-full" disabled />
@@ -269,7 +270,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                           <template #label>
                             <div class="flex items-center gap-1">
                               <span>{{ t('dashboard.mode') }}</span>
-                              <UIcon name="i-lucide-lock" class="text-xs text-dimmed" />
+                              <UIcon name="i-lucide-lock" class="text-dimmed text-xs" />
                             </div>
                           </template>
                           <UInput :model-value="aiApp.mode" class="w-full" disabled />
@@ -277,7 +278,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       </div>
                     </UCard>
 
-                    <UCard variant="soft" class="min-w-0 h-full">
+                    <UCard variant="soft" class="h-full min-w-0">
                       <template #header>
                         <div class="flex items-center gap-2">
                           <UIcon name="i-lucide-cpu" />
@@ -291,7 +292,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                       <LangGraphDefaultLLMConfig />
                     </UCard>
 
-                    <UCard variant="soft" class="min-w-0 h-full">
+                    <UCard variant="soft" class="h-full min-w-0">
                       <template #header>
                         <div class="flex items-center gap-2">
                           <UIcon name="i-lucide-sliders" />
@@ -309,15 +310,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </UCard>
                   </div>
 
-                  <div class="flex items-center gap-3 my-2">
+                  <div class="my-2 flex items-center gap-3">
                     <USeparator class="flex-1" />
-                    <span class="text-xs text-dimmed uppercase tracking-wider shrink-0">
+                    <span class="text-dimmed shrink-0 text-xs tracking-wider uppercase">
                       {{ t('aiApps.create.reviewFeaturesSection') }}
                     </span>
                     <USeparator class="flex-1" />
                   </div>
 
-                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                  <div class="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
                     <AiAppCollapsibleFeatureCard
                       v-model:enabled="monitoringConfig.enabled"
                       :section-label="t('aiApps.featureCards.monitoring')"
@@ -352,9 +353,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </LangGraphAiAppFeatureCard>
                   </div>
 
-                  <div class="flex items-center gap-3 my-2">
+                  <div class="my-2 flex items-center gap-3">
                     <USeparator class="flex-1" />
-                    <span class="text-xs text-dimmed uppercase tracking-wider shrink-0">
+                    <span class="text-dimmed shrink-0 text-xs tracking-wider uppercase">
                       {{ t('aiApps.create.reviewOrchestratorSection') }}
                     </span>
                     <USeparator class="flex-1" />
@@ -364,14 +365,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
                   <LangGraphGroundedSection v-if="isGrounded" v-model="groundedConfig" hide-header />
 
-                  <div class="flex items-center gap-3 my-2">
+                  <div class="my-2 flex items-center gap-3">
                     <USeparator class="flex-1" />
-                    <span class="text-xs text-dimmed uppercase tracking-wider shrink-0">
+                    <span class="text-dimmed shrink-0 text-xs tracking-wider uppercase">
                       {{ t('aiApps.conversationStarters.title') }}
                     </span>
                     <USeparator class="flex-1" />
                   </div>
-                  <UCard variant="soft" class="min-w-0 w-full">
+                  <UCard variant="soft" class="w-full min-w-0">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-message-square-plus" />
@@ -384,9 +385,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               </LangGraphAiAppConfigProvider>
             </div>
 
-            <div class="sticky bottom-0 z-10 -mx-6 mt-4 flex justify-end px-6 pb-6 pt-4 pointer-events-none">
+            <div class="pointer-events-none sticky bottom-0 z-10 -mx-6 mt-4 flex justify-end px-6 pt-4 pb-6">
               <div
-                class="pointer-events-auto inline-flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 rounded-2xl border border-default bg-default/95 px-4 py-3 shadow-lg backdrop-blur supports-backdrop-filter:bg-default/80"
+                class="border-default bg-default/95 supports-backdrop-filter:bg-default/80 pointer-events-auto inline-flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 rounded-2xl border px-4 py-3 shadow-lg backdrop-blur"
               >
                 <UButton
                   color="neutral"

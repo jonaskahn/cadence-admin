@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent, StepperItem } from '@nuxt/ui'
+import * as z from 'zod'
+
+import type { MonitoringConfig } from '~/components/ai-apps/AiAppMonitoringConfig.vue'
 import type {
   FrameworkSupportedProvidersResponse,
   OrchestratorDefaults,
@@ -10,7 +12,6 @@ import type {
   PluginSettingsEntry
 } from '~/types'
 import { toPluginRefKey, toPluginUniquenessKey } from '~/utils'
-import type { MonitoringConfig } from '~/components/ai-apps/AiAppMonitoringConfig.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -524,12 +525,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="ai-app-create" :ui="{ body: 'min-w-0 overflow-auto' }">
       <template #header>
         <UDashboardNavbar>
           <template #title>
-            <span class="inline-flex items-center gap-2 flex-wrap">
+            <span class="inline-flex flex-wrap items-center gap-2">
               <span>{{ t('aiApps.create.title') }}</span>
               <UBadge color="neutral" size="xs" variant="subtle">{{ t('aiApps.legacyBadge') }}</UBadge>
             </span>
@@ -544,11 +545,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </template>
 
       <template #body>
-        <div class="p-6 min-w-0 w-full flex flex-col gap-6 pb-28">
+        <div class="flex w-full min-w-0 flex-col gap-6 p-6 pb-28">
           <UStepper v-model="currentStep" :items="stepperItems" class="w-full" color="primary" disabled linear />
 
           <UForm ref="createFormRef" :schema="schema" :state="state" @submit="onSubmit">
-            <div class="flex flex-col gap-8 w-full">
+            <div class="flex w-full flex-col gap-8">
               <LangGraphAiAppConfigProvider
                 ref="orchestratorConfigProviderRef"
                 :initial-value="supervisorInitialValue"
@@ -562,9 +563,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 <!-- Step 1: Setup — one row, three columns on large screens -->
                 <div
                   v-show="currentStep === 0"
-                  class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch w-full min-w-0"
+                  class="grid w-full min-w-0 grid-cols-1 items-stretch gap-8 lg:grid-cols-3"
                 >
-                  <UCard variant="soft" class="min-w-0 h-full flex flex-col">
+                  <UCard variant="soft" class="flex h-full min-w-0 flex-col">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <p class="font-semibold">{{ t('aiApps.create.basic') }}</p>
@@ -574,7 +575,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         />
                       </div>
                     </template>
-                    <div class="flex flex-col gap-4 min-h-0 flex-1">
+                    <div class="flex min-h-0 flex-1 flex-col gap-4">
                       <UFormField :label="t('dashboard.name')" name="name" required>
                         <UInput v-model="state.name" class="w-full" :placeholder="t('aiApps.create.namePlaceholder')" />
                       </UFormField>
@@ -598,7 +599,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </div>
                   </UCard>
 
-                  <UCard variant="soft" class="min-w-0 h-full flex flex-col">
+                  <UCard variant="soft" class="flex h-full min-w-0 flex-col">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-cpu" />
@@ -614,7 +615,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </div>
                   </UCard>
 
-                  <UCard variant="soft" class="min-w-0 h-full flex flex-col">
+                  <UCard variant="soft" class="flex h-full min-w-0 flex-col">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-sliders" />
@@ -625,14 +626,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         />
                       </div>
                     </template>
-                    <div class="flex flex-col gap-4 min-h-0 flex-1 overflow-auto">
+                    <div class="flex min-h-0 flex-1 flex-col gap-4 overflow-auto">
                       <LLMContextSettings />
                     </div>
                   </UCard>
                 </div>
 
                 <!-- Step 2: Orchestrator mode (supervisor / grounded) -->
-                <div v-show="currentStep === 1" class="flex flex-col gap-8 w-full">
+                <div v-show="currentStep === 1" class="flex w-full flex-col gap-8">
                   <LangGraphSupervisorSection
                     v-if="isSupervisor && (cloneSource || orgDefaults !== null)"
                     hide-header
@@ -642,8 +643,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 </div>
 
                 <!-- Step 3: Plugins -->
-                <div v-show="currentStep === 2" class="flex flex-col gap-8 w-full">
-                  <UCard variant="soft" class="min-w-0 w-full">
+                <div v-show="currentStep === 2" class="flex w-full flex-col gap-8">
+                  <UCard variant="soft" class="w-full min-w-0">
                     <template #header>
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
@@ -666,18 +667,18 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
                     <div
                       v-if="selectedPlugins.length === 0"
-                      class="flex flex-col items-center justify-center py-12 gap-3 text-center"
+                      class="flex flex-col items-center justify-center gap-3 py-12 text-center"
                     >
-                      <UIcon name="i-lucide-plug-2" class="text-4xl text-dimmed" />
+                      <UIcon name="i-lucide-plug-2" class="text-dimmed text-4xl" />
                       <div>
                         <p class="font-medium">{{ t('aiApps.create.pluginsEmpty') }}</p>
-                        <p class="text-sm text-dimmed">{{ t('aiApps.create.pluginsEmptyDesc') }}</p>
+                        <p class="text-dimmed text-sm">{{ t('aiApps.create.pluginsEmptyDesc') }}</p>
                       </div>
                       <UButton :label="t('aiApps.create.addFirstPlugin')" @click="openPluginSelector" />
                     </div>
 
                     <template v-else>
-                      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         <AiAppPluginCard
                           v-for="(plugin, index) in selectedPlugins"
                           :key="toPluginUniquenessKey(String(plugin.source ?? 'org'), plugin.pid)"
@@ -694,7 +695,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         />
                         <div
                           v-if="!isGrounded || selectedPlugins.length < 1"
-                          class="flex flex-col items-center justify-center gap-2 min-h-[120px] border border-dashed border-default rounded-lg text-dimmed hover:text-default cursor-pointer transition-colors"
+                          class="border-default text-dimmed hover:text-default flex min-h-[120px] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed transition-colors"
                           @click="openPluginSelector"
                         >
                           <UIcon name="i-lucide-plus-circle" class="text-2xl" />
@@ -713,8 +714,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 </div>
 
                 <!-- Step 4: Features -->
-                <div v-show="currentStep === 3" class="flex flex-col gap-8 w-full">
-                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                <div v-show="currentStep === 3" class="flex w-full flex-col gap-8">
+                  <div class="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
                     <AiAppCollapsibleFeatureCard
                       v-model:enabled="monitoringConfig.enabled"
                       :section-label="t('aiApps.featureCards.monitoring')"
@@ -749,14 +750,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </LangGraphAiAppFeatureCard>
                   </div>
 
-                  <div class="flex items-center gap-3 mt-2">
+                  <div class="mt-2 flex items-center gap-3">
                     <USeparator class="flex-1" />
-                    <span class="text-xs text-dimmed uppercase tracking-wider shrink-0">
+                    <span class="text-dimmed shrink-0 text-xs tracking-wider uppercase">
                       {{ t('aiApps.conversationStarters.title') }}
                     </span>
                     <USeparator class="flex-1" />
                   </div>
-                  <UCard variant="soft" class="min-w-0 w-full">
+                  <UCard variant="soft" class="w-full min-w-0">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-message-square-plus" />
@@ -768,7 +769,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 </div>
 
                 <!-- Step 5: Review -->
-                <div v-show="currentStep === 4" class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full min-w-0">
+                <div v-show="currentStep === 4" class="grid w-full min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">
                   <UCard variant="soft" class="min-w-0">
                     <template #header>
                       <div class="flex items-center gap-2">
@@ -778,28 +779,28 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </template>
                     <dl class="grid gap-4">
                       <div class="min-w-0">
-                        <dt class="text-xs text-dimmed uppercase tracking-wide">{{ t('dashboard.name') }}</dt>
-                        <dd class="font-medium mt-0.5 break-words">{{ state.name || t('common.empty') }}</dd>
+                        <dt class="text-dimmed text-xs tracking-wide uppercase">{{ t('dashboard.name') }}</dt>
+                        <dd class="mt-0.5 font-medium break-words">{{ state.name || t('common.empty') }}</dd>
                       </div>
                       <div class="min-w-0">
-                        <dt class="text-xs text-dimmed uppercase tracking-wide">{{ t('dashboard.framework') }}</dt>
-                        <dd class="font-medium mt-0.5">{{ frameworkLabel(state.framework_type ?? '') }}</dd>
+                        <dt class="text-dimmed text-xs tracking-wide uppercase">{{ t('dashboard.framework') }}</dt>
+                        <dd class="mt-0.5 font-medium">{{ frameworkLabel(state.framework_type ?? '') }}</dd>
                       </div>
                       <div class="min-w-0">
-                        <dt class="text-xs text-dimmed uppercase tracking-wide">{{ t('dashboard.mode') }}</dt>
-                        <dd class="font-medium mt-0.5">{{ modeLabel(state.mode ?? '') }}</dd>
+                        <dt class="text-dimmed text-xs tracking-wide uppercase">{{ t('dashboard.mode') }}</dt>
+                        <dd class="mt-0.5 font-medium">{{ modeLabel(state.mode ?? '') }}</dd>
                       </div>
                       <div class="min-w-0">
-                        <dt class="text-xs text-dimmed uppercase tracking-wide">
+                        <dt class="text-dimmed text-xs tracking-wide uppercase">
                           {{ t('aiApps.create.initialTier') }}
                         </dt>
-                        <dd class="font-medium mt-0.5">{{ tierLabelForReview }}</dd>
+                        <dd class="mt-0.5 font-medium">{{ tierLabelForReview }}</dd>
                       </div>
                       <div class="min-w-0">
-                        <dt class="text-xs text-dimmed uppercase tracking-wide">
+                        <dt class="text-dimmed text-xs tracking-wide uppercase">
                           {{ t('aiApps.create.reviewIdentity') }}
                         </dt>
-                        <dd class="font-medium mt-0.5 whitespace-pre-wrap break-words text-dimmed">
+                        <dd class="text-dimmed mt-0.5 font-medium break-words whitespace-pre-wrap">
                           {{ state.whoami?.trim() ? state.whoami : t('common.empty') }}
                         </dd>
                       </div>
@@ -813,12 +814,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         <span class="font-semibold">{{ t('aiApps.create.reviewOrchestratorSection') }}</span>
                       </div>
                     </template>
-                    <div v-if="!hasOrchestratorModeConfig" class="text-sm text-dimmed">
+                    <div v-if="!hasOrchestratorModeConfig" class="text-dimmed text-sm">
                       {{ t('aiApps.create.reviewOrchestratorNA') }}
                     </div>
                     <dl v-else class="grid gap-4">
-                      <div class="min-w-0 flex flex-wrap items-center gap-2">
-                        <dt class="text-xs text-dimmed uppercase tracking-wide w-full">{{ t('dashboard.mode') }}</dt>
+                      <div class="flex min-w-0 flex-wrap items-center gap-2">
+                        <dt class="text-dimmed w-full text-xs tracking-wide uppercase">{{ t('dashboard.mode') }}</dt>
                         <dd class="mt-0.5">
                           <UBadge v-if="isSupervisor" color="primary" variant="subtle">
                             {{ modeLabel('supervisor') }}
@@ -829,11 +830,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         </dd>
                       </div>
                       <div v-if="isGrounded" class="min-w-0">
-                        <dt class="text-xs text-dimmed uppercase tracking-wide">
+                        <dt class="text-dimmed text-xs tracking-wide uppercase">
                           {{ t('aiApps.grounded.scopeRules') }}
                         </dt>
                         <dd
-                          class="font-medium mt-0.5 whitespace-pre-wrap break-words text-dimmed text-sm"
+                          class="text-dimmed mt-0.5 text-sm font-medium break-words whitespace-pre-wrap"
                           :class="groundedScopePreview ? '' : 'italic'"
                         >
                           {{ groundedScopePreview || t('common.empty') }}
@@ -852,22 +853,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         </UBadge>
                       </div>
                     </template>
-                    <div v-if="selectedPlugins.length === 0" class="text-sm text-dimmed">
+                    <div v-if="selectedPlugins.length === 0" class="text-dimmed text-sm">
                       {{ t('common.empty') }}
                     </div>
                     <ul v-else class="flex flex-col gap-3">
                       <li
                         v-for="p in reviewPluginsPreview.shown"
                         :key="toPluginUniquenessKey(String(p.source ?? 'org'), p.pid)"
-                        class="flex flex-wrap items-center gap-2 min-w-0"
+                        class="flex min-w-0 flex-wrap items-center gap-2"
                       >
-                        <span class="font-medium truncate">{{ p.name }}</span>
+                        <span class="truncate font-medium">{{ p.name }}</span>
                         <UBadge color="neutral" size="xs" variant="outline">{{ p.version }}</UBadge>
                         <UBadge color="neutral" size="xs" variant="subtle">
                           {{ t('aiApps.create.reviewPluginSource', { source: pluginSourceLabel(p.source) }) }}
                         </UBadge>
                       </li>
-                      <li v-if="reviewPluginsPreview.rest > 0" class="text-sm text-dimmed">
+                      <li v-if="reviewPluginsPreview.rest > 0" class="text-dimmed text-sm">
                         {{ t('aiApps.create.reviewPluginsMore', { count: reviewPluginsPreview.rest }) }}
                       </li>
                     </ul>
@@ -882,10 +883,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     </template>
                     <dl class="grid gap-4">
                       <div class="min-w-0">
-                        <dt class="text-xs text-dimmed uppercase tracking-wide">
+                        <dt class="text-dimmed text-xs tracking-wide uppercase">
                           {{ t('aiApps.featureCards.monitoring') }}
                         </dt>
-                        <dd class="font-medium mt-0.5 flex flex-wrap items-center gap-2">
+                        <dd class="mt-0.5 flex flex-wrap items-center gap-2 font-medium">
                           <UBadge :color="monitoringConfig.enabled ? 'success' : 'neutral'" size="xs" variant="subtle">
                             {{
                               monitoringConfig.enabled
@@ -893,14 +894,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                                 : t('aiApps.create.reviewMonitoringOff')
                             }}
                           </UBadge>
-                          <span v-if="monitoringConfig.enabled" class="text-sm text-dimmed">
+                          <span v-if="monitoringConfig.enabled" class="text-dimmed text-sm">
                             {{ monitoringConfig.provider }}
                           </span>
                         </dd>
                       </div>
                       <template v-if="state.framework_type === 'langgraph'">
                         <div class="min-w-0">
-                          <dt class="text-xs text-dimmed uppercase tracking-wide">
+                          <dt class="text-dimmed text-xs tracking-wide uppercase">
                             {{ t('aiApps.featureCards.followUpSuggestions') }}
                           </dt>
                           <dd class="mt-0.5">
@@ -910,7 +911,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                           </dd>
                         </div>
                         <div class="min-w-0">
-                          <dt class="text-xs text-dimmed uppercase tracking-wide">
+                          <dt class="text-dimmed text-xs tracking-wide uppercase">
                             {{ t('aiApps.featureCards.autoCompactMessage') }}
                           </dt>
                           <dd class="mt-0.5">
@@ -924,11 +925,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                           </dd>
                         </div>
                       </template>
-                      <div v-else class="min-w-0 text-sm text-dimmed">
+                      <div v-else class="text-dimmed min-w-0 text-sm">
                         {{ t('aiApps.create.reviewFeaturesAdditional', { count: 2 }) }}
                       </div>
                       <div class="min-w-0">
-                        <dt class="text-xs text-dimmed uppercase tracking-wide">
+                        <dt class="text-dimmed text-xs tracking-wide uppercase">
                           {{ t('aiApps.conversationStarters.title') }}
                         </dt>
                         <dd class="mt-0.5">
@@ -939,7 +940,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                               })
                             }}
                           </UBadge>
-                          <span v-else class="text-sm text-dimmed">{{ t('common.empty') }}</span>
+                          <span v-else class="text-dimmed text-sm">{{ t('common.empty') }}</span>
                         </dd>
                       </div>
                     </dl>
@@ -948,9 +949,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               </LangGraphAiAppConfigProvider>
             </div>
 
-            <div class="sticky bottom-0 z-10 -mx-6 mt-4 flex justify-end px-6 pb-6 pt-4 pointer-events-none">
+            <div class="pointer-events-none sticky bottom-0 z-10 -mx-6 mt-4 flex justify-end px-6 pt-4 pb-6">
               <div
-                class="pointer-events-auto inline-flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 rounded-2xl border border-default bg-default/95 px-4 py-3 shadow-lg backdrop-blur supports-backdrop-filter:bg-default/80"
+                class="border-default bg-default/95 supports-backdrop-filter:bg-default/80 pointer-events-auto inline-flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 rounded-2xl border px-4 py-3 shadow-lg backdrop-blur"
               >
                 <UButton color="neutral" :label="t('common.cancel')" :to="localePath('/ai-apps')" variant="ghost" />
                 <UButton
@@ -976,7 +977,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   confirm-message-key="common.addConfirmMessage"
                   confirm-label-key="common.addConfirmFriendly"
                   :loading="loading"
-                  :size="lg"
+                  size="lg"
                   :on-confirm="() => createFormRef?.$el?.requestSubmit?.()"
                 />
               </div>

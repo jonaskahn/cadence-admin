@@ -1,12 +1,19 @@
 <script lang="ts" setup>
+import type { OrchestratorResponse } from '~/types'
+
 const auth = useAuth()
 const orgId = computed(() => auth.currentOrgId.value || '')
 const { t } = useI18n()
 const showModal = ref(false)
 const tabRef = ref<{ fetchAll: () => Promise<void> } | null>(null)
-const { data: orchestrators } = await useFetch(() => (orgId.value ? `/api/orgs/${orgId.value}/orchestrators` : null), {
-  watch: [orgId]
-})
+const { data: orchestrators } = await useAsyncData(
+  'settings-central-points-orchestrators',
+  () => {
+    if (!orgId.value) return Promise.resolve([] as OrchestratorResponse[])
+    return $fetch<OrchestratorResponse[]>(`/api/orgs/${orgId.value}/orchestrators`)
+  },
+  { watch: [orgId] }
+)
 
 function onModalClose() {
   showModal.value = false

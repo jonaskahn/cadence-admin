@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
 import type { OrchestratorResponse } from '~/types'
 import { getApiErrorMessage } from '~/utils'
 
@@ -23,23 +24,26 @@ const loading = ref(false)
 
 const schema = computed(() =>
   z.object({
-    name: z.string().min(1, t('common.nameRequired')).max(255),
-    description: z.string().optional().nullable(),
-    orchestrator_id: z.string().min(1, t('centralPoints.aiAppRequired')),
+    name: z
+      .string()
+      .min(1, { error: () => t('common.nameRequired') })
+      .max(255),
+    description: z.string().optional(),
+    orchestrator_id: z.string().min(1, { error: () => t('centralPoints.aiAppRequired') }),
     visibility: z.enum(['public', 'private'])
   })
 )
 
 type Schema = {
   name: string
-  description?: string | null
+  description?: string
   orchestrator_id: string
   visibility: 'public' | 'private'
 }
 
-const state = reactive<Partial<Schema>>({
+const state = reactive<Schema>({
   name: '',
-  description: undefined,
+  description: '',
   orchestrator_id: '',
   visibility: 'private'
 })

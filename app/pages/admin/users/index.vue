@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
 import type { UserMembershipResponse } from '~/types'
 import { formatDate, getApiErrorMessage } from '~/utils'
 
@@ -35,15 +36,15 @@ function closeEdit() {
 }
 
 const createSchema = z.object({
-  username: z.string().min(1, () => t('common.required')),
+  username: z.string().min(1, { error: () => t('common.required') }),
   email: z
     .string()
-    .email(() => t('common.invalidEmail'))
+    .email({ error: () => t('common.invalidEmail') })
     .optional()
     .or(z.literal('')),
   password: z
     .string()
-    .min(6, () => t('common.min6Chars'))
+    .min(6, { error: () => t('common.min6Chars') })
     .optional()
     .or(z.literal('')),
   is_sys_admin: z.boolean().optional()
@@ -93,10 +94,10 @@ const editLoading = ref(false)
 const editUserFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 const editSchema = z.object({
-  username: z.string().min(1, () => t('common.required')),
+  username: z.string().min(1, { error: () => t('common.required') }),
   email: z
     .string()
-    .email(() => t('common.invalidEmail'))
+    .email({ error: () => t('common.invalidEmail') })
     .optional()
     .or(z.literal('')),
   is_sys_admin: z.boolean()
@@ -199,7 +200,7 @@ const columns = computed(() => [
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="admin-users">
       <template #header>
         <UDashboardNavbar :title="t('admin.users')">
@@ -230,7 +231,7 @@ const columns = computed(() => [
                 </div>
               </template>
               <template #created_at-cell="{ row }">
-                <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
+                <span class="text-dimmed text-sm">{{ formatDate(row.original.created_at ?? '') }}</span>
               </template>
               <template #actions-cell="{ row }">
                 <div class="flex items-center gap-1">
@@ -244,8 +245,8 @@ const columns = computed(() => [
                   <UPopover v-if="!row.original.is_deleted">
                     <UButton color="error" icon="i-lucide-trash-2" size="xs" />
                     <template #content="{ close }">
-                      <div class="p-4 min-w-48">
-                        <p class="text-sm text-dimmed mb-3">
+                      <div class="min-w-48 p-4">
+                        <p class="text-dimmed mb-3 text-sm">
                           {{ t('admin.deleteUserConfirm', { username: row.original.username }) }}
                         </p>
                         <div class="flex justify-end gap-2">
@@ -263,8 +264,8 @@ const columns = computed(() => [
                   <UPopover v-else-if="row.original.is_deleted">
                     <UButton color="error" icon="i-lucide-shredder" size="xs" />
                     <template #content="{ close }">
-                      <div class="p-4 min-w-48">
-                        <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
+                      <div class="min-w-48 p-4">
+                        <p class="text-dimmed mb-3 text-sm">{{ t('common.purgeConfirm') }}</p>
                         <div class="flex justify-end gap-2">
                           <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                           <UButton

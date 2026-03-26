@@ -80,7 +80,9 @@ async function enrichMissingSchemas() {
       )
       const match = versions.find((v) => v.version === entry.version)
       if (match?.settings_schema?.length) {
-        local.value[specKey] = { ...local.value[specKey], settings_schema: match.settings_schema }
+        const cur = local.value[specKey]
+        if (!cur?.id) continue
+        local.value[specKey] = { ...cur, settings_schema: match.settings_schema }
       }
     } catch {
       /* ignore */
@@ -248,21 +250,21 @@ defineExpose({
 
 <template>
   <div class="flex flex-col gap-4">
-    <p v-if="pluginGroups.length === 0" class="text-dimmed text-sm text-center py-2">
+    <p v-if="pluginGroups.length === 0" class="text-dimmed py-2 text-center text-sm">
       {{ t('aiAppPlugin.noSettingsConfigured') }}
     </p>
 
-    <div v-for="group in pluginGroups" :key="group.groupKey" class="border border-default rounded-lg overflow-hidden">
+    <div v-for="group in pluginGroups" :key="group.groupKey" class="border-default overflow-hidden rounded-lg border">
       <UButton
-        class="w-full justify-between px-4 py-2.5 bg-elevated/50 hover:bg-elevated/80 transition-colors rounded-none"
+        class="bg-elevated/50 hover:bg-elevated/80 w-full justify-between rounded-none px-4 py-2.5 transition-colors"
         color="neutral"
         variant="ghost"
         @click="togglePlugin(group.groupKey)"
       >
         <div class="flex items-center gap-3">
           <div class="text-left">
-            <p class="font-semibold text-sm">{{ group.name }}</p>
-            <p class="font-mono text-xs text-dimmed mt-0.5">{{ group.pid }} — {{ sourceLabel(group.source) }}</p>
+            <p class="text-sm font-semibold">{{ group.name }}</p>
+            <p class="text-dimmed mt-0.5 font-mono text-xs">{{ group.pid }} — {{ sourceLabel(group.source) }}</p>
           </div>
           <UBadge v-if="group.versions.some((v) => v.entry.active)" color="success" size="xs" variant="subtle">
             {{ t('aiAppPlugin.active') }}
@@ -275,21 +277,21 @@ defineExpose({
         </div>
         <UIcon
           :name="expandedPlugins[group.groupKey] ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
-          class="size-4 text-dimmed shrink-0"
+          class="text-dimmed size-4 shrink-0"
         />
       </UButton>
 
-      <div v-show="expandedPlugins[group.groupKey]" class="border-t border-default">
-        <div v-if="group.versions.length > 1" class="flex gap-0 border-b border-default overflow-x-auto">
+      <div v-show="expandedPlugins[group.groupKey]" class="border-default border-t">
+        <div v-if="group.versions.length > 1" class="border-default flex gap-0 overflow-x-auto border-b">
           <UButton
             v-for="v in group.versions"
             :key="v.specKey"
             :class="
               selectedVersionKey[group.groupKey] === v.specKey
                 ? 'border-primary text-primary font-medium'
-                : 'border-transparent text-dimmed hover:text-default'
+                : 'text-dimmed hover:text-default border-transparent'
             "
-            class="px-4 py-2 text-sm flex items-center gap-2 shrink-0 border-b-2 transition-colors rounded-none"
+            class="flex shrink-0 items-center gap-2 rounded-none border-b-2 px-4 py-2 text-sm transition-colors"
             color="neutral"
             variant="ghost"
             @click="selectVersion(group.groupKey, v.specKey)"
@@ -303,8 +305,8 @@ defineExpose({
 
         <template v-for="v in group.versions" :key="v.specKey">
           <div v-show="group.versions.length === 1 || selectedVersionKey[group.groupKey] === v.specKey" class="p-4">
-            <div v-if="group.versions.length === 1" class="flex items-center gap-2 mb-4">
-              <span class="text-xs text-dimmed font-mono">v{{ v.entry.version }}</span>
+            <div v-if="group.versions.length === 1" class="mb-4 flex items-center gap-2">
+              <span class="text-dimmed font-mono text-xs">v{{ v.entry.version }}</span>
               <UBadge v-if="v.entry.active" color="success" size="xs" variant="subtle">{{
                 t('aiAppPlugin.active')
               }}</UBadge>
@@ -314,7 +316,7 @@ defineExpose({
               {{ t('aiAppPlugin.noSettingsForVersion') }}
             </p>
 
-            <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
               <template v-for="setting in v.entry.settings" :key="setting.key">
                 <div v-if="getFieldType(v.entry, setting) === 'boolean'" class="sm:col-span-2 lg:col-span-1">
                   <UFormField
@@ -358,7 +360,7 @@ defineExpose({
                       :disabled="disabled || !v.entry.active"
                       :model-value="getDisplayValue(setting) as string"
                       :rows="3"
-                      class="font-mono text-xs w-full"
+                      class="w-full font-mono text-xs"
                       @update:model-value="onFieldUpdate(v.specKey, setting.key, $event)"
                     />
                   </UFormField>

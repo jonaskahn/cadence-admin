@@ -1,4 +1,4 @@
-import { PRIMARY_COLORS, NEUTRAL_COLORS } from '~/constants/theme'
+import { NEUTRAL_COLORS, PRIMARY_COLORS } from '~/constants/theme'
 
 const STORAGE_KEY = 'ca-theme'
 
