@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { DropdownMenuItem, FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
 import { NEUTRAL_COLORS, PRIMARY_COLORS } from '~/constants/theme'
 import { getApiErrorMessage } from '~/utils'
 
@@ -80,7 +81,9 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
   }
 }
 
-const items = computed<DropdownMenuItem[][]>(() => [
+type ChipMenuItem = DropdownMenuItem & { chip?: string }
+
+const items = computed<ChipMenuItem[][]>(() => [
   [
     {
       type: 'label',
@@ -168,7 +171,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
         checked: locale.value === loc.code,
         onSelect: (e: Event) => {
           e.preventDefault()
-          setLocale(loc.code)
+          void (setLocale as (code: string) => void | Promise<void>)(loc.code)
         }
       }))
     }
@@ -205,13 +208,13 @@ const items = computed<DropdownMenuItem[][]>(() => [
       :ui="{ content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)' }"
     >
       <template #chip-leading="{ item }">
-        <div class="inline-flex items-center justify-center shrink-0 size-5">
+        <div class="inline-flex size-5 shrink-0 items-center justify-center">
           <span
             :style="{
-              '--chip-light': `var(--color-${item?.chip ?? 'neutral'}-500)`,
-              '--chip-dark': `var(--color-${item?.chip ?? 'neutral'}-400)`
+              '--chip-light': `var(--color-${(item as ChipMenuItem)?.chip ?? 'neutral'}-500)`,
+              '--chip-dark': `var(--color-${(item as ChipMenuItem)?.chip ?? 'neutral'}-400)`
             }"
-            class="rounded-full ring ring-bg bg-(--chip-light) dark:bg-(--chip-dark) size-2"
+            class="ring-bg size-2 rounded-full bg-(--chip-light) ring dark:bg-(--chip-dark)"
           />
         </div>
       </template>
@@ -227,7 +230,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
         leading-icon="i-lucide-user-circle"
       >
         <template v-if="!collapsed" #default>
-          <div class="flex items-center gap-2 min-w-0 flex-1">
+          <div class="flex min-w-0 flex-1 items-center gap-2">
             <span class="truncate">{{ displayName }}</span>
           </div>
         </template>

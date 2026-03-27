@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
 import type { CentralPointResponse, OrchestratorResponse } from '~/types'
 import { getApiErrorMessage } from '~/utils'
 
@@ -30,23 +31,26 @@ const { data: orchestrators } = await useFetch<OrchestratorResponse[]>(() => `/a
 
 const schema = computed(() =>
   z.object({
-    name: z.string().min(5, t('common.nameRequired')).max(50),
-    description: z.string().optional().nullable(),
-    orchestrator_id: z.string().min(1, t('centralPoints.aiAppRequired')),
+    name: z
+      .string()
+      .min(5, { error: () => t('common.nameRequired') })
+      .max(50),
+    description: z.string().optional(),
+    orchestrator_id: z.string().min(1, { error: () => t('centralPoints.aiAppRequired') }),
     visibility: z.enum(['public', 'private'])
   })
 )
 
 type Schema = {
   name: string
-  description?: string | null
+  description?: string
   orchestrator_id: string
   visibility: 'public' | 'private'
 }
 
 const state = reactive<Partial<Schema>>({
   name: '',
-  description: null,
+  description: '',
   orchestrator_id: '',
   visibility: 'private'
 })
@@ -56,7 +60,7 @@ watch(
   (cp) => {
     if (!cp) return
     state.name = cp.name
-    state.description = cp.description
+    state.description = cp.description ?? ''
     state.orchestrator_id = cp.orchestrator_id
     state.visibility = cp.visibility as 'public' | 'private'
   },
@@ -297,7 +301,7 @@ function copyGoCode() {
 
     <!-- Not found -->
     <div v-if="!centerPoint" class="py-12 text-center">
-      <UIcon class="mx-auto mb-3 size-10 text-dimmed" name="i-lucide-radio" />
+      <UIcon class="text-dimmed mx-auto mb-3 size-10" name="i-lucide-radio" />
       <p class="text-dimmed">{{ t('centralPoints.notFound') }}</p>
     </div>
 
@@ -305,7 +309,7 @@ function copyGoCode() {
       <!-- Title -->
       <div>
         <h2 class="text-xl font-semibold">{{ centerPoint.name }}</h2>
-        <p class="mt-0.5 text-sm text-dimmed">
+        <p class="text-dimmed mt-0.5 text-sm">
           {{ t('centralPoints.editSubtitle') }}
         </p>
       </div>
@@ -383,7 +387,7 @@ function copyGoCode() {
               description-key="info.fields.centralPoint.endpoint.description"
             />
           </div>
-          <p class="mt-0.5 text-sm text-dimmed">
+          <p class="text-dimmed mt-0.5 text-sm">
             {{ t('centralPoints.apiIntegrationDescription') }}
           </p>
         </template>
@@ -393,7 +397,7 @@ function copyGoCode() {
           <div>
             <p class="mb-1.5 text-sm font-medium">{{ t('centralPoints.centerPointId') }}</p>
             <div class="flex items-center gap-2">
-              <code class="flex-1 break-all rounded-md bg-elevated px-3 py-2 font-mono text-sm">
+              <code class="bg-elevated flex-1 rounded-md px-3 py-2 font-mono text-sm break-all">
                 {{ centerPoint.id }}
               </code>
               <UButton color="neutral" icon="i-lucide-copy" size="sm" @click="copyCenterPointId" />
@@ -423,7 +427,7 @@ function copyGoCode() {
             <p class="mb-2 text-sm font-medium">{{ t('centralPoints.endpoint') }}</p>
             <div class="flex flex-wrap items-center gap-2">
               <UBadge color="success" size="sm" variant="subtle">POST</UBadge>
-              <code class="font-mono text-sm text-dimmed">{{ baseUrl }}/api/chat/completion</code>
+              <code class="text-dimmed font-mono text-sm">{{ baseUrl }}/api/chat/completion</code>
             </div>
           </div>
 
@@ -437,7 +441,7 @@ function copyGoCode() {
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ curlCode }}</code></pre>
                   <UButton
-                    class="absolute right-2 top-2"
+                    class="absolute top-2 right-2"
                     color="neutral"
                     icon="i-lucide-copy"
                     size="xs"
@@ -452,7 +456,7 @@ function copyGoCode() {
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ pythonCode }}</code></pre>
                   <UButton
-                    class="absolute right-2 top-2"
+                    class="absolute top-2 right-2"
                     color="neutral"
                     icon="i-lucide-copy"
                     size="xs"
@@ -467,7 +471,7 @@ function copyGoCode() {
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ jsCode }}</code></pre>
                   <UButton
-                    class="absolute right-2 top-2"
+                    class="absolute top-2 right-2"
                     color="neutral"
                     icon="i-lucide-copy"
                     size="xs"
@@ -482,7 +486,7 @@ function copyGoCode() {
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ tsCode }}</code></pre>
                   <UButton
-                    class="absolute right-2 top-2"
+                    class="absolute top-2 right-2"
                     color="neutral"
                     icon="i-lucide-copy"
                     size="xs"
@@ -497,7 +501,7 @@ function copyGoCode() {
                     class="overflow-x-auto rounded-lg bg-neutral-950 p-4 text-xs leading-relaxed text-neutral-100 dark:bg-neutral-900"
                   ><code>{{ goCode }}</code></pre>
                   <UButton
-                    class="absolute right-2 top-2"
+                    class="absolute top-2 right-2"
                     color="neutral"
                     icon="i-lucide-copy"
                     size="xs"

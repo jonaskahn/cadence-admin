@@ -14,9 +14,9 @@ const switchAriaLabel = computed(
 </script>
 
 <template>
-  <UCard variant="soft" class="min-w-0 h-full">
+  <UCard variant="soft" class="h-full min-w-0">
     <template #header>
-      <div class="flex w-full items-center justify-between gap-2 min-w-0">
+      <div class="flex w-full min-w-0 items-center justify-between gap-2">
         <span class="font-semibold">{{ t('aiApps.supervisor.parallelToolCalls') }}</span>
         <USwitch v-model="modeConfig.enabled_parallel_tool_calls" :aria-label="switchAriaLabel" class="shrink-0" />
       </div>

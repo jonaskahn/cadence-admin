@@ -155,8 +155,8 @@ const mainLinks = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col min-h-dvh bg-neutral-50/20">
-    <UDashboardGroup unit="rem" class="flex-1 min-h-0 p-2 bg-neutral-50/10">
+  <div class="flex min-h-dvh flex-col bg-neutral-50/20">
+    <UDashboardGroup unit="rem" class="min-h-0 flex-1 bg-neutral-50/10 p-2">
       <UDashboardSidebar
         id="default"
         v-model:open="open"
@@ -166,7 +166,7 @@ const mainLinks = computed(() => {
           body: 'flex flex-col gap-4 overflow-y-auto px-4 py-2 border-0',
           footer: 'mt-auto shrink-0 flex items-center gap-1.5 px-4 py-2 border-0'
         }"
-        class="border border-accented border-dotted backdrop-blur supports-backdrop-filter:bg-default/40 rounded-xl shadow-md hover:shadow-2xl hover:-translate-y-0.6 transition-all duration-300 text overflow-hidden"
+        class="border-accented supports-backdrop-filter:bg-default/40 hover:-translate-y-0.6 text overflow-hidden rounded-xl border border-dotted shadow-md backdrop-blur transition-all duration-300 hover:shadow-2xl"
         collapsible
         resizable
       >
@@ -179,7 +179,7 @@ const mainLinks = computed(() => {
         </template>
 
         <template #default="{ collapsed }">
-          <div class="flex-1 flex flex-col">
+          <div class="flex flex-1 flex-col">
             <UNavigationMenu
               :collapsed="collapsed"
               :items="mainLinks"

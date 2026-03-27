@@ -6,9 +6,7 @@ const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
 
-const { data: clients, refresh } = await useApiFetch<OAuth2ClientResponse[]>('/api/admin/oauth2/clients', {
-  default: () => []
-})
+const { data: clients, refresh } = await useApiFetch<OAuth2ClientResponse[]>('/api/admin/oauth2/clients')
 
 const showRegister = ref(false)
 const saving = ref(false)

@@ -62,14 +62,14 @@ async function onUpload() {
 
     <div class="flex flex-col gap-4">
       <div
-        class="border-2 border-dashed border-default rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
+        class="border-default hover:border-primary cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors"
         @click="triggerFileInput"
       >
-        <UIcon class="size-10 mx-auto mb-2 text-dimmed" name="i-lucide-upload" />
+        <UIcon class="text-dimmed mx-auto mb-2 size-10" name="i-lucide-upload" />
         <p class="text-sm font-medium">
           {{ selectedFile ? selectedFile.name : t('pluginUpload.clickToSelect') }}
         </p>
-        <p v-if="!selectedFile" class="text-xs text-dimmed mt-1">{{ t('pluginUpload.packageHint') }}</p>
+        <p v-if="!selectedFile" class="text-dimmed mt-1 text-xs">{{ t('pluginUpload.packageHint') }}</p>
         <input ref="fileInput" accept=".zip" class="hidden" type="file" @change="onFileChange" />
       </div>
 

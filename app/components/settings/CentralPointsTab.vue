@@ -6,8 +6,8 @@ const props = defineProps<{ orgId: string }>()
 
 const emit = defineEmits<{ openModal: [] }>()
 
-const injected = inject<ComputedRef<boolean>>('canUseCentralPoints', null)
-const { centerPoints, loading, fetchAll, remove, purge } = useCentralPoints(toRef(props, 'orgId'))
+const injected = inject<ComputedRef<boolean>>('canUseCentralPoints')
+const { centerPoints, loading, fetchAll, remove, purge } = useCentralPoints(computed(() => props.orgId))
 defineExpose({ fetchAll })
 
 const { data: org } = await useFetch<{ tier?: string }>(() => `/api/orgs/${props.orgId}`, {
@@ -160,8 +160,8 @@ const columns = computed(() => [
             <UPopover v-if="!row.original.is_deleted && auth.isAdmin.value">
               <UButton color="error" icon="i-lucide-trash-2" size="xs" />
               <template #content="{ close }">
-                <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">
+                <div class="min-w-48 p-4">
+                  <p class="text-dimmed mb-3 text-sm">
                     {{ t('centralPoints.deleteConfirm', { name: row.original.name }) }}
                   </p>
                   <div class="flex justify-end gap-2">
@@ -179,8 +179,8 @@ const columns = computed(() => [
             <UPopover v-else-if="auth.isSysAdmin.value && row.original.is_deleted">
               <UButton color="error" icon="i-lucide-shredder" size="xs" />
               <template #content="{ close }">
-                <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
+                <div class="min-w-48 p-4">
+                  <p class="text-dimmed mb-3 text-sm">{{ t('common.purgeConfirm') }}</p>
                   <div class="flex justify-end gap-2">
                     <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                     <UButton

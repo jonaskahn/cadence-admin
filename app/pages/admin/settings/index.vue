@@ -13,7 +13,7 @@ const tabs = computed(() => [
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="admin-settings">
       <template #header>
         <UDashboardNavbar :title="t('admin.globalSettings')">
@@ -30,7 +30,7 @@ const tabs = computed(() => [
       </template>
 
       <template #body>
-        <div class="pt-2 pl-6 pr-6 pr-6 flex flex-col gap-2">
+        <div class="flex flex-col gap-2 pt-2 pr-6 pl-6">
           <UTabs :items="tabs" variant="link" :unmount-on-hide="false">
             <template #settings>
               <AdminSettingsTab />

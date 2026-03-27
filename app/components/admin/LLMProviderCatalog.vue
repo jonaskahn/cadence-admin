@@ -186,8 +186,8 @@ async function handleToggleConfirm(model: ProviderModelCatalogEntry, close: () =
                 size="sm"
               />
               <template #content="{ close }">
-                <div class="p-4 min-w-48">
-                  <p class="text-sm text-dimmed mb-3">
+                <div class="min-w-48 p-4">
+                  <p class="text-dimmed mb-3 text-sm">
                     {{ row.original.enabled ? t('admin.disableModelConfirm') : t('admin.enableModelConfirm') }}
                   </p>
                   <div class="flex justify-end gap-2">

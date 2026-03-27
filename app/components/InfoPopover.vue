@@ -27,11 +27,11 @@ const { t } = useI18n()
   <UPopover>
     <UButton icon="i-lucide-info" :size="size" color="primary" variant="ghost" />
     <template #content>
-      <div class="flex flex-col gap-3 p-4 max-w-md min-w-64">
-        <p class="font-semibold text-sm">{{ t(titleKey) }}</p>
+      <div class="flex max-w-md min-w-64 flex-col gap-3 p-4">
+        <p class="text-sm font-semibold">{{ t(titleKey) }}</p>
         <MDC
           :value="t(descriptionKey)"
-          class="prose prose-sm dark:prose-invert max-w-none text-dimmed [&_*]:text-sm [&_ul]:my-1 [&_ol]:my-1 [&_p]:my-1"
+          class="prose prose-sm dark:prose-invert text-dimmed max-w-none [&_*]:text-sm [&_ol]:my-1 [&_p]:my-1 [&_ul]:my-1"
           tag="div"
         />
       </div>

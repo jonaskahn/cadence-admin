@@ -181,7 +181,7 @@ const columns = computed(() => [
           </template>
 
           <template #created_at-cell="{ row }">
-            <span class="text-sm text-dimmed">{{ formatDate(row.original.created_at) }}</span>
+            <span class="text-dimmed text-sm">{{ formatDate(row.original.created_at) }}</span>
           </template>
 
           <template #actions-cell="{ row }">
@@ -206,8 +206,8 @@ const columns = computed(() => [
               <UPopover v-if="auth.isAdmin.value && !row?.original?.is_deleted">
                 <UButton color="error" icon="i-lucide-trash-2" size="sm" />
                 <template #content="{ close }">
-                  <div class="p-4 min-w-48">
-                    <p class="text-sm text-dimmed mb-3">
+                  <div class="min-w-48 p-4">
+                    <p class="text-dimmed mb-3 text-sm">
                       {{ t('settings.deleteConfigConfirm', { name: row.original.name }) }}
                     </p>
                     <div class="flex justify-end gap-2">
@@ -225,8 +225,8 @@ const columns = computed(() => [
               <UPopover v-else-if="auth.isSysAdmin.value && row?.original?.is_deleted">
                 <UButton color="error" icon="i-lucide-shredder" size="sm" />
                 <template #content="{ close }">
-                  <div class="p-4 min-w-48">
-                    <p class="text-sm text-dimmed mb-3">{{ t('common.purgeConfirm') }}</p>
+                  <div class="min-w-48 p-4">
+                    <p class="text-dimmed mb-3 text-sm">{{ t('common.purgeConfirm') }}</p>
                     <div class="flex justify-end gap-2">
                       <UButton color="neutral" :label="t('common.cancel')" variant="ghost" @click="close" />
                       <UButton

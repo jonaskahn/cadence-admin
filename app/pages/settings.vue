@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui'
+
 import { CENTRAL_POINTS_TIERS } from '~/utils'
 
 const auth = useAuth()
@@ -34,7 +35,7 @@ const links = computed<NavigationMenuItem[][]>(() => {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="settings" :ui="{ body: 'lg:py-12' }">
       <template #header>
         <UDashboardNavbar :title="t('settings.title')">
@@ -49,7 +50,7 @@ const links = computed<NavigationMenuItem[][]>(() => {
       </template>
 
       <template #body>
-        <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 w-full max-w-6xl mx-auto">
+        <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 sm:gap-6 lg:gap-12">
           <NuxtPage />
         </div>
       </template>

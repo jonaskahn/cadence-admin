@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
-import { getApiErrorMessage, LLM_PROVIDERS } from '~/utils'
+import * as z from 'zod'
+
 import type { LLMConfigResponse } from '~/types'
+import { getApiErrorMessage, LLM_PROVIDERS } from '~/utils'
 
 const props = defineProps<{
   orgId: string
@@ -32,17 +33,19 @@ const isAzure = computed(() => provider.value === 'azure')
 
 const providerOptions = computed(() => LLM_PROVIDERS.map((p) => ({ label: providerLabel(p), value: p })))
 
-const schema = computed(() =>
-  z.object({
-    name: z.string().min(5, () => t('common.nameRequired')),
-    ...(isEdit.value ? {} : { provider: z.string().min(1, () => t('llmConfig.providerRequired')) }),
-    api_key: isEdit.value ? z.string().optional() : z.string().min(1, () => t('llmConfig.apiKeyRequired')),
+function buildLlmSchema(edit: boolean) {
+  return z.object({
+    name: z.string().min(5, { error: () => t('common.nameRequired') }),
+    ...(edit ? {} : { provider: z.string().min(1, { error: () => t('llmConfig.providerRequired') }) }),
+    api_key: edit ? z.string().optional() : z.string().min(1, { error: () => t('llmConfig.apiKeyRequired') }),
     base_url: z.string().optional(),
     api_version: z.string().optional()
   })
-)
+}
 
-type Schema = z.output<ReturnType<typeof schema>>
+const schema = computed(() => buildLlmSchema(isEdit.value))
+
+type Schema = z.infer<ReturnType<typeof buildLlmSchema>>
 
 const state = reactive<Record<string, string>>({
   name: props.initialValue?.name ?? '',
@@ -106,8 +109,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <UFormField :label="t('llmConfig.provider')" name="provider">
-        <div v-if="isEdit" class="text-xs py-1.5 text-dimmed">
-          {{ providerLabel(provider) }}
+        <div v-if="isEdit" class="text-dimmed py-1.5 text-xs">
+          {{ providerLabel(provider ?? '') }}
         </div>
         <USelect
           v-else

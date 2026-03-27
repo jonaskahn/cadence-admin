@@ -35,10 +35,10 @@ const switchAriaLabel = computed(() => {
 </script>
 
 <template>
-  <UCard variant="soft" class="min-w-0 h-full">
+  <UCard variant="soft" class="h-full min-w-0">
     <template #header>
-      <div class="flex w-full items-center justify-between gap-2 min-w-0">
-        <span class="font-semibold truncate">{{ NODE_LABELS[nodeKey] }}</span>
+      <div class="flex w-full min-w-0 items-center justify-between gap-2">
+        <span class="truncate font-semibold">{{ NODE_LABELS[nodeKey] }}</span>
         <USwitch
           v-if="featureToggle === 'llm_validation'"
           v-model="modeConfig.enabled_llm_validation"

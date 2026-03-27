@@ -2,7 +2,7 @@
   "app": {
     "name": "Cadence",
     "tagline": "AI Orchestration Platform",
-    "description": "Multi-tenant AI orchestration platform with hot/warm/cold tier pooling, BYOK, and multi-framework support."
+    "description": "Multi-tenant AI orchestration platform with hot/cold tier pooling, BYOK, and multi-framework support."
   },
   "common": {
     "cancel": "Cancel",
@@ -119,7 +119,6 @@
   "dashboard": {
     "title": "Dashboard",
     "hotTier": "Hot Tier",
-    "warmTier": "Warm Tier",
     "coldTier": "Cold Tier",
     "poolMemory": "Pool Memory",
     "poolStatistics": "Pool Statistics",
@@ -360,7 +359,6 @@
     "pool": "Pool Statistics",
     "totalInstances": "Total Instances",
     "hotTier": "Hot Tier",
-    "warmTier": "Warm Tier",
     "coldTier": "Cold Tier",
     "sharedModels": "Shared Models",
     "sharedBundles": "Shared Bundles",
@@ -659,7 +657,7 @@
     "pages": {
       "dashboard": {
         "title": "Dashboard",
-        "description": "**What it does:**\n\nCentral hub for your organization's AI orchestration. Shows:\n\n- **AI App counts** — Total, hot, warm, and cold tier instances\n- **Pool statistics** — Shared models, memory usage (sys admin only)\n- **Quick actions** — Start chat, view AI Apps, manage AI agents\n\n**Tiers:** Hot = loaded immediately; Warm = pre-warmed; Cold = on-demand."
+        "description": "**What it does:**\n\nCentral hub for your organization's AI orchestration. Shows:\n\n- **AI App counts** — Total, hot and cold tier instances\n- **Pool statistics** — Shared models, memory usage (sys admin only)\n- **Quick actions** — Start chat, view AI Apps, manage AI agents\n\n**Tiers:** Hot = loaded immediately; cold = on-demand (demand pool may retain recently used instances)."
       },
       "chat": {
         "title": "Chat",
@@ -727,7 +725,7 @@
       },
       "pool": {
         "title": "Instance Pool",
-        "description": "**What it does:**\n\nReal-time pool statistics (sys admin only).\n\n**Metrics:**\n- Total instances, hot/warm/cold tier counts\n- Shared models and bundles\n- Memory estimate\n\n**Auto-refresh:** Every 30 seconds. Use Refresh to update manually."
+        "description": "**What it does:**\n\nReal-time pool statistics (sys admin only).\n\n**Metrics:**\n- Total instances, hot/cold tier counts\n- Shared models and bundles\n- Memory estimate\n\n**Auto-refresh:** Every 30 seconds. Use Refresh to update manually."
       },
       "health": {
         "title": "System Health",
@@ -777,7 +775,7 @@
     "aiAppSections": {
       "createBasic": {
         "title": "Basic",
-        "description": "**What it does:**\n\nCore identity and runtime settings for the new orchestrator.\n\n**Fields:**\n- **Name** — Unique identifier (10–55 chars). Used in URLs and API.\n- **Framework** — LangGraph, Google ADK, or OpenAI Agents. **Immutable after creation.**\n- **Mode** — Supervisor (multi-agent) or other modes. Depends on framework.\n- **Initial tier** — Hot (load immediately), Warm (pre-warm), or Cold (on-demand). Affects pool memory."
+        "description": "**What it does:**\n\nCore identity and runtime settings for the new orchestrator.\n\n**Fields:**\n- **Name** — Unique identifier (10–55 chars). Used in URLs and API.\n- **Framework** — LangGraph, Google ADK, or OpenAI Agents. **Immutable after creation.**\n- **Mode** — Supervisor (multi-agent) or other modes. Depends on framework.\n- **Initial tier** — Hot (load immediately) or cold (on-demand). Affects pool memory."
       },
       "createPlugins": {
         "title": "AI agents",
@@ -793,7 +791,7 @@
       },
       "editBasic": {
         "title": "Basic",
-        "description": "**What it does:**\n\nEdit metadata and tier. Framework and mode are **immutable** after creation.\n\n**Editable:**\n- **Name** — Display name (10–200 chars)\n- **Tier** — Hot, Warm, or Cold\n\n**Supervisor only:** LLM config is in the Supervisor Settings section below.\n\n**Non-supervisor:** Select LLM config here — it's used for all inference."
+        "description": "**What it does:**\n\nEdit metadata and tier. Framework and mode are **immutable** after creation.\n\n**Editable:**\n- **Name** — Display name (10–200 chars)\n- **Tier** — Hot or cold\n\n**Supervisor only:** LLM config is in the Supervisor Settings section below.\n\n**Non-supervisor:** Select LLM config here — it's used for all inference."
       },
       "additionalSettings": {
         "title": "Additional Settings",
@@ -894,7 +892,7 @@
       "subtitle": "Your AI assistant — configured once, ready to chat.",
       "intro": "An orchestrator is your AI assistant. You choose its abilities (plugins), connect your AI provider, and start chatting. Each assistant runs independently and can be loaded or unloaded to manage resources.",
       "bullet1": "Create assistants from the Orchestrators page",
-      "bullet2": "Choose Hot (fastest), Warm (quick), or Cold (lower cost, slower startup) based on your needs",
+      "bullet2": "Choose Hot (fastest) or Cold (lower cost, slower startup) based on your needs",
       "bullet3": "Load and unload assistants to manage memory across many instances",
       "bullet4": "Clone an existing assistant to reuse its configuration",
       "bullet5": "Activate or deactivate without losing your setup",
@@ -903,8 +901,8 @@
         "answer": "An orchestrator is a running AI assistant. It combines an execution engine, a mode (how it reasons), and a set of tools (plugins). You configure it once, then chat with it or connect it to your apps."
       },
       "faq2": {
-        "question": "What do Hot, Warm, and Cold mean?",
-        "answer": "Hot = loaded in memory and ready instantly. Warm = pre-warmed for fast startup. Cold = loads on first use (slower start, lower cost). You can change tier at any time."
+        "question": "What do Hot and Cold mean?",
+        "answer": "Hot = loaded in memory and ready instantly. Cold = loads on first use (slower start, lower cost). A demand pool may briefly retain recently used cold-tier instances. You can change tier at any time."
       },
       "faq3": {
         "question": "Can I run multiple assistants at once?",
@@ -920,7 +918,7 @@
       },
       "faq6": {
         "question": "What happens when I change a setting?",
-        "answer": "Hot-tier orchestrators reload automatically to pick up the new setting. Cold and Warm orchestrators apply the change on their next load. You will see a brief interruption for hot-tier assistants during the reload."
+        "answer": "Hot-tier orchestrators reload automatically to pick up the new setting. Cold-tier orchestrators apply the change on their next load. You will see a brief interruption for hot-tier assistants during the reload."
       },
       "faq7": {
         "question": "Which framework should I choose?",
@@ -938,14 +936,10 @@
       },
       "tiersSection": {
         "title": "Loading & Performance Tiers",
-        "intro": "Each orchestrator runs in one of three tiers that control how it is kept in memory and how fast it responds.",
+        "intro": "Each orchestrator runs in one of two tiers (hot or cold) that control how it is kept in memory and how fast it responds.",
         "hot": {
           "name": "Hot",
           "desc": "Loaded in memory and ready instantly. Best for frequently used assistants where response speed matters."
-        },
-        "warm": {
-          "name": "Warm",
-          "desc": "Pre-warmed for fast startup. Slightly slower than Hot on first response but uses fewer resources when idle."
         },
         "cold": {
           "name": "Cold",
@@ -1599,7 +1593,7 @@
       "bullet5": "Users: create, edit, delete platform users; grant or revoke system admin flag",
       "faq1": {
         "question": "What is the Pool page?",
-        "answer": "The Pool page shows real-time statistics for all orchestrator instances across the platform: how many are hot/warm/cold, shared model count, and estimated memory usage. Auto-refreshes every 30 seconds."
+        "answer": "The Pool page shows real-time statistics for all orchestrator instances across the platform: how many are hot/cold, shared model count, and estimated memory usage. Auto-refreshes every 30 seconds."
       },
       "faq2": {
         "question": "What does the Health page show?",
@@ -1614,12 +1608,12 @@
         "globalSettings": {
           "title": "Global Settings Fields",
           "maxOrgs": "Maximum number of organizations that can be created on this platform.",
-          "defaultTier": "Default pool tier assigned to new orchestrators. One of hot, warm, cold.",
+          "defaultTier": "Default pool tier assigned to new orchestrators. One of hot or cold.",
           "hotQuota": "Total number of Hot-tier pool slots available across the platform.",
-          "warmQuota": "Total number of Warm-tier pool slots available across the platform.",
           "coldQuota": "Total number of Cold-tier pool slots available across the platform.",
           "modelCatalog": "Allowlist of model names that org admins are permitted to configure. Empty list means unrestricted.",
-          "featureFlags": "Key-value flags for enabling experimental or gated features platform-wide."
+          "featureFlags": "Key-value flags for enabling experimental or gated features platform-wide.",
+          "demandPoolQuota": "Total capacity for demand-pool slots (TTL-backed) across the platform."
         },
         "health": {
           "title": "Health Check Services",
@@ -1630,9 +1624,8 @@
         "pool": {
           "title": "Pool Tier Definitions",
           "hot": "Fully loaded in memory. Zero cold-start latency. Highest memory cost.",
-          "warm": "Partially initialized. Sub-second warm-up on first request.",
           "cold": "Config stored only. Full load on first request; highest latency.",
-          "memoryNote": "The pool stats panel shows real-time counts per tier and an estimated memory usage figure for Hot and Warm instances."
+          "memoryNote": "The pool stats panel shows real-time counts per tier and an estimated memory usage for hot-tier instances and the demand pool."
         }
       }
     },
@@ -1699,7 +1692,6 @@
       "whoamiPlaceholder": "Optional context about who this AI App is (e.g. role, domain, tone). Injected into answer nodes.",
       "initialTier": "Initial Tier",
       "tierCold": "Cold (default)",
-      "tierWarm": "Warm",
       "tierHot": "Hot (load immediately)",
       "pluginTableName": "Name",
       "pluginTablePid": "PID",
@@ -1799,7 +1791,6 @@
       "failedLoad": "Failed to load orchestrator",
       "placeholderSelectConfig": "Select LLM config…",
       "tierCold": "Cold",
-      "tierWarm": "Warm",
       "tierHot": "Hot (load immediately)",
       "monitoring": "Monitoring",
       "monitoringDescription": "Send traces to an observability provider",

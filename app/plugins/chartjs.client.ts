@@ -1,8 +1,8 @@
 import {
-  Chart as ChartJS,
   ArcElement,
   BarElement,
   CategoryScale,
+  Chart as ChartJS,
   Filler,
   Legend,
   LinearScale,

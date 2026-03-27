@@ -88,7 +88,7 @@ async function save() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 sm:gap-6 pt-4">
+  <div class="flex flex-col gap-4 pt-4 sm:gap-6">
     <UAlert
       color="info"
       icon="i-lucide-radio-tower"
@@ -106,13 +106,13 @@ async function save() {
             :name="statusSummary.enabled ? 'i-lucide-check-circle' : 'i-lucide-circle-x'"
             class="size-5"
           />
-          <p class="font-semibold text-sm">{{ t('admin.telemetryConfig') }}</p>
+          <p class="text-sm font-semibold">{{ t('admin.telemetryConfig') }}</p>
         </div>
       </template>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
         <div>
           <p class="text-dimmed text-sm">{{ t('admin.otelStatus') }}</p>
-          <div class="flex items-center gap-1 mt-1">
+          <div class="mt-1 flex items-center gap-1">
             <UIcon
               :class="statusSummary.enabled ? 'text-success' : 'text-dimmed'"
               :name="statusSummary.enabled ? 'i-lucide-circle-check' : 'i-lucide-circle-x'"
@@ -123,26 +123,26 @@ async function save() {
         </div>
         <div>
           <p class="text-dimmed text-sm">{{ t('admin.otelExporter') }}</p>
-          <p class="text-sm font-medium mt-1">{{ statusSummary.exporter }}</p>
+          <p class="mt-1 text-sm font-medium">{{ statusSummary.exporter }}</p>
         </div>
         <div>
           <p class="text-dimmed text-sm">{{ t('admin.otelActiveSignals') }}</p>
-          <p class="text-sm font-medium mt-1">{{ statusSummary.activeSignals }}/3</p>
+          <p class="mt-1 text-sm font-medium">{{ statusSummary.activeSignals }}/3</p>
         </div>
       </div>
     </UCard>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+    <div class="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
       <!-- General -->
       <UCard variant="soft" class="min-w-0">
         <template #header>
           <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-settings" class="size-5 text-primary" />
-            <p class="font-semibold text-sm">General</p>
+            <UIcon name="i-lucide-settings" class="text-primary size-5" />
+            <p class="text-sm font-semibold">General</p>
           </div>
         </template>
         <div class="flex flex-col gap-4">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <span class="text-sm font-medium">{{ t('admin.otelEnabled') }}</span>
             <USwitch v-model="form.enabled" />
           </div>
@@ -162,8 +162,8 @@ async function save() {
       <UCard variant="soft" class="min-w-0">
         <template #header>
           <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-send" class="size-5 text-primary" />
-            <p class="font-semibold text-sm">Export</p>
+            <UIcon name="i-lucide-send" class="text-primary size-5" />
+            <p class="text-sm font-semibold">Export</p>
           </div>
         </template>
         <div class="flex flex-col gap-4">
@@ -180,7 +180,7 @@ async function save() {
             <UFormField :label="t('admin.otelEndpoint')">
               <UInput v-model="form.endpoint" class="w-full" placeholder="http://localhost:4317" />
             </UFormField>
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <span class="text-sm font-medium">{{ t('admin.otelEndpointInsecure') }}</span>
               <USwitch v-model="form.endpoint_insecure" />
             </div>
@@ -195,20 +195,20 @@ async function save() {
       <UCard variant="soft" class="min-w-0">
         <template #header>
           <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-activity" class="size-5 text-primary" />
-            <p class="font-semibold text-sm">Signals</p>
+            <UIcon name="i-lucide-activity" class="text-primary size-5" />
+            <p class="text-sm font-semibold">Signals</p>
           </div>
         </template>
         <div class="flex flex-col gap-3">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <span class="text-sm font-medium">{{ t('admin.otelTracesEnabled') }}</span>
             <USwitch v-model="form.traces_enabled" />
           </div>
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <span class="text-sm font-medium">{{ t('admin.otelMetricsEnabled') }}</span>
             <USwitch v-model="form.metrics_enabled" />
           </div>
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <span class="text-sm font-medium">{{ t('admin.otelLogsEnabled') }}</span>
             <USwitch v-model="form.logs_enabled" />
           </div>
@@ -219,8 +219,8 @@ async function save() {
       <UCard variant="soft" class="min-w-0">
         <template #header>
           <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-filter" class="size-5 text-primary" />
-            <p class="font-semibold text-sm">Sampling</p>
+            <UIcon name="i-lucide-filter" class="text-primary size-5" />
+            <p class="text-sm font-semibold">Sampling</p>
           </div>
         </template>
         <div class="flex flex-col gap-4">
@@ -247,8 +247,8 @@ async function save() {
       <UCard variant="soft" class="min-w-0">
         <template #header>
           <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-gauge" class="size-5 text-primary" />
-            <p class="font-semibold text-sm">Performance</p>
+            <UIcon name="i-lucide-gauge" class="text-primary size-5" />
+            <p class="text-sm font-semibold">Performance</p>
           </div>
         </template>
         <div class="flex flex-col gap-4">
@@ -262,16 +262,16 @@ async function save() {
       <UCard variant="soft" class="min-w-0">
         <template #header>
           <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-brain-circuit" class="size-5 text-primary" />
-            <p class="font-semibold text-sm">LLM Instrumentation</p>
+            <UIcon name="i-lucide-brain-circuit" class="text-primary size-5" />
+            <p class="text-sm font-semibold">LLM Instrumentation</p>
           </div>
         </template>
         <div class="flex flex-col gap-3">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <span class="text-sm font-medium">{{ t('admin.otelInstrumentLangchain') }}</span>
             <USwitch v-model="form.instrument_langchain" />
           </div>
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <span class="text-sm font-medium">{{ t('admin.otelInstrumentOpenAIAgents') }}</span>
             <USwitch v-model="form.instrument_openai_agents" />
           </div>
@@ -282,8 +282,8 @@ async function save() {
       <UCard variant="soft" class="min-w-0 lg:col-span-2">
         <template #header>
           <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-network" class="size-5 text-primary" />
-            <p class="font-semibold text-sm">Propagation</p>
+            <UIcon name="i-lucide-network" class="text-primary size-5" />
+            <p class="text-sm font-semibold">Propagation</p>
           </div>
         </template>
         <div class="flex flex-col gap-4">

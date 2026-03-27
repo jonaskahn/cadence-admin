@@ -17,10 +17,10 @@ const switchAriaLabel = computed(() => `${props.sectionLabel}: ${t('aiApps.featu
 </script>
 
 <template>
-  <UCard variant="soft" class="min-w-0 h-full">
+  <UCard variant="soft" class="h-full min-w-0">
     <template #header>
-      <div class="flex w-full items-center justify-between gap-3 min-w-0">
-        <div class="flex items-center gap-2 min-w-0 flex-1">
+      <div class="flex w-full min-w-0 items-center justify-between gap-3">
+        <div class="flex min-w-0 flex-1 items-center gap-2">
           <slot name="header" />
         </div>
         <USwitch v-model="enabled" :aria-label="switchAriaLabel" class="shrink-0" />

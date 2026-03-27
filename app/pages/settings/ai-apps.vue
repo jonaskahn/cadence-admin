@@ -65,7 +65,7 @@ const initLlmConfigId =
 
 const form = reactive({
   default_llm_config_id: initLlmConfigId as string | null,
-  default_model_name: defaults.value?.default_model_name ?? (null as string | null),
+  default_model_name: defaults.value?.default_model_name ?? undefined,
   default_temperature: defaults.value?.default_temperature ?? (null as number | null),
   default_max_tokens: defaults.value?.default_max_tokens ?? (null as number | null),
   default_timeout: defaults.value?.default_timeout ?? (null as number | null)
@@ -108,7 +108,7 @@ watch(
   () => form.default_llm_config_id,
   async (id) => {
     if (isLoadingDefaults) return
-    form.default_model_name = null
+    form.default_model_name = undefined
     modelManual.value = false
     const provider = providerOf(id)
     await ensureModels(provider)
@@ -121,7 +121,7 @@ watch(defaults, async (val) => {
   if (!val) return
   isLoadingDefaults = true
   form.default_llm_config_id = val.default_llm_config_id != null ? String(val.default_llm_config_id) : null
-  form.default_model_name = val.default_model_name
+  form.default_model_name = val.default_model_name ?? undefined
   form.default_temperature = val.default_temperature
   form.default_max_tokens = val.default_max_tokens
   form.default_timeout = val.default_timeout
@@ -137,7 +137,7 @@ const saving = ref(false)
 
 function toggleModelManual() {
   modelManual.value = !modelManual.value
-  form.default_model_name = null
+  form.default_model_name = undefined
 }
 
 async function save() {
@@ -174,7 +174,7 @@ async function save() {
       <template #header>
         <div class="flex items-center justify-between">
           <div>
-            <div class="flex items-center gap-2 flex-wrap">
+            <div class="flex flex-wrap items-center gap-2">
               <p class="font-semibold">{{ t('settings.aiAppSettings') }}</p>
               <UBadge color="neutral" size="xs" variant="subtle">{{ t('aiApps.legacyBadge') }}</UBadge>
               <InfoPopover title-key="info.settings.aiApps.title" description-key="info.settings.aiApps.description" />
@@ -202,7 +202,7 @@ async function save() {
           :description="t('settings.defaultModelDescription')"
           :label="t('settings.defaultModelName')"
         >
-          <div class="flex gap-2 items-center w-full">
+          <div class="flex w-full items-center gap-2">
             <UInput
               v-if="modelManual"
               v-model="form.default_model_name"
