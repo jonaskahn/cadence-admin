@@ -2,7 +2,7 @@
   "app": {
     "name": "Cadence",
     "tagline": "Nền tảng điều phối AI",
-    "description": "Nền tảng điều phối AI đa tenant với cơ chế pooling theo tầng hot/warm/cold, hỗ trợ BYOK và nhiều framework."
+    "description": "Nền tảng điều phối AI đa tenant với cơ chế pooling theo tầng hot/cold, hỗ trợ BYOK và nhiều framework."
   },
   "common": {
     "cancel": "Hủy",
@@ -121,7 +121,6 @@
   "dashboard": {
     "title": "Tổng quan",
     "hotTier": "Tầng Hot",
-    "warmTier": "Tầng Warm",
     "coldTier": "Tầng Cold",
     "poolMemory": "Bộ nhớ pool",
     "poolStatistics": "Thống kê pool",
@@ -427,7 +426,6 @@
     "pool": "Thống kê pool",
     "totalInstances": "Tổng số instance",
     "hotTier": "Tầng Hot",
-    "warmTier": "Tầng Warm",
     "coldTier": "Tầng Cold",
     "sharedModels": "Model dùng chung",
     "sharedBundles": "Bundle dùng chung",
@@ -763,7 +761,7 @@
     "pages": {
       "dashboard": {
         "title": "Tổng quan",
-        "description": "**What it does:**\n\nCentral hub for your organization's AI orchestration. Shows:\n\n- **AI App counts** — Total, hot, warm, and cold tier instances\n- **Pool statistics** — Shared models, memory usage (sys admin only)\n- **Quick actions** — Start chat, view AI Apps, manage AI agents\n\n**Tiers:** Hot = loaded immediately; Warm = pre-warmed; Cold = on-demand."
+        "description": "**What it does:**\n\nCentral hub for your organization's AI orchestration. Shows:\n\n- **AI App counts** — Total, hot and cold tier instances\n- **Pool statistics** — Shared models, memory usage (sys admin only)\n- **Quick actions** — Start chat, view AI Apps, manage AI agents\n\n**Tiers:** Hot = loaded immediately; cold = on-demand (demand pool may retain recently used instances)."
       },
       "chat": {
         "title": "Chat",
@@ -831,7 +829,7 @@
       },
       "pool": {
         "title": "Instance Pool",
-        "description": "**Nó làm gì:**\n\nThống kê pool theo thời gian thực (chỉ sys admin).\n\n**Chỉ số:**\n- Tổng số instance, số lượng hot/warm/cold tier\n- Model và bundle dùng chung\n- Ước tính bộ nhớ\n\n**Tự làm mới:** Mỗi 30 giây. Bấm Refresh để cập nhật thủ công."
+        "description": "**Nó làm gì:**\n\nThống kê pool theo thời gian thực (chỉ sys admin).\n\n**Chỉ số:**\n- Tổng số instance, số lượng hot/cold tier\n- Model và bundle dùng chung\n- Ước tính bộ nhớ\n\n**Tự làm mới:** Mỗi 30 giây. Bấm Refresh để cập nhật thủ công."
       },
       "health": {
         "title": "Tình trạng hệ thống",
@@ -881,7 +879,7 @@
     "aiAppSections": {
       "createBasic": {
         "title": "Cơ bản",
-        "description": "**Nó làm gì:**\n\nThiết lập danh tính và runtime cốt lõi cho orchestrator mới.\n\n**Trường:**\n- **Tên** — Mã định danh duy nhất (10–55 ký tự). Dùng trong URL và API.\n- **Framework** — LangGraph, Google ADK hoặc OpenAI Agents. **Không thể đổi sau khi tạo.**\n- **Mode** — Supervisor (multi-agent) hoặc mode khác. Tùy theo framework.\n- **Tầng ban đầu** — Hot (load ngay), Warm (làm nóng sẵn) hoặc Cold (theo yêu cầu). Ảnh hưởng tới bộ nhớ pool."
+        "description": "**Nó làm gì:**\n\nThiết lập danh tính và runtime cốt lõi cho orchestrator mới.\n\n**Trường:**\n- **Tên** — Mã định danh duy nhất (10–55 ký tự). Dùng trong URL và API.\n- **Framework** — LangGraph, Google ADK hoặc OpenAI Agents. **Không thể đổi sau khi tạo.**\n- **Mode** — Supervisor (multi-agent) hoặc mode khác. Tùy theo framework.\n- **Tầng ban đầu** — Hot (load ngay) hoặc Cold (theo yêu cầu). Ảnh hưởng tới bộ nhớ pool."
       },
       "createPlugins": {
         "title": "AI agents",
@@ -897,7 +895,7 @@
       },
       "editBasic": {
         "title": "Cơ bản",
-        "description": "**Nó làm gì:**\n\nChỉnh sửa metadata và tầng. Framework và mode **không thể đổi** sau khi tạo.\n\n**Có thể sửa:**\n- **Tên** — Tên hiển thị (10–200 ký tự)\n- **Tầng** — Hot, Warm hoặc Cold\n\n**Chỉ áp dụng với Supervisor:** Cấu hình LLM nằm ở phần Supervisor Settings bên dưới.\n\n**Không phải supervisor:** Chọn cấu hình LLM ở đây — cấu hình này sẽ được dùng cho toàn bộ quá trình suy luận."
+        "description": "**Nó làm gì:**\n\nChỉnh sửa metadata và tầng. Framework và mode **không thể đổi** sau khi tạo.\n\n**Có thể sửa:**\n- **Tên** — Tên hiển thị (10–200 ký tự)\n- **Tầng** — Hot hoặc Cold\n\n**Chỉ áp dụng với Supervisor:** Cấu hình LLM nằm ở phần Supervisor Settings bên dưới.\n\n**Không phải supervisor:** Chọn cấu hình LLM ở đây — cấu hình này sẽ được dùng cho toàn bộ quá trình suy luận."
       }
     }
   },
@@ -1013,7 +1011,6 @@
       "whoamiPlaceholder": "Optional context about who this AI App is (e.g. role, domain, tone). Injected into answer nodes.",
       "initialTier": "Initial Tier",
       "tierCold": "Cold (default)",
-      "tierWarm": "Warm",
       "tierHot": "Hot (load immediately)",
       "pluginTableName": "Name",
       "pluginTablePid": "PID",
@@ -1113,7 +1110,6 @@
       "failedLoad": "Không tải được orchestrator",
       "placeholderSelectConfig": "Chọn cấu hình LLM…",
       "tierCold": "Cold",
-      "tierWarm": "Warm",
       "tierHot": "Hot (load ngay)",
       "monitoring": "Theo dõi",
       "monitoringDescription": "Gửi trace tới nhà cung cấp quan sát hệ thống",

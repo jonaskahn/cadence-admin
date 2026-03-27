@@ -11,7 +11,7 @@ import type {
   PluginSetting,
   PluginSettingsEntry
 } from '~/types'
-import { toPluginRefKey, toPluginUniquenessKey } from '~/utils'
+import { normalizeOrchestratorPoolTier, toPluginRefKey, toPluginUniquenessKey } from '~/utils'
 
 const route = useRoute()
 const router = useRouter()
@@ -61,7 +61,7 @@ const schema = computed(() =>
       .max(200),
     framework_type: z.string().min(1),
     mode: z.string().min(1),
-    tier: z.enum(['hot', 'warm', 'cold']),
+    tier: z.enum(['hot', 'cold']),
     whoami: z.string().max(2000).optional()
   })
 )
@@ -90,7 +90,7 @@ type Schema = {
   name: string
   framework_type: string
   mode: string
-  tier: 'hot' | 'warm' | 'cold'
+  tier: 'hot' | 'cold'
   whoami?: string
 }
 
@@ -208,7 +208,6 @@ const modeOptions = computed(() => supportedModes.value.map((m) => ({ label: mod
 
 const tierOptions = computed(() => [
   { label: t('aiApps.create.tierCold'), value: 'cold' },
-  { label: t('aiApps.create.tierWarm'), value: 'warm' },
   { label: t('aiApps.create.tierHot'), value: 'hot' }
 ])
 
@@ -334,7 +333,7 @@ async function initFromClone(source: OrchestratorResponse | null) {
   state.name = t('aiApps.create.copyOf', { name: source.name })
   state.framework_type = (source.framework_type as Schema['framework_type']) ?? 'langgraph'
   state.mode = (source.mode as Schema['mode']) ?? 'supervisor'
-  state.tier = (source.tier as Schema['tier']) ?? 'cold'
+  state.tier = normalizeOrchestratorPoolTier(source.tier ?? 'cold')
   state.whoami = (source as { whoami?: string }).whoami ?? ''
   const entries = (Object.values(source.plugin_settings ?? {}) as PluginSettingsEntry[]).filter((e) => e.active)
   const resolved: PluginMetadataResponse[] = []

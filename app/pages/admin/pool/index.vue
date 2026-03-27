@@ -32,8 +32,8 @@ const statCards = computed(() => {
       color: 'error'
     },
     {
-      label: t('admin.warmTier'),
-      value: stats.value.warm_tier_count,
+      label: t('admin.demandPool'),
+      value: stats.value.demand_pool_count,
       icon: 'i-lucide-thermometer',
       color: 'warning'
     },

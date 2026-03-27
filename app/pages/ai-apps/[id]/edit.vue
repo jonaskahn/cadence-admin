@@ -4,6 +4,7 @@ import * as z from 'zod'
 
 import type { MonitoringConfig } from '~/components/ai-apps/AiAppMonitoringConfig.vue'
 import type { FrameworkSupportedProvidersResponse, OrchestratorDefaults, OrchestratorResponse } from '~/types'
+import { normalizeOrchestratorPoolTier } from '~/utils'
 
 const route = useRoute()
 const router = useRouter()
@@ -33,15 +34,15 @@ const schema = computed(() =>
       .string()
       .min(10, { message: t('aiApps.edit.nameMinLength') })
       .max(200, { message: t('aiApps.edit.nameMaxLength') }),
-    tier: z.enum(['hot', 'warm', 'cold']),
+    tier: z.enum(['hot', 'cold']),
     whoami: z.string().max(2000).optional()
   })
 )
 
-type Schema = { name: string; tier: 'hot' | 'warm' | 'cold'; whoami?: string }
+type Schema = { name: string; tier: 'hot' | 'cold'; whoami?: string }
 
 const name = ref('')
-const tier = ref<'hot' | 'warm' | 'cold'>('cold')
+const tier = ref<'hot' | 'cold'>('cold')
 const whoami = ref('')
 const monitoringConfig = ref<MonitoringConfig>({
   enabled: false,
@@ -59,7 +60,6 @@ const orchestratorConfigProviderRef = ref<{
 
 const tierOptions = computed(() => [
   { label: t('aiApps.edit.tierCold'), value: 'cold' },
-  { label: t('aiApps.edit.tierWarm'), value: 'warm' },
   { label: t('aiApps.edit.tierHot'), value: 'hot' }
 ])
 
@@ -93,7 +93,7 @@ watch(
   (o) => {
     if (!o) return
     name.value = o.name
-    tier.value = o.tier as 'hot' | 'warm' | 'cold'
+    tier.value = normalizeOrchestratorPoolTier(o.tier)
     whoami.value = o.whoami ?? ''
     const existing = (o.config as Record<string, unknown> | undefined)?.monitoring as MonitoringConfig | undefined
     if (existing) {

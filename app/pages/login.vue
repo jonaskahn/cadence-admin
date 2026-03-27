@@ -85,7 +85,7 @@ const valueProps = [
 ]
 
 const { data: oauthProvidersData, refresh: refreshOAuthProviders } = await useFetch<string[]>(
-  '/api/auth/oauth/providers',
+  '/api/oauth2/social/providers',
   {
     default: () => []
   }

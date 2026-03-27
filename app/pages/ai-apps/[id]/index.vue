@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { FrameworkSupportedProvidersResponse, OrchestratorResponse, PluginMetadataResponse } from '~/types'
-import { statusColor, tierColor } from '~/utils'
+import { normalizeOrchestratorPoolTier, statusColor, tierColor } from '~/utils'
 
 type PluginCardItem = {
   id: string
@@ -325,8 +325,8 @@ async function handleActivateConfirm(close: () => void) {
                   <div>
                     <dt class="text-dimmed text-sm">Tier</dt>
                     <dd class="mt-1">
-                      <UBadge :color="tierColor(aiApp.tier)" size="sm" variant="subtle">
-                        {{ aiApp?.tier?.toUpperCase() }}
+                      <UBadge :color="tierColor(normalizeOrchestratorPoolTier(aiApp.tier ?? 'cold'))" size="sm" variant="subtle">
+                        {{ normalizeOrchestratorPoolTier(aiApp.tier ?? 'cold').toUpperCase() }}
                       </UBadge>
                     </dd>
                   </div>

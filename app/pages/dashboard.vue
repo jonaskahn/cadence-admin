@@ -2,7 +2,7 @@
 import { Bar, Doughnut, Line } from 'vue-chartjs'
 
 import type { OrchestratorResponse, PluginMetadataResponse, PoolStatsResponse } from '~/types'
-import { statusColor, tierColor } from '~/utils'
+import { normalizeOrchestratorPoolTier, statusColor, tierColor } from '~/utils'
 
 const auth = useAuth()
 const { t } = useI18n()
@@ -44,8 +44,7 @@ const tierCounts = computed(() => {
   const list = orchestrators.value || []
   return {
     hot: countByTier(list, 'hot'),
-    warm: countByTier(list, 'warm'),
-    cold: countByTier(list, 'cold'),
+    cold: countByTier(list, 'cold') + countByTier(list, 'warm'),
     total: list.length
   }
 })
@@ -82,11 +81,11 @@ const tokensChartData = {
 }
 
 const orchestratorTierChartData = computed(() => ({
-  labels: ['Hot', 'Warm', 'Cold'],
+  labels: ['Hot', 'Cold'],
   datasets: [
     {
-      data: [tierCounts.value.hot || 2, tierCounts.value.warm || 3, tierCounts.value.cold || 1],
-      backgroundColor: ['rgba(249, 115, 22, 0.85)', 'rgba(251, 191, 36, 0.75)', 'rgba(120, 113, 108, 0.55)'],
+      data: [tierCounts.value.hot, tierCounts.value.cold],
+      backgroundColor: ['rgba(249, 115, 22, 0.85)', 'rgba(120, 113, 108, 0.55)'],
       borderWidth: 0
     }
   ]
@@ -196,8 +195,8 @@ const costByProviderChartData = {
               </div>
 
               <div v-else class="border-info border-l-2 py-1 pl-4">
-                <p class="text-3xl font-bold tracking-tight">{{ tierCounts.warm }}</p>
-                <p class="text-dimmed mt-1 text-sm">{{ t('dashboard.warmTier') }}</p>
+                <p class="text-3xl font-bold tracking-tight">{{ tierCounts.cold }}</p>
+                <p class="text-dimmed mt-1 text-sm">{{ t('dashboard.coldTier') }}</p>
               </div>
             </div>
           </template>
@@ -213,8 +212,8 @@ const costByProviderChartData = {
                   <p class="text-xl font-bold tabular-nums">{{ poolStats.hot_tier_count }}</p>
                 </div>
                 <div class="border-success/50 border-l-2 pl-3">
-                  <p class="text-dimmed text-sm">{{ t('dashboard.warmTier') }}</p>
-                  <p class="text-xl font-bold tabular-nums">{{ poolStats.warm_tier_count }}</p>
+                  <p class="text-dimmed text-sm">{{ t('dashboard.demandPool') }}</p>
+                  <p class="text-xl font-bold tabular-nums">{{ poolStats.demand_pool_count }}</p>
                 </div>
                 <div class="border-info/50 border-l-2 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.coldTier') }}</p>
@@ -369,8 +368,8 @@ const costByProviderChartData = {
             <template v-if="orchestrators?.length">
               <UTable :columns="orchestratorColumns" :data="orchestrators.slice(0, 5)">
                 <template #tier-cell="{ row }">
-                  <UBadge :color="tierColor(row.original.tier)" size="sm" variant="subtle">
-                    {{ row?.original?.tier?.toUpperCase() }}
+                  <UBadge :color="tierColor(normalizeOrchestratorPoolTier(row.original.tier))" size="sm" variant="subtle">
+                    {{ normalizeOrchestratorPoolTier(row.original.tier).toUpperCase() }}
                   </UBadge>
                 </template>
                 <template #status-cell="{ row }">

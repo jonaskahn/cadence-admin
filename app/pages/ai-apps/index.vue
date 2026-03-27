@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { OrchestratorResponse } from '~/types'
-import { statusColor, tierColor } from '~/utils'
+import { normalizeOrchestratorPoolTier, statusColor, tierColor } from '~/utils'
 
 const auth = useAuth()
 const { t } = useI18n()
@@ -138,8 +138,8 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
               :meta="{ class: { tr: (row) => (row?.original?.is_deleted ? 'opacity-60' : '') } }"
             >
               <template #tier-cell="{ row }">
-                <UBadge :color="tierColor(row.original.tier)" size="sm" variant="subtle">
-                  {{ row?.original?.tier?.toUpperCase() }}
+                <UBadge :color="tierColor(normalizeOrchestratorPoolTier(row.original.tier))" size="sm" variant="subtle">
+                  {{ normalizeOrchestratorPoolTier(row.original.tier).toUpperCase() }}
                 </UBadge>
               </template>
 

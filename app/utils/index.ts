@@ -50,8 +50,12 @@ export function providerLabel(provider: string): string {
 }
 
 export const TIER_HOT = 'hot'
-export const TIER_WARM = 'warm'
 export const TIER_COLD = 'cold'
+
+/** Maps API tier to hot or cold. Legacy `warm` rows are treated as cold for display. */
+export function normalizeOrchestratorPoolTier(tier: string): 'hot' | 'cold' {
+  return tier === TIER_HOT ? TIER_HOT : TIER_COLD
+}
 
 export const STATUS_ACTIVE = 'active'
 export const STATUS_INACTIVE = 'inactive'
@@ -65,7 +69,6 @@ export const POOL_STATS_REFRESH_MS = 30_000
 
 export function tierColor(tier: string): 'error' | 'warning' | 'neutral' {
   if (tier === TIER_HOT) return 'error'
-  if (tier === TIER_WARM) return 'warning'
   return 'neutral'
 }
 
