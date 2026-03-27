@@ -2,9 +2,9 @@
  * Supervisor mode_config serialization always includes every supervisor node key so the server
  * config_hash and hot-tier reload deduplication stay stable when toggling validation or clarification.
  */
-import type { NodeState } from './types'
-import { GROUNDED_NODE_KEYS, NODE_KEYS } from './nodeKeys'
 import { serializeNodeConfig } from './nodeConfigPayload'
+import { GROUNDED_NODE_KEYS, NODE_KEYS } from './nodeKeys'
+import type { NodeState } from './types'
 
 type ModeConfigScalars = {
   node_execution_timeout: number

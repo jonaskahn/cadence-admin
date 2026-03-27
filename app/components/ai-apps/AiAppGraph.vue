@@ -66,7 +66,7 @@ onMounted(loadGraph)
 
       <template v-else>
         <div v-if="error" class="flex flex-col items-center gap-3 p-12 text-center">
-          <UIcon class="size-10 text-warning-400" name="i-lucide-triangle-alert" />
+          <UIcon class="text-warning-400 size-10" name="i-lucide-triangle-alert" />
           <p class="text-dimmed text-sm">{{ error }}</p>
           <UButton icon="i-lucide-refresh-cw" :label="t('aiAppGraph.retry')" size="sm" @click="loadGraph" />
         </div>
@@ -83,7 +83,7 @@ onMounted(loadGraph)
     </template>
 
     <div v-else-if="error" class="flex flex-col items-center gap-3 p-12 text-center">
-      <UIcon class="size-10 text-warning-400" name="i-lucide-triangle-alert" />
+      <UIcon class="text-warning-400 size-10" name="i-lucide-triangle-alert" />
       <p class="text-dimmed text-sm">{{ error }}</p>
       <UButton icon="i-lucide-refresh-cw" :label="t('aiAppGraph.retry')" size="sm" @click="loadGraph" />
     </div>

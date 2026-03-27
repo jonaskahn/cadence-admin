@@ -91,14 +91,14 @@ function onPluginAdded(plugin: PluginMetadataResponse) {
     @update:open="emit('update:open', $event)"
   >
     <template #body>
-      <div class="flex flex-col gap-4 h-full">
+      <div class="flex h-full flex-col gap-4">
         <div class="flex flex-wrap gap-2">
           <USelect v-model="sourceFilter" :items="sourceFilterItems" label-key="label" value-key="value" class="w-32" />
           <UInput v-model="searchQuery" :placeholder="t('aiApps.pluginSelector.searchPlaceholder')" class="min-w-48" />
         </div>
 
         <div v-if="pluginsStatus === 'pending'" class="flex justify-center py-12">
-          <UIcon class="size-8 animate-spin text-dimmed" name="i-lucide-loader-2" />
+          <UIcon class="text-dimmed size-8 animate-spin" name="i-lucide-loader-2" />
         </div>
 
         <UAlert
@@ -122,7 +122,7 @@ function onPluginAdded(plugin: PluginMetadataResponse) {
           />
         </div>
 
-        <p v-if="pluginsStatus === 'success' && filteredPlugins.length === 0" class="py-8 text-center text-dimmed">
+        <p v-if="pluginsStatus === 'success' && filteredPlugins.length === 0" class="text-dimmed py-8 text-center">
           {{ t('aiApps.pluginSelector.noPluginsMatch') }}
         </p>
       </div>

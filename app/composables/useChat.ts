@@ -30,7 +30,7 @@ export function useChat() {
   const orgId = computed(() => auth.currentOrgId.value || '')
   const aiApps = ref<OrchestratorResponse[]>([])
   const conversations = ref<ConversationSummary[]>([])
-  const selectedInstanceId = ref<string | null>(null)
+  const selectedInstanceId = ref<string | undefined>(undefined)
   const messages = ref<ChatMessage[]>([])
   const conversationId = ref<string | null>(null)
   const resourceId = ref<string>('')

@@ -51,7 +51,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 min-w-0">
+  <div class="flex min-w-0 flex-col gap-2">
     <USelect
       v-if="showSelect"
       v-model="localModel"

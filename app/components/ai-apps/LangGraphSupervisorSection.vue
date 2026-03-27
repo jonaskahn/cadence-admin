@@ -21,9 +21,9 @@ function featureToggleFor(
 </script>
 
 <template>
-  <div class="flex flex-col gap-8 w-full min-w-0">
-    <div v-if="!hideHeader" class="flex flex-col gap-2 min-w-0">
-      <div class="flex items-center gap-2 flex-wrap">
+  <div class="flex w-full min-w-0 flex-col gap-8">
+    <div v-if="!hideHeader" class="flex min-w-0 flex-col gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <span class="font-semibold">{{ t('aiApps.create.supervisorSettings') }}</span>
         <InfoPopover
           title-key="info.aiAppSections.supervisorLlmConfig.title"
@@ -37,7 +37,7 @@ function featureToggleFor(
 
     <USeparator :label="t('aiApps.supervisor.nodeOverrides')" />
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+    <div class="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
       <LangGraphSupervisorNodeOverrideCard
         v-for="key in SUPERVISOR_NODE_KEYS"
         :key="key"

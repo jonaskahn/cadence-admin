@@ -78,11 +78,11 @@ async function handleConfirm(close: () => void) {
   <UPopover>
     <UButton :type="type" :icon="icon" :color="color" :size="size ?? 'md'" :label="triggerLabel" />
     <template #content="{ close }">
-      <div class="flex flex-col gap-3 p-4 min-w-56">
+      <div class="flex min-w-56 flex-col gap-3 p-4">
         <!-- Row 1: Title -->
-        <p class="font-semibold text-sm">{{ confirmTitle }}</p>
+        <p class="text-sm font-semibold">{{ confirmTitle }}</p>
         <!-- Row 2: Description -->
-        <p v-if="!$slots.default" class="text-sm text-dimmed">{{ confirmMessage }}</p>
+        <p v-if="!$slots.default" class="text-dimmed text-sm">{{ confirmMessage }}</p>
         <slot v-else />
         <!-- Row 3: Action -->
         <div class="flex justify-end gap-2 pt-1">

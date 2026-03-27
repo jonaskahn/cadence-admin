@@ -265,7 +265,7 @@ export interface CreateOrchestratorRequest {
   framework_type: string
   mode: string
   active_plugin_ids: string[]
-  tier?: 'hot' | 'warm' | 'cold'
+  tier?: 'hot' | 'cold'
   whoami?: string | null
   config?: Record<string, unknown> | null
 }
@@ -276,17 +276,13 @@ export interface UpdateOrchestratorConfigRequest {
 
 export interface UpdateOrchestratorMetadataRequest {
   name?: string | null
-  tier?: 'hot' | 'warm' | 'cold' | null
+  tier?: 'hot' | 'cold' | null
   whoami?: string | null
   default_llm_config_id?: string | null
 }
 
 export interface UpdateOrchestratorStatusRequest {
   status: 'active' | 'suspended'
-}
-
-export interface LoadOrchestratorRequest {
-  tier?: 'hot' | 'warm' | 'cold'
 }
 
 export interface GraphDefinitionResponse {
@@ -508,7 +504,7 @@ export interface HealthCheckResponse {
 export interface PoolStatsResponse {
   total_instances: number
   hot_tier_count: number
-  warm_tier_count: number
+  demand_pool_count: number
   cold_tier_count: number
   shared_model_count: number
   shared_bundle_count: number

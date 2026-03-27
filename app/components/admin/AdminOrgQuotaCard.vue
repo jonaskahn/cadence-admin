@@ -23,7 +23,7 @@ const { t } = useI18n()
     <dl class="grid grid-cols-2 gap-4">
       <div v-for="row in quotaRows" :key="row.label">
         <dt class="text-dimmed text-sm">{{ row.label }}</dt>
-        <dd class="font-mono text-sm mt-1">{{ row.value }}</dd>
+        <dd class="mt-1 font-mono text-sm">{{ row.value }}</dd>
       </div>
     </dl>
   </UCard>

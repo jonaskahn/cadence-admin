@@ -30,7 +30,7 @@ function featureToggleFor(key: GroundedNodeKey): 'llm_validation' | undefined {
       <USeparator />
     </div>
 
-    <UCard variant="soft" class="min-w-0 w-full">
+    <UCard variant="soft" class="w-full min-w-0">
       <template #header>
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-layers" />

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { SETTINGS_GROUPS, NON_OVERRIDABLE_SETTING_KEYS } from '~/constants'
+import { NON_OVERRIDABLE_SETTING_KEYS, SETTINGS_GROUPS } from '~/constants'
 
 const { settings, editValues, overridableValues, saving, saveSetting } = useAdminSettings()
 const { t } = useI18n()
@@ -52,9 +52,9 @@ const allGroups = computed(() => {
 
     <UCard v-for="group in allGroups" :key="group.label" variant="soft">
       <template #header>
-        <p class="font-semibold text-sm">{{ group.label }}</p>
+        <p class="text-sm font-semibold">{{ group.label }}</p>
       </template>
-      <div class="flex flex-col divide-y divide-default">
+      <div class="divide-default flex flex-col divide-y">
         <SettingRow
           v-for="setting in group.items"
           :key="setting.key"
@@ -70,6 +70,6 @@ const allGroups = computed(() => {
       </div>
     </UCard>
 
-    <p v-if="!settings?.length" class="text-dimmed text-sm text-center py-4">{{ t('admin.noGlobalSettings') }}</p>
+    <p v-if="!settings?.length" class="text-dimmed py-4 text-center text-sm">{{ t('admin.noGlobalSettings') }}</p>
   </div>
 </template>

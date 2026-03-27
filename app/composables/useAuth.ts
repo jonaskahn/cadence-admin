@@ -1,3 +1,4 @@
+import { COOKIE_SESSION_CONTEXT } from '~/constants'
 import type {
   AboutMeResponse,
   AuthUser,
@@ -5,7 +6,6 @@ import type {
   OrgAccessResponse,
   OrgWithRoleResponse
 } from '~/types'
-import { COOKIE_SESSION_CONTEXT } from '~/constants'
 
 function mapOrgWithRoleToOrgAccess(org: OrgWithRoleResponse): OrgAccessResponse {
   return {

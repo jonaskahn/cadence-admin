@@ -17,7 +17,9 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const pendingLanguage = ref<string | undefined>(undefined)
+type Bcp47Code = (typeof BCP47_LANGUAGES)[number]['value']
+
+const pendingLanguage = ref<Bcp47Code | undefined>(undefined)
 
 const usedLanguages = computed(() => new Set(props.modelValue.map((r) => r.language)))
 
@@ -104,12 +106,12 @@ function setQuestion(langIndex: number, qIndex: number, value: string) {
       />
     </div>
 
-    <p v-if="modelValue.length === 0" class="text-sm text-dimmed">
+    <p v-if="modelValue.length === 0" class="text-dimmed text-sm">
       {{ t('aiApps.conversationStarters.noStarters') }}
     </p>
 
-    <div v-for="(row, li) in modelValue" :key="row.language" class="border border-default rounded-lg p-4">
-      <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+    <div v-for="(row, li) in modelValue" :key="row.language" class="border-default rounded-lg border p-4">
+      <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
         <span class="font-medium">{{ bcp47LabelFor(row.language) }}</span>
         <UButton
           color="neutral"
@@ -122,10 +124,10 @@ function setQuestion(langIndex: number, qIndex: number, value: string) {
         />
       </div>
       <div class="flex flex-col gap-2">
-        <div v-for="(q, qi) in row.questions" :key="qi" class="flex gap-2 items-start">
+        <div v-for="(q, qi) in row.questions" :key="qi" class="flex items-start gap-2">
           <UInput
             :model-value="q"
-            class="flex-1 min-w-0"
+            class="min-w-0 flex-1"
             :placeholder="t('aiApps.conversationStarters.questionPlaceholder')"
             :disabled="disabled"
             @update:model-value="(v) => setQuestion(li, qi, String(v ?? ''))"
@@ -151,10 +153,10 @@ function setQuestion(langIndex: number, qIndex: number, value: string) {
             :disabled="disabled || row.questions.length >= MAX_QUESTIONS"
             @click="addQuestion(li)"
           />
-          <span v-if="row.questions.length >= MAX_QUESTIONS" class="text-xs text-dimmed">
+          <span v-if="row.questions.length >= MAX_QUESTIONS" class="text-dimmed text-xs">
             {{ t('aiApps.conversationStarters.maxQuestionsReached') }}
           </span>
-          <span v-else class="text-xs text-dimmed">
+          <span v-else class="text-dimmed text-xs">
             {{ t('aiApps.conversationStarters.questionsRemaining', { count: MAX_QUESTIONS - row.questions.length }) }}
           </span>
         </div>

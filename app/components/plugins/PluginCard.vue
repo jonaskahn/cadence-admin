@@ -37,15 +37,15 @@ function onCardClick() {
   <UCard @click="onCardClick">
     <div class="flex flex-col gap-3">
       <div class="flex items-start gap-3">
-        <div v-if="pluginAvatarSrc" class="size-12 shrink-0 rounded-lg overflow-hidden bg-elevated p-2">
+        <div v-if="pluginAvatarSrc" class="bg-elevated size-12 shrink-0 overflow-hidden rounded-lg p-2">
           <img :alt="plugin.name" :src="pluginAvatarSrc" class="size-full object-cover" />
         </div>
         <UAvatar v-else :alt="plugin.name" :text="pluginInitial" class="size-12 shrink-0 p-2" size="lg" />
         <div class="min-w-0 flex-1">
-          <p class="font-medium truncate">
+          <p class="truncate font-medium">
             {{ plugin.name }}
           </p>
-          <p class="text-dimmed text-xs truncate">
+          <p class="text-dimmed truncate text-xs">
             {{ plugin.pid }}
           </p>
         </div>
@@ -74,11 +74,11 @@ function onCardClick() {
         </UBadge>
       </div>
 
-      <p v-if="plugin.description" class="text-sm text-dimmed line-clamp-2">
+      <p v-if="plugin.description" class="text-dimmed line-clamp-2 text-sm">
         {{ truncatedDescription }}
       </p>
 
-      <div class="flex items-center gap-2 mt-auto pt-1 text-xs text-dimmed">
+      <div class="text-dimmed mt-auto flex items-center gap-2 pt-1 text-xs">
         <span v-if="plugin.is_scoped"> • SCOPED</span>
         <span v-if="plugin.is_specialized"> • SPECIALIZED</span>
         <span v-if="plugin.stateless"> • STATELESS</span>

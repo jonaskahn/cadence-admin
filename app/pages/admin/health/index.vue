@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { HealthCheckResponse, HealthResponse } from '~/types'
 import { HEALTH_SERVICE_LABELS } from '~/constants'
+import type { HealthCheckResponse, HealthResponse } from '~/types'
 
 const { t } = useI18n()
 const { data: systemHealth } = await useFetch<HealthResponse>('/api/system-health')
@@ -16,7 +16,7 @@ const columns = computed(() => [
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="admin-health">
       <template #header>
         <UDashboardNavbar :title="t('admin.health')">
@@ -30,7 +30,7 @@ const columns = computed(() => [
       </template>
 
       <template #body>
-        <div class="pt-2 pl-6 pr-6 pr-6 flex flex-col gap-2">
+        <div class="flex flex-col gap-2 pt-2 pr-6 pl-6">
           <UCard variant="soft">
             <template #header>
               <div class="flex items-center gap-2">
@@ -45,12 +45,12 @@ const columns = computed(() => [
               </div>
             </template>
 
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
               <div v-for="(_, key) in HEALTH_SERVICE_LABELS" :key="key">
                 <p class="text-dimmed text-sm">
                   {{ t(`healthServices.${key}`) }}
                 </p>
-                <div class="flex items-center gap-1 mt-1">
+                <div class="mt-1 flex items-center gap-1">
                   <UIcon
                     :class="
                       systemHealth?.[key as keyof typeof systemHealth] === 'connected' ? 'text-success' : 'text-error'
@@ -69,7 +69,7 @@ const columns = computed(() => [
               </div>
             </div>
 
-            <p v-if="systemHealth?.error" class="mt-3 text-error text-sm">
+            <p v-if="systemHealth?.error" class="text-error mt-3 text-sm">
               {{ systemHealth.error }}
             </p>
           </UCard>
@@ -90,7 +90,7 @@ const columns = computed(() => [
               </template>
             </UTable>
 
-            <p v-if="!instanceHealth?.length" class="text-dimmed text-sm text-center py-4">
+            <p v-if="!instanceHealth?.length" class="text-dimmed py-4 text-center text-sm">
               {{ t('admin.noInstances') }}
             </p>
           </UCard>

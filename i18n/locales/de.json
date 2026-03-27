@@ -2,7 +2,7 @@
   "app": {
     "name": "Cadence",
     "tagline": "KI-Orchestrierungsplattform",
-    "description": "Multi-Mandanten-KI-Orchestrierungsplattform mit Hot/Warm/Cold-Tier-Pooling, BYOK und Multi-Framework-Unterstützung."
+    "description": "Multi-Mandanten-KI-Orchestrierungsplattform mit Hot/Cold-Tier-Pooling, BYOK und Multi-Framework-Unterstützung."
   },
   "common": {
     "cancel": "Abbrechen",
@@ -120,7 +120,6 @@
   "dashboard": {
     "title": "Dashboard",
     "hotTier": "Hot-Tier",
-    "warmTier": "Warm-Tier",
     "coldTier": "Cold-Tier",
     "aiAgents": "KI-Agenten",
     "poolMemory": "Pool-Speicher",
@@ -426,7 +425,6 @@
     "pool": "Pool-Statistiken",
     "totalInstances": "Instanzen gesamt",
     "hotTier": "Hot-Tier",
-    "warmTier": "Warm-Tier",
     "coldTier": "Cold-Tier",
     "sharedModels": "Geteilte Modelle",
     "sharedBundles": "Geteilte Bundles",
@@ -738,7 +736,7 @@
     "pages": {
       "dashboard": {
         "title": "Dashboard",
-        "description": "**Funktion:**\n\nZentrale Übersicht für die AI-Orchestrierung Ihrer Organisation. Zeigt:\n\n- **Orchestrator-Anzahl** — Gesamt, Hot-, Warm- und Cold-Tier\n- **Pool-Statistiken** — Gemeinsame Modelle, Speicher (nur Sys-Admin)\n- **Schnellaktionen** — Chat starten, Orchestratoren anzeigen, KI-Agenten verwalten\n\n**Tiers:** Hot = sofort geladen; Warm = vorgewärmt; Cold = on-demand."
+        "description": "**Funktion:**\n\nZentrale Übersicht für die AI-Orchestrierung Ihrer Organisation. Zeigt:\n\n- **Orchestrator-Anzahl** — Gesamt, Hot- und Cold-Tier\n- **Pool-Statistiken** — Gemeinsame Modelle, Speicher (nur Sys-Admin)\n- **Schnellaktionen** — Chat starten, Orchestratoren anzeigen, KI-Agenten verwalten\n\n**Tiers:** Hot = sofort geladen; Cold = on-demand (Demand-Pool kann kürzlich genutzte Instanzen halten)."
       },
       "chat": {
         "title": "Chat",
@@ -806,7 +804,7 @@
       },
       "pool": {
         "title": "Instance Pool",
-        "description": "**Funktion:**\n\nEchtzeit-Pool-Statistiken (nur Sys-Admin). Gesamt-Instanzen, Hot-/Warm-/Cold-Tier, gemeinsame Modelle, Speicher. Aktualisiert sich alle 30 Sekunden."
+        "description": "**Funktion:**\n\nEchtzeit-Pool-Statistiken (nur Sys-Admin). Gesamt-Instanzen, Hot-/Cold-Tier, gemeinsame Modelle, Speicher. Aktualisiert sich alle 30 Sekunden."
       },
       "health": {
         "title": "Systemstatus",
@@ -856,7 +854,7 @@
     "aiAppSections": {
       "createBasic": {
         "title": "Basis",
-        "description": "**Funktion:**\n\nZentrale Einstellungen für den neuen Orchestrator.\n\n**Felder:**\n- **Name** — Eindeutige Kennung (10–55 Zeichen). Wird in URLs und API verwendet.\n- **Framework** — LangGraph, Google ADK oder OpenAI Agents. **Nach Erstellung unveränderlich.**\n- **Mode** — Supervisor (Multi-Agent) oder andere Modi. Abhängig vom Framework.\n- **Initial tier** — Hot (sofort laden), Warm (vorgewärmt), Cold (on-demand). Beeinflusst Pool-Speicher."
+        "description": "**Funktion:**\n\nZentrale Einstellungen für den neuen Orchestrator.\n\n**Felder:**\n- **Name** — Eindeutige Kennung (10–55 Zeichen). Wird in URLs und API verwendet.\n- **Framework** — LangGraph, Google ADK oder OpenAI Agents. **Nach Erstellung unveränderlich.**\n- **Mode** — Supervisor (Multi-Agent) oder andere Modi. Abhängig vom Framework.\n- **Initial tier** — Hot (sofort laden) oder Cold (on-demand). Beeinflusst Pool-Speicher."
       },
       "createPlugins": {
         "title": "KI-Agenten",
@@ -999,7 +997,6 @@
       "whoamiPlaceholder": "Optionale Angaben zur Rolle dieses Orchestrators (z.B. Rolle, Domain, Ton). Wird in Antwortknoten injiziert.",
       "initialTier": "Anfangs-Tier",
       "tierCold": "Cold (Standard)",
-      "tierWarm": "Warm",
       "tierHot": "Hot (sofort laden)",
       "pluginTableName": "Name",
       "pluginTablePid": "PID",
@@ -1089,10 +1086,8 @@
       "failedLoad": "Orchestrator konnte nicht geladen werden",
       "placeholderSelectConfig": "LLM-Konfiguration auswählen…",
       "tierCold": "Cold",
-      "tierWarm": "Warm",
       "tierHot": "Hot (sofort laden)",
       "langfuseFieldsRequired": "Secret Key, Public Key und Host URL sind erforderlich, wenn die Überwachung aktiviert ist"
-    },
-    "legacyBadge": "ORCHESTRATOR"
+    }
   }
 }

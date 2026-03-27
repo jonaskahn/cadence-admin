@@ -15,10 +15,8 @@ const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
 
-const { data: roles, refresh: refreshRoles } = await useApiFetch<AdminRoleResponse[]>('/api/admin/roles', {
-  default: () => []
-})
-const { data: permCatalog } = await useApiFetch<string[]>('/api/admin/permissions', { default: () => [] })
+const { data: roles, refresh: refreshRoles } = await useApiFetch<AdminRoleResponse[]>('/api/admin/roles')
+const { data: permCatalog } = await useApiFetch<string[]>('/api/admin/permissions')
 
 const showCreate = ref(false)
 const createSaving = ref(false)
@@ -164,7 +162,7 @@ const columns = computed(() => [
     <UCard v-if="roles?.length" variant="soft">
       <UTable :data="roles || []" :columns="columns">
         <template #scope-cell="{ row }">
-          <UBadge color="neutral" variant="subtle" class="uppercase text-xs">
+          <UBadge color="neutral" variant="subtle" class="text-xs uppercase">
             {{ row.original.scope }}
           </UBadge>
         </template>
@@ -174,7 +172,7 @@ const columns = computed(() => [
           </UBadge>
         </template>
         <template #permissions-cell="{ row }">
-          <span class="text-sm text-muted">
+          <span class="text-muted text-sm">
             {{ t('admin.rolePermissionCount', { n: row.original.permissions?.length ?? 0 }) }}
           </span>
         </template>
@@ -186,7 +184,7 @@ const columns = computed(() => [
             :label="t('admin.editCustomRolePermissions')"
             @click="openEdit(row.original)"
           />
-          <span v-else class="text-xs text-muted">—</span>
+          <span v-else class="text-muted text-xs">—</span>
         </template>
       </UTable>
     </UCard>
@@ -194,7 +192,7 @@ const columns = computed(() => [
 
     <UModal v-model:open="showCreate" :title="t('admin.createCustomRole')" :ui="{ content: 'sm:max-w-lg' }">
       <template #content>
-        <div class="flex flex-col gap-4 p-4 sm:p-6 max-h-[85vh] overflow-y-auto">
+        <div class="flex max-h-[85vh] flex-col gap-4 overflow-y-auto p-4 sm:p-6">
           <UFormField :label="t('admin.roleNameSlug')" required :description="t('admin.roleNameSlugHint')">
             <UInput v-model="createForm.name" class="w-full font-mono" autocomplete="off" />
           </UFormField>
@@ -205,7 +203,7 @@ const columns = computed(() => [
             <USelect v-model="createForm.scope" :items="scopeItems" value-key="value" class="w-full" />
           </UFormField>
           <UFormField :label="t('admin.rolePermissionsLabel')">
-            <div class="max-h-56 overflow-y-auto rounded-lg border border-default p-3 space-y-2">
+            <div class="border-default max-h-56 space-y-2 overflow-y-auto rounded-lg border p-3">
               <UCheckbox
                 v-for="p in createCatalogFiltered"
                 :key="p"
@@ -226,10 +224,10 @@ const columns = computed(() => [
 
     <UModal v-model:open="showEditModal" :title="t('admin.editCustomRolePermissions')" :ui="{ content: 'sm:max-w-lg' }">
       <template #content>
-        <div v-if="editRole" class="flex flex-col gap-4 p-4 sm:p-6 max-h-[85vh] overflow-y-auto">
-          <p class="text-sm font-mono text-muted">{{ editRole.name }} · {{ editRole.scope }}</p>
+        <div v-if="editRole" class="flex max-h-[85vh] flex-col gap-4 overflow-y-auto p-4 sm:p-6">
+          <p class="text-muted font-mono text-sm">{{ editRole.name }} · {{ editRole.scope }}</p>
           <UFormField :label="t('admin.rolePermissionsLabel')">
-            <div class="max-h-56 overflow-y-auto rounded-lg border border-default p-3 space-y-2">
+            <div class="border-default max-h-56 space-y-2 overflow-y-auto rounded-lg border p-3">
               <UCheckbox
                 v-for="p in editCatalogFiltered"
                 :key="p"

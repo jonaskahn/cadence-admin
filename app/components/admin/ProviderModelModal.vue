@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import * as z from 'zod'
+
+import type { AddProviderModelRequest, ProviderModelCatalogEntry, UpdateProviderModelRequest } from '~/types'
 import { getApiErrorMessage, LLM_PROVIDERS } from '~/utils'
 import {
   BILLING_UNITS,
+  type BillingUnit,
   defaultBillingUnits,
   MODEL_CATEGORIES,
-  parseOptionalPrice,
-  type BillingUnit,
-  type ModelCategory
+  type ModelCategory,
+  parseOptionalPrice
 } from '~/utils/providerModelCatalog'
-import type { AddProviderModelRequest, ProviderModelCatalogEntry, UpdateProviderModelRequest } from '~/types'
 
 const props = defineProps<{
   initialValue?: ProviderModelCatalogEntry
@@ -200,7 +201,7 @@ async function onSubmit(event: FormSubmitEvent<ProviderModelFormData>): Promise<
 </script>
 
 <template>
-  <UCard variant="soft" class="w-full max-w-lg max-h-[90vh] overflow-y-auto">
+  <UCard variant="soft" class="max-h-[90vh] w-full max-w-lg overflow-y-auto">
     <template #header>
       <p class="font-semibold">
         {{ isEdit ? t('admin.editModel') + ': ' + initialValue?.model_id : t('admin.addModel') }}
@@ -256,7 +257,7 @@ async function onSubmit(event: FormSubmitEvent<ProviderModelFormData>): Promise<
         />
       </UFormField>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <UFormField :label="t('admin.inputBillingUnit')" name="input_billing_unit">
           <USelect
             v-model="state.input_billing_unit"
@@ -277,7 +278,7 @@ async function onSubmit(event: FormSubmitEvent<ProviderModelFormData>): Promise<
         </UFormField>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <UFormField
           :label="t('admin.inputPricePerUnit')"
           name="input_price"

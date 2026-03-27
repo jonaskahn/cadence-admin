@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem } from '@nuxt/ui'
+
 import type { OrganizationResponse, PluginMetadataResponse, SystemPluginResponse } from '~/types'
 
 type PluginCardItem = (PluginMetadataResponse & { enabled?: boolean }) | SystemPluginResponse
@@ -62,12 +63,12 @@ function openUpload() {
 </script>
 
 <template>
-  <div class="min-w-0 flex-1 flex flex-col overflow-hidden">
+  <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
     <UDashboardPanel id="admin-agent-store">
       <template #header>
         <UDashboardNavbar>
           <template #title>
-            <span class="inline-flex items-center gap-2 flex-wrap">
+            <span class="inline-flex flex-wrap items-center gap-2">
               <span>{{ t('admin.pluginsPageTitle') }}</span>
               <UBadge color="neutral" size="xs" variant="subtle">{{ t('plugins.legacyBadge') }}</UBadge>
             </span>
@@ -115,7 +116,7 @@ function openUpload() {
 
       <template #body>
         <div class="p-6">
-          <div v-if="activeTab === 'org' && !selectedOrgId" class="py-8 text-center text-dimmed">
+          <div v-if="activeTab === 'org' && !selectedOrgId" class="text-dimmed py-8 text-center">
             {{ t('admin.selectOrgToView') }}
           </div>
           <div v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -127,12 +128,12 @@ function openUpload() {
               @select="onPluginSelect"
             />
           </div>
-          <p v-if="activeTab === 'system' && plugins.length === 0" class="py-8 text-center text-dimmed">
+          <p v-if="activeTab === 'system' && plugins.length === 0" class="text-dimmed py-8 text-center">
             {{ t('admin.noPluginsYet') }}
           </p>
           <p
             v-else-if="activeTab === 'org' && selectedOrgId && plugins.length === 0"
-            class="py-8 text-center text-dimmed"
+            class="text-dimmed py-8 text-center"
           >
             {{ t('admin.noOrgPlugins') }}
           </p>

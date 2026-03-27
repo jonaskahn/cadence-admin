@@ -33,18 +33,18 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="py-4 flex items-start gap-4">
+  <div class="flex items-start gap-4 py-4">
     <div class="flex-1">
-      <p class="font-medium text-sm">{{ setting.description }}</p>
-      <p class="text-dimmed text-xs font-mono mt-0.5">{{ setting.key }}</p>
+      <p class="text-sm font-medium">{{ setting.description }}</p>
+      <p class="text-dimmed mt-0.5 font-mono text-xs">{{ setting.key }}</p>
       <UBadge class="mt-1" size="xs" variant="subtle">{{ setting.value_type }}</UBadge>
     </div>
     <div class="flex items-center gap-4">
       <div v-if="showOverridableToggle" class="flex items-center gap-1.5">
         <USwitch v-model="localOverridable" size="sm" />
-        <span class="text-xs text-dimmed">{{ t('admin.overridable') }}</span>
+        <span class="text-dimmed text-xs">{{ t('admin.overridable') }}</span>
       </div>
-      <div class="flex items-center gap-2 min-w-56">
+      <div class="flex min-w-56 items-center gap-2">
         <SettingInput v-model="localValue" :value-type="setting.value_type" size="sm" class="flex-1" />
         <ConfirmActionPopover
           v-if="!hideSave"
