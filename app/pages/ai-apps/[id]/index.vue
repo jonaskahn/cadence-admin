@@ -325,7 +325,11 @@ async function handleActivateConfirm(close: () => void) {
                   <div>
                     <dt class="text-dimmed text-sm">Tier</dt>
                     <dd class="mt-1">
-                      <UBadge :color="tierColor(normalizeOrchestratorPoolTier(aiApp.tier ?? 'cold'))" size="sm" variant="subtle">
+                      <UBadge
+                        :color="tierColor(normalizeOrchestratorPoolTier(aiApp.tier ?? 'cold'))"
+                        size="sm"
+                        variant="subtle"
+                      >
                         {{ normalizeOrchestratorPoolTier(aiApp.tier ?? 'cold').toUpperCase() }}
                       </UBadge>
                     </dd>

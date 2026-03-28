@@ -368,7 +368,11 @@ const costByProviderChartData = {
             <template v-if="orchestrators?.length">
               <UTable :columns="orchestratorColumns" :data="orchestrators.slice(0, 5)">
                 <template #tier-cell="{ row }">
-                  <UBadge :color="tierColor(normalizeOrchestratorPoolTier(row.original.tier))" size="sm" variant="subtle">
+                  <UBadge
+                    :color="tierColor(normalizeOrchestratorPoolTier(row.original.tier))"
+                    size="sm"
+                    variant="subtle"
+                  >
                     {{ normalizeOrchestratorPoolTier(row.original.tier).toUpperCase() }}
                   </UBadge>
                 </template>

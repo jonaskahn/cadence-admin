@@ -2,7 +2,7 @@
   "app": {
     "name": "Cadence",
     "tagline": "AI Orchestration Platform",
-    "description": "Multi-tenant AI orchestration platform with hot/cold tier pooling, BYOK, and multi-framework support."
+    "description": "Multi-tenant AI orchestration platform with hot/cold tier pooling, BYOK, and support for multiple frameworks."
   },
   "common": {
     "cancel": "Cancel",
@@ -86,7 +86,7 @@
   "nav": {
     "dashboard": "Dashboard",
     "chat": "Chat",
-    "aiAgents": "Agents Store",
+    "aiAgents": "Agent Store",
     "aiAgentsBadge": "PLUGIN",
     "settings": "Settings",
     "general": "General",
@@ -96,7 +96,7 @@
     "system": "System",
     "organizations": "Organizations",
     "users": "Users",
-    "systemPlugins": "Agents Store",
+    "systemPlugins": "Agent Store",
     "globalSettings": "Global",
     "pool": "Pool",
     "health": "Health",
@@ -123,7 +123,7 @@
     "hotTier": "Hot Tier",
     "demandPool": "Demand pool",
     "coldTier": "Cold Tier",
-    "aiAgents": "AI agents",
+    "aiAgents": "AI Agents",
     "poolMemory": "Pool Memory",
     "poolStatistics": "Pool Statistics",
     "sharedModels": "Shared Models",
@@ -156,7 +156,7 @@
     "stream": "Stream",
     "enterToSend": "Enter to send · Shift+Enter for newline",
     "chatError": "Chat error",
-    "selectAndStart": "Select a thread or create a new one to start chatting",
+    "selectAndStart": "Select a thread or create a new one to start chatting.",
     "suggestedQuestions": "Suggested questions",
     "newThread": "New Thread",
     "untitledThread": "Untitled thread",
@@ -174,11 +174,11 @@
     "userId": "User ID",
     "role": "Role",
     "profile": "Profile",
-    "contactAndDisplay": "Contact & display",
+    "contactAndDisplay": "Contact & Display",
     "profileDetails": "Profile details",
     "displayName": "Display Name",
     "email": "Email",
-    "yourName": "Your name",
+    "yourName": "Your Name",
     "emailPlaceholder": "you{'@'}example.com",
     "avatarUrl": "Avatar URL",
     "avatarUrlPlaceholder": "https://…",
@@ -283,7 +283,7 @@
     "organizationUpdated": "Organization updated",
     "failedUpdateOrg": "Failed to update organization",
     "members": "Members",
-    "membersDescription": "Manage organization membership.",
+    "membersDescription": "Manage your organization's members.",
     "noMembers": "No members yet",
     "addMember": "Add Member",
     "username": "Username",
@@ -316,15 +316,15 @@
     "failedDeleteConfig": "Failed to delete config",
     "deleteConfigConfirm": "Delete config \"{name}\"?",
     "defaultLlmConfig": "Default LLM Config",
-    "defaultLlmConfigDescription": "Pre-fills the LLM config dropdown on new instances.",
+    "defaultLlmConfigDescription": "Pre-fills the LLM config dropdown for new instances.",
     "defaultModelName": "Default Model Name",
-    "defaultModelDescription": "Pre-fills the model dropdown on new instances.",
+    "defaultModelDescription": "Pre-fills the model dropdown for new instances.",
     "defaultMaxTokens": "Default Max Tokens",
-    "defaultTemperatureDescription": "Pre-fills default temperature on new AI App instances (0.0–2.0). Leave empty for no org default.",
+    "defaultTemperatureDescription": "Pre-fills the default temperature for new AI App instances (0.0–2.0). Leave empty for no organization default.",
     "placeholderTemperature": "e.g. 0.2",
-    "defaultTimeout": "Default Node Execution Timeout (seconds)",
+    "defaultTimeout": "Default Node Execution Timeout (Seconds)",
     "none": "None",
-    "selectModel": "Select model…",
+    "selectModel": "Select a model…",
     "modelPlaceholder": "e.g. gpt-4o, gemini-2.0-flash",
     "defaultsSaved": "Defaults saved",
     "failedSaveDefaults": "Failed to save defaults",
@@ -355,7 +355,7 @@
     "failedUpdateConfig": "Failed to update config",
     "failedAddConfig": "Failed to add config",
     "configName": "Config Name",
-    "configNameDescription": "Name for this config (e.g. 'primary', 'fast')",
+    "configNameDescription": "Name for this configuration (for example, 'primary' or 'fast').",
     "primaryPlaceholder": "primary",
     "provider": "Provider",
     "providerRequired": "Provider is required",
@@ -381,7 +381,7 @@
     "enabled": "Enabled",
     "disabled": "Disabled",
     "noPluginsMatch": "No AI agents match the selected filter.",
-    "stateless": "stateless"
+    "stateless": "Stateless"
   },
   "admin": {
     "nameRequired": "Name is required",
@@ -418,7 +418,7 @@
     "userDeleted": "User deleted",
     "failedCreateUser": "Failed to create user",
     "failedUpdateUser": "Failed to update user",
-    "failedDeleteUser": "Failed to delete user",
+    "failedDeleteUser": "Failed to delete user.",
     "editUser": "Edit User",
     "deleteUser": "Delete User",
     "deleteUserConfirm": "Delete {username}? This will remove all their org memberships.",
@@ -441,9 +441,9 @@
     "ready": "ready",
     "notReady": "not ready",
     "noInstances": "No instances loaded.",
-    "systemPlugins": "Agents Store",
-    "pluginsPageTitle": "Agents Store",
-    "uploadPlugin": "Upload AI agent",
+    "systemPlugins": "Agent Store",
+    "pluginsPageTitle": "Agent Store",
+    "uploadPlugin": "Upload AI Agent",
     "selectOrgToView": "Select an organization to view and manage its AI agents.",
     "noPluginsYet": "No AI agents yet. Upload one to get started.",
     "noOrgPlugins": "No org AI agents for this organization.",
@@ -484,7 +484,7 @@
     "aliases": "Aliases",
     "status": "Status",
     "platformModelCatalog": "Platform model catalog",
-    "platformModelCatalogDesc": "Manage the global list of available models per provider. Disabled models will not appear in provider model selections.",
+    "platformModelCatalogDesc": "Manage the global list of available models for each provider. Disabled models will not appear in provider model selections.",
     "allProviders": "All Providers",
     "noModelsFound": "No models found.",
     "enable": "Enable",
@@ -492,7 +492,7 @@
     "disableModelConfirm": "Disable this model in the catalog?",
     "enableModelConfirm": "Enable this model in the catalog?",
     "domainPlaceholder": "acme.com",
-    "placeholderUsername": "johndoe",
+    "placeholderUsername": "john_doe",
     "placeholderEmail": "john{'@'}example.com",
     "aliasesDescription": "Comma-separated list of alternative identifiers",
     "modelIdPlaceholder": "e.g. gpt-4o-mini",
@@ -587,7 +587,7 @@
     "customRolesTabDescription": "Create roles with permission sets. System scope applies globally; org scope applies per organization when assigned.",
     "createCustomRole": "Create role",
     "roleNameSlug": "Role name",
-    "roleNameSlugHint": "Lowercase letter, then letters, numbers, or underscores (e.g. support_lead)",
+    "roleNameSlugHint": "Starts with a lowercase letter, followed by letters, numbers, or underscores (for example, support_lead).",
     "roleDescription": "Description",
     "roleScopeLabel": "Scope",
     "roleScopeSystem": "System",
@@ -629,14 +629,14 @@
     "submitFailed": "Could not complete authorization"
   },
   "pluginDetail": {
-    "title": "AI agent detail",
+    "title": "AI Agent Details",
     "failedToLoad": "Failed to load versions",
     "disableConfirm": "Disable this AI agent?",
     "enableConfirm": "Enable this AI agent?",
-    "pluginDisabled": "AI agent disabled",
-    "pluginEnabled": "AI agent enabled",
-    "failedDisable": "Failed to disable AI agent",
-    "failedEnable": "Failed to enable AI agent",
+    "pluginDisabled": "AI agent disabled.",
+    "pluginEnabled": "AI agent enabled.",
+    "failedDisable": "Failed to disable AI agent.",
+    "failedEnable": "Failed to enable AI agent.",
     "titleLabel": "Title",
     "namePid": "Name (PID)",
     "version": "Version",
@@ -660,12 +660,12 @@
     "no": "No"
   },
   "pluginUpload": {
-    "title": "Upload AI agent",
-    "description": "Upload an AI agent package as a ZIP file (plugin format)",
-    "uploaded": "AI agent uploaded",
-    "uploadFailed": "Upload failed",
-    "clickToSelect": "Click to select AI agent (.zip)",
-    "packageHint": "AI agent package in ZIP format"
+    "title": "Upload AI Agent",
+    "description": "Upload an AI agent package as a ZIP file (plugin format).",
+    "uploaded": "AI agent uploaded.",
+    "uploadFailed": "Upload failed.",
+    "clickToSelect": "Click to select an AI agent (.zip).",
+    "packageHint": "AI agent package in ZIP format."
   },
   "errors": {
     "notFound": "Page not found",
@@ -678,7 +678,7 @@
     "failedLoadModels": "Failed to load provider models",
     "modelEnabled": "Model enabled",
     "modelDisabled": "Model disabled",
-    "toggleFailedFallback": "Failed to toggle model",
+    "toggleFailedFallback": "Failed to toggle the model.",
     "errorTitle": "Error"
   },
   "settingsGroups": {
@@ -700,14 +700,14 @@
   },
   "langGraphSupervisor": {
     "defaultLlmConfig": "Default LLM Config",
-    "defaultLlmConfigDescription": "LLM config used by all nodes unless overridden per-node",
+    "defaultLlmConfigDescription": "LLM configuration used by all nodes unless overridden per node.",
     "defaultModel": "Default Model",
-    "defaultModelDescription": "Model used by all nodes unless overridden per-node",
+    "defaultModelDescription": "Model used by all nodes unless overridden per node.",
     "placeholderLoading": "Loading…",
-    "placeholderNoConfigs": "No LLM configs — add one in Settings first",
-    "placeholderSelectConfig": "Select LLM config…",
+    "placeholderNoConfigs": "No LLM configurations available — add one in Settings first.",
+    "placeholderSelectConfig": "Select an LLM configuration…",
     "placeholderSelectModel": "Select model…",
-    "placeholderUseDefault": "Use default",
+    "placeholderUseDefault": "Use default.",
     "placeholderUseDefaultModel": "Use default model",
     "placeholderSystemDefault": "System default",
     "defaultTemperature": "Default Temperature",
@@ -715,51 +715,51 @@
     "defaultMaxTokens": "Default Max Tokens",
     "defaultMaxTokensDescription": "Default max output tokens for all nodes (Min/Max: 1k/4k)",
     "nodeExecutionTimeout": "Node Execution Timeout (s)",
-    "nodeExecutionTimeoutDescription": "Default timeout in seconds for each graph node or agent step (LLM and tool calls; answer nodes use 2×)",
+    "nodeExecutionTimeoutDescription": "Default timeout in seconds for each graph node or agent step (LLM and tool calls; answer nodes use 2×).",
     "maxAgentHops": "Max Agent Hops",
-    "maxAgentHopsDescription": "Max planner iterations before synthesizing (Min/Max: 5/50)",
+    "maxAgentHopsDescription": "Maximum planner iterations before synthesizing (Min/Max: 5/50).",
     "maxMessageContextWindow": "Max Message Context Window",
-    "maxMessageContextWindowDescription": "Last N messages sent to AI App (Min/Max: 5/50)",
+    "maxMessageContextWindowDescription": "Last N messages sent to the AI App (Min/Max: 5/50).",
     "maxTokenContextWindow": "Max Token Context Window",
-    "maxTokenContextWindowDescription": "Max tokens in conversation (Min/Max: 4k/32k)",
+    "maxTokenContextWindowDescription": "Maximum tokens in the conversation (Min/Max: 4k/32k).",
     "parallelToolCalls": "Parallel Tool Calls",
     "enableToolResultCache": "Enable Tool Result Cache",
     "useLlmValidation": "Use LLM Validation",
     "useClarificationIntent": "Use Clarification",
-    "enabledSuggestion": "Enable suggestion questions",
+    "enabledSuggestion": "Enable Suggested Questions",
     "autoCompactMessages": "Compact Messages",
     "autocompactLlmConfig": "LLM Config",
-    "autocompactLlmConfigDescription": "Config used LLM for message compaction",
+    "autocompactLlmConfigDescription": "LLM configuration used for message compaction.",
     "autocompactModel": "Default Model",
-    "autocompactModelDescription": "Config used model for message compaction",
+    "autocompactModelDescription": "Model used for message compaction.",
     "suggestionLlmConfig": "LLM Config",
-    "suggestionLlmConfigDescription": "LLM config used for generating suggestion questions",
+    "suggestionLlmConfigDescription": "LLM configuration used to generate suggested questions.",
     "suggestionModel": "Model",
     "suggestionModelDescription": "Model used for generating suggestion questions",
     "overrideSet": "Override set",
     "llmConfig": "LLM Config",
     "llmConfigOverrideDescription": "Overrides default LLM config for this node",
     "model": "Model",
-    "modelNodeConfigDescription": "Model for this node's LLM config",
-    "modelOverrideDescription": "Overrides default model for this node",
+    "modelNodeConfigDescription": "Model for this node's LLM configuration.",
+    "modelOverrideDescription": "Overrides the default model for this node.",
     "temperature": "Temperature",
-    "temperatureDescription": "Override node temperature (0.0–2.0)",
+    "temperatureDescription": "Overrides this node's temperature (0.0–2.0).",
     "maxTokens": "Max Tokens",
-    "maxTokensDescription": "Override node max output tokens",
+    "maxTokensDescription": "Overrides this node's maximum output tokens.",
     "timeout": "Timeout (s)",
-    "timeoutDescription": "Override timeout for this node in seconds",
+    "timeoutDescription": "Overrides the timeout for this node in seconds.",
     "placeholderDefaultFromInstance": "Default (from instance)",
-    "placeholderUseGlobalTimeout": "Use global node_execution_timeout",
+    "placeholderUseGlobalTimeout": "Use global node_execution_timeout.",
     "promptOverride": "Prompt Override",
-    "promptOverrideDescription": "Must contain the same {placeholders} as the default prompt",
+    "promptOverrideDescription": "Must contain the same {placeholders} as the default prompt.",
     "placeholderEmptyPrompt": "Leave empty to use the default prompt",
-    "defaultLlmSelectPlaceholderOrg": "Leave empty to use organization defaults when configured",
-    "defaultModelPlaceholderInherit": "Leave empty for org default model, or type a model id",
+    "defaultLlmSelectPlaceholderOrg": "Leave empty to use organization defaults when configured.",
+    "defaultModelPlaceholderInherit": "Leave empty to use the organization’s default model, or enter a model ID.",
     "nodeUseAppDefaultLlm": "Use top LLM default",
-    "nodeFieldInheritsFromLlmSection": "When empty, uses the default from the LLM config section above.",
+    "nodeFieldInheritsFromLlmSection": "When empty, uses the default from the LLM configuration section above.",
     "nodeNumericPlaceholder": "Default: {value}",
     "inheritsFromLlmDefaultShort": "Uses top LLM default",
-    "promptOverridePlaceholderBuiltin": "Uses built-in default prompt when empty",
+    "promptOverridePlaceholderBuiltin": "Uses the built-in default prompt when empty.",
     "temperatureEnterManually": "Enter temperature manually",
     "temperatureChoosePreset": "Choose preset temperature",
     "temperatureChoosePresetHint": "Enter a value that matches a preset to switch back",
@@ -797,15 +797,15 @@
       },
       "chat": {
         "title": "Chat",
-        "description": "**What it does:**\n\nInteractive playground to test AI Apps with real conversations.\n\n**How to use:**\n1. Select an AI App from the sidebar (must be active and ready)\n2. Type a message and press Enter\n3. View the response, agent steps, and tool sources\n\n**Features:**\n- Streaming responses with progress\n- Expandable steps and sources per message\n- Session persists until you clear"
+        "description": "**What it does:**\n\nInteractive playground for testing AI Apps with real conversations.\n\n**How to use:**\n1. Select an AI App from the sidebar (it must be active and ready)\n2. Type a message and press Enter\n3. View the response, agent steps, and tool sources\n\n**Features:**\n- Streaming responses with progress\n- Expandable steps and sources for each message\n- Session persists until you clear it"
       },
       "agentStore": {
         "title": "Agents Store",
-        "description": "**What it does:**\n\nBrowse and manage AI agents (plugin ZIPs) that extend AI App capabilities.\n\n**Types:**\n- **Official** — Platform-wide, available to all orgs\n- **Org** — Per-organization, uploaded by org admins\n\n**Actions:** Enable/disable, view details, configure settings. Each package maps to the plugin API (`/api/.../plugins`) and supplies tools AI Apps use at runtime."
+        "description": "**What it does:**\n\nBrowse and manage AI agents (plugin ZIPs) that extend AI App capabilities.\n\n**Types:**\n- **Official** — Platform-wide, available to all organizations\n- **Org** — Per-organization, uploaded by org admins\n\n**Actions:** Enable/disable, view details, configure settings. Each package maps to the plugin API (`/api/.../plugins`) and provides the tools AI Apps use at runtime."
       },
       "profile": {
         "title": "Profile",
-        "description": "**What it does:**\n\nYour personal account settings.\n\n**Sections:**\n- **Account** — User ID, role (read-only)\n- **Profile** — Display name, email, avatar URL, locale, timezone, bio\n- **API keys** (system admins) — Create and revoke keys\n\n**Password:** use **Change password** in the user menu (⋯). Changes apply immediately."
+        "description": "**What it does:**\n\nYour personal account settings.\n\n**Sections:**\n- **Account** — User ID, role (read-only)\n- **Profile** — Display name, email, avatar URL, locale, timezone, bio\n- **API keys** (system admins) — Create and revoke keys\n\n**Password:** Use **Change password** in the user menu (⋯). Changes apply immediately."
       },
       "aiApps": {
         "title": "AI Apps",
@@ -815,7 +815,7 @@
     "settings": {
       "orgIdentity": {
         "title": "Organization",
-        "description": "**What it shows:**\n\nRead-only identity of your current organization:\n\n- **Organization ID** — Unique identifier\n- **Slug** — URL-friendly name\n- **Domain** — Assigned domain (e.g. acme.com)\n- **Subscription tier** — free, pro, enterprise\n- **Status** — active, suspended, etc.\n\n**Note:** Only system admins can change these values."
+        "description": "**What it shows:**\n\nRead-only identity details for your current organization:\n\n- **Organization ID** — Unique identifier\n- **Slug** — URL-friendly name\n- **Domain** — Assigned domain (for example, acme.com)\n- **Subscription tier** — free, pro, enterprise\n- **Status** — active, suspended, etc.\n\n**Note:** Only system admins can change these values."
       },
       "orgProfile": {
         "title": "Organization Profile",
@@ -823,7 +823,7 @@
       },
       "members": {
         "title": "Members",
-        "description": "**What it does:**\n\nManage who belongs to your organization.\n\n**Actions:**\n- **Add member** — By email, username, or user ID\n- **Promote** — Grant org admin rights\n- **Demote** — Remove org admin rights\n- **Remove** — Remove from organization\n\n**Who can manage:** Org admins only. Members can belong to multiple orgs."
+        "description": "**What it does:**\n\nManage who belongs to your organization.\n\n**Actions:**\n- **Add member** — By email, username, or user ID\n- **Promote** — Grant org admin rights\n- **Demote** — Remove org admin rights\n- **Remove** — Remove from the organization\n\n**Who can manage:** Org admins only. Members can belong to multiple organizations."
       },
       "llmConfigs": {
         "title": "LLM Configurations",
@@ -845,15 +845,15 @@
       },
       "orgDetail": {
         "title": "Organization Details",
-        "description": "**What it does:**\n\nEdit a single organization (sys admin only).\n\n**Sections:**\n- **Profile** — Display name, domain, tier, contact info\n- **Tier quotas** — Max AI Apps, members, central points, messages, LLM configs, rate limits\n- **Members** — Add, promote, demote, remove\n\n**Preview** shows current usage vs. quota limits."
+        "description": "**What it does:**\n\nEdit a single organization (system admins only).\n\n**Sections:**\n- **Profile** — Display name, domain, tier, contact info\n- **Tier quotas** — Max AI Apps, members, central points, messages, LLM configs, rate limits\n- **Members** — Add, promote, demote, remove\n\n**Preview** shows current usage versus quota limits."
       },
       "users": {
         "title": "Users",
         "description": "**What it does:**\n\nPlatform user management (sys admin only).\n\n**Actions:**\n- Create users (username, email, optional password)\n- Edit username, email, system admin flag\n- Delete users (removes all org memberships)\n\n**System admin** — Full platform access. Users can belong to multiple organizations with different roles."
       },
       "systemPlugins": {
-        "title": "Agent store",
-        "description": "**What it does:**\n\nManage AI agents (plugin ZIPs) available to **all** organizations (sys admin only).\n\n**Tabs:** Official | Org (per-organization)\n\n**Actions:**\n- Upload AI agent (ZIP)\n- Enable/disable versions\n- View details and config\n\nOrg admins enable official agents for their org. Org-scoped agents are uploaded per org in **Agent store**."
+        "title": "Agent Store",
+        "description": "**What it does:**\n\nManage AI agents (plugin ZIPs) available to **all** organizations (system admins only).\n\n**Tabs:** Official | Org (per organization)\n\n**Actions:**\n- Upload AI agent (ZIP)\n- Enable/disable versions\n- View details and configuration\n\nOrg admins enable official agents for their organization. Organization-scoped agents are uploaded per organization in **Agent Store**."
       },
       "globalSettings": {
         "title": "Global Settings",
@@ -871,20 +871,20 @@
     "fields": {
       "displayName": {
         "title": "Display Name",
-        "description": "**What it is:**\n\nPublic name shown in the UI and integrations.\n\n**Use for:** Branding, user identification, contact display. Not used for authentication."
+        "description": "**What it is:**\n\nThe public name shown in the UI and integrations.\n\n**Use for:** Branding, user identification, and contact display. It is not used for authentication."
       },
       "llmConfig": {
         "provider": {
           "title": "Provider",
-          "description": "**What it is:**\n\nLLM provider (OpenAI, Anthropic, Google, etc.).\n\n**Effect:** Determines API format and endpoint. Each provider has different models and pricing. Select the provider that holds your API key."
+          "description": "**What it is:**\n\nThe LLM provider (OpenAI, Anthropic, Google, etc.).\n\n**Effect:** Determines the API format and endpoint. Each provider has different models and pricing. Select the provider that owns your API key."
         },
         "model": {
           "title": "Model",
-          "description": "**What it is:**\n\nModel identifier (e.g. `gpt-4o`, `gemini-2.0-flash`).\n\n**Rule:** Must be supported by the selected provider. Check provider docs for valid model IDs. Use catalog for platform-managed models."
+          "description": "**What it is:**\n\nThe model identifier (for example, `gpt-4o`, `gemini-2.0-flash`).\n\n**Rule:** It must be supported by the selected provider. Check the provider documentation for valid model IDs. Use the catalog for platform-managed models."
         },
         "apiKey": {
           "title": "API Key",
-          "description": "**What it is:**\n\nYour API key for the provider.\n\n**Security:** Stored encrypted. Never shown in logs or UI after save. Rotate keys if compromised."
+          "description": "**What it is:**\n\nYour API key for the provider.\n\n**Security:** Stored securely in encrypted form. Never shown in logs or the UI after saving. Rotate keys if compromised."
         }
       },
       "centralPoint": {
@@ -900,7 +900,7 @@
       "aiApp": {
         "framework": {
           "title": "Framework",
-          "description": "**What it is:**\n\nOrchestration framework:\n\n- **LangGraph** — Multi-node graphs, state machines\n- **Google ADK** — Agent Development Kit\n- **OpenAI Agents** — OpenAI agent framework\n\n**Effect:** Determines graph structure, node types, and execution model. Immutable after creation."
+          "description": "**What it is:**\n\nThe orchestration framework:\n\n- **LangGraph** — Multi-node graphs and state machines\n- **Google ADK** — Agent Development Kit\n- **OpenAI Agents** — OpenAI agent framework\n\n**Effect:** Determines the graph structure, node types, and execution model. Immutable after creation."
         },
         "llmConfig": {
           "title": "LLM Configuration",
@@ -915,11 +915,11 @@
       },
       "createPlugins": {
         "title": "AI agents",
-        "description": "**What it does:**\n\nSelect AI agents (plugin packages) that add capabilities to this AI App.\n\n**Flow:**\n1. Click **Add AI agent** to open the selector\n2. Search and add one or more agents (required)\n3. Configure each agent's settings below the table\n\n**Note:** Each agent can have required fields. Validation runs before create. You can remove agents before saving."
+        "description": "**What it does:**\n\nSelect AI agents (plugin packages) that add capabilities to this AI App.\n\n**Flow:**\n1. Click **Add AI agent** to open the selector\n2. Search for and add one or more agents (required)\n3. Configure each agent's settings below the table\n\n**Note:** Each agent can have required fields. Validation runs before creation. You can remove agents before saving."
       },
       "supervisorLlmConfig": {
         "title": "Supervisor Node Settings",
-        "description": "**What it does:**\n\nOverride LLM settings per node in the supervisor graph.\n\n**Nodes:**\n- **Router** — Classifies incoming messages\n- **Planner** — Plans steps\n- **Synthesizer** — Final response\n- **Clarifier, Responder, Validation, Error Handler** — Specialized nodes\n\n**Per node:** Override LLM config, model, temperature, max tokens, timeout. Leave empty to use the default from the LLM Config card."
+        "description": "**What it does:**\n\nOverride LLM settings for each node in the supervisor graph.\n\n**Nodes:**\n- **Router** — Classifies incoming messages\n- **Planner** — Plans steps\n- **Synthesizer** — Produces the final response\n- **Clarifier, Responder, Validation, Error Handler** — Specialized nodes\n\n**Per node:** Override the LLM config, model, temperature, max tokens, and timeout. Leave empty to use the default from the LLM Config card."
       },
       "nodeConfig": {
         "title": "Node Config",
@@ -943,7 +943,7 @@
     "selectOrgTitle": "Select an organization",
     "selectOrgDescription": "Choose an organization from the menu above to manage central points.",
     "title": "Central Points",
-    "description": "Stable API endpoints for AI Apps. Clients use central point ID; you can swap AI Apps without client changes.",
+    "description": "Stable API endpoints for AI Apps. Clients use a central point ID, so you can swap AI Apps without changing the client.",
     "addCenterPoint": "Add Central Point",
     "noCenterPoints": "No central points yet. Create one to get started.",
     "name": "Name",
@@ -961,17 +961,17 @@
     "createdSuccess": "Central point created",
     "deletedSuccess": "Central point deleted",
     "backToCenterPoints": "Back to Central Points",
-    "notFound": "Center point not found.",
+    "notFound": "Central point not found.",
     "editSubtitle": "Edit settings and view API integration guides.",
     "basicInfo": "Basic Information",
     "saveChanges": "Save Changes",
     "updatedSuccess": "Central point updated",
     "failedUpdate": "Failed to update central point",
     "apiIntegration": "API Integration",
-    "apiIntegrationDescription": "Use the central point ID below to send chat requests. The endpoint stays stable — swap AI Apps any time without updating your clients.",
+    "apiIntegrationDescription": "Use the central point ID below to send chat requests. The endpoint stays stable, so you can swap AI Apps at any time without updating your clients.",
     "centerPointId": "Central Point ID",
     "privateAuthRequired": "Private — authentication required",
-    "privateAuthDescription": "This central point requires authentication. Include an Authorization: Bearer token header in all requests.",
+    "privateAuthDescription": "This central point requires authentication. Include an `Authorization: Bearer` token header in all requests.",
     "publicNoAuth": "Public — no authentication needed",
     "publicNoAuthDescription": "This central point is publicly accessible. No authentication header is required.",
     "endpoint": "Endpoint",
@@ -985,28 +985,28 @@
   "aiAppApi": {
     "failedLoadList": "Failed to load AI Apps",
     "created": "AI App created",
-    "failedCreate": "Failed to create AI App",
+    "failedCreate": "Failed to create the AI App.",
     "createFailedFallback": "Create failed",
-    "deactivated": "AI App deactivated",
-    "failedDeactivate": "Failed to deactivate AI App",
-    "purged": "AI App purged",
-    "failedPurge": "Failed to purge AI App",
-    "activated": "AI App activated",
-    "failedActivate": "Failed to activate AI App",
-    "loadSent": "Load event sent",
-    "failedLoad": "Failed to load AI App",
-    "unloadSent": "Unload event sent",
-    "failedUnload": "Failed to unload AI App",
+    "deactivated": "AI App deactivated.",
+    "failedDeactivate": "Failed to deactivate the AI App.",
+    "purged": "AI App purged.",
+    "failedPurge": "Failed to purge the AI App.",
+    "activated": "AI App activated.",
+    "failedActivate": "Failed to activate the AI App.",
+    "loadSent": "Load event sent.",
+    "failedLoad": "Failed to load the AI App.",
+    "unloadSent": "Unload event sent.",
+    "failedUnload": "Failed to unload the AI App.",
     "statusSet": "Status set to {status}",
-    "failedUpdateStatus": "Failed to update status",
+    "failedUpdateStatus": "Failed to update the status.",
     "updated": "AI App updated",
-    "failedUpdate": "Failed to update AI App",
+    "failedUpdate": "Failed to update the AI App.",
     "configUpdated": "Config updated",
     "failedUpdateConfig": "Failed to update config",
-    "pluginSettingsUpdated": "AI agent settings updated",
-    "failedUpdatePluginSettings": "Failed to update AI agent settings",
-    "pluginVersionActivated": "AI agent {pluginRef} activated",
-    "failedActivatePluginVersion": "Failed to activate AI agent version"
+    "pluginSettingsUpdated": "AI agent settings updated.",
+    "failedUpdatePluginSettings": "Failed to update AI agent settings.",
+    "pluginVersionActivated": "AI agent {pluginRef} activated.",
+    "failedActivatePluginVersion": "Failed to activate the AI agent version."
   },
   "aiAppPlugin": {
     "noSettingsConfigured": "No AI agent settings configured.",
@@ -1015,11 +1015,11 @@
     "required": "Required",
     "version": "version",
     "versions": "versions",
-    "fieldRequired": "\"{label}\" is required"
+    "fieldRequired": "\"{label}\" is required."
   },
   "aiAppGraph": {
-    "failedRender": "Failed to render graph diagram",
-    "failedLoad": "Failed to load graph",
+    "failedRender": "Failed to render the graph diagram.",
+    "failedLoad": "Failed to load the graph.",
     "notLoaded": "AI App is not loaded. Use the Load button to initialize it, then refresh.",
     "refresh": "Refresh",
     "retry": "Retry",
@@ -1040,7 +1040,7 @@
       "collapse": "Collapse",
       "toggleFeature": "Turn feature on or off"
     },
-    "plugins": "AI agents",
+    "plugins": "AI Agents",
     "overviewSection": "Overview",
     "details": "Details",
     "graph": "Graph",
@@ -1056,8 +1056,8 @@
     "create": {
       "title": "Create AI App",
       "basic": "Basic",
-      "plugins": "AI agents",
-      "addPlugin": "Add AI agent",
+      "plugins": "AI Agents",
+      "addPlugin": "Add AI Agent",
       "addPluginHint": "Add at least one AI agent to configure.",
       "supervisorSettings": "Supervisor Settings",
       "llmConfig": "LLM Config",
@@ -1078,7 +1078,7 @@
       "nameMinLength": "Name must be at least 10 characters",
       "selectPluginRequired": "Select at least one AI agent",
       "llmConfigRequired": "Default LLM Config is required for Supervisor mode",
-      "pluginValidationFailed": "AI agent settings validation failed",
+      "pluginValidationFailed": "AI agent settings validation failed.",
       "frameworkLangGraph": "LangGraph",
       "frameworkGoogleAdk": "Google ADK",
       "frameworkOpenaiAgents": "OpenAI Agents",
@@ -1117,7 +1117,7 @@
       "messageContextWindow": "Message context window",
       "maxContextWindow": "Max context window (tokens)",
       "maxAgentHops": "Max agent hops",
-      "maxAgentHopsHelp": "Maximum nodes switching per graph run (loop safety).",
+      "maxAgentHopsHelp": "Maximum node switches per graph run (loop safety).",
       "maxToolRounds": "Max tool rounds",
       "maxToolRoundsHelp": "Maximum completed executor rounds (planner → executor) per invocation.",
       "parallelToolCalls": "Enabled Parallel Tool Execution",
@@ -1146,17 +1146,17 @@
     },
     "grounded": {
       "predefinedContext": "Predefined Context",
-      "predefinedContextDesc": "Static context injected into every turn. Use for general instructions.",
+      "predefinedContextDesc": "Static context injected into every turn. Use it for general instructions.",
       "predefinedContextPlaceholder": "Optional static instructions…",
       "scopeRules": "Scope Rules",
-      "scopeRulesDesc": "Define what is in and out of bounds. Leave empty to auto-generate from the anchor record.",
+      "scopeRulesDesc": "Define what is in scope and out of scope. Leave empty to auto-generate from the anchor record.",
       "scopeRulesPlaceholder": "Leave empty to auto-generate from the record…",
       "maxAgentHops": "Max agent hops",
       "maxAgentHopsDesc": "Maximum planner node visits per graph run (default: 25).",
       "maxToolRounds": "Max Tool Rounds",
-      "maxToolRoundsDesc": "Maximum completed tool batches per user message (default: 3). When the cap is reached, pending tool calls are closed and the answer is synthesized. Validator replays do not count toward this limit.",
+      "maxToolRoundsDesc": "Maximum completed tool batches per user message (default: 3). When the limit is reached, pending tool calls are closed and the answer is synthesized. Validator replays do not count toward this limit.",
       "enabledValidator": "Enabled LLM Validation",
-      "enabledValidatorDesc": "Add a validation step to check responses stay within the defined scope",
+      "enabledValidatorDesc": "Adds a validation step to check that responses stay within the defined scope.",
       "settingsTitle": "Grounded Mode Settings",
       "workflowSettings": "Scope & graph limits",
       "singlePluginHint": "Grounded mode requires exactly one scoped AI agent."
@@ -1170,7 +1170,7 @@
       "version": "Version",
       "add": "Add",
       "added": "Added",
-      "addPlugin": "Add AI agent",
+      "addPlugin": "Add AI Agent",
       "failedLoadVersions": "Failed to load versions"
     },
     "edit": {
