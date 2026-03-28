@@ -443,6 +443,7 @@ export function useLangGraphOrchestratorConfig(
           node_execution_timeout: modeConfig.node_execution_timeout,
           message_context_window: modeConfig.message_context_window,
           max_context_window: modeConfig.max_context_window,
+          enabled_parallel_tool_calls: modeConfig.enabled_parallel_tool_calls,
           enabled_auto_compact: modeConfig.enabled_auto_compact,
           enabled_suggestion: modeConfig.enabled_suggestion,
           max_agent_hops: modeConfig.max_agent_hops,

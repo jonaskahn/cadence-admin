@@ -30,6 +30,8 @@ function featureToggleFor(key: GroundedNodeKey): 'llm_validation' | undefined {
       <USeparator />
     </div>
 
+    <LangGraphSupervisorParallelToolsCard class="w-full min-w-0" />
+
     <UCard variant="soft" class="w-full min-w-0">
       <template #header>
         <div class="flex items-center gap-2">

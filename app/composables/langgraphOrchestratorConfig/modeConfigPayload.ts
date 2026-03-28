@@ -54,7 +54,7 @@ export function buildSupervisorModeConfigPayload(
 }
 
 type GroundedScalars = ModeConfigScalars &
-  Pick<SupervisorOnlyScalars, 'max_agent_hops' | 'max_tool_rounds'> & {
+  Pick<SupervisorOnlyScalars, 'enabled_parallel_tool_calls' | 'max_agent_hops' | 'max_tool_rounds'> & {
     enabled_validator: boolean
   }
 
@@ -75,6 +75,7 @@ export function buildGroundedModeConfigPayload(
     node_execution_timeout: scalars.node_execution_timeout,
     message_context_window: scalars.message_context_window,
     max_context_window: scalars.max_context_window,
+    enabled_parallel_tool_calls: scalars.enabled_parallel_tool_calls,
     enabled_auto_compact: scalars.enabled_auto_compact,
     enabled_suggestion: scalars.enabled_suggestion,
     max_agent_hops: scalars.max_agent_hops,
