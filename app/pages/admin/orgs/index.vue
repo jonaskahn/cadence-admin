@@ -3,19 +3,14 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
 import type { OrganizationResponse } from '~/types'
-import {
-  formatDate,
-  getApiErrorMessage,
-  SUBSCRIPTION_TIERS,
-  subscriptionTierColor,
-  subscriptionTierSelectItems
-} from '~/utils'
+import { formatDate, SUBSCRIPTION_TIERS, subscriptionTierColor, subscriptionTierSelectItems } from '~/utils'
 
 const auth = useAuth()
 const toast = useToast()
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 
 function orgDetailPath(orgId: string | null | undefined): string | undefined {
   if (orgId == null || String(orgId).trim() === '') return undefined
@@ -108,11 +103,7 @@ async function onCreate(event: FormSubmitEvent<Schema>) {
       toast.add({ title: t('admin.organizationCreated'), icon: 'i-lucide-check', color: 'success' })
     })
   } catch (err: unknown) {
-    toast.add({
-      title: t('errors.error'),
-      description: getApiErrorMessage(err, t('admin.failedCreateOrg')),
-      color: 'error'
-    })
+    showError(err, t('errors.error'), t('admin.failedCreateOrg'))
   } finally {
     creating.value = false
   }

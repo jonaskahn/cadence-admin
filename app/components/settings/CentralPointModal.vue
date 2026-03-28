@@ -3,7 +3,6 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
 import type { OrchestratorResponse } from '~/types'
-import { getApiErrorMessage } from '~/utils'
 
 const props = defineProps<{
   orgId: string
@@ -16,10 +15,10 @@ function handleClose() {
   emit('close')
 }
 
-const toast = useToast()
 const { t } = useI18n()
 const { create } = useCentralPoints(computed(() => props.orgId))
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 const loading = ref(false)
 
 const schema = computed(() =>
@@ -72,8 +71,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       emit('close')
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, t('centralPoints.failedCreate'))
-    toast.add({ title: t('errors.error'), description: msg, color: 'error' })
+    showError(err, t('errors.error'), t('centralPoints.failedCreate'))
   } finally {
     loading.value = false
   }

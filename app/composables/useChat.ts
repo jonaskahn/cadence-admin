@@ -27,10 +27,43 @@ export interface ToolResultEvent {
   data: unknown
 }
 
+function errorPayloadForShowError(
+  status: number,
+  body: Record<string, unknown> | null,
+  fallbackMessage: string
+): { statusCode: number; data: Record<string, unknown> } {
+  if (body && typeof body.code === 'string' && typeof body.message === 'string') {
+    return {
+      statusCode: status,
+      data: {
+        statusCode: typeof body.statusCode === 'number' ? body.statusCode : status,
+        code: body.code,
+        message: body.message,
+        request_id: typeof body.request_id === 'string' ? body.request_id : '',
+        ...(typeof body.field === 'string' ? { field: body.field } : {}),
+        ...(body.details !== undefined && body.details !== null && typeof body.details === 'object'
+          ? { details: body.details }
+          : {})
+      }
+    }
+  }
+  const msg = body && typeof body.message === 'string' ? body.message : fallbackMessage.slice(0, 2000)
+  return {
+    statusCode: status,
+    data: {
+      statusCode: status,
+      code: 'SY-9000',
+      message: msg,
+      request_id: typeof body?.request_id === 'string' ? body.request_id : ''
+    }
+  }
+}
+
 export function useChat() {
   const auth = useAuth()
   const toast = useToast()
   const { t, locale } = useI18n()
+  const { showError } = useApiErrorToast()
 
   const orgId = computed(() => auth.currentOrgId.value || '')
   const aiApps = ref<OrchestratorResponse[]>([])
@@ -164,6 +197,8 @@ export function useChat() {
     currentEvents.value = []
     currentAgentStep.value = null
 
+    let streamHadError = false
+
     try {
       const response = await fetch('/api/chat/completion', {
         method: 'POST',
@@ -182,7 +217,22 @@ export function useChat() {
       })
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`)
+        const text = await response.text()
+        let parsed: Record<string, unknown> | null = null
+        try {
+          const j = JSON.parse(text) as unknown
+          if (j && typeof j === 'object' && !Array.isArray(j)) {
+            parsed = j as Record<string, unknown>
+          }
+        } catch {
+          void 0
+        }
+        showError(
+          errorPayloadForShowError(response.status, parsed, text || t('chat.chatError')),
+          t('chat.chatError'),
+          t('chat.chatError')
+        )
+        return
       }
 
       if (!enableStream.value) {
@@ -197,6 +247,24 @@ export function useChat() {
         },
         onEvent: (event) => {
           currentEvents.value.push(event)
+          if (event.type === 'error') {
+            streamHadError = true
+            const d = event.data as Record<string, unknown>
+            const payload: Record<string, unknown> = {
+              code: typeof d.code === 'string' ? d.code : 'SY-9000',
+              message: typeof d.message === 'string' ? d.message : t('chat.chatError')
+            }
+            if (typeof d.field === 'string') payload.field = d.field
+            if (d.details !== undefined && d.details !== null && typeof d.details === 'object') {
+              payload.details = d.details
+            }
+            showError(
+              errorPayloadForShowError(422, payload, t('chat.chatError')),
+              t('chat.chatError'),
+              typeof d.message === 'string' ? d.message : t('chat.chatError')
+            )
+            return
+          }
           if (event.type === 'agent') currentAgentStep.value = event.data as AgentStep
           if (event.type === 'tool') currentToolResults.value.push(event.data as ToolResultEvent)
           if (event.type === 'suggestion') {
@@ -208,6 +276,10 @@ export function useChat() {
           conversationId.value = id
         }
       })
+
+      if (streamHadError) {
+        return
+      }
 
       const suggestions = currentSuggestionContent.value
         .split('\n')
@@ -222,8 +294,7 @@ export function useChat() {
         suggestions: suggestions.length ? suggestions : undefined
       })
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Stream error'
-      toast.add({ title: t('chat.chatError'), description: msg, color: 'error' })
+      showError(err, t('chat.chatError'), t('chat.chatError'))
     } finally {
       resetStreamState()
     }

@@ -307,7 +307,7 @@ async function handleActivateConfirm(close: () => void) {
 
             <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
               <!-- Details inner panel -->
-              <div class="border-default rounded-lg border p-4">
+              <div class="border-accented border-dottedrounded-lg border p-4">
                 <p class="mb-4 text-sm font-medium">{{ t('aiApps.details') }}</p>
                 <dl class="grid grid-cols-2 gap-4 sm:grid-cols-3">
                   <div>
@@ -350,7 +350,7 @@ async function handleActivateConfirm(close: () => void) {
               </div>
 
               <!-- Graph inner panel -->
-              <div class="border-default rounded-lg border p-4">
+              <div class="border-accented border-dottedrounded-lg border p-4">
                 <p class="mb-4 text-sm font-medium">{{ t('aiApps.graph') }}</p>
                 <AiAppGraph :instance-id="instanceId" :org-id="orgId" />
               </div>

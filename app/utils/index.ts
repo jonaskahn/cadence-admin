@@ -1,3 +1,5 @@
+import type { FlatApiError } from '~/types'
+
 export function orgDisplayName(
   org:
     | {
@@ -109,12 +111,105 @@ function getDetail(err: unknown): string | null {
   return null
 }
 
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === 'object' && v !== null && !Array.isArray(v)
+}
+
+function isFlatErrorShape(o: Record<string, unknown>): boolean {
+  return typeof o.code === 'string' && typeof o.message === 'string'
+}
+
+/** Raw flat error object from `$fetch` / FetchError (`data`, `response._data`) or top-level. */
+function getFlatErrorPayload(err: unknown): Record<string, unknown> | null {
+  if (!isRecord(err)) return null
+  if (isFlatErrorShape(err)) {
+    return err
+  }
+  const data = err.data
+  if (isRecord(data) && isFlatErrorShape(data)) {
+    return data
+  }
+  const response = err.response
+  if (isRecord(response)) {
+    const rd = (response as { _data?: unknown })._data
+    if (isRecord(rd) && isFlatErrorShape(rd)) {
+      return rd
+    }
+  }
+  return null
+}
+
+/** Parse Nuxt / BFF flat API error body; returns null if shape is not a flat Cadence error. */
+export function getApiError(err: unknown): FlatApiError | null {
+  const raw = getFlatErrorPayload(err)
+  if (!raw) return null
+
+  const statusCode =
+    typeof raw.statusCode === 'number'
+      ? raw.statusCode
+      : isRecord(err) && typeof err.statusCode === 'number'
+        ? err.statusCode
+        : isRecord(err) && typeof err.status === 'number'
+          ? err.status
+          : 500
+
+  const code = typeof raw.code === 'string' ? raw.code : 'SY-9000'
+  const message = typeof raw.message === 'string' ? raw.message : 'Request failed'
+  const request_id = typeof raw.request_id === 'string' ? raw.request_id : ''
+  const out: FlatApiError = {
+    statusCode,
+    code,
+    message,
+    request_id
+  }
+  if (typeof raw.timestamp === 'string') {
+    out.timestamp = raw.timestamp
+  }
+
+  if (Array.isArray(raw.stack)) {
+    out.stack = raw.stack.filter((l): l is string => typeof l === 'string')
+  }
+  if (typeof raw.field === 'string') {
+    out.field = raw.field
+  }
+  if (raw.details !== undefined && isRecord(raw.details)) {
+    out.details = raw.details
+  }
+  if (Array.isArray(raw.errors)) {
+    out.errors = raw.errors as FlatApiError['errors']
+  }
+
+  return out
+}
+
+export function getApiErrorCode(err: unknown): string | null {
+  return getApiError(err)?.code ?? null
+}
+
+export function getApiErrorRequestId(err: unknown): string | null {
+  const id = getApiError(err)?.request_id
+  return id && id.length > 0 ? id : null
+}
+
+/** Flat API / BFF error body on `data` or top-level (Nuxt `$fetch` / `useFetch`). */
+function getFlatErrorMessage(err: unknown): string | null {
+  if (typeof err !== 'object' || err === null) return null
+  const o = err as Record<string, unknown>
+  if (typeof o.message === 'string') return o.message
+  const data = o.data
+  if (typeof data === 'object' && data !== null) {
+    const m = (data as Record<string, unknown>).message
+    if (typeof m === 'string') return m
+  }
+  return null
+}
+
 function hasStatusMessage(err: unknown): err is { statusMessage: string } {
   return typeof err === 'object' && err !== null && 'statusMessage' in err
 }
 
 export function getApiErrorMessage(err: unknown, fallback: string): string {
-  return getDetail(err) ?? (hasStatusMessage(err) ? err.statusMessage : fallback)
+  return getFlatErrorMessage(err) ?? getDetail(err) ?? (hasStatusMessage(err) ? err.statusMessage : fallback)
 }
 
 export function getFetchErrorStatus(err: unknown): number | undefined {

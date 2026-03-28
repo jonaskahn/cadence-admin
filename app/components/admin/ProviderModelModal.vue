@@ -3,7 +3,7 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
 import type { AddProviderModelRequest, ProviderModelCatalogEntry, UpdateProviderModelRequest } from '~/types'
-import { getApiErrorMessage, LLM_PROVIDERS } from '~/utils'
+import { LLM_PROVIDERS } from '~/utils'
 import {
   BILLING_UNITS,
   type BillingUnit,
@@ -29,6 +29,7 @@ const toast = useToast()
 const { t } = useI18n()
 const loading = ref(false)
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 const providerModelFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 function providerLabel(provider: string): string {
@@ -192,8 +193,7 @@ async function onSubmit(event: FormSubmitEvent<ProviderModelFormData>): Promise<
       emit('close')
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, isEdit.value ? t('admin.failedUpdateModel') : t('admin.failedAddModel'))
-    toast.add({ title: t('errors.error'), description: msg, color: 'error' })
+    showError(err, t('errors.error'), isEdit.value ? t('admin.failedUpdateModel') : t('admin.failedAddModel'))
   } finally {
     loading.value = false
   }

@@ -2,8 +2,6 @@
 import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
-import { getApiErrorMessage } from '~/utils'
-
 const props = defineProps<{ orgId: string }>()
 const emit = defineEmits<{ close: [] }>()
 
@@ -15,6 +13,7 @@ const toast = useToast()
 const { t } = useI18n()
 const { findUser } = useUserSearch()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 const loading = ref(false)
 
 const schema = z.object({
@@ -50,8 +49,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       emit('close')
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, 'Failed to add member')
-    toast.add({ title: t('errors.error'), description: msg, color: 'error' })
+    showError(err, t('errors.error'), t('addMember.failedAddMember'))
   } finally {
     loading.value = false
   }

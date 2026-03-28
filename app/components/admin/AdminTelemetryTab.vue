@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import type { TelemetryConfigResponse } from '~/types'
-import { getApiErrorMessage } from '~/utils'
 
 const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 
 const { data: config, refresh } = await useApiFetch<TelemetryConfigResponse>('/api/admin/telemetry')
 
@@ -79,8 +79,7 @@ async function save() {
       toast.add({ title: t('admin.telemetrySaved'), icon: 'i-lucide-check', color: 'success' })
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, t('admin.telemetrySaveFailed'))
-    toast.add({ title: t('admin.telemetrySaveFailed'), description: msg, color: 'error' })
+    showError(err, t('admin.telemetrySaveFailed'), t('admin.telemetrySaveFailed'))
   } finally {
     saving.value = false
   }

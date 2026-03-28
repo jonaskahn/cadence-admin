@@ -6,7 +6,7 @@ import type {
   UpdateOrchestratorMetadataRequest,
   UpdatePluginSettingsRequest
 } from '~/types'
-import { getApiErrorMessage, getFetchErrorStatus } from '~/utils'
+import { getFetchErrorStatus } from '~/utils'
 
 function updateAiAppInList(list: OrchestratorResponse[], instanceId: string, updated: OrchestratorResponse): void {
   const index = list.findIndex((o) => o.instance_id === instanceId)
@@ -19,6 +19,7 @@ export function useAiApps() {
   const auth = useAuth()
   const toast = useToast()
   const { t } = useI18n()
+  const { showError } = useApiErrorToast()
   const orgId = computed(() => auth.currentOrgId.value || '')
 
   const aiApps = ref<OrchestratorResponse[]>([])
@@ -28,7 +29,7 @@ export function useAiApps() {
     try {
       return await action()
     } catch (err) {
-      toast.add({ title: t(errorTitleKey), color: 'error' })
+      showError(err, t(errorTitleKey))
       throw err
     }
   }
@@ -38,8 +39,8 @@ export function useAiApps() {
     loading.value = true
     try {
       aiApps.value = await $fetch<OrchestratorResponse[]>(`/api/orgs/${orgId.value}/orchestrators`)
-    } catch {
-      toast.add({ title: t('aiAppApi.failedLoadList'), color: 'error' })
+    } catch (err: unknown) {
+      showError(err, t('aiAppApi.failedLoadList'))
     } finally {
       loading.value = false
     }
@@ -55,8 +56,7 @@ export function useAiApps() {
       toast.add({ title: t('aiAppApi.created'), color: 'success', icon: 'i-lucide-check' })
       return result
     } catch (err: unknown) {
-      const msg = getApiErrorMessage(err, t('aiAppApi.createFailedFallback'))
-      toast.add({ title: t('aiAppApi.failedCreate'), description: msg, color: 'error' })
+      showError(err, t('aiAppApi.failedCreate'), t('aiAppApi.createFailedFallback'))
       throw err
     }
   }

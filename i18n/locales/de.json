@@ -676,6 +676,10 @@
     "notFoundDescription": "Entschuldigung, diese Seite konnte nicht gefunden werden.",
     "error": "Fehler",
     "unknown": "unbekannt",
+    "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "requestId": "Anfrage-ID",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
     "purgeReferencedError": "Löschen nicht möglich: Datensatz wird noch von aktiven Elementen referenziert."
   },
   "providerModelApi": {

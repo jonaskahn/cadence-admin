@@ -156,7 +156,7 @@ const mainLinks = computed(() => {
 
 <template>
   <div class="flex min-h-dvh flex-col bg-neutral-50/20">
-    <UDashboardGroup unit="rem" class="min-h-0 flex-1 bg-neutral-50/10 p-2">
+    <UDashboardGroup unit="rem" class="border-accented min-h-0 flex-1 border-dotted bg-neutral-50/10 p-2">
       <UDashboardSidebar
         id="default"
         v-model:open="open"

@@ -676,6 +676,10 @@
     "notFoundDescription": "We are sorry but this page could not be found.",
     "error": "Error",
     "unknown": "unknown",
+    "generic": "Something went wrong. Please try again.",
+    "requestId": "Request ID",
+    "copy": "Copy",
+    "copied": "Copied",
     "purgeReferencedError": "Cannot purge: record is still referenced by active items."
   },
   "providerModelApi": {

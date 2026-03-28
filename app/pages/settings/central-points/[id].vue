@@ -3,7 +3,6 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
 import type { CentralPointResponse, OrchestratorResponse } from '~/types'
-import { getApiErrorMessage } from '~/utils'
 
 const route = useRoute()
 const router = useRouter()
@@ -12,6 +11,7 @@ const auth = useAuth()
 const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 
 const centerPointId = route.params.id as string
 const orgId = computed(() => auth.currentOrgId.value || '')
@@ -98,8 +98,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       toast.add({ title: t('centralPoints.updatedSuccess'), icon: 'i-lucide-check', color: 'success' })
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, t('centralPoints.failedUpdate'))
-    toast.add({ title: t('errors.error'), description: msg, color: 'error' })
+    showError(err, t('errors.error'), t('centralPoints.failedUpdate'))
   } finally {
     saving.value = false
   }

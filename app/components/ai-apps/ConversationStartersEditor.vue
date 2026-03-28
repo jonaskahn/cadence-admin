@@ -110,7 +110,7 @@ function setQuestion(langIndex: number, qIndex: number, value: string) {
       {{ t('aiApps.conversationStarters.noStarters') }}
     </p>
 
-    <div v-for="(row, li) in modelValue" :key="row.language" class="border-default rounded-lg border p-4">
+    <div v-for="(row, li) in modelValue" :key="row.language" class="border-accented border-dottedrounded-lg border p-4">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
         <span class="font-medium">{{ bcp47LabelFor(row.language) }}</span>
         <UButton

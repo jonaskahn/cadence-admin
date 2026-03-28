@@ -254,7 +254,11 @@ defineExpose({
       {{ t('aiAppPlugin.noSettingsConfigured') }}
     </p>
 
-    <div v-for="group in pluginGroups" :key="group.groupKey" class="border-default overflow-hidden rounded-lg border">
+    <div
+      v-for="group in pluginGroups"
+      :key="group.groupKey"
+      class="border-accented border-dottedoverflow-hidden rounded-lg border"
+    >
       <UButton
         class="bg-elevated/50 hover:bg-elevated/80 w-full justify-between rounded-none px-4 py-2.5 transition-colors"
         color="neutral"
@@ -281,8 +285,11 @@ defineExpose({
         />
       </UButton>
 
-      <div v-show="expandedPlugins[group.groupKey]" class="border-default border-t">
-        <div v-if="group.versions.length > 1" class="border-default flex gap-0 overflow-x-auto border-b">
+      <div v-show="expandedPlugins[group.groupKey]" class="border-accented border-dottedborder-t border">
+        <div
+          v-if="group.versions.length > 1"
+          class="border-accented border-dottedflex gap-0 overflow-x-auto border border-b"
+        >
           <UButton
             v-for="v in group.versions"
             :key="v.specKey"

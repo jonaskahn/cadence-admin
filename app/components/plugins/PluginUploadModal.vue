@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { getApiErrorMessage } from '~/utils'
-
 const { t } = useI18n()
 const props = defineProps<{
   orgId: string
@@ -14,6 +12,7 @@ function handleClose() {
 }
 const toast = useToast()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 const fileInput = ref<HTMLInputElement>()
 const selectedFile = ref<File | null>(null)
 const uploading = ref(false)
@@ -46,8 +45,7 @@ async function onUpload() {
       emit('close')
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, t('pluginUpload.uploadFailed'))
-    toast.add({ title: t('pluginUpload.uploadFailed'), description: msg, color: 'error' })
+    showError(err, t('pluginUpload.uploadFailed'), t('pluginUpload.uploadFailed'))
   } finally {
     uploading.value = false
   }
@@ -62,7 +60,7 @@ async function onUpload() {
 
     <div class="flex flex-col gap-4">
       <div
-        class="border-default hover:border-primary cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors"
+        class="border-accented border-dottedhover:border-primary cursor-pointer rounded-lg border border-2 border-dashed p-8 text-center transition-colors"
         @click="triggerFileInput"
       >
         <UIcon class="text-dimmed mx-auto mb-2 size-10" name="i-lucide-upload" />

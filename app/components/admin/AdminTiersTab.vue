@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import type { TierDefinitionResponse, TierQuota } from '~/types'
-import { getApiErrorMessage, subscriptionTierColor } from '~/utils'
+import { subscriptionTierColor } from '~/utils'
 
 const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 
 const { data: tiers, refresh: refreshTiers } = await useApiFetch<TierDefinitionResponse[]>('/api/admin/tiers')
 
@@ -40,8 +41,7 @@ async function saveTier(tierName: string) {
       })
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, t('admin.failedSaveTier'))
-    toast.add({ title: t('admin.saveFailed'), description: msg, color: 'error' })
+    showError(err, t('admin.saveFailed'), t('admin.failedSaveTier'))
   } finally {
     tierSaving.value[tierName] = false
   }

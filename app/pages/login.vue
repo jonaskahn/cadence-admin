@@ -2,12 +2,12 @@
 import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
-import { getApiErrorMessage } from '~/utils'
+import type { FlatApiError } from '~/types'
+import { getApiError, getApiErrorMessage, getFetchErrorStatus } from '~/utils'
 
 definePageMeta({ layout: 'split' })
 
 const auth = useAuth()
-const toast = useToast()
 const { t, locale, locales, setLocale } = useI18n()
 const colorMode = useColorMode()
 
@@ -33,6 +33,8 @@ const localePath = useLocalePath()
 const loading = ref(false)
 const showPassword = ref(false)
 const { withOverlay } = useLoadingOverlay()
+/** Inline flat API error (BFF returns same shape as Cadence). */
+const loginApiError = ref<FlatApiError | null>(null)
 
 const schema = z.object({
   username: z.string().min(1, { error: () => t('auth.usernameRequired') }),
@@ -48,13 +50,28 @@ const state = reactive<Partial<Schema>>({
   remember: false
 })
 
+function buildLoginFallbackError(err: unknown, message: string): FlatApiError {
+  return {
+    statusCode: getFetchErrorStatus(err) ?? 401,
+    code: 'SY-9000',
+    message,
+    request_id: ''
+  }
+}
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
+  loginApiError.value = null
   try {
     await withOverlay(async () => {
       const ok = await auth.login(event.data.username, event.data.password)
       if (!ok) {
-        toast.add({ title: t('auth.loginFailed'), color: 'error', icon: 'i-lucide-x-circle' })
+        loginApiError.value = {
+          statusCode: 401,
+          code: 'SY-9000',
+          message: t('auth.loginFailed'),
+          request_id: ''
+        }
       } else if (auth.isSysAdmin.value && auth.orgList.value.length === 0) {
         await navigateTo(localePath('/admin/orgs'))
       } else {
@@ -62,17 +79,19 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       }
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, t('auth.invalidCredentials'))
-    toast.add({
-      title: t('auth.loginFailed'),
-      description: msg,
-      color: 'error',
-      icon: 'i-lucide-x-circle'
-    })
+    loginApiError.value =
+      getApiError(err) ?? buildLoginFallbackError(err, getApiErrorMessage(err, t('auth.invalidCredentials')))
   } finally {
     loading.value = false
   }
 }
+
+watch(
+  () => [state.username, state.password] as const,
+  () => {
+    loginApiError.value = null
+  }
+)
 
 function toggleDarkMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
@@ -122,6 +141,13 @@ const oauthProviderIcons: Record<string, string> = {
           </div>
 
           <UForm :schema="schema" :state="state" class="flex flex-col gap-5" method="post" @submit="onSubmit">
+            <div v-if="loginApiError" class="login-item" style="--delay: 120ms">
+              <ApiErrorAlert
+                :code="loginApiError.code"
+                :message="loginApiError.message"
+                :request-id="loginApiError.request_id || undefined"
+              />
+            </div>
             <UFormField label="Username" name="username" required class="login-item" style="--delay: 160ms">
               <UInput
                 v-model="state.username"

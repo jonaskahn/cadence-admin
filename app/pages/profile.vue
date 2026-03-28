@@ -5,7 +5,7 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
 import type { AboutMeResponse, AdminRoleResponse, ApiKeyCreatedResponse, ApiKeyListItem } from '~/types'
-import { formatDate, getApiErrorMessage } from '~/utils'
+import { formatDate } from '~/utils'
 
 function calendarDateTimeToIsoUtc(cdt: CalendarDateTime): string {
   return toZoned(cdt, getLocalTimeZone()).toDate().toISOString()
@@ -26,6 +26,7 @@ function isApiKeyExpired(iso: string | null | undefined): boolean {
 const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 
 const { data: me, refresh: refreshMe } = await useApiFetch<AboutMeResponse>('/api/me')
 
@@ -135,8 +136,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
       toast.add({ title: t('profile.profileUpdated'), icon: 'i-lucide-check', color: 'success' })
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(err, t('profile.failedSaveProfile'))
-    toast.add({ title: msg, color: 'error' })
+    showError(err, t('profile.failedSaveProfile'), t('profile.failedSaveProfile'))
   } finally {
     savingProfile.value = false
   }
@@ -152,7 +152,7 @@ async function loadApiKeys() {
   try {
     apiKeys.value = await $fetch<ApiKeyListItem[]>('/api/admin/users/api-keys')
   } catch (err: unknown) {
-    toast.add({ title: getApiErrorMessage(err, t('profile.apiKeysLoadFailed')), color: 'error' })
+    showError(err, t('profile.apiKeysLoadFailed'), t('profile.apiKeysLoadFailed'))
   } finally {
     loadingKeys.value = false
   }
@@ -232,7 +232,7 @@ async function onCreateApiKey() {
       toast.add({ title: t('profile.apiKeysCreated'), icon: 'i-lucide-check', color: 'success' })
     })
   } catch (err: unknown) {
-    toast.add({ title: getApiErrorMessage(err, t('profile.apiKeysCreateFailed')), color: 'error' })
+    showError(err, t('profile.apiKeysCreateFailed'), t('profile.apiKeysCreateFailed'))
   } finally {
     creatingKey.value = false
   }
@@ -247,7 +247,7 @@ async function revokeApiKey(keyId: string) {
       toast.add({ title: t('profile.apiKeysRevoked'), icon: 'i-lucide-check', color: 'success' })
     })
   } catch (err: unknown) {
-    toast.add({ title: getApiErrorMessage(err, t('profile.apiKeysRevokeFailed')), color: 'error' })
+    showError(err, t('profile.apiKeysRevokeFailed'), t('profile.apiKeysRevokeFailed'))
   } finally {
     revokingId.value = null
   }
@@ -510,7 +510,7 @@ async function copyApiKeySample(text: string) {
                     </div>
                   </template>
                   <div class="flex flex-col gap-4">
-                    <div class="border-default space-y-3 rounded-lg border p-3">
+                    <div class="border-accented border-dottedspace-y-3 rounded-lg border p-3">
                       <p class="text-dimmed text-xs font-semibold tracking-wide uppercase">
                         {{ t('profile.apiKeysAuthHeadersTitle') }}
                       </p>

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { AdminRoleResponse, RoleCreateRequest } from '~/types'
-import { getApiErrorMessage } from '~/utils'
 
 const SYSTEM_ADMIN_PERM = 'cadence:system:admin'
 
@@ -14,6 +13,7 @@ function filterCatalogForScope(scope: 'system' | 'org', catalog: string[]): stri
 const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 
 const { data: roles, refresh: refreshRoles } = await useApiFetch<AdminRoleResponse[]>('/api/admin/roles')
 const { data: permCatalog } = await useApiFetch<string[]>('/api/admin/permissions')
@@ -68,11 +68,7 @@ async function submitCreate() {
       await refreshRoles()
     })
   } catch (err: unknown) {
-    toast.add({
-      title: t('admin.roleCreateFailed'),
-      description: getApiErrorMessage(err, ''),
-      color: 'error'
-    })
+    showError(err, t('admin.roleCreateFailed'), t('errors.generic'))
   } finally {
     createSaving.value = false
   }
@@ -121,11 +117,7 @@ async function submitEdit() {
       await refreshRoles()
     })
   } catch (err: unknown) {
-    toast.add({
-      title: t('admin.rolePermissionsUpdateFailed'),
-      description: getApiErrorMessage(err, ''),
-      color: 'error'
-    })
+    showError(err, t('admin.rolePermissionsUpdateFailed'), t('errors.generic'))
   } finally {
     editSaving.value = false
   }
@@ -203,7 +195,7 @@ const columns = computed(() => [
             <USelect v-model="createForm.scope" :items="scopeItems" value-key="value" class="w-full" />
           </UFormField>
           <UFormField :label="t('admin.rolePermissionsLabel')">
-            <div class="border-default max-h-56 space-y-2 overflow-y-auto rounded-lg border p-3">
+            <div class="border-accented border-dottedmax-h-56 space-y-2 overflow-y-auto rounded-lg border p-3">
               <UCheckbox
                 v-for="p in createCatalogFiltered"
                 :key="p"
@@ -227,7 +219,7 @@ const columns = computed(() => [
         <div v-if="editRole" class="flex max-h-[85vh] flex-col gap-4 overflow-y-auto p-4 sm:p-6">
           <p class="text-muted font-mono text-sm">{{ editRole.name }} · {{ editRole.scope }}</p>
           <UFormField :label="t('admin.rolePermissionsLabel')">
-            <div class="border-default max-h-56 space-y-2 overflow-y-auto rounded-lg border p-3">
+            <div class="border-accented border-dottedmax-h-56 space-y-2 overflow-y-auto rounded-lg border p-3">
               <UCheckbox
                 v-for="p in editCatalogFiltered"
                 :key="p"

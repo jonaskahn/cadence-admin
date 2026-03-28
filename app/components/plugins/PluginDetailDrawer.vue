@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { PluginMetadataResponse, PluginSettingSchema, SystemPluginResponse } from '~/types'
+import { getApiError, getApiErrorMessage } from '~/utils'
 
 type PluginVersionItem = PluginMetadataResponse | SystemPluginResponse
 
@@ -35,6 +36,8 @@ const { versions, loading, error, fetchVersions } = usePluginVersions(
   orgId,
   computed(() => props.isAdminContext)
 )
+
+const flatLoadError = computed(() => (error.value ? getApiError(error.value) : null))
 
 const selectedVersion = ref<PluginVersionItem | null>(null)
 const versionOptions = computed(() =>
@@ -227,7 +230,18 @@ async function handleDisableConfirm(close: () => void) {
           <UIcon class="text-dimmed size-8 animate-spin" name="i-lucide-loader-2" />
         </div>
 
-        <UAlert v-else-if="error" color="error" :description="error.message" :title="t('pluginDetail.failedToLoad')" />
+        <ApiErrorAlert
+          v-else-if="flatLoadError"
+          :code="flatLoadError.code"
+          :message="flatLoadError.message"
+          :request-id="flatLoadError.request_id"
+        />
+        <UAlert
+          v-else-if="error"
+          color="error"
+          :description="getApiErrorMessage(error, t('pluginDetail.failedToLoad'))"
+          :title="t('pluginDetail.failedToLoad')"
+        />
 
         <template v-else-if="selectedVersion">
           <div :key="selectedVersion.id" class="flex flex-col gap-4">

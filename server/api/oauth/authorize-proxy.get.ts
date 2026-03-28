@@ -2,6 +2,8 @@
  * BFF entry for OAuth authorize: browser hits Nuxt only; server forwards to Cadence AS.
  * Query string is passed through; Location from AS (consent redirect) is returned to the client.
  */
+import { respondWithBackendError } from '../../utils/flat-error'
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const backendUrl = String(config.backendUrl).replace(/\/$/, '')
@@ -18,5 +20,5 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, loc, res.status)
   }
   const text = await res.text()
-  throw createError({ statusCode: res.status, message: text.slice(0, 500) })
+  return respondWithBackendError(event, res, text, true)
 })

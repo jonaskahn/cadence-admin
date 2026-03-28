@@ -91,8 +91,8 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
 
       <template #body>
         <div class="flex h-full overflow-hidden">
-          <div class="border-default flex w-64 shrink-0 flex-col border-r">
-            <div class="border-default border-b p-3">
+          <div class="border-accented flex w-64 shrink-0 flex-col border-r border-dotted">
+            <div class="border-accented border-dotted p-3">
               <UButton icon="i-lucide-plus" :label="t('chat.newThread')" block @click="chat.newConversation()" />
             </div>
             <div class="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
@@ -113,7 +113,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
           </div>
 
           <div class="flex flex-1 flex-col overflow-hidden">
-            <div class="border-default flex shrink-0 items-center gap-3 border-b p-3">
+            <div class="border-accented flex shrink-0 items-center gap-3 border-b border-dotted p-3">
               <USelect
                 v-model="chat.selectedInstanceId.value"
                 :items="readyAiApps.map((o) => ({ label: o.name, value: o.instance_id }))"
@@ -168,7 +168,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                         msg.role === 'assistant' &&
                         (agentStepsOf(msg.events).length || toolResultsOf(msg.events).length)
                       "
-                      class="border-default/40 mt-2 border-t pt-2"
+                      class="border-accented border-dotted/40 mt-2 border-t pt-2"
                     >
                       <summary class="text-dimmed cursor-pointer text-xs select-none">
                         <span v-if="agentStepsOf(msg.events).length"
@@ -269,7 +269,10 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                   <p>{{ t('chat.selectAndStart') }}</p>
 
                   <template v-if="chat.selectedInstanceId.value && chat.conversationId.value === null">
-                    <div v-if="chat.startersLoading.value" class="text-dimmed mt-4 flex items-center justify-center gap-2 text-xs">
+                    <div
+                      v-if="chat.startersLoading.value"
+                      class="text-dimmed mt-4 flex items-center justify-center gap-2 text-xs"
+                    >
                       <UIcon class="size-4 shrink-0 animate-spin" name="i-lucide-loader" />
                       <span>{{ t('chat.loadingStarters') }}</span>
                     </div>
@@ -293,7 +296,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
               </div>
             </div>
 
-            <div class="border-default border-t p-4">
+            <div class="border-accented border-t border-dotted p-4">
               <div class="flex gap-2">
                 <UTextarea
                   v-model="inputText"

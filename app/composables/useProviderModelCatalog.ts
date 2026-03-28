@@ -1,5 +1,4 @@
 import type { AddProviderModelRequest, ProviderModelCatalogEntry, UpdateProviderModelRequest } from '~/types'
-import { getApiErrorMessage } from '~/utils'
 
 function replaceModelInList(models: ProviderModelCatalogEntry[], updated: ProviderModelCatalogEntry): void {
   const index = models.findIndex((m) => m.id === updated.id)
@@ -11,6 +10,7 @@ function replaceModelInList(models: ProviderModelCatalogEntry[], updated: Provid
 export function useProviderModelCatalog() {
   const toast = useToast()
   const { t } = useI18n()
+  const { showError } = useApiErrorToast()
   const models = ref<ProviderModelCatalogEntry[]>([])
   const loading = ref(true)
 
@@ -44,8 +44,7 @@ export function useProviderModelCatalog() {
       })
     } catch (err: unknown) {
       model.enabled = previousState
-      const msg = getApiErrorMessage(err, t('providerModelApi.toggleFailedFallback'))
-      toast.add({ title: t('providerModelApi.errorTitle'), description: msg, color: 'error' })
+      showError(err, t('providerModelApi.errorTitle'), t('providerModelApi.toggleFailedFallback'))
     }
   }
 

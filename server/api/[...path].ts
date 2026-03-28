@@ -3,6 +3,15 @@ import { deleteCookie, getCookie, sendRedirect, sendStream, setCookie } from 'h3
 
 import { COOKIE_ACCESS_TOKEN, COOKIE_REFRESH_TOKEN } from '~/constants'
 
+import {
+  BFF_CODE_INVALID_JSON,
+  BFF_CODE_MISSING_CREDENTIALS,
+  BFF_CODE_NO_AUTH_URL,
+  BFF_CODE_NO_REFRESH,
+  respondWithBackendError,
+  respondWithFlatBffError
+} from '../utils/flat-error'
+
 const TOKEN_PLACEHOLDER = '[set]'
 const METHODS_WITH_BODY = new Set(['POST', 'PUT', 'PATCH', 'DELETE'])
 const CONTENT_TYPE_JSON = 'application/json'
@@ -103,7 +112,7 @@ async function handleLogin(
   tokenUrl: string,
   clientId: string,
   body: BodyInit | undefined
-): Promise<{ token: string }> {
+): Promise<{ token: string } | Record<string, unknown>> {
   const raw = typeof body === 'string' ? body : JSON.stringify(body ?? {})
   let username: string | undefined
   let password: string | undefined
@@ -112,10 +121,10 @@ async function handleLogin(
     username = parsed.username
     password = parsed.password
   } catch {
-    throw createError({ statusCode: 400, message: 'Invalid JSON body' })
+    return respondWithFlatBffError(event, 400, BFF_CODE_INVALID_JSON, 'Invalid JSON body')
   }
   if (!username || !password) {
-    throw createError({ statusCode: 400, message: 'username and password required' })
+    return respondWithFlatBffError(event, 400, BFF_CODE_MISSING_CREDENTIALS, 'username and password required')
   }
   const params = new URLSearchParams()
   params.set('grant_type', 'password')
@@ -129,7 +138,7 @@ async function handleLogin(
   })
   if (!response.ok) {
     const errBody = await response.text()
-    throw createError({ statusCode: response.status, message: errBody })
+    return respondWithBackendError(event, response, errBody, true)
   }
   const data = (await response.json()) as OAuth2TokenSuccess
   const accessToken = accessTokenFromOAuth2Response(data)
@@ -176,10 +185,14 @@ async function handleLogout(
   return null
 }
 
-async function handleRefresh(event: H3Event, tokenUrl: string, clientId: string): Promise<{ token: string }> {
+async function handleRefresh(
+  event: H3Event,
+  tokenUrl: string,
+  clientId: string
+): Promise<{ token: string } | Record<string, unknown>> {
   const refreshToken = getCookie(event, COOKIE_REFRESH_TOKEN)
   if (!refreshToken) {
-    throw createError({ statusCode: 401, message: 'No refresh token' })
+    return respondWithFlatBffError(event, 401, BFF_CODE_NO_REFRESH, 'No refresh token')
   }
   const params = new URLSearchParams()
   params.set('grant_type', 'refresh_token')
@@ -194,7 +207,7 @@ async function handleRefresh(event: H3Event, tokenUrl: string, clientId: string)
     deleteCookie(event, COOKIE_ACCESS_TOKEN, { path: '/' })
     deleteCookie(event, COOKIE_REFRESH_TOKEN, { path: '/' })
     const errBody = await response.text()
-    throw createError({ statusCode: response.status, message: errBody })
+    return respondWithBackendError(event, response, errBody, true)
   }
   const data = (await response.json()) as OAuth2TokenSuccess
   const accessToken = accessTokenFromOAuth2Response(data)
@@ -217,26 +230,34 @@ async function handleRefresh(event: H3Event, tokenUrl: string, clientId: string)
   return { token: TOKEN_PLACEHOLDER }
 }
 
-async function handleOAuthInitiate(event: H3Event, url: string, headers: Record<string, string>): Promise<void> {
+async function handleOAuthInitiate(
+  event: H3Event,
+  url: string,
+  headers: Record<string, string>
+): Promise<Record<string, unknown> | undefined> {
   const response = await fetch(url, { method: 'GET', headers })
   if (!response.ok) {
     const errBody = await response.text()
-    throw createError({ statusCode: response.status, message: errBody })
+    return respondWithBackendError(event, response, errBody, true)
   }
   const data = (await response.json()) as { authorization_url?: string }
   if (!data.authorization_url) {
-    throw createError({ statusCode: 500, message: 'No authorization URL' })
+    return respondWithFlatBffError(event, 500, BFF_CODE_NO_AUTH_URL, 'No authorization URL')
   }
   sendRedirect(event, data.authorization_url)
 }
 
-async function handleOAuthCallback(event: H3Event, url: string, headers: Record<string, string>): Promise<void> {
+async function handleOAuthCallback(
+  event: H3Event,
+  url: string,
+  headers: Record<string, string>
+): Promise<Record<string, unknown> | undefined> {
   const response = await fetch(url, { method: 'GET', headers })
   if (!response.ok) {
     deleteCookie(event, COOKIE_ACCESS_TOKEN, { path: '/' })
     deleteCookie(event, COOKIE_REFRESH_TOKEN, { path: '/' })
     const errBody = await response.text()
-    throw createError({ statusCode: response.status, message: errBody })
+    return respondWithBackendError(event, response, errBody, true)
   }
   const data = (await response.json()) as OAuth2TokenSuccess
   const accessToken = accessTokenFromOAuth2Response(data)
@@ -268,7 +289,8 @@ async function handleStreaming(
 ): Promise<unknown> {
   const response = await fetch(url, { method, headers, body })
   if (!response.ok) {
-    throw createError({ statusCode: response.status, message: 'Stream error' })
+    const errBody = await response.text()
+    return respondWithBackendError(event, response, errBody, true)
   }
   setResponseHeader(event, 'Content-Type', 'text/event-stream')
   setResponseHeader(event, 'Cache-Control', 'no-cache')

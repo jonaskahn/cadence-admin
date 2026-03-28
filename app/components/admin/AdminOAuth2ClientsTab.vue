@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import type { OAuth2ClientCreateRequest, OAuth2ClientResponse } from '~/types'
-import { getApiErrorMessage } from '~/utils'
 
 const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 
 const { data: clients, refresh } = await useApiFetch<OAuth2ClientResponse[]>('/api/admin/oauth2/clients')
 
@@ -84,12 +84,7 @@ async function submitRegister() {
       await refresh()
     })
   } catch (err: unknown) {
-    toast.add({
-      title: t('admin.oauth2ClientCreateFailed'),
-      description: getApiErrorMessage(err, ''),
-      color: 'error',
-      icon: 'i-lucide-x-circle'
-    })
+    showError(err, t('admin.oauth2ClientCreateFailed'), t('errors.generic'))
   } finally {
     saving.value = false
   }

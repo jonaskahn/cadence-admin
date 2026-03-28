@@ -42,6 +42,12 @@ export async function processChatSseStream(
         const rawData = line.slice(SSE_DATA_PREFIX.length).trim()
         try {
           const parsed = JSON.parse(rawData) as Record<string, unknown>
+          // Legacy: single data line `{"event":"error","data":{...}}` without `event:` prefix
+          if (parsed.event === 'error' && parsed.data !== null && typeof parsed.data === 'object') {
+            callbacks.onEvent({ type: 'error', data: parsed.data })
+            currentEventType = null
+            continue
+          }
           if (isMessageContentEvent(currentEventType, parsed)) {
             callbacks.onContent((parsed.content as string) ?? '')
           } else if (currentEventType && currentEventType !== MESSAGE_EVENT_TYPE) {

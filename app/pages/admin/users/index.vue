@@ -3,17 +3,18 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
 import type { UserMembershipResponse } from '~/types'
-import { formatDate, getApiErrorMessage } from '~/utils'
+import { formatDate } from '~/utils'
 
 const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 
 async function withUserActionError<T>(fn: () => Promise<T>, errorMsg: string): Promise<T> {
   try {
     return await fn()
   } catch (err) {
-    toast.add({ title: t('errors.error'), description: getApiErrorMessage(err, errorMsg), color: 'error' })
+    showError(err, t('errors.error'), errorMsg)
     throw err
   }
 }
@@ -179,11 +180,7 @@ async function onPurge(user: UserMembershipResponse) {
     if (status === 409) {
       toast.add({ title: t('errors.purgeReferencedError'), color: 'error' })
     } else {
-      toast.add({
-        title: t('admin.failedDeleteUser'),
-        description: getApiErrorMessage(err, t('errors.unknown')),
-        color: 'error'
-      })
+      showError(err, t('admin.failedDeleteUser'), t('errors.unknown'))
     }
   } finally {
     purging.value = null

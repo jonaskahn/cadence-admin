@@ -3,7 +3,7 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
 import type { LLMConfigResponse } from '~/types'
-import { getApiErrorMessage, LLM_PROVIDERS } from '~/utils'
+import { LLM_PROVIDERS } from '~/utils'
 
 const props = defineProps<{
   orgId: string
@@ -19,6 +19,7 @@ const toast = useToast()
 const { t } = useI18n()
 const loading = ref(false)
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 const llmConfigFormRef = ref<{ $el?: { requestSubmit?: () => void } } | null>(null)
 
 function providerLabel(provider: string): string {
@@ -84,11 +85,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       emit('close')
     })
   } catch (err: unknown) {
-    const msg = getApiErrorMessage(
-      err,
-      isEdit.value ? t('llmConfig.failedUpdateConfig') : t('llmConfig.failedAddConfig')
-    )
-    toast.add({ title: t('errors.error'), description: msg, color: 'error' })
+    showError(err, t('errors.error'), isEdit.value ? t('llmConfig.failedUpdateConfig') : t('llmConfig.failedAddConfig'))
   } finally {
     loading.value = false
   }

@@ -3,12 +3,12 @@ import type { DropdownMenuItem, FormSubmitEvent } from '@nuxt/ui'
 import * as z from 'zod'
 
 import { NEUTRAL_COLORS, PRIMARY_COLORS } from '~/constants/theme'
-import { getApiErrorMessage } from '~/utils'
 
 const { t, locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 const toast = useToast()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 
 defineProps<{
   collapsed?: boolean
@@ -71,11 +71,12 @@ async function onPasswordSubmit(event: FormSubmitEvent<PasswordSchema>) {
       toast.add({ title: t('profile.passwordUpdated'), icon: 'i-lucide-check', color: 'success' })
     })
   } catch (err: unknown) {
-    toast.add({
-      title: getApiErrorMessage(err, t('profile.failedUpdatePassword')),
-      description: t('profile.checkCurrentPassword'),
-      color: 'error'
-    })
+    showError(
+      err,
+      t('profile.failedUpdatePassword'),
+      t('profile.failedUpdatePassword'),
+      t('profile.checkCurrentPassword')
+    )
   } finally {
     changingPassword.value = false
   }

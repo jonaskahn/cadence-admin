@@ -387,7 +387,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
             <div class="pointer-events-none sticky bottom-0 z-10 -mx-6 mt-4 flex justify-end px-6 pt-4 pb-6">
               <div
-                class="border-default bg-default/95 supports-backdrop-filter:bg-default/80 pointer-events-auto inline-flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 rounded-2xl border px-4 py-3 shadow-lg backdrop-blur"
+                class="border-accented border-dottedbg-default/95 supports-backdrop-filter:bg-default/80 pointer-events-auto inline-flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 rounded-2xl border px-4 py-3 shadow-lg backdrop-blur"
               >
                 <UButton
                   color="neutral"

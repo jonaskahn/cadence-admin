@@ -9,12 +9,13 @@ import type {
   UpdateOrganizationRequest,
   UserMembershipResponse
 } from '~/types'
-import { getApiErrorMessage, SUBSCRIPTION_TIERS, subscriptionTierSelectItems } from '~/utils'
+import { SUBSCRIPTION_TIERS, subscriptionTierSelectItems } from '~/utils'
 
 const route = useRoute()
 const toast = useToast()
 const { t } = useI18n()
 const { withOverlay } = useLoadingOverlay()
+const { showError } = useApiErrorToast()
 const localePath = useLocalePath()
 const orgId = route.params.id as string
 const showAdd = ref(false)
@@ -81,11 +82,7 @@ async function saveOrg(event?: FormSubmitEvent<EditSchema>) {
       toast.add({ title: t('admin.organizationUpdated'), icon: 'i-lucide-check' })
     })
   } catch (err: unknown) {
-    toast.add({
-      title: t('errors.error'),
-      description: getApiErrorMessage(err, t('admin.failedSaveOrg')),
-      color: 'error'
-    })
+    showError(err, t('errors.error'), t('admin.failedSaveOrg'))
   } finally {
     saving.value = false
   }
@@ -111,11 +108,7 @@ async function removeMember(userId: string) {
       toast.add({ title: t('settings.memberRemoved'), icon: 'i-lucide-check' })
     })
   } catch (err: unknown) {
-    toast.add({
-      title: t('errors.error'),
-      description: getApiErrorMessage(err, t('settings.failedRemoveMember')),
-      color: 'error'
-    })
+    showError(err, t('errors.error'), t('settings.failedRemoveMember'))
   } finally {
     removing.value = null
   }

@@ -676,6 +676,10 @@
     "notFoundDescription": "Xin lỗi, trang bạn đang tìm kiếm không tồn tại.",
     "error": "Lỗi",
     "unknown": "không xác định",
+    "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "requestId": "Mã yêu cầu",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
     "purgeReferencedError": "Không thể xóa vĩnh viễn: bản ghi vẫn đang được tham chiếu bởi các mục đang hoạt động."
   },
   "providerModelApi": {

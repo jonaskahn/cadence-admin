@@ -1,5 +1,12 @@
 export default defineAppConfig({
   ui: {
+    separator: {
+      defaultVariants: {
+        color: 'neutral',
+        size: 'xs',
+        type: 'dotted'
+      }
+    },
     avatar: {
       variants: {
         variant: {

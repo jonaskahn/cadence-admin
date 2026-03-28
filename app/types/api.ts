@@ -1,5 +1,24 @@
 // API types: most align with the Cadence OpenAPI schema; BFF-only shapes are documented below.
 
+/** Flat JSON error from Cadence API or Nuxt BFF (`flat_error_response` / `respondWithBackendError`). */
+export interface FlatApiError {
+  statusCode: number
+  code: string
+  message: string
+  request_id: string
+  /** Present on wire; not shown in UI. */
+  timestamp?: string
+  stack?: string[]
+  field?: string
+  details?: Record<string, unknown>
+  errors?: Array<{
+    code: string
+    message: string
+    field?: string | null
+    details?: Record<string, unknown> | null
+  }>
+}
+
 /** Body for POST `/api/auth/login` — Nuxt BFF forwards to `POST /oauth2/token` (password grant) and sets HttpOnly cookies. */
 export interface BffLoginRequest {
   username: string

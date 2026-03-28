@@ -26,7 +26,8 @@ export function usePluginVersions(
 ) {
   const versions = ref<PluginVersionItem[]>([])
   const loading = ref(false)
-  const error = ref<Error | null>(null)
+  /** Raw `$fetch` error (preserves flat API body for `getApiError`). */
+  const error = ref<unknown>(null)
 
   async function fetchVersions(): Promise<void> {
     const p = resolveValue(pid)
@@ -47,7 +48,7 @@ export function usePluginVersions(
       const data = await $fetch<PluginVersionItem[]>(url)
       versions.value = Array.isArray(data) ? data : []
     } catch (e) {
-      error.value = e instanceof Error ? e : new Error(String(e))
+      error.value = e
       versions.value = []
     } finally {
       loading.value = false
