@@ -2,7 +2,7 @@
   "app": {
     "name": "Cadence",
     "tagline": "KI-Orchestrierungsplattform",
-    "description": "Mandantenfähige KI-Orchestrierungsplattform mit Hot-/Cold-Tier-Pooling, BYOK und Unterstützung für mehrere Frameworks."
+    "description": "Mandantenfähige KI-Orchestrierungsplattform mit Hot-/Demand-Tier-Pooling, BYOK und Unterstützung für mehrere Frameworks."
   },
   "common": {
     "cancel": "Abbrechen",
@@ -122,7 +122,7 @@
     "title": "Dashboard",
     "hotTier": "Hot-Tier",
     "demandPool": "Demand-Pool",
-    "coldTier": "Cold-Tier",
+    "demandTier": "Demand-Tier",
     "aiAgents": "KI-Agenten",
     "poolMemory": "Pool-Speicher",
     "poolStatistics": "Pool-Statistiken",
@@ -432,7 +432,7 @@
     "totalInstances": "Instanzen gesamt",
     "hotTier": "Hot-Tier",
     "demandPool": "Demand-Pool",
-    "coldTier": "Cold-Tier",
+    "demandTier": "Demand-Tier",
     "sharedModels": "Gemeinsame Modelle",
     "sharedBundles": "Gemeinsame Bundles",
     "memoryEstimate": "Geschätzter Speicher",
@@ -801,7 +801,7 @@
     "pages": {
       "dashboard": {
         "title": "Dashboard",
-        "description": "**Funktion:**\n\nZentraler Hub für die KI-Orchestrierung Ihrer Organisation. Zeigt:\n\n- **KI-App-Anzahl** — Gesamt, Hot- und Cold-Tier Instanzen\n- **Pool-Statistiken** — Gemeinsame Modelle, Speichernutzung (nur Admin)\n- **Schnellzugriffe** — Chat starten, KI-Apps ansehen, Agenten verwalten\n\n**Tiers:** Hot = sofort geladen; Cold = auf Abruf (Demand-Pool)."
+        "description": "**Funktion:**\n\nZentraler Hub für die KI-Orchestrierung Ihrer Organisation. Zeigt:\n\n- **KI-App-Anzahl** — Gesamt, Hot- und Demand-Tier Instanzen\n- **Pool-Statistiken** — Gemeinsame Modelle, Speichernutzung (nur Admin)\n- **Schnellzugriffe** — Chat starten, KI-Apps ansehen, Agenten verwalten\n\n**Tiers:** Hot = sofort geladen; Demand = auf Abruf (Demand-Pool)."
       },
       "chat": {
         "title": "Chat",
@@ -1074,7 +1074,7 @@
       "whoami": "Identität",
       "whoamiPlaceholder": "Kontext zur Rolle der KI (Injected in Answer-Nodes).",
       "initialTier": "Initialer Tier",
-      "tierCold": "Cold (Standard)",
+      "tierDemand": "Demand (Standard)",
       "tierHot": "Hot (sofort laden)",
       "pluginTableName": "Name",
       "pluginTablePid": "PID",
@@ -1192,7 +1192,7 @@
       "llmConfigRequired": "Standard-LLM-Konfig erforderlich",
       "failedLoad": "KI-App konnte nicht geladen werden",
       "placeholderSelectConfig": "LLM-Konfig wählen…",
-      "tierCold": "Cold",
+      "tierDemand": "Demand",
       "tierHot": "Hot (sofort laden)",
       "monitoring": "Monitoring",
       "monitoringDescription": "Traces an einen Observability-Anbieter senden",

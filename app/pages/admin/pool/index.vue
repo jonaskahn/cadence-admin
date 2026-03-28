@@ -37,12 +37,6 @@ const statCards = computed(() => {
       icon: 'i-lucide-thermometer',
       color: 'warning'
     },
-    {
-      label: t('admin.coldTier'),
-      value: stats.value.cold_tier_count,
-      icon: 'i-lucide-snowflake',
-      color: 'info'
-    },
     { label: t('admin.sharedModels'), value: stats.value.shared_model_count, icon: 'i-lucide-share-2' },
     { label: t('admin.sharedBundles'), value: stats.value.shared_bundle_count, icon: 'i-lucide-package' }
   ]

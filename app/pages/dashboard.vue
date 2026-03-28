@@ -44,7 +44,7 @@ const tierCounts = computed(() => {
   const list = orchestrators.value || []
   return {
     hot: countByTier(list, 'hot'),
-    cold: countByTier(list, 'cold') + countByTier(list, 'warm'),
+    demand: countByTier(list, 'demand'),
     total: list.length
   }
 })
@@ -81,10 +81,10 @@ const tokensChartData = {
 }
 
 const orchestratorTierChartData = computed(() => ({
-  labels: ['Hot', 'Cold'],
+  labels: ['Hot', 'Demand'],
   datasets: [
     {
-      data: [tierCounts.value.hot, tierCounts.value.cold],
+      data: [tierCounts.value.hot, tierCounts.value.demand],
       backgroundColor: ['rgba(249, 115, 22, 0.85)', 'rgba(120, 113, 108, 0.55)'],
       borderWidth: 0
     }
@@ -195,8 +195,8 @@ const costByProviderChartData = {
               </div>
 
               <div v-else class="border-info border-l-2 py-1 pl-4">
-                <p class="text-3xl font-bold tracking-tight">{{ tierCounts.cold }}</p>
-                <p class="text-dimmed mt-1 text-sm">{{ t('dashboard.coldTier') }}</p>
+                <p class="text-3xl font-bold tracking-tight">{{ tierCounts.demand }}</p>
+                <p class="text-dimmed mt-1 text-sm">{{ t('dashboard.demandTier') }}</p>
               </div>
             </div>
           </template>
@@ -206,7 +206,7 @@ const costByProviderChartData = {
               <template #header>
                 <p class="font-semibold tracking-tight">{{ t('dashboard.poolStatistics') }}</p>
               </template>
-              <div class="grid grid-cols-2 gap-6 md:grid-cols-4">
+              <div class="grid grid-cols-2 gap-6 md:grid-cols-3">
                 <div class="border-error/50 border-l-2 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.hotTier') }}</p>
                   <p class="text-xl font-bold tabular-nums">{{ poolStats.hot_tier_count }}</p>
@@ -214,10 +214,6 @@ const costByProviderChartData = {
                 <div class="border-success/50 border-l-2 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.demandPool') }}</p>
                   <p class="text-xl font-bold tabular-nums">{{ poolStats.demand_pool_count }}</p>
-                </div>
-                <div class="border-info/50 border-l-2 pl-3">
-                  <p class="text-dimmed text-sm">{{ t('dashboard.coldTier') }}</p>
-                  <p class="text-xl font-bold tabular-nums">{{ poolStats.cold_tier_count }}</p>
                 </div>
                 <div class="border-neutral/50 border-l-2 pl-3">
                   <p class="text-dimmed text-sm">{{ t('dashboard.sharedModels') }}</p>

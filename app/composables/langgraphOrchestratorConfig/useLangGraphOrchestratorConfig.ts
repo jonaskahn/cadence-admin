@@ -98,11 +98,6 @@ export function useLangGraphOrchestratorConfig(
     return o != null && String(o).length > 0 ? String(o) : undefined
   })
 
-  const orgDefaultTimeout = computed(() => {
-    const v = orgDefaults.value?.default_timeout
-    return v != null ? Number(v) : null
-  })
-
   let isLoadingFromInitial = false
 
   const supervisorNodeKeys = [...NODE_KEYS]
@@ -192,11 +187,15 @@ export function useLangGraphOrchestratorConfig(
   })
 
   watch(
-    [modeConfigSource, isGroundedMode],
+    [modeConfigSource, isGroundedMode, orgDefaults],
     () => {
       const src = modeConfigSource.value
       modeConfig.node_execution_timeout = Number(
-        src.node_execution_timeout ?? src.supervisor_timeout ?? src.invoke_timeout ?? 60
+        src.node_execution_timeout ??
+          src.supervisor_timeout ??
+          src.invoke_timeout ??
+          orgDefaults.value?.default_timeout ??
+          60
       )
       modeConfig.message_context_window = Number(src.message_context_window ?? src.classifier_context_window ?? 5)
       modeConfig.max_context_window = Number(src.max_context_window ?? 16000)
@@ -499,7 +498,6 @@ export function useLangGraphOrchestratorConfig(
     defaultModelName,
     resolvedDefaultLlmConfigId,
     resolvedDefaultModelName,
-    orgDefaultTimeout,
     defaultTemperature,
     defaultMaxTokens,
     modeConfig,

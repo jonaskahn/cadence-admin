@@ -141,7 +141,7 @@ function numericPlaceholder(val: number | null | undefined): string | undefined 
         :disabled="disabled"
         class="w-full"
         :placeholder="
-          node.timeout === null ? numericPlaceholder(unref(orchestratorConfig.orgDefaultTimeout)) : undefined
+          node.timeout === null ? numericPlaceholder(orchestratorConfig.modeConfig.node_execution_timeout) : undefined
         "
       />
     </UFormField>

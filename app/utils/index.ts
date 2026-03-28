@@ -52,11 +52,11 @@ export function providerLabel(provider: string): string {
 }
 
 export const TIER_HOT = 'hot'
-export const TIER_COLD = 'cold'
+export const TIER_DEMAND = 'demand'
 
-/** Maps API tier to hot or cold. Legacy `warm` rows are treated as cold for display. */
-export function normalizeOrchestratorPoolTier(tier: string): 'hot' | 'cold' {
-  return tier === TIER_HOT ? TIER_HOT : TIER_COLD
+/** Normalizes pool tier for display: only `hot` is distinct; everything else is shown as demand. */
+export function normalizeOrchestratorPoolTier(tier: string): 'hot' | 'demand' {
+  return tier === TIER_HOT ? TIER_HOT : TIER_DEMAND
 }
 
 export const STATUS_ACTIVE = 'active'
@@ -71,6 +71,7 @@ export const POOL_STATS_REFRESH_MS = 30_000
 
 export function tierColor(tier: string): 'error' | 'warning' | 'neutral' {
   if (tier === TIER_HOT) return 'error'
+  if (tier === TIER_DEMAND) return 'warning'
   return 'neutral'
 }
 

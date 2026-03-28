@@ -2,7 +2,7 @@
   "app": {
     "name": "Cadence",
     "tagline": "Nền tảng Điều phối AI",
-    "description": "Nền tảng điều phối AI đa người dùng với cơ chế pooling phân lớp Hot/Cold, BYOK và hỗ trợ đa framework."
+    "description": "Nền tảng điều phối AI đa người dùng với cơ chế pooling phân lớp Hot/Demand, BYOK và hỗ trợ đa framework."
   },
   "common": {
     "cancel": "Hủy",
@@ -122,7 +122,7 @@
     "title": "Bảng điều khiển",
     "hotTier": "Tầng Hot",
     "demandPool": "Nhóm theo nhu cầu",
-    "coldTier": "Tầng Cold",
+    "demandTier": "Tầng Demand",
     "aiAgents": "Agent AI",
     "poolMemory": "Bộ nhớ nhóm",
     "poolStatistics": "Thống kê nhóm",
@@ -432,7 +432,7 @@
     "totalInstances": "Tổng số phiên bản",
     "hotTier": "Tầng Hot",
     "demandPool": "Nhóm theo nhu cầu",
-    "coldTier": "Tầng Cold",
+    "demandTier": "Tầng Demand",
     "sharedModels": "Mô hình dùng chung",
     "sharedBundles": "Bundles dùng chung",
     "memoryEstimate": "Ước tính bộ nhớ",
@@ -801,7 +801,7 @@
     "pages": {
       "dashboard": {
         "title": "Bảng điều khiển",
-        "description": "**Công dụng:**\n\nTrung tâm điều phối AI cho tổ chức của bạn. Hiển thị:\n\n- **Số lượng Ứng dụng AI** — Tổng số phiên bản tầng Hot và Cold\n- **Thống kê nhóm (Pool)** — Các mô hình dùng chung, sử dụng bộ nhớ (chỉ dành cho quản trị hệ thống)\n- **Thao tác nhanh** — Bắt đầu chat, xem Ứng dụng AI, quản lý Agent AI\n\n**Tầng (Tiers):** Hot = được tải ngay lập tức; Cold = theo nhu cầu (nhóm tài nguyên có thể giữ lại các phiên bản vừa sử dụng)."
+        "description": "**Công dụng:**\n\nTrung tâm điều phối AI cho tổ chức của bạn. Hiển thị:\n\n- **Số lượng Ứng dụng AI** — Tổng số phiên bản tầng Hot và Demand\n- **Thống kê nhóm (Pool)** — Các mô hình dùng chung, sử dụng bộ nhớ (chỉ dành cho quản trị hệ thống)\n- **Thao tác nhanh** — Bắt đầu chat, xem Ứng dụng AI, quản lý Agent AI\n\n**Tầng (Tiers):** Hot = được tải ngay lập tức; Demand = theo nhu cầu (nhóm tài nguyên có thể giữ lại các phiên bản vừa sử dụng)."
       },
       "chat": {
         "title": "Trò chuyện",
@@ -869,7 +869,7 @@
       },
       "pool": {
         "title": "Nhóm phiên bản (Instance Pool)",
-        "description": "**Công dụng:**\n\nThống kê nhóm tài nguyên theo thời gian thực (chỉ dành cho quản trị hệ thống).\n\n**Số liệu:**\n- Tổng số phiên bản, số lượng tầng hot/cold\n- Các mô hình và bundles dùng chung\n- Ước tính bộ nhớ\n\n**Tự động làm mới:** Mỗi 30 giây. Sử dụng nút Làm mới để cập nhật thủ công."
+        "description": "**Công dụng:**\n\nThống kê nhóm tài nguyên theo thời gian thực (chỉ dành cho quản trị hệ thống).\n\n**Số liệu:**\n- Tổng số phiên bản, tầng hot và nhóm demand\n- Các mô hình và bundles dùng chung\n- Ước tính bộ nhớ\n\n**Tự động làm mới:** Mỗi 30 giây. Sử dụng nút Làm mới để cập nhật thủ công."
       },
       "health": {
         "title": "Trạng thái hệ thống",
@@ -919,7 +919,7 @@
     "aiAppSections": {
       "createBasic": {
         "title": "Cơ bản",
-        "description": "**Công dụng:**\n\nĐịnh danh cốt lõi và cài đặt thực thi cho Ứng dụng AI mới.\n\n**Trường thông tin:**\n- **Tên** — Định danh duy nhất (10–55 ký tự). Dùng trong URL và API.\n- **Framework** — LangGraph, Google ADK, hoặc OpenAI Agents. **Không thể thay đổi sau khi tạo.**\n- **Chế độ** — Supervisor (đa agent) hoặc các chế độ khác tùy framework.\n- **Tầng khởi tạo** — Hot (tải ngay) hoặc cold (theo nhu cầu). Ảnh hưởng đến bộ nhớ nhóm tài nguyên."
+        "description": "**Công dụng:**\n\nĐịnh danh cốt lõi và cài đặt thực thi cho Ứng dụng AI mới.\n\n**Trường thông tin:**\n- **Tên** — Định danh duy nhất (10–55 ký tự). Dùng trong URL và API.\n- **Framework** — LangGraph, Google ADK, hoặc OpenAI Agents. **Không thể thay đổi sau khi tạo.**\n- **Chế độ** — Supervisor (đa agent) hoặc các chế độ khác tùy framework.\n- **Tầng khởi tạo** — Hot (tải ngay) hoặc demand (theo nhu cầu). Ảnh hưởng đến bộ nhớ nhóm tài nguyên."
       },
       "createPlugins": {
         "title": "Agent AI",
@@ -935,7 +935,7 @@
       },
       "editBasic": {
         "title": "Cơ bản",
-        "description": "**Công dụng:**\n\nChỉnh sửa siêu dữ liệu và tầng (tier). Framework và chế độ là **cố định** sau khi tạo.\n\n**Có thể sửa:**\n- **Tên** — Tên hiển thị (10–200 ký tự)\n- **Tầng** — Hot hoặc cold\n\n**Chỉ dành cho Supervisor:** Cấu hình LLM nằm trong phần Cài đặt Supervisor bên dưới.\n\n**Không phải Supervisor:** Chọn cấu hình LLM tại đây — nó sẽ được dùng cho toàn bộ quá trình suy luận."
+        "description": "**Công dụng:**\n\nChỉnh sửa siêu dữ liệu và tầng (tier). Framework và chế độ là **cố định** sau khi tạo.\n\n**Có thể sửa:**\n- **Tên** — Tên hiển thị (10–200 ký tự)\n- **Tầng** — Hot hoặc demand\n\n**Chỉ dành cho Supervisor:** Cấu hình LLM nằm trong phần Cài đặt Supervisor bên dưới.\n\n**Không phải Supervisor:** Chọn cấu hình LLM tại đây — nó sẽ được dùng cho toàn bộ quá trình suy luận."
       },
       "additionalSettings": {
         "title": "Cài đặt bổ sung",
@@ -1074,7 +1074,7 @@
       "whoami": "Định danh",
       "whoamiPlaceholder": "Ngữ cảnh tùy chọn về ứng dụng này (VD: vai trò, lĩnh vực, giọng điệu). Sẽ được đưa vào các nút trả lời.",
       "initialTier": "Tầng khởi tạo",
-      "tierCold": "Cold (mặc định)",
+      "tierDemand": "Demand (mặc định)",
       "tierHot": "Hot (tải ngay lập tức)",
       "pluginTableName": "Tên",
       "pluginTablePid": "PID",
@@ -1192,7 +1192,7 @@
       "llmConfigRequired": "Cấu hình LLM mặc định là bắt buộc",
       "failedLoad": "Tải Ứng dụng AI thất bại",
       "placeholderSelectConfig": "Chọn cấu hình LLM…",
-      "tierCold": "Cold",
+      "tierDemand": "Demand",
       "tierHot": "Hot (tải ngay lập tức)",
       "monitoring": "Giám sát",
       "monitoringDescription": "Gửi truy vết (traces) tới nhà cung cấp dịch vụ giám sát",

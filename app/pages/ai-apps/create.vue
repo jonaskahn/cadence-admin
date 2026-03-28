@@ -61,7 +61,7 @@ const schema = computed(() =>
       .max(200),
     framework_type: z.string().min(1),
     mode: z.string().min(1),
-    tier: z.enum(['hot', 'cold']),
+    tier: z.enum(['hot', 'demand']),
     whoami: z.string().max(2000).optional()
   })
 )
@@ -90,7 +90,7 @@ type Schema = {
   name: string
   framework_type: string
   mode: string
-  tier: 'hot' | 'cold'
+  tier: 'hot' | 'demand'
   whoami?: string
 }
 
@@ -98,7 +98,7 @@ const state = reactive<Partial<Schema>>({
   name: '',
   framework_type: 'langgraph',
   mode: 'supervisor',
-  tier: 'cold',
+  tier: 'demand',
   whoami: ''
 })
 
@@ -207,7 +207,7 @@ watch(
 const modeOptions = computed(() => supportedModes.value.map((m) => ({ label: modeLabel(m), value: m })))
 
 const tierOptions = computed(() => [
-  { label: t('aiApps.create.tierCold'), value: 'cold' },
+  { label: t('aiApps.create.tierDemand'), value: 'demand' },
   { label: t('aiApps.create.tierHot'), value: 'hot' }
 ])
 
@@ -333,7 +333,7 @@ async function initFromClone(source: OrchestratorResponse | null) {
   state.name = t('aiApps.create.copyOf', { name: source.name })
   state.framework_type = (source.framework_type as Schema['framework_type']) ?? 'langgraph'
   state.mode = (source.mode as Schema['mode']) ?? 'supervisor'
-  state.tier = normalizeOrchestratorPoolTier(source.tier ?? 'cold')
+  state.tier = normalizeOrchestratorPoolTier(source.tier ?? 'demand')
   state.whoami = (source as { whoami?: string }).whoami ?? ''
   const entries = (Object.values(source.plugin_settings ?? {}) as PluginSettingsEntry[]).filter((e) => e.active)
   const resolved: PluginMetadataResponse[] = []

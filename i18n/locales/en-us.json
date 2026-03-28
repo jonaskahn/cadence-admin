@@ -2,7 +2,7 @@
   "app": {
     "name": "Cadence",
     "tagline": "AI Orchestration Platform",
-    "description": "Multi-tenant AI orchestration platform with hot/cold tier pooling, BYOK, and support for multiple frameworks."
+    "description": "Multi-tenant AI orchestration platform with hot/demand tier pooling, BYOK, and support for multiple frameworks."
   },
   "common": {
     "cancel": "Cancel",
@@ -122,7 +122,7 @@
     "title": "Dashboard",
     "hotTier": "Hot Tier",
     "demandPool": "Demand pool",
-    "coldTier": "Cold Tier",
+    "demandTier": "Demand Tier",
     "aiAgents": "AI Agents",
     "poolMemory": "Pool Memory",
     "poolStatistics": "Pool Statistics",
@@ -432,7 +432,7 @@
     "totalInstances": "Total Instances",
     "hotTier": "Hot Tier",
     "demandPool": "Demand pool",
-    "coldTier": "Cold Tier",
+    "demandTier": "Demand Tier",
     "sharedModels": "Shared Models",
     "sharedBundles": "Shared Bundles",
     "memoryEstimate": "Memory Estimate",
@@ -801,7 +801,7 @@
     "pages": {
       "dashboard": {
         "title": "Dashboard",
-        "description": "**What it does:**\n\nCentral hub for your organization's AI orchestration. Shows:\n\n- **AI App counts** — Total, hot and cold tier instances\n- **Pool statistics** — Shared models, memory usage (sys admin only)\n- **Quick actions** — Start chat, view AI Apps, manage AI agents\n\n**Tiers:** Hot = loaded immediately; cold = on-demand (demand pool may retain recently used instances)."
+        "description": "**What it does:**\n\nCentral hub for your organization's AI orchestration. Shows:\n\n- **AI App counts** — Total, hot and demand tier instances\n- **Pool statistics** — Shared models, memory usage (sys admin only)\n- **Quick actions** — Start chat, view AI Apps, manage AI agents\n\n**Tiers:** Hot = loaded immediately; demand = on-demand (demand pool may retain recently used instances)."
       },
       "chat": {
         "title": "Chat",
@@ -869,7 +869,7 @@
       },
       "pool": {
         "title": "Instance Pool",
-        "description": "**What it does:**\n\nReal-time pool statistics (sys admin only).\n\n**Metrics:**\n- Total instances, hot/cold tier counts\n- Shared models and bundles\n- Memory estimate\n\n**Auto-refresh:** Every 30 seconds. Use Refresh to update manually."
+        "description": "**What it does:**\n\nReal-time pool statistics (sys admin only).\n\n**Metrics:**\n- Total instances, hot tier and demand pool counts\n- Shared models and bundles\n- Memory estimate\n\n**Auto-refresh:** Every 30 seconds. Use Refresh to update manually."
       },
       "health": {
         "title": "System Health",
@@ -919,7 +919,7 @@
     "aiAppSections": {
       "createBasic": {
         "title": "Basic",
-        "description": "**What it does:**\n\nCore identity and runtime settings for the new AI App.\n\n**Fields:**\n- **Name** — Unique identifier (10–55 chars). Used in URLs and API.\n- **Framework** — LangGraph, Google ADK, or OpenAI Agents. **Immutable after creation.**\n- **Mode** — Supervisor (multi-agent) or other modes. Depends on framework.\n- **Initial tier** — Hot (load immediately) or cold (on-demand). Affects pool memory."
+        "description": "**What it does:**\n\nCore identity and runtime settings for the new AI App.\n\n**Fields:**\n- **Name** — Unique identifier (10–55 chars). Used in URLs and API.\n- **Framework** — LangGraph, Google ADK, or OpenAI Agents. **Immutable after creation.**\n- **Mode** — Supervisor (multi-agent) or other modes. Depends on framework.\n- **Initial tier** — Hot (load immediately) or demand (on-demand). Affects pool memory."
       },
       "createPlugins": {
         "title": "AI agents",
@@ -935,7 +935,7 @@
       },
       "editBasic": {
         "title": "Basic",
-        "description": "**What it does:**\n\nEdit metadata and tier. Framework and mode are **immutable** after creation.\n\n**Editable:**\n- **Name** — Display name (10–200 chars)\n- **Tier** — Hot or cold\n\n**Supervisor only:** LLM config is in the Supervisor Settings section below.\n\n**Non-supervisor:** Select LLM config here — it's used for all inference."
+        "description": "**What it does:**\n\nEdit metadata and tier. Framework and mode are **immutable** after creation.\n\n**Editable:**\n- **Name** — Display name (10–200 chars)\n- **Tier** — Hot or demand\n\n**Supervisor only:** LLM config is in the Supervisor Settings section below.\n\n**Non-supervisor:** Select LLM config here — it's used for all inference."
       },
       "additionalSettings": {
         "title": "Additional Settings",
@@ -1074,7 +1074,7 @@
       "whoami": "Identity",
       "whoamiPlaceholder": "Optional context about who this AI App is (e.g. role, domain, tone). Injected into answer nodes.",
       "initialTier": "Initial Tier",
-      "tierCold": "Cold (default)",
+      "tierDemand": "Demand (default)",
       "tierHot": "Hot (load immediately)",
       "pluginTableName": "Name",
       "pluginTablePid": "PID",
@@ -1192,7 +1192,7 @@
       "llmConfigRequired": "Default LLM Config is required",
       "failedLoad": "Failed to load AI App",
       "placeholderSelectConfig": "Select LLM config…",
-      "tierCold": "Cold",
+      "tierDemand": "Demand",
       "tierHot": "Hot (load immediately)",
       "monitoring": "Monitoring",
       "monitoringDescription": "Send traces to an observability provider",

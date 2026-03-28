@@ -34,15 +34,15 @@ const schema = computed(() =>
       .string()
       .min(10, { message: t('aiApps.edit.nameMinLength') })
       .max(200, { message: t('aiApps.edit.nameMaxLength') }),
-    tier: z.enum(['hot', 'cold']),
+    tier: z.enum(['hot', 'demand']),
     whoami: z.string().max(2000).optional()
   })
 )
 
-type Schema = { name: string; tier: 'hot' | 'cold'; whoami?: string }
+type Schema = { name: string; tier: 'hot' | 'demand'; whoami?: string }
 
 const name = ref('')
-const tier = ref<'hot' | 'cold'>('cold')
+const tier = ref<'hot' | 'demand'>('demand')
 const whoami = ref('')
 const monitoringConfig = ref<MonitoringConfig>({
   enabled: false,
@@ -59,7 +59,7 @@ const orchestratorConfigProviderRef = ref<{
 } | null>(null)
 
 const tierOptions = computed(() => [
-  { label: t('aiApps.edit.tierCold'), value: 'cold' },
+  { label: t('aiApps.edit.tierDemand'), value: 'demand' },
   { label: t('aiApps.edit.tierHot'), value: 'hot' }
 ])
 
