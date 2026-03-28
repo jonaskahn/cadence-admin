@@ -4,6 +4,19 @@ import type { AgentStep, ToolResultEvent } from '~/composables/useChat'
 const chat = useChat()
 const { t } = useI18n()
 const inputText = ref('')
+const refreshingAiApps = ref(false)
+
+async function onRefreshAiApps() {
+  refreshingAiApps.value = true
+  try {
+    await chat.loadAiApps()
+    if (chat.conversationId.value === null) {
+      await chat.loadConversationStarters()
+    }
+  } finally {
+    refreshingAiApps.value = false
+  }
+}
 
 onMounted(() => {
   chat.loadAiApps()
@@ -113,6 +126,12 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                     'transition-colors'
                   ]
                 }"
+              />
+              <UButton
+                icon="i-lucide-refresh-cw"
+                :label="t('common.refresh')"
+                :loading="refreshingAiApps"
+                @click="onRefreshAiApps"
               />
               <UInput
                 v-if="isGrounded"
@@ -243,11 +262,33 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
 
               <div
                 v-if="chat.messages.value.length === 0 && !chat.streaming.value"
-                class="flex flex-1 items-center justify-center"
+                class="flex flex-1 items-center justify-center px-4"
               >
-                <div class="text-dimmed text-center">
+                <div class="text-dimmed max-w-md text-center">
                   <UIcon class="mx-auto mb-3 size-12 opacity-30" name="i-lucide-message-square" />
                   <p>{{ t('chat.selectAndStart') }}</p>
+
+                  <template v-if="chat.selectedInstanceId.value && chat.conversationId.value === null">
+                    <div v-if="chat.startersLoading.value" class="text-dimmed mt-4 flex items-center justify-center gap-2 text-xs">
+                      <UIcon class="size-4 shrink-0 animate-spin" name="i-lucide-loader" />
+                      <span>{{ t('chat.loadingStarters') }}</span>
+                    </div>
+                    <div v-else-if="chat.conversationStarters.value.length" class="mt-5">
+                      <p class="text-default mb-2 text-sm font-medium">{{ t('chat.suggestedQuestions') }}</p>
+                      <div class="flex flex-wrap justify-center gap-2">
+                        <UButton
+                          v-for="(q, qi) in chat.conversationStarters.value"
+                          :key="qi"
+                          size="xs"
+                          color="neutral"
+                          class="max-w-full text-left whitespace-normal"
+                          :label="q"
+                          @click="inputText = q"
+                        />
+                      </div>
+                    </div>
+                    <p v-else class="mt-4 text-xs">{{ t('chat.noStarters') }}</p>
+                  </template>
                 </div>
               </div>
             </div>

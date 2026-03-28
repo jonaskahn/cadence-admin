@@ -163,7 +163,11 @@
     "noThreadsYet": "No threads yet",
     "resourceIdPlaceholder": "Resource ID or URL (grounded mode)",
     "selectAiApp": "Select AI App",
-    "selectAiAppFirst": "Select an AI App first"
+    "selectAiAppFirst": "Select an AI App first",
+    "refreshAiAppsFailed": "Could not refresh AI Apps",
+    "startersLoadFailed": "Could not load conversation starters",
+    "noStarters": "No conversation starters configured for this AI App.",
+    "loadingStarters": "Loading suggestions…"
   },
   "profile": {
     "title": "Profile",

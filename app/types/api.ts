@@ -349,6 +349,12 @@ export interface ConversationSummary {
   instance_id: string | null
 }
 
+/** GET `/api/chat/starters` — localized conversation starters for an orchestrator instance. */
+export interface ChatStartersResponse {
+  language?: string | null
+  questions: string[]
+}
+
 /** GET `/api/chat/conversations/{id}/messages` — human-sourced transcript (includes `source`). */
 export interface ChatConversationMessageResponse {
   role: 'user' | 'assistant'

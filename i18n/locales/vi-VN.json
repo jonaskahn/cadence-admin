@@ -163,7 +163,11 @@
     "noThreadsYet": "Chưa có luồng nào",
     "resourceIdPlaceholder": "ID tài nguyên hoặc URL (chế độ grounded)",
     "selectAiApp": "Chọn ứng dụng AI",
-    "selectAiAppFirst": "Vui lòng chọn ứng dụng AI trước"
+    "selectAiAppFirst": "Vui lòng chọn ứng dụng AI trước",
+    "refreshAiAppsFailed": "Không thể làm mới danh sách ứng dụng AI",
+    "startersLoadFailed": "Không thể tải câu hỏi bắt đầu hội thoại",
+    "noStarters": "Chưa cấu hình câu hỏi bắt đầu cho ứng dụng AI này.",
+    "loadingStarters": "Đang tải gợi ý…"
   },
   "profile": {
     "title": "Hồ sơ",

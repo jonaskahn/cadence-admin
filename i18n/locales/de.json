@@ -163,7 +163,11 @@
     "noThreadsYet": "Noch keine Threads vorhanden",
     "resourceIdPlaceholder": "Ressourcen-ID oder URL (Grounded-Modus)",
     "selectAiApp": "KI-App auswählen",
-    "selectAiAppFirst": "Zuerst eine KI-App auswählen"
+    "selectAiAppFirst": "Zuerst eine KI-App auswählen",
+    "refreshAiAppsFailed": "KI-Apps konnten nicht aktualisiert werden",
+    "startersLoadFailed": "Gesprächsstarter konnten nicht geladen werden",
+    "noStarters": "Für diese KI-App sind keine Gesprächsstarter konfiguriert.",
+    "loadingStarters": "Vorschläge werden geladen…"
   },
   "profile": {
     "title": "Profil",

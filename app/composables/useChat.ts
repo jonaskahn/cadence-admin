@@ -1,4 +1,9 @@
-import type { ChatConversationMessageResponse, ConversationSummary, OrchestratorResponse } from '~/types'
+import type {
+  ChatConversationMessageResponse,
+  ChatStartersResponse,
+  ConversationSummary,
+  OrchestratorResponse
+} from '~/types'
 import { processChatSseStream, type SseChatEvent } from '~/utils/sse'
 
 interface ChatMessage {
@@ -25,7 +30,7 @@ export interface ToolResultEvent {
 export function useChat() {
   const auth = useAuth()
   const toast = useToast()
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
 
   const orgId = computed(() => auth.currentOrgId.value || '')
   const aiApps = ref<OrchestratorResponse[]>([])
@@ -41,10 +46,54 @@ export function useChat() {
   const currentEvents = ref<SseChatEvent[]>([])
   const currentAgentStep = ref<AgentStep | null>(null)
   const currentToolResults = ref<ToolResultEvent[]>([])
+  const conversationStarters = ref<string[]>([])
+  const startersLoading = ref(false)
+
+  async function loadConversationStarters(): Promise<void> {
+    if (!orgId.value || !selectedInstanceId.value || conversationId.value !== null) {
+      conversationStarters.value = []
+      return
+    }
+    startersLoading.value = true
+    try {
+      const res = await $fetch<ChatStartersResponse>('/api/chat/starters', {
+        headers: {
+          'X-ORG-ID': orgId.value,
+          'X-INSTANCE-ID': selectedInstanceId.value,
+          'Accept-Language': `${locale.value},en;q=0.5`
+        }
+      })
+      conversationStarters.value = res.questions ?? []
+    } catch (err: unknown) {
+      conversationStarters.value = []
+      const msg = err instanceof Error ? err.message : String(err)
+      toast.add({ title: t('chat.startersLoadFailed'), description: msg, color: 'error' })
+    } finally {
+      startersLoading.value = false
+    }
+  }
+
+  watch(
+    () => [orgId.value, selectedInstanceId.value, conversationId.value] as const,
+    async () => {
+      conversationStarters.value = []
+      const org = orgId.value
+      const inst = selectedInstanceId.value
+      const conv = conversationId.value
+      if (!org || !inst || conv !== null) return
+      await loadConversationStarters()
+    },
+    { immediate: true }
+  )
 
   async function loadAiApps(): Promise<void> {
     if (!orgId.value) return
-    aiApps.value = await $fetch<OrchestratorResponse[]>(`/api/orgs/${orgId.value}/orchestrators`)
+    try {
+      aiApps.value = await $fetch<OrchestratorResponse[]>(`/api/orgs/${orgId.value}/orchestrators`)
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err)
+      toast.add({ title: t('chat.refreshAiAppsFailed'), description: msg, color: 'error' })
+    }
   }
 
   async function loadConversations(): Promise<void> {
@@ -194,8 +243,11 @@ export function useChat() {
     currentEvents,
     currentAgentStep,
     currentToolResults,
+    conversationStarters,
+    startersLoading,
     loadAiApps,
     loadConversations,
+    loadConversationStarters,
     selectConversation,
     newConversation,
     sendMessage,
