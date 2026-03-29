@@ -113,9 +113,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.yourRole') }}</dt>
           <dd class="mt-1">
-            <UBadge size="sm" variant="subtle">{{
-              auth.currentOrg.value?.role?.toUpperCase() || t('common.empty')
-            }}</UBadge>
+            <UBadge>{{ auth.currentOrg.value?.role?.toUpperCase() || t('common.empty') }}</UBadge>
           </dd>
         </div>
         <div>
@@ -129,7 +127,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.subscriptionTier') }}</dt>
           <dd class="mt-1">
-            <UBadge v-if="org?.tier" :color="subscriptionTierColor(org.tier)" size="sm" variant="subtle">
+            <UBadge v-if="org?.tier" :color="subscriptionTierColor(org.tier)">
               {{ org.tier.toUpperCase() }}
             </UBadge>
             <span v-else class="text-dimmed text-sm">{{ t('common.empty') }}</span>
@@ -138,7 +136,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
         <div>
           <dt class="text-dimmed text-sm">{{ t('settings.status') }}</dt>
           <dd class="mt-1">
-            <UBadge :color="org?.status === 'active' ? 'success' : 'neutral'" size="sm" variant="subtle">
+            <UBadge :color="org?.status === 'active' ? 'success' : 'neutral'">
               {{ org?.status || t('common.empty') }}
             </UBadge>
           </dd>
@@ -212,6 +210,7 @@ async function onProfileSubmit(event: FormSubmitEvent<ProfileSchema>) {
             confirm-message-key="common.saveConfirmMessage"
             confirm-label-key="common.saveConfirmFriendly"
             :loading="savingProfile"
+            size="lg"
             :on-confirm="() => settingsProfileFormRef?.$el?.requestSubmit?.()"
           />
         </div>

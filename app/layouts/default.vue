@@ -32,7 +32,6 @@ const baseLinks = computed<NavigationMenuItem[]>(() => {
     },
     {
       label: t('nav.aiApps'),
-      badge: t('nav.aiAppsBadge'),
       icon: 'i-lucide-cpu',
       to: localePath('/ai-apps'),
       onSelect: closeMenu
@@ -45,7 +44,6 @@ const orgAdminLinks = computed<NavigationMenuItem[]>(() => {
   return [
     {
       label: t('nav.aiAgents'),
-      badge: t('nav.aiAgentsBadge'),
       icon: 'i-lucide-shopping-cart',
       to: localePath('/agent-store'),
       onSelect: closeMenu
@@ -78,7 +76,6 @@ const orgAdminLinks = computed<NavigationMenuItem[]>(() => {
         },
         {
           label: t('nav.aiApps'),
-          badge: t('nav.aiAppsBadge'),
           icon: 'i-lucide-cpu',
           to: localePath('/settings/ai-apps'),
           onSelect: closeMenu
@@ -117,7 +114,6 @@ const systemLinks = computed<NavigationMenuItem[]>(() => {
         },
         {
           label: t('nav.systemPlugins'),
-          badge: t('nav.aiAgentsBadge'),
           icon: 'i-lucide-shopping-bag',
           to: localePath('/admin/agent-store'),
           onSelect: closeMenu
@@ -161,14 +157,15 @@ const mainLinks = computed(() => {
         id="default"
         v-model:open="open"
         :default-size="20"
-        :max-size="28"
+        :max-size="24"
+        mode="drawer"
         :ui="{
+          header: 'border-accented border-dotted h-(--ui-header-height) shrink-0 flex items-center gap-1.5 px-4',
           body: 'flex flex-col gap-4 overflow-y-auto px-4 py-2 border-0',
           footer: 'mt-auto shrink-0 flex items-center gap-1.5 px-4 py-2 border-0'
         }"
-        class="border-accented supports-backdrop-filter:bg-default/40 hover:-translate-y-0.6 text overflow-hidden rounded-xl border border-dotted shadow-md backdrop-blur transition-all duration-300 hover:shadow-2xl"
+        class="border-accented supports-backdrop-filter:bg-default/40 hover:-translate-y-0.6 text overflow-hidden rounded-3xl border border-dotted shadow-md backdrop-blur transition-all duration-300 hover:shadow-xl"
         collapsible
-        resizable
       >
         <template #header="{ collapsed }">
           <div class="flex w-full items-center gap-1.5">

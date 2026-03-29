@@ -253,7 +253,7 @@ const oauthProviderIcons: Record<string, string> = {
       <!-- Floating product card -->
       <div class="floating-card absolute top-[10%] left-[8%] z-20">
         <div
-          class="inline-flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/5 px-6 py-5 shadow-2xl backdrop-blur-sm"
+          class="inline-flex flex-col gap-2 rounded-3xl border border-white/10 bg-white/5 px-6 py-5 shadow-2xl backdrop-blur-sm"
         >
           <div class="flex items-center gap-3">
             <div
@@ -270,7 +270,7 @@ const oauthProviderIcons: Record<string, string> = {
       <!-- Value props -->
       <div class="relative z-10 mb-10 flex flex-col gap-3">
         <div v-for="prop in valueProps" :key="prop.text" class="flex items-center gap-3">
-          <div class="bg-primary/15 flex h-6 w-6 items-center justify-center rounded-md">
+          <div class="bg-primary/15 flex h-6 w-6 items-center justify-center rounded-3xl">
             <UIcon :name="prop.icon" class="text-primary size-3.5" />
           </div>
           <span class="text-sm font-medium text-white/70">{{ prop.text }}</span>

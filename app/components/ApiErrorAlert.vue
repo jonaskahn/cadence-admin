@@ -49,7 +49,7 @@ const copyAriaLabel = computed(() => (copied.value ? t('errors.copied') : t('err
         <span class="text-dimmed shrink-0 text-xs font-medium tracking-wide uppercase">{{
           t('errors.requestId')
         }}</span>
-        <code class="bg-elevated text-default min-w-0 flex-1 rounded-md px-2 py-1.5 font-mono text-xs break-all">{{
+        <code class="bg-elevated text-default min-w-0 flex-1 rounded-3xl px-2 py-1.5 font-mono text-xs break-all">{{
           requestId
         }}</code>
         <UButton

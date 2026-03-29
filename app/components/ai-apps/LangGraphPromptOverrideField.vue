@@ -79,7 +79,7 @@ async function copyDefaultPrompt() {
         class="w-full"
         :placeholder="!props.modelValue.trim() ? t('langGraphSupervisor.promptOverridePlaceholderBuiltin') : undefined"
       />
-      <div v-show="showPeek" class="border-accented border-dottedbg-muted/30 relative rounded-md border">
+      <div v-show="showPeek" class="border-accented bg-muted/30 relative rounded-3xl border border-dotted">
         <UButton
           type="button"
           class="absolute top-1 right-1 z-10"

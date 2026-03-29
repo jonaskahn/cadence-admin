@@ -167,10 +167,10 @@ const columns = computed(() => [
 
           <template #is_enabled-cell="{ row }">
             <div class="flex items-center gap-1.5">
-              <UBadge :color="row?.original?.is_enabled ? 'success' : 'neutral'" size="sm" variant="subtle">
+              <UBadge :color="row?.original?.is_enabled ? 'success' : 'neutral'">
                 {{ row?.original?.is_enabled ? t('common.enabled') : t('common.disabled') }}
               </UBadge>
-              <UBadge v-if="row?.original?.is_deleted" color="error" size="sm" variant="subtle">
+              <UBadge v-if="row?.original?.is_deleted" color="error">
                 {{ t('common.deleted') }}
               </UBadge>
             </div>

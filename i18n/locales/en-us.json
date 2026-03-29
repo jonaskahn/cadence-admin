@@ -102,7 +102,7 @@
     "health": "Health",
     "telemetry": "Telemetry",
     "aiApps": "AI Apps",
-    "aiAppsBadge": "ORCHESTRATOR"
+    "aiAppsBadge": "Orchestrator"
   },
   "userMenu": {
     "language": "Language",
@@ -378,7 +378,7 @@
   },
   "plugins": {
     "title": "Agents Store",
-    "legacyBadge": "PLUGIN",
+    "legacyBadge": "Plugin",
     "all": "All",
     "system": "Official",
     "org": "Org",
@@ -1035,7 +1035,7 @@
   },
   "aiApps": {
     "title": "AI Apps",
-    "legacyBadge": "ORCHESTRATOR",
+    "legacyBadge": "Orchestrator",
     "ready": "Ready",
     "monitoring": "Monitoring",
     "additionalSettings": "Additional Settings",

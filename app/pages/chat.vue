@@ -119,13 +119,6 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                 :items="readyAiApps.map((o) => ({ label: o.name, value: o.instance_id }))"
                 :placeholder="t('chat.selectAiApp')"
                 class="w-64"
-                variant="soft"
-                :ui="{
-                  base: [
-                    'relative group rounded-md inline-flex items-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-100 shadow-xs',
-                    'transition-colors'
-                  ]
-                }"
               />
               <UButton
                 icon="i-lucide-refresh-cw"
@@ -153,7 +146,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
                 <div class="flex max-w-[70%] flex-col">
                   <div
                     :class="msg.role === 'user' ? 'bg-primary text-white' : 'bg-elevated'"
-                    class="rounded-2xl px-4 py-2.5"
+                    class="rounded-3xl px-4 py-2.5"
                   >
                     <MDC
                       v-if="msg.role === 'assistant'"
@@ -220,7 +213,7 @@ function linkItemsOf(result: ToolResultEvent): LinkItem[] {
               </div>
 
               <div v-if="chat.streaming.value" class="flex justify-start">
-                <div class="bg-elevated flex max-w-[70%] min-w-48 flex-col gap-2 rounded-2xl px-4 py-3">
+                <div class="bg-elevated flex max-w-[70%] min-w-48 flex-col gap-2 rounded-3xl px-4 py-3">
                   <!-- tool results arrive before synthesizer; show source links immediately -->
                   <div v-if="chat.currentToolResults.value.length" class="flex flex-col gap-1.5">
                     <p class="text-dimmed text-xs font-medium">{{ t('chat.sources') }}</p>

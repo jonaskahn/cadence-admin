@@ -102,7 +102,7 @@
     "health": "Status",
     "telemetry": "Telemetrie",
     "aiApps": "KI-Apps",
-    "aiAppsBadge": "ORCHESTRATOR"
+    "aiAppsBadge": "Orchestrator"
   },
   "userMenu": {
     "language": "Sprache",
@@ -378,7 +378,7 @@
   },
   "plugins": {
     "title": "Agenten-Store",
-    "legacyBadge": "PLUGIN",
+    "legacyBadge": "Plugin",
     "all": "Alle",
     "system": "Offiziell",
     "org": "Organisation",
@@ -1035,7 +1035,7 @@
   },
   "aiApps": {
     "title": "KI-Apps",
-    "legacyBadge": "ORCHESTRATOR",
+    "legacyBadge": "Orchestrator",
     "ready": "Bereit",
     "monitoring": "Überwachung",
     "additionalSettings": "Zusätzliche Einstellungen",

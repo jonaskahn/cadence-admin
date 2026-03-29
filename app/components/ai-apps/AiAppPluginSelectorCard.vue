@@ -112,7 +112,7 @@ watch(
           value-key="value"
           class="w-24"
         />
-        <UBadge v-if="isAlreadyAdded" color="success" variant="subtle">
+        <UBadge v-if="isAlreadyAdded" color="success">
           {{ t('aiApps.pluginSelector.added') }}
         </UBadge>
         <UButton v-else icon="i-lucide-plus" size="sm" :title="t('aiApps.pluginSelector.addPlugin')" @click="onAdd">

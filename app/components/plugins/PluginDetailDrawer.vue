@@ -248,7 +248,7 @@ async function handleDisableConfirm(close: () => void) {
             <div class="flex items-center gap-3">
               <div
                 v-if="pluginAvatarSrc"
-                class="hover:-translate-y-0.6 size-36 shrink-0 overflow-hidden rounded-2xl bg-neutral-50 p-4 transition-all duration-300 hover:bg-neutral-200"
+                class="hover:-translate-y-0.6 size-36 shrink-0 overflow-hidden rounded-3xl bg-neutral-50 p-4 transition-all duration-300 hover:bg-neutral-200"
               >
                 <img :alt="selectedVersion.name" :src="pluginAvatarSrc" class="size-full object-cover" />
               </div>
@@ -275,18 +275,14 @@ async function handleDisableConfirm(close: () => void) {
                   class="w-28"
                 />
                 <div class="mt-1 flex flex-wrap gap-1">
-                  <UBadge v-if="selectedVersion.is_latest" color="success" size="xs" variant="subtle">{{
-                    t('pluginDetail.latest')
-                  }}</UBadge>
+                  <UBadge v-if="selectedVersion.is_latest" color="success">{{ t('pluginDetail.latest') }}</UBadge>
                   <UBadge
                     v-if="'enabled' in selectedVersion && selectedVersion.enabled !== undefined"
                     :color="selectedVersion.enabled ? 'success' : 'neutral'"
-                    size="xs"
-                    variant="subtle"
                   >
                     {{ selectedVersion.enabled ? t('plugins.enabled') : t('plugins.disabled') }}
                   </UBadge>
-                  <UBadge color="neutral" size="xs" variant="subtle"> v{{ selectedVersion.version }} </UBadge>
+                  <UBadge size="md"> v{{ selectedVersion.version }} </UBadge>
                 </div>
               </div>
             </div>

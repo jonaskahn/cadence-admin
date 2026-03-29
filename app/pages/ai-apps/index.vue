@@ -108,7 +108,7 @@ async function handlePurgeConfirm(row: OrchestratorResponse, close: () => void) 
           <template #title>
             <span class="inline-flex flex-wrap items-center gap-2">
               <span>{{ t('aiApps.title') }}</span>
-              <UBadge color="neutral" size="xs" variant="subtle">{{ t('aiApps.legacyBadge') }}</UBadge>
+              <UBadge>{{ t('aiApps.legacyBadge') }}</UBadge>
             </span>
           </template>
           <template #leading>

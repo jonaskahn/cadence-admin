@@ -40,7 +40,7 @@ const logoSrc = computed(() => (props.plugin.logo ? `data:image/png;base64,${pro
     <template #header>
       <div class="flex items-start justify-between gap-2">
         <div class="flex min-w-0 items-center gap-2">
-          <div v-if="logoSrc" class="bg-elevated size-8 shrink-0 overflow-hidden rounded-md p-1">
+          <div v-if="logoSrc" class="bg-elevated size-8 shrink-0 overflow-hidden rounded-3xl p-1">
             <img :alt="plugin.name" :src="logoSrc" class="size-full object-contain" />
           </div>
           <UAvatar v-else :alt="plugin.name" :text="avatarText" size="sm" />
@@ -54,8 +54,8 @@ const logoSrc = computed(() => (props.plugin.logo ? `data:image/png;base64,${pro
     </template>
 
     <div class="flex flex-wrap items-center gap-1">
-      <UBadge :label="sourceLabel" color="neutral" variant="subtle" size="xs" />
-      <UBadge :label="plugin.version" :color="interactive ? 'neutral' : 'success'" variant="subtle" size="xs" />
+      <UBadge :label="sourceLabel" size="xs" />
+      <UBadge :label="plugin.version" :color="interactive ? 'neutral' : 'success'" size="xs" />
     </div>
   </UCard>
 </template>

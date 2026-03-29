@@ -102,7 +102,7 @@
     "health": "Trạng thái",
     "telemetry": "Phép đo từ xa",
     "aiApps": "Ứng dụng AI",
-    "aiAppsBadge": "ORCHESTRATOR"
+    "aiAppsBadge": "Orchestrator"
   },
   "userMenu": {
     "language": "Ngôn ngữ",
@@ -378,7 +378,7 @@
   },
   "plugins": {
     "title": "Cửa hàng Agent",
-    "legacyBadge": "PLUGIN",
+    "legacyBadge": "Plugin",
     "all": "Tất cả",
     "system": "Chính thức",
     "org": "Tổ chức",
@@ -1035,7 +1035,7 @@
   },
   "aiApps": {
     "title": "Ứng dụng AI",
-    "legacyBadge": "ORCHESTRATOR",
+    "legacyBadge": "Orchestrator",
     "ready": "Sẵn sàng",
     "monitoring": "Giám sát",
     "additionalSettings": "Cài đặt bổ sung",

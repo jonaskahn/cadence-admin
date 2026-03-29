@@ -176,7 +176,7 @@ async function save() {
           <div>
             <div class="flex flex-wrap items-center gap-2">
               <p class="font-semibold">{{ t('settings.aiAppSettings') }}</p>
-              <UBadge color="neutral" size="xs" variant="subtle">{{ t('aiApps.legacyBadge') }}</UBadge>
+              <UBadge>{{ t('aiApps.legacyBadge') }}</UBadge>
               <InfoPopover title-key="info.settings.aiApps.title" description-key="info.settings.aiApps.description" />
             </div>
             <p class="text-dimmed text-sm">{{ t('settings.aiAppSettingsDescription') }}</p>

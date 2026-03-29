@@ -396,7 +396,7 @@ function copyGoCode() {
           <div>
             <p class="mb-1.5 text-sm font-medium">{{ t('centralPoints.centerPointId') }}</p>
             <div class="flex items-center gap-2">
-              <code class="bg-elevated flex-1 rounded-md px-3 py-2 font-mono text-sm break-all">
+              <code class="bg-elevated flex-1 rounded-3xl px-3 py-2 font-mono text-sm break-all">
                 {{ centerPoint.id }}
               </code>
               <UButton color="neutral" icon="i-lucide-copy" size="sm" @click="copyCenterPointId" />

@@ -60,7 +60,7 @@ async function onUpload() {
 
     <div class="flex flex-col gap-4">
       <div
-        class="border-accented border-dottedhover:border-primary cursor-pointer rounded-lg border border-2 border-dashed p-8 text-center transition-colors"
+        class="border-accented hover:border-primary cursor-pointer rounded-lg border-dotted p-8 text-center transition-colors"
         @click="triggerFileInput"
       >
         <UIcon class="text-dimmed mx-auto mb-2 size-10" name="i-lucide-upload" />

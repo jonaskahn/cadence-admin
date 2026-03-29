@@ -62,7 +62,7 @@ function openUpload() {
           <template #title>
             <span class="inline-flex flex-wrap items-center gap-2">
               <span>{{ t('plugins.title') }}</span>
-              <UBadge color="neutral" size="xs" variant="subtle">{{ t('plugins.legacyBadge') }}</UBadge>
+              <UBadge>{{ t('plugins.legacyBadge') }}</UBadge>
             </span>
           </template>
           <template #leading>
